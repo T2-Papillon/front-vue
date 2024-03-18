@@ -23,7 +23,9 @@ module.exports = {
                 trailingComma: 'none',
                 printWidth: 140,
                 bracketSpacing: true,
-                arrowParens: 'avoid'
+                arrowParens: 'avoid',
+                useTabs: false,
+                endOfLine: 'auto'
             }
         ]
     }
