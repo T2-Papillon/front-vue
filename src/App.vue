@@ -3,13 +3,11 @@ import { RouterLink, RouterView } from 'vue-router'
 
 import Header from './components/common/layout/HeaderApp.vue'
 import Footer from './components/common/layout/FooterApp.vue'
-import Aside from './components/common/layout/AsideApp.vue'
 </script>
 
 <template>
-    <div class="wrapper">
+    <div class="wrap">
         <Header />
-        <Aside />
         <div class="inner">
             <nav>
                 <RouterLink to="/">Home</RouterLink>
@@ -23,4 +21,3 @@ import Aside from './components/common/layout/AsideApp.vue'
 </template>
 
 <style scoped></style>
-./components/common/layout/HeaderApp.vue./components/common/layout/FooterApp.vue
