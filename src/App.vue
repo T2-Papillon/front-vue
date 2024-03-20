@@ -6,18 +6,15 @@ import Footer from './components/common/layout/FooterApp.vue'
 </script>
 
 <template>
-    <div class="wrap">
-        <Header />
-        <div class="inner">
-            <nav>
-                <RouterLink to="/">Home</RouterLink>
-                <RouterLink to="/about">About</RouterLink>
-            </nav>
-
-            <RouterView />
-        </div>
-        <Footer />
-    </div>
+    <Header> </Header>
+    <nav>
+        <RouterLink to="/">Home</RouterLink>
+        <RouterLink to="/about">About</RouterLink>
+        <RouterLink to="/login">로그인</RouterLink>
+        <RouterLink to="/kit">UI Kit</RouterLink>
+    </nav>
+    <RouterView />
+    <Footer />
 </template>
 
 <style scoped></style>
