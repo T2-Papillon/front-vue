@@ -1,5 +1,5 @@
 <template>
-    <div class="login-wrap">
+    <main class="login-wrap">
         <div class="inner">
             <div class="title-area">
                 <h2 class="title">로그인</h2>
@@ -11,8 +11,8 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="mb-3">
-                                <label for="emain" class="form-label">이메일</label>
-                                <input type="email" class="form-control" id="emain" placeholder="name@example.com" />
+                                <label for="email" class="form-label">이메일</label>
+                                <input type="email" class="form-control" id="email" placeholder="name@example.com" />
                             </div>
                             <div class="mb-3">
                                 <label for="password" class="form-label">비밀번호</label>
@@ -26,7 +26,7 @@
                 </form>
             </div>
         </div>
-    </div>
+    </main>
 </template>
 
 <script>

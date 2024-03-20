@@ -2,7 +2,7 @@
 import Status from '../components/common/Status.vue'
 </script>
 <template>
-    <div class="content inner">
+    <main class="content inner">
         <div class="row align-items-end justify-content-between pb-5 g-3">
             <div class="col-auto">
                 <h3>Latest reviews</h3>
@@ -38,7 +38,7 @@ import Status from '../components/common/Status.vue'
             </div>
         </div>
         <div class="row">
-            <div class="col-12 col-md-auto">
+            <div class="col-12">
                 <table class="table fs-9 mb-5 border-top border-translucent">
                     <colgroup></colgroup>
                     <thead>
@@ -48,12 +48,12 @@ import Status from '../components/common/Status.vue'
                                     <input class="form-check-input" id="checkbox-bulk-reviews-select" type="checkbox" />
                                 </div>
                             </th>
-                            <th class="sort white-space-nowrap align-middle desc" scope="col" data-sort="product">프로젝트명</th>
+                            <th class="sort white-space-nowrap align-middle" scope="col" data-sort="product">프로젝트명</th>
                             <th class="sort align-middle" scope="col" data-sort="customer">PM</th>
                             <th class="sort align-middle" scope="col" data-sort="rating">시작일</th>
                             <th class="sort align-middle" scope="col" data-sort="review">종료일</th>
                             <th class="sort text-start ps-5 align-middle" scope="col" data-sort="status">진행상태</th>
-                            <th class="sort text-end align-middle" scope="col" data-sort="time">참여자</th>
+                            <th class="sort text-end align-middle" scope="col" data-sort="status">참여자</th>
                             <th class="sort text-end align-middle" scope="col" data-sort="time">진행률</th>
                             <th class="sort text-end align-middle" scope="col" data-sort="time">우선순위</th>
                             <th class="sort text-end pe-0 align-middle" scope="col">작성일</th>
@@ -63,7 +63,7 @@ import Status from '../components/common/Status.vue'
                         <tr>
                             <td></td>
                             <td><a href="#">5월 매출전표 페이지 요청</a></td>
-                            <td><span class="profile">고</span></td>
+                            <td class="text-center"><span class="profile">고</span></td>
                             <td>2024.03.20</td>
                             <td>2024.03.25</td>
                             <td><Status /></td>
@@ -95,6 +95,9 @@ import Status from '../components/common/Status.vue'
                 </div>
             </div>
         </div>
-    </div>
+    </main>
 </template>
-<style scoped></style>
+<style scoped>
+
+
+</style>
