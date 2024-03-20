@@ -22,11 +22,6 @@ export default {}
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 100%;
-    padding: 5px 0;
-    border-radius: 3px;
-    font-weight: bold;
-    background-color: #fff;
     border: none;
 }
 .status .todo {
