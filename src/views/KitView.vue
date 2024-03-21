@@ -1,11 +1,15 @@
 <script>
 import CheckboxSelector from '../components/common/CheckboxSelector.vue'
 import UserProfile from '../components/common/UserProfile.vue'
+import BarChart from '../components/common/BarChart.vue'
+import BtnHeartAction from '../components/common/BtnHeartAction.vue'
 
 export default {
     components: {
         CheckboxSelector,
-        UserProfile
+        UserProfile,
+        BarChart,
+        BtnHeartAction
     },
     data() {
         return {
@@ -62,7 +66,7 @@ export default {
                 </div>
             </div>
         </div>
-        <div class="row project-cnt">
+        <div class="row">
             <div class="col-4">
                 <div class="card">
                     <div class="card-body">
@@ -88,7 +92,7 @@ export default {
                 </div>
             </div>
         </div>
-        <div class="row">
+        <div class="row mt-3">
             <div class="col">
                 <CheckboxSelector :items="checkboxItems" selectAllId="flexCheckDefault" />
             </div>
@@ -158,9 +162,42 @@ export default {
         </div>
 
         <div class="row">
-            <div class="col-6"></div>
+            <div class="col-6">
+                <BarChart />
+            </div>
 
             <div class="col-6"></div>
+        </div>
+
+        <div class="row">
+            <div class="col-6">
+                <div class="board-view">
+                    <div class="card">
+                        <div class="card-body">
+                            <h3 class="h4">이번주 완료된 전체 프로젝트</h3>
+                            <ul class="mt-4">
+                                <li>
+                                    <a href="#" class="board-view-title">제목제목제목</a>
+                                    <BtnHeartAction />
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="h4">알림</h3>
+                        <ul class="mt-4">
+                            <li>
+                                <a href="#" class="h5">제목제목제목</a>
+                                <span class="desc">24.03.21</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
     </main>
 </template>
@@ -227,5 +264,24 @@ export default {
 }
 .status .hold {
     border: 1px solid #e9ebf1;
+}
+
+.board-view {
+}
+
+.board-view li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 10px;
+    /* border-bottom: 1px solid var(--bs-border-color); */
+}
+.board-view-title {
+    font-size: 14px;
+    font-weight: 500;
+}
+.board-view-title:hover {
+    /* text-decoration: underline; */
+    opacity: 0.9;
 }
 </style>
