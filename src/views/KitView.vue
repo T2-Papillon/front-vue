@@ -1,9 +1,11 @@
 <script>
 import CheckboxSelector from '../components/common/CheckboxSelector.vue'
+import UserProfile from '../components/common/UserProfile.vue'
 
 export default {
     components: {
-        CheckboxSelector
+        CheckboxSelector,
+        UserProfile
     },
     data() {
         return {
@@ -60,8 +62,34 @@ export default {
                 </div>
             </div>
         </div>
+        <div class="row project-cnt">
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-body">
+                        <p class="card-title">오늘 프로젝트 건수</p>
+                        <h3 class="card-text">1 건</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-body">
+                        <p class="card-title">전일 프로젝트 건수</p>
+                        <h3 class="card-text">1 건</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-body">
+                        <p class="card-title">전주 프로젝트 건수</p>
+                        <h3 class="card-text">1 건</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="row">
-            <div class="col-12">
+            <div class="col">
                 <CheckboxSelector :items="checkboxItems" selectAllId="flexCheckDefault" />
             </div>
         </div>
@@ -96,14 +124,7 @@ export default {
                         <tr>
                             <td><a href="#" class="tb-project-title">5월 매출전표 페이지 요청</a></td>
                             <td>
-                                <div class="profile">
-                                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">고</button>
-                                    <ul class="dropdown-menu">
-                                        <li><span class="dropdown-item">개발 1팀</span></li>
-                                        <li><a class="dropdown-item" href="#">마이페이지</a></li>
-                                        <li><a class="dropdown-item" href="#">로그아웃</a></li>
-                                    </ul>
-                                </div>
+                                <UserProfile />
                             </td>
                             <td>2024.03.20</td>
                             <td>2024.03.25</td>
@@ -116,32 +137,7 @@ export default {
                                 </div>
                             </td>
                             <td class="text-end">
-                                <div>
-                                    <div class="profile">
-                                        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">고</button>
-                                        <ul class="dropdown-menu">
-                                            <li><span class="dropdown-item">개발 1팀</span></li>
-                                            <li><a class="dropdown-item" href="#">마이페이지</a></li>
-                                            <li><a class="dropdown-item" href="#">로그아웃</a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="profile">
-                                        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">고</button>
-                                        <ul class="dropdown-menu">
-                                            <li><span class="dropdown-item">개발 1팀</span></li>
-                                            <li><a class="dropdown-item" href="#">마이페이지</a></li>
-                                            <li><a class="dropdown-item" href="#">로그아웃</a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="profile">
-                                        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">고</button>
-                                        <ul class="dropdown-menu">
-                                            <li><span class="dropdown-item">개발 1팀</span></li>
-                                            <li><a class="dropdown-item" href="#">마이페이지</a></li>
-                                            <li><a class="dropdown-item" href="#">로그아웃</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
+                                <div><UserProfile /><UserProfile /><UserProfile /></div>
                             </td>
                             <td>
                                 <div class="progress">
@@ -160,29 +156,15 @@ export default {
                 </table>
             </div>
         </div>
+
+        <div class="row">
+            <div class="col-6"></div>
+
+            <div class="col-6"></div>
+        </div>
     </main>
 </template>
 <style scoped>
-.profile {
-    display: inline-block;
-}
-.profile + .profile {
-    margin-left: -10px;
-}
-.profile .btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 30px;
-    height: 30px;
-    border-radius: 100%;
-    font-size: 14px;
-}
-
-.profile .btn::after {
-    display: none;
-}
-
 .priority {
     display: inline-flex;
     align-items: center;
@@ -216,8 +198,12 @@ export default {
 }
 .tb-project-title {
     width: 100%;
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 500;
+}
+.tb-project-title:hover {
+    text-decoration: underline;
+    opacity: 0.9;
 }
 
 .status span {
