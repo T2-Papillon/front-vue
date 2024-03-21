@@ -1,15 +1,14 @@
 <template>
     <main class="login-wrap">
         <div class="inner">
-            <div class="title-area">
-                <h2 class="title">로그인</h2>
-                <p class="title">더미텍스트더미텍스트더미텍스트</p>
-            </div>
-
-            <div class="form-area">
-                <form action="">
-                    <div class="card">
-                        <div class="card-body">
+            <div class="card">
+                <div class="card-body">
+                    <div class="form-area">
+                        <div class="title-area">
+                            <h2 class="title">로그인</h2>
+                            <p class="title">더미텍스트더미텍스트더미텍스트</p>
+                        </div>
+                        <form action="">
                             <div class="mb-3">
                                 <label for="email" class="form-label">이메일</label>
                                 <input type="email" class="form-control" id="email" placeholder="name@example.com" />
@@ -18,12 +17,12 @@
                                 <label for="password" class="form-label">비밀번호</label>
                                 <input type="password" class="form-control" id="password" />
                             </div>
-                            <div class="btn-area">
+                            <div class="btn-area text-center">
                                 <button class="btn btn-primary">로그인</button>
                             </div>
-                        </div>
+                        </form>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
     </main>
@@ -35,10 +34,10 @@ export default {}
 
 <style scoped>
 body {
-    background: #333;
 }
 .login-wrap {
     min-height: 100vh;
+    background: #f5f5f5;
 }
 
 .card {

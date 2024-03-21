@@ -1,5 +1,28 @@
-<script setup>
-import Status from '../components/common/Status.vue'
+<script>
+import CheckboxSelector from '../components/common/CheckboxSelector.vue'
+
+export default {
+    components: {
+        CheckboxSelector
+    },
+    data() {
+        return {
+            checkboxItems: [
+                { id: 1, name: '진행예정' },
+                { id: 2, name: '진행중' },
+                { id: 3, name: '완료' },
+                { id: 4, name: '보류' }
+            ],
+            filteredRows: [] // 필터링된 행을 저장할 배열 추가
+        }
+    },
+    methods: {
+        handleCheckboxChange(selectedItems) {
+            // 선택된 상태에 따라 테이블의 행을 필터링
+            this.filteredRows = this.checkboxItems.filter((item) => selectedItems.includes(item.id))
+        }
+    }
+}
 </script>
 <template>
     <main class="content inner">
@@ -39,39 +62,39 @@ import Status from '../components/common/Status.vue'
         </div>
         <div class="row">
             <div class="col-12">
+                <CheckboxSelector :items="checkboxItems" selectAllId="flexCheckDefault" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
                 <table class="table fs-9 mb-5 border-top border-translucent">
                     <colgroup>
-                        <!-- <col style="width: 490px" />
-                        <col style="width: 66px" />
+                        <col style="min-width: 300px" />
+                        <col style="width: 65px" />
                         <col style="width: 126px" />
                         <col style="width: 126px" />
-                        <col style="width: 140px" />
-                        <col style="width: 126px" />
-                        <col style="width: 317px" />
                         <col style="width: 100px" />
-                        <col style="width: 126px" /> -->
+                        <col style="width: 126px" />
+                        <col style="width: 150px" />
+                        <col style="width: 80px" />
+                        <col style="width: 126px" />
                     </colgroup>
                     <thead>
                         <tr>
-                            <!-- <th class="white-space-nowrap fs-9 ps-0 align-middle">
-                                <div class="form-check mb-0 fs-8">
-                                    <input class="form-check-input" id="checkbox-bulk-reviews-select" type="checkbox" />
-                                </div>
-                            </th> -->
-                            <th class="sort white-space-nowrap align-middle" scope="col" data-sort="product">프로젝트명</th>
-                            <th class="sort align-middle" scope="col" data-sort="customer">PM</th>
-                            <th class="sort align-middle" scope="col" data-sort="rating">시작일</th>
-                            <th class="sort align-middle" scope="col" data-sort="review">종료일</th>
+                            <th class="sort white-space-nowrap align-middle" scope="col" data-sort="project_title">프로젝트명</th>
+                            <th class="sort align-middle" scope="col" data-sort="pm">PM</th>
+                            <th class="sort align-middle" scope="col" data-sort="start_date">시작일</th>
+                            <th class="sort align-middle" scope="col" data-sort="end_date">종료일</th>
                             <th class="sort text-start ps-5 align-middle" scope="col" data-sort="status">진행상태</th>
-                            <th class="sort text-end align-middle" scope="col" data-sort="status">참여자</th>
-                            <th class="sort text-end align-middle" scope="col" data-sort="time">진행률</th>
-                            <th class="sort text-end align-middle" scope="col" data-sort="time">우선순위</th>
-                            <th class="sort text-end pe-0 align-middle" scope="col">작성일</th>
+                            <th class="sort text-end align-middle" scope="col" data-sort="contributor">참여자</th>
+                            <th class="sort text-end align-middle" scope="col" data-sort="progress">진행률</th>
+                            <th class="sort text-end align-middle" scope="col" data-sort="priority">우선순위</th>
+                            <th class="sort text-end pe-0 align-middle" scope="write_date">작성일</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td><a href="#" class="link-underline-primary text-truncate">5월 매출전표 페이지 요청</a></td>
+                            <td><a href="#" class="tb-project-title">5월 매출전표 페이지 요청</a></td>
                             <td>
                                 <div class="profile">
                                     <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">고</button>
@@ -84,7 +107,14 @@ import Status from '../components/common/Status.vue'
                             </td>
                             <td>2024.03.20</td>
                             <td>2024.03.25</td>
-                            <td><Status /></td>
+                            <td>
+                                <div class="status">
+                                    <span class="todo">진행예정</span>
+                                    <span class="doing">진행중</span>
+                                    <span class="done">완료</span>
+                                    <span class="hold">보류</span>
+                                </div>
+                            </td>
                             <td class="text-end">
                                 <div>
                                     <div class="profile">
@@ -130,40 +160,9 @@ import Status from '../components/common/Status.vue'
                 </table>
             </div>
         </div>
-        <div class="row">
-            <div class="col-6"></div>
-            <div class="col-6">
-                <div class="btn-group" role="group">
-                    <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Dropdown</button>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Dropdown link</a></li>
-                        <li><a class="dropdown-item" href="#">Dropdown link</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
     </main>
 </template>
 <style scoped>
-/* .profile {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 32px;
-    height: 32px;
-    border-radius: 100%;
-    border: 2px solid #d9d9d9;
-    background-color: #d9d9d9;
-    font-weight: bold;
-    font-size: 14px;
-}
-.profile:hover {
-    box-shadow: 0px 6px 20px 0 rgba(23, 30, 242, 0.14);
-    border-color: rgba(23, 30, 242, 0.14);
-}
-.profile + .profile {
-    margin-left: -10px;
-} */
 .profile {
     display: inline-block;
 }
@@ -178,8 +177,6 @@ import Status from '../components/common/Status.vue'
     height: 30px;
     border-radius: 100%;
     font-size: 14px;
-    /* border: 2px solid #d9d9d9;
-    background-color: #d9d9d9; */
 }
 
 .profile .btn::after {
@@ -216,5 +213,33 @@ import Status from '../components/common/Status.vue'
     border-color: #bfd2ff;
     background-color: #edf2ff;
     color: #336cfa;
+}
+.tb-project-title {
+    width: 100%;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.status span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 26px;
+    border-radius: 5px;
+    border: 1px solid transparent;
+    font-weight: 500;
+}
+.status .todo {
+    background-color: #fedddb;
+    color: #ef5c51;
+}
+.status .doing {
+    background-color: #eafff5;
+}
+.status .done {
+    background-color: #e9ebf1;
+}
+.status .hold {
+    border: 1px solid #e9ebf1;
 }
 </style>
