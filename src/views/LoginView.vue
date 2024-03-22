@@ -1,18 +1,23 @@
 <template>
-    <div>
-        <h2>Login</h2>
-        <form @submit.prevent="login">
-            <div>
-                <label for="username">Username:</label>
-                <input type="text" id="username" v-model="username" />
+    <div class="container mt-5">
+        <div class="card">
+            <div class="card-body">
+                <div class="title-area">
+                    <h2 class="h3">로그인</h2>
+                    <p class="h5">로그인을 해주세요.</p>
+                </div>
+                <form @submit.prevent="login" class="mt-3">
+                    <div class="mb-3">
+                        <input type="email" id="username" v-model="username" placeholder="example@boogle.com" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <input type="password" id="password" v-model="password" placeholder="비밀번호를 입력해주세요" class="form-control" />
+                    </div>
+                    <button type="submit" class="btn btn-primary">Login</button>
+                </form>
+                <p v-if="errorMessage" class="mt-3 text-danger">{{ errorMessage }}</p>
             </div>
-            <div>
-                <label for="password">Password:</label>
-                <input type="password" id="password" v-model="password" />
-            </div>
-            <button type="submit">Login</button>
-        </form>
-        <p v-if="errorMessage" style="color: red">{{ errorMessage }}</p>
+        </div>
     </div>
 </template>
 
