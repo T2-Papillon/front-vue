@@ -2,6 +2,7 @@
 import CheckboxSelector from '../components/common/CheckboxSelector.vue'
 import UserProfile from '../components/common/UserProfile.vue'
 import BarChart from '../components/common/BarChart.vue'
+import PieChart from '../components/common/PieChart.vue'
 import BtnHeartAction from '../components/common/BtnHeartAction.vue'
 
 export default {
@@ -9,6 +10,7 @@ export default {
         CheckboxSelector,
         UserProfile,
         BarChart,
+        PieChart,
         BtnHeartAction
     },
     data() {
@@ -166,7 +168,9 @@ export default {
                 <BarChart />
             </div>
 
-            <div class="col-6"></div>
+            <div class="col-6">
+                <PieChart />
+            </div>
         </div>
 
         <div class="row">
