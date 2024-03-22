@@ -12,7 +12,7 @@ export default defineConfig({
         }
     },
     build: {
-        outDir: '../../papplan/Spring/src/main/resources/static'
+        outDir: '../../../Spring/papplan/src/main/resources/static'
     },
     server: {
         proxy: {
