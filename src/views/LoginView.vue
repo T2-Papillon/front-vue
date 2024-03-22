@@ -1,54 +1,41 @@
 <template>
-    <main class="login-wrap">
-        <div class="inner">
-            <div class="card">
-                <div class="card-body">
-                    <div class="form-area">
-                        <div class="title-area">
-                            <h2 class="title">로그인</h2>
-                            <p class="title">더미텍스트더미텍스트더미텍스트</p>
-                        </div>
-                        <form action="">
-                            <div class="mb-3">
-                                <label for="email" class="form-label">이메일</label>
-                                <input type="email" class="form-control" id="email" placeholder="name@example.com" />
-                            </div>
-                            <div class="mb-3">
-                                <label for="password" class="form-label">비밀번호</label>
-                                <input type="password" class="form-control" id="password" />
-                            </div>
-                            <div class="btn-area text-center">
-                                <button class="btn btn-primary">로그인</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
+    <div>
+        <h2>Login</h2>
+        <form @submit.prevent="login">
+            <div>
+                <label for="username">Username:</label>
+                <input type="text" id="username" v-model="username" />
             </div>
-        </div>
-    </main>
+            <div>
+                <label for="password">Password:</label>
+                <input type="password" id="password" v-model="password" />
+            </div>
+            <button type="submit">Login</button>
+        </form>
+        <p v-if="errorMessage" style="color: red">{{ errorMessage }}</p>
+    </div>
 </template>
 
 <script>
-export default {}
+export default {
+    data() {
+        return {
+            username: '',
+            password: '',
+            errorMessage: ''
+        }
+    },
+    methods: {
+        login() {
+            // 예시: 실제로는 서버로 인증 요청을 보내야 합니다.
+            if (this.username === 'admin' && this.password === 'password') {
+                // 로그인 성공 시 처리
+                this.$router.push('/dashboard') // 대시보드 페이지로 이동
+            } else {
+                // 로그인 실패 시 에러 메시지 표시
+                this.errorMessage = 'Invalid username or password'
+            }
+        }
+    }
+}
 </script>
-
-<style scoped>
-body {
-}
-.login-wrap {
-    min-height: 100vh;
-    background: #f5f5f5;
-}
-
-.card {
-    background: #fff;
-    border-radius: 12px;
-    border: solid 1px #e6eef4;
-    background-color: #fff;
-    box-shadow: 0px 6px 20px 0 rgba(193, 207, 217, 0.14);
-}
-
-.card-body {
-    padding: 30px;
-}
-</style>
