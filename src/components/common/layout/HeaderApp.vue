@@ -5,20 +5,31 @@
                 <h1 class="logo"><a href="#">logo</a></h1>
 
                 <nav class="navbar navbar-expand-lg">
-                    <form class="d-flex">
-                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-                        <button class="btn btn-outline-success" type="submit">Search</button>
-                    </form>
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                             <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="#">Home</a>
+                                <router-link to="/" class="nav-link">Home</router-link>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">Link</a>
+                                <router-link to="/about" class="nav-link">About</router-link>
                             </li>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"> 홍길동 </a>
+                            <li class="nav-item">
+                                <router-link to="/login" class="nav-link">login</router-link>
+                            </li>
+                            <li class="nav-item">
+                                <router-link to="/project" class="nav-link">project</router-link>
+                            </li>
+                            <li class="nav-item">
+                                <router-link to="/kit" class="nav-link">kit</router-link>
+                            </li>
+                        </ul>
+                        <form class="d-flex mr-2">
+                            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
+                            <button class="btn btn-outline-success" type="submit">Search</button>
+                        </form>
+                        <ul class="me-auto mb-2 mb-lg-0">
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"> 홍길동 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     <li><span class="dropdown-item">개발 1팀</span></li>
                                     <li><a class="dropdown-item" href="#">마이페이지</a></li>
