@@ -27,7 +27,7 @@ export default {
     methods: {
         handleCheckboxChange(selectedItems) {
             // 선택된 상태에 따라 테이블의 행을 필터링
-            this.filteredRows = this.checkboxItems.filter((item) => selectedItems.includes(item.id))
+            this.filteredRows = this.checkboxItems.filter(item => selectedItems.includes(item.id))
         }
     }
 }
@@ -68,7 +68,7 @@ export default {
                 </div>
             </div>
         </div>
-        <div class="row">
+        <div class="row project-cnt-area">
             <div class="col-4">
                 <div class="card">
                     <div class="card-body">
@@ -268,9 +268,6 @@ export default {
 }
 .status .hold {
     border: 1px solid #e9ebf1;
-}
-
-.board-view {
 }
 
 .board-view li {

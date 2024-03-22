@@ -28,6 +28,7 @@ const router = createRouter({
             name: 'kit',
             component: () => import('../views/KitView.vue')
         },
+
         {
             path: '/project',
             name: 'project',
@@ -39,6 +40,11 @@ const router = createRouter({
                     component: ProjectDetailsView // 새로운 하위 페이지 컴포넌트 지정
                 }
             ]
+        },
+        {
+            path: '/test',
+            name: 'test',
+            component: () => import('../views/AxiosTest.vue')
         }
     ]
 })
