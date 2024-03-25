@@ -1,5 +1,5 @@
 <template>
-    <div class="container mt-5">
+    <div class="container">
         <div class="card">
             <div class="card-body">
                 <div class="title-area">

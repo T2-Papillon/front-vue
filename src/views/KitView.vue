@@ -33,7 +33,7 @@ export default {
 }
 </script>
 <template>
-    <main class="content inner">
+    <div class="inner">
         <div class="row align-items-end justify-content-between pb-5 g-3">
             <div class="col-auto">
                 <h3>Latest reviews</h3>
@@ -158,6 +158,11 @@ export default {
                             </td>
                             <td class="text-end">2024.03.20</td>
                         </tr>
+                        <tr>
+                            <td colspan="9">
+                                <div class="text-center pt-5 pb-5">내용이 없어요 🤚</div>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -203,6 +208,6 @@ export default {
                 </div>
             </div>
         </div>
-    </main>
+    </div>
 </template>
 <style scoped></style>
