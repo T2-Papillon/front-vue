@@ -27,3 +27,7 @@ a {
     color: #333;
     text-decoration: none;
 }
+
+header {
+    height: 50px;
+}

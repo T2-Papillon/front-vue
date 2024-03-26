@@ -39,7 +39,7 @@ export default {
 }
 </script>
 <template>
-    <main class="content inner">
+    <div class="inner">
         <div class="row align-items-end justify-content-between pb-5 g-3">
             <div class="col-auto">
                 <h3>Latest reviews</h3>
@@ -155,6 +155,11 @@ export default {
                             </td>
                             <td class="text-end">2024.03.20</td>
                         </tr>
+                        <tr>
+                            <td colspan="9">
+                                <div class="text-center pt-5 pb-5">내용이 없어요 🤚</div>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -190,18 +195,41 @@ export default {
                 <div class="card">
                     <div class="card-body">
                         <h3 class="h4">알림</h3>
-                        <ul class="mt-4">
-                            <li>
-                                <a href="#" class="h5">제목제목제목</a>
-                                <span class="desc">24.03.21</span>
-                            </li>
-                        </ul>
+                        <div class="list-group">
+                            <a href="#" class="list-group-item list-group-item-action active" aria-current="true">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h5 class="mb-1">List group item heading</h5>
+                                    <small>3 days ago</small>
+                                </div>
+                                <p class="mb-1">Some placeholder content in a paragraph.</p>
+                                <small>And some small print.</small>
+                            </a>
+                            <a href="#" class="list-group-item list-group-item-action">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h5 class="mb-1">List group item heading</h5>
+                                    <small class="text-body-secondary">3 days ago</small>
+                                </div>
+                                <p class="mb-1">Some placeholder content in a paragraph.</p>
+                                <small class="text-body-secondary">And some muted small print.</small>
+                            </a>
+                            <a href="#" class="list-group-item list-group-item-action">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h5 class="mb-1">List group item heading</h5>
+                                    <small class="text-body-secondary">3 days ago</small>
+                                </div>
+                                <p class="mb-1">Some placeholder content in a paragraph.</p>
+                                <small class="text-body-secondary">And some muted small print.</small>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </main>
+    </div>
 </template>
+<<<<<<< HEAD
+<style scoped></style>
+=======
 <style scoped>
 .priority {
     display: inline-flex;
@@ -260,3 +288,4 @@ export default {
     opacity: 0.9;
 }
 </style>
+>>>>>>> dev

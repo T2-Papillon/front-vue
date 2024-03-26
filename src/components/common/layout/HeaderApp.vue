@@ -20,12 +20,15 @@
                                 <router-link to="/project" class="nav-link">project</router-link>
                             </li>
                             <li class="nav-item">
+                                <router-link to="/projectDetail" class="nav-link">projectDetail</router-link>
+                            </li>
+                            <li class="nav-item">
                                 <router-link to="/kit" class="nav-link">kit</router-link>
                             </li>
                         </ul>
                         <form class="d-flex mr-2">
                             <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-                            <button class="btn btn-outline-success" type="submit">Search</button>
+                            <button class="btn btn-outline-success" type="submit"><i class="bi bi-search"></i></button>
                         </form>
                         <ul class="me-auto mb-2 mb-lg-0">
                             <li class="dropdown">
