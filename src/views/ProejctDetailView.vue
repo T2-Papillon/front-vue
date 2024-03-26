@@ -1,6 +1,8 @@
 <script>
 import UserProfile from '../components/common/UserProfile.vue'
 import CheckboxSelector from '../components/common/CheckboxSelector.vue'
+import ProgressBar from '../components/common/ProgressBar.vue'
+import StatusBadge from '../components/common/StatusBadge.vue'
 
 export default {
     components: {
@@ -15,7 +17,9 @@ export default {
                 { id: 3, name: '완료' },
                 { id: 4, name: '보류' }
             ],
-            filteredRows: [] // 필터링된 행을 저장할 배열 추가
+            filteredRows: [],
+            progressValue: 45,
+            projectStatus: 'doing'
         }
     },
     methods: {
@@ -65,9 +69,7 @@ export default {
 
                             <th>프로젝트 상태</th>
                             <td>
-                                <div class="status">
-                                    <span class="doing">진행중</span>
-                                </div>
+                                <StatusBadge :status="projectStatus" />
                             </td>
                         </tr>
                         <tr>
@@ -77,9 +79,7 @@ export default {
                         <tr>
                             <th>진행률</th>
                             <td>
-                                <div class="progress">
-                                    <div class="progress-bar" role="progressbar" style="width: 40%" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100">25%</div>
-                                </div>
+                                <ProgressBar :progress="progressValue" />
                             </td>
                             <th></th>
                             <td></td>
