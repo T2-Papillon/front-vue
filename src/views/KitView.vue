@@ -3,7 +3,9 @@ import CheckboxSelector from '../components/common/CheckboxSelector.vue'
 import UserProfile from '../components/common/UserProfile.vue'
 import BarChart from '../components/common/BarChart.vue'
 import PieChart from '../components/common/PieChart.vue'
+import ProgressBar from '../components/common/ProgressBar.vue'
 import BtnHeartAction from '../components/common/BtnHeartAction.vue'
+import StatusBadge from '../components/common/StatusBadge.vue'
 
 export default {
     components: {
@@ -11,7 +13,9 @@ export default {
         UserProfile,
         BarChart,
         PieChart,
-        BtnHeartAction
+        BtnHeartAction,
+        ProgressBar,
+        StatusBadge
     },
     data() {
         return {
@@ -21,7 +25,9 @@ export default {
                 { id: 3, name: '완료' },
                 { id: 4, name: '보류' }
             ],
-            filteredRows: [] // 필터링된 행을 저장할 배열 추가
+            filteredRows: [], // 필터링된 행을 저장할 배열 추가
+            progressValue: 75,
+            projectStatus: 'done'
         }
     },
     methods: {
@@ -135,20 +141,11 @@ export default {
                             <td>2024.03.20</td>
                             <td>2024.03.25</td>
                             <td>
-                                <div class="status">
-                                    <span class="todo">진행예정</span>
-                                    <span class="doing">진행중</span>
-                                    <span class="done">완료</span>
-                                    <span class="hold">보류</span>
-                                </div>
+                                <StatusBadge :status="projectStatus" />
                             </td>
-                            <td class="text-end">
-                                <div><UserProfile /><UserProfile /><UserProfile /></div>
-                            </td>
+                            <td class="text-end"><UserProfile /><UserProfile /><UserProfile /></td>
                             <td>
-                                <div class="progress">
-                                    <div class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
-                                </div>
+                                <ProgressBar :progress="progressValue" />
                             </td>
                             <td class="text-end">
                                 <span class="priority lv0">긴급</span>
@@ -245,32 +242,6 @@ export default {
 .tb-project-title:hover {
     text-decoration: underline;
     opacity: 0.9;
-}
-
-.status span {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 26px;
-    border-radius: 5px;
-    border: 1px solid transparent;
-    font-weight: 500;
-}
-.status .todo {
-    background-color: #fedddb;
-    color: #ef5c51;
-}
-.status .doing {
-    background-color: #eafff5;
-}
-.status .done {
-    background-color: #e9ebf1;
-}
-.status .hold {
-    border: 1px solid #e9ebf1;
-}
-
-.board-view {
 }
 
 .board-view li {
