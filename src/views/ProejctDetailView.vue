@@ -3,13 +3,15 @@ import UserProfile from '../components/common/UserProfile.vue'
 import CheckboxSelector from '../components/common/CheckboxSelector.vue'
 import ProgressBar from '../components/common/ProgressBar.vue'
 import StatusBadge from '../components/common/StatusBadge.vue'
+import PriorityBadge from '../components/common/PriorityBadge.vue'
 
 export default {
     components: {
         UserProfile,
         CheckboxSelector,
         ProgressBar,
-        StatusBadge
+        StatusBadge,
+        PriorityBadge
     },
     data() {
         return {
@@ -21,7 +23,13 @@ export default {
             ],
             filteredRows: [],
             progressValue: 45,
-            projectStatus: 'doing'
+            projectStatus: 'doing',
+            tasks: [
+                { title: '프로젝트 A', participants: ['최'], start_date: '202.03.24', end_date: '2024.04.05', status: 'done', progress: 100, priority: '보통', write_date: '2024.03.26' },
+                { title: '프로젝트 B', participants: ['고'], start_date: '2024.03.24', end_date: '2024.04.05', status: 'doing', progress: 50, priority: '높음', write_date: '2024.03.26' },
+                { title: '프로젝트 C', participants: ['김'], start_date: '2024.03.24', end_date: '2024.04.05', status: 'todo', progress: 0, priority: '낮음', write_date: '2024.03.26' },
+                { title: '프로젝트 D', participants: ['우'], start_date: '2024.03.24', end_date: '2024.04.05', status: 'hold', progress: 15, priority: '낮음', write_date: '2024.03.26' }
+            ]
         }
     },
     methods: {
@@ -34,6 +42,7 @@ export default {
 </script>
 <template>
     <div class="inner">
+        <!-- 프로젝트 타이틀 영역 -->
         <div class="row align-items-start justify-content-between g-3">
             <div class="col-auto">
                 <div class="title-area">
@@ -48,6 +57,8 @@ export default {
                 </div>
             </div>
         </div>
+
+        <!-- 프로젝트 상세글 -->
         <div class="row pb-4">
             <div class="col">
                 <table class="table table-borderless fs-9 mb-5 border-top border-translucent">
@@ -104,6 +115,8 @@ export default {
                 </table>
             </div>
         </div>
+
+        <!-- 정렬 -->
         <div class="row align-items-start justify-content-between mb-4 g-3">
             <div class="col-auto">
                 <CheckboxSelector :items="checkboxItems" selectAllId="flexCheckDefault" />
@@ -124,64 +137,47 @@ export default {
                 <a href="#" class="btn btn-primary"><i class="bi bi-plus-circle"></i> 업무글쓰기</a>
             </div>
         </div>
+
+        <!-- 하위업무 -->
         <div class="row">
             <div class="col">
                 <table class="table fs-9 mb-5 border-top border-translucent">
                     <colgroup>
-                        <col style="min-width: 300px" />
-                        <col style="width: 65px" />
+                        <col />
+                        <col style="width: 80px" />
                         <col style="width: 126px" />
                         <col style="width: 126px" />
                         <col style="width: 100px" />
-                        <col style="width: 126px" />
-                        <col style="width: 150px" />
+                        <col style="width: 180px" />
                         <col style="width: 80px" />
                         <col style="width: 126px" />
                     </colgroup>
                     <thead>
                         <tr>
                             <th class="sort white-space-nowrap align-middle" scope="col" data-sort="project_title">프로젝트명</th>
-                            <th class="sort align-middle" scope="col" data-sort="pm">PM</th>
+                            <th class="sort align-middle" scope="col" data-sort="">담당자</th>
                             <th class="sort align-middle" scope="col" data-sort="start_date">시작일</th>
                             <th class="sort align-middle" scope="col" data-sort="end_date">종료일</th>
                             <th class="sort text-start ps-5 align-middle" scope="col" data-sort="status">진행상태</th>
-                            <th class="sort text-end align-middle" scope="col" data-sort="contributor">참여자</th>
                             <th class="sort text-end align-middle" scope="col" data-sort="progress">진행률</th>
                             <th class="sort text-end align-middle" scope="col" data-sort="priority">우선순위</th>
                             <th class="sort text-end pe-0 align-middle" scope="write_date">작성일</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td><a href="#" class="tb-project-title">5월 매출전표 페이지 요청</a></td>
+                        <tr v-for="(task, index) in tasks" :key="index">
                             <td>
-                                <UserProfile />
+                                <a href="#" class="tb-project-title">{{ task.title }}</a>
                             </td>
-                            <td>2024.03.20</td>
-                            <td>2024.03.25</td>
-                            <td>
-                                <div class="status">
-                                    <span class="todo">진행예정</span>
-                                    <span class="doing">진행중</span>
-                                    <span class="done">완료</span>
-                                    <span class="hold">보류</span>
-                                </div>
+                            <td class="text-start">
+                                <UserProfile :name="task.participants" />
                             </td>
-                            <td class="text-end">
-                                <div><UserProfile /><UserProfile /><UserProfile /></div>
-                            </td>
-                            <td>
-                                <div class="progress">
-                                    <div class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
-                                </div>
-                            </td>
-                            <td class="text-end">
-                                <span class="priority lv0">긴급</span>
-                                <span class="priority lv1">높음</span>
-                                <span class="priority lv2">보통</span>
-                                <span class="priority lv3">낮음</span>
-                            </td>
-                            <td class="text-end">2024.03.20</td>
+                            <td>{{ task.start_date }}</td>
+                            <td>{{ task.end_date }}</td>
+                            <td><StatusBadge :status="task.status" /></td>
+                            <td><ProgressBar :progress="task.progress" /></td>
+                            <td class="text-end"><PriorityBadge :priority="task.priority" /></td>
+                            <td class="text-end">{{ task.write_date }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -193,8 +189,6 @@ export default {
 <style scoped>
 .table-borderless {
     border-top: 2px solid #e6eef4;
-    /* border-bottom: 2px solid #e6eef4; */
-    /* border-block: 2px solid #e6eef4; */
 }
 
 .table-borderless th,
