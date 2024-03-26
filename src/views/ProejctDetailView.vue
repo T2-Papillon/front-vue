@@ -119,7 +119,7 @@ export default {
                         <li><a class="dropdown-item" href="#">우선순위순</a></li>
                     </ul>
                 </div>
-                <button class="btn btn-primary"><i class="bi bi-plus-circle"></i> 업무글쓰기</button>
+                <a href="#" class="btn btn-primary"><i class="bi bi-plus-circle"></i> 업무글쓰기</a>
             </div>
         </div>
         <div class="row">
