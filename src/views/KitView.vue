@@ -1,11 +1,11 @@
 <script>
-import CheckboxSelector from '../components/common/CheckboxSelector.vue'
-import UserProfile from '../components/common/UserProfile.vue'
-import BarChart from '../components/common/BarChart.vue'
-import PieChart from '../components/common/PieChart.vue'
-import ProgressBar from '../components/common/ProgressBar.vue'
-import BtnHeartAction from '../components/common/BtnHeartAction.vue'
-import StatusBadge from '../components/common/StatusBadge.vue'
+import CheckboxSelector from '../components/CheckboxSelector.vue'
+import UserProfile from '../components/UserProfile.vue'
+import BarChart from '../components/BarChart.vue'
+import PieChart from '../components/PieChart.vue'
+import ProgressBar from '../components/ProgressBar.vue'
+import BtnHeartAction from '../components/BtnHeartAction.vue'
+import StatusBadge from '../components/StatusBadge.vue'
 
 export default {
     components: {
@@ -227,65 +227,3 @@ export default {
         </div>
     </div>
 </template>
-<<<<<<< HEAD
-<style scoped></style>
-=======
-<style scoped>
-.priority {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid;
-    border-radius: 5px;
-    min-width: 40px;
-    height: 23px;
-    padding: 0 10px;
-    color: #fff;
-}
-.priority.lv0 {
-    border-color: #ffbebe;
-    background-color: #ffe5e5;
-    color: #f05353;
-}
-.priority.lv1 {
-    border-color: #ffc350;
-    background-color: #ffe4b2;
-    color: #e88600;
-}
-.priority.lv2 {
-    border-color: #9ce8c5;
-    background-color: #eafff5;
-    color: #10aa64;
-}
-.priority.lv3 {
-    border-color: #bfd2ff;
-    background-color: #edf2ff;
-    color: #336cfa;
-}
-.tb-project-title {
-    width: 100%;
-    font-size: 15px;
-    font-weight: 500;
-}
-.tb-project-title:hover {
-    text-decoration: underline;
-    opacity: 0.9;
-}
-
-.board-view li {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 12px 10px;
-    /* border-bottom: 1px solid var(--bs-border-color); */
-}
-.board-view-title {
-    font-size: 14px;
-    font-weight: 500;
-}
-.board-view-title:hover {
-    /* text-decoration: underline; */
-    opacity: 0.9;
-}
-</style>
->>>>>>> dev

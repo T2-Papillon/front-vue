@@ -1,9 +1,9 @@
 <script>
-import UserProfile from '../components/common/UserProfile.vue'
-import CheckboxSelector from '../components/common/CheckboxSelector.vue'
-import ProgressBar from '../components/common/ProgressBar.vue'
-import StatusBadge from '../components/common/StatusBadge.vue'
-import PriorityBadge from '../components/common/PriorityBadge.vue'
+import UserProfile from '../components/UserProfile.vue'
+import CheckboxSelector from '../components/CheckboxSelector.vue'
+import ProgressBar from '../components/ProgressBar.vue'
+import StatusBadge from '../components/StatusBadge.vue'
+import PriorityBadge from '../components/PriorityBadge.vue'
 
 export default {
     components: {
@@ -15,35 +15,28 @@ export default {
     },
     data() {
         return {
-            checkboxItems: [
-                { id: 1, name: '진행예정' },
-                { id: 2, name: '진행중' },
-                { id: 3, name: '완료' },
-                { id: 4, name: '보류' }
-            ],
-            filteredRows: [],
             projectDetail: {
                 title: '프로젝트 타이틀입니다.',
                 startDate: '2024.03.28',
                 endDate: '2024.04.28',
-                status: 'doing', // 'done', 'todo', 'hold' 등이 될 수 있음
-                progress: 45, // 진행률
+                status: 'doing',
+                progress: 45,
                 writeDate: '2024.03.26',
                 description: '안녕하세요, 저희는 최근에 장바구니 결제 로직을 변경하고자 합니다...'
             },
-
+            checkboxItems: [
+                { id: 'todo', name: '진행예정' },
+                { id: 'doing', name: '진행중' },
+                { id: 'done', name: '완료' },
+                { id: 'hold', name: '보류' }
+            ],
+            selectedCheckboxes: [],
             tasks: [
                 { title: '프로젝트 A', participants: ['최'], start_date: '202.03.24', end_date: '2024.04.05', status: 'done', progress: 100, priority: '보통', write_date: '2024.03.26' },
                 { title: '프로젝트 B', participants: ['고'], start_date: '2024.03.24', end_date: '2024.04.05', status: 'doing', progress: 50, priority: '높음', write_date: '2024.03.26' },
                 { title: '프로젝트 C', participants: ['김'], start_date: '2024.03.24', end_date: '2024.04.05', status: 'todo', progress: 0, priority: '낮음', write_date: '2024.03.26' },
                 { title: '프로젝트 D', participants: ['우'], start_date: '2024.03.24', end_date: '2024.04.05', status: 'hold', progress: 15, priority: '낮음', write_date: '2024.03.26' }
             ]
-        }
-    },
-    methods: {
-        handleCheckboxChange(selectedItems) {
-            // 선택된 상태에 따라 테이블의 행을 필터링
-            this.filteredRows = this.checkboxItems.filter((item) => selectedItems.includes(item.id))
         }
     }
 }
@@ -106,9 +99,15 @@ export default {
         </div>
 
         <!-- 정렬 -->
-        <div class="row align-items-start justify-content-between mb-4 g-3">
+        <div class="row align-items-start justify-content-between mb-4 g-3 border-top">
+            <div class="col-auto"><h3 class="h3">담당업무</h3></div>
             <div class="col-auto">
-                <CheckboxSelector :items="checkboxItems" selectAllId="flexCheckDefault" />
+                <a href="#" class="btn btn-primary"> <i class="bi bi-plus-circle"></i> 업무추가</a>
+            </div>
+        </div>
+        <div class="row align-items-start justify-content-between mb-4 g-3">
+            <div>
+                <CheckboxSelector :items="checkboxItems" :selected="selectedStatuses" @update:selected="selectedStatuses = $event" />
             </div>
             <div class="col-auto d-flex">
                 <form class="d-flex me-4">
@@ -123,7 +122,6 @@ export default {
                         <li><a class="dropdown-item" href="#">우선순위순</a></li>
                     </ul>
                 </div>
-                <a href="#" class="btn btn-primary"><i class="bi bi-plus-circle"></i> 업무글쓰기</a>
             </div>
         </div>
 
@@ -159,7 +157,7 @@ export default {
                                 <a href="#" class="tb-project-title">{{ task.title }}</a>
                             </td>
                             <td class="text-start">
-                                <UserProfile :name="task.participants" />
+                                <UserProfile v-for="participant in task.participants" :key="participant" :name="participant" />
                             </td>
                             <td>{{ task.start_date }}</td>
                             <td>{{ task.end_date }}</td>

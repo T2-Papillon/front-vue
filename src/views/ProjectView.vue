@@ -1,8 +1,21 @@
 <script>
-import UserProfile from '../components/common/UserProfile.vue'
+import UserProfile from '../components/UserProfile.vue'
 export default {
     components: {
         UserProfile
+    },
+    data() {
+        return {
+            projectDetail: {
+                title: '프로젝트 타이틀입니다.',
+                startDate: '2024.03.28',
+                endDate: '2024.04.28',
+                status: 'doing',
+                progress: 45,
+                writeDate: '2024.03.26',
+                description: '안녕하세요, 저희는 최근에 장바구니 결제 로직을 변경하고자 합니다...'
+            }
+        }
     }
 }
 </script>
