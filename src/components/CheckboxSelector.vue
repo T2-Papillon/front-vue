@@ -1,10 +1,6 @@
 <template>
     <div class="sort-area">
         <div class="option-group">
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" v-model="selectAll" @change="selectAllItems" :id="selectAllId" />
-                <label class="form-check-label" :for="selectAllId">전체</label>
-            </div>
             <div v-for="(item, index) in items" :key="index" class="form-check">
                 <input class="form-check-input" type="checkbox" v-model="selectedItems" :value="item.id" :id="'flexCheck' + index" />
                 <label class="form-check-label" :for="'flexCheck' + index">{{ item.name }}</label>

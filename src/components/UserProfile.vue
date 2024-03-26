@@ -1,6 +1,6 @@
 <template>
     <div class="profile">
-        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">고</button>
+        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">{{ name }}</button>
         <ul class="dropdown-menu">
             <li><span class="dropdown-item">개발 1팀</span></li>
             <li><a class="dropdown-item" href="#">마이페이지</a></li>
@@ -9,7 +9,11 @@
     </div>
 </template>
 
-<script scoped></script>
+<script scoped>
+export default {
+    props: ['name']
+}
+</script>
 
 <style scoped>
 .profile {

@@ -1,43 +1,53 @@
 <script>
-import UserProfile from '../components/common/UserProfile.vue'
-import CheckboxSelector from '../components/common/CheckboxSelector.vue'
-import ProgressBar from '../components/common/ProgressBar.vue'
-import StatusBadge from '../components/common/StatusBadge.vue'
+import UserProfile from '../components/UserProfile.vue'
+import CheckboxSelector from '../components/CheckboxSelector.vue'
+import ProgressBar from '../components/ProgressBar.vue'
+import StatusBadge from '../components/StatusBadge.vue'
+import PriorityBadge from '../components/PriorityBadge.vue'
 
 export default {
     components: {
         UserProfile,
         CheckboxSelector,
         ProgressBar,
-        StatusBadge
+        StatusBadge,
+        PriorityBadge
     },
     data() {
         return {
+            projectDetail: {
+                title: '프로젝트 타이틀입니다.',
+                startDate: '2024.03.28',
+                endDate: '2024.04.28',
+                status: 'doing',
+                progress: 45,
+                writeDate: '2024.03.26',
+                description: '안녕하세요, 저희는 최근에 장바구니 결제 로직을 변경하고자 합니다...'
+            },
             checkboxItems: [
-                { id: 1, name: '진행예정' },
-                { id: 2, name: '진행중' },
-                { id: 3, name: '완료' },
-                { id: 4, name: '보류' }
+                { id: 'todo', name: '진행예정' },
+                { id: 'doing', name: '진행중' },
+                { id: 'done', name: '완료' },
+                { id: 'hold', name: '보류' }
             ],
-            filteredRows: [],
-            progressValue: 45,
-            projectStatus: 'doing'
-        }
-    },
-    methods: {
-        handleCheckboxChange(selectedItems) {
-            // 선택된 상태에 따라 테이블의 행을 필터링
-            this.filteredRows = this.checkboxItems.filter((item) => selectedItems.includes(item.id))
+            selectedCheckboxes: [],
+            tasks: [
+                { title: '프로젝트 A', participants: ['최'], start_date: '202.03.24', end_date: '2024.04.05', status: 'done', progress: 100, priority: '보통', write_date: '2024.03.26' },
+                { title: '프로젝트 B', participants: ['고'], start_date: '2024.03.24', end_date: '2024.04.05', status: 'doing', progress: 50, priority: '높음', write_date: '2024.03.26' },
+                { title: '프로젝트 C', participants: ['김'], start_date: '2024.03.24', end_date: '2024.04.05', status: 'todo', progress: 0, priority: '낮음', write_date: '2024.03.26' },
+                { title: '프로젝트 D', participants: ['우'], start_date: '2024.03.24', end_date: '2024.04.05', status: 'hold', progress: 15, priority: '낮음', write_date: '2024.03.26' }
+            ]
         }
     }
 }
 </script>
 <template>
     <div class="inner">
+        <!-- 프로젝트 타이틀 영역 -->
         <div class="row align-items-start justify-content-between g-3">
             <div class="col-auto">
                 <div class="title-area">
-                    <h2 class="h2">프로젝트 타이틀타이틀타이틀</h2>
+                    <h2 class="h2">{{ projectDetail.title }}</h2>
                     <p class="text-body-tertiary lh-sm mb-0">PNO.00023130</p>
                 </div>
             </div>
@@ -48,6 +58,8 @@ export default {
                 </div>
             </div>
         </div>
+
+        <!-- 프로젝트 상세글 -->
         <div class="row pb-4">
             <div class="col">
                 <table class="table table-borderless fs-9 mb-5 border-top border-translucent">
@@ -59,54 +71,45 @@ export default {
                     </colgroup>
                     <tbody>
                         <tr>
-                            <th>프로젝트 제목</th>
-                            <td>프로젝트 타이틀입니다.</td>
+                            <th>프로젝트 상태</th>
+                            <td><StatusBadge :status="projectDetail.status" /></td>
                             <th>작성일</th>
-                            <td>2024.03.26</td>
+                            <td>{{ projectDetail.writeDate }}</td>
                         </tr>
-
                         <tr>
                             <th>프로젝트 기간</th>
-                            <td>2024.03.28 ~ 2024.04.28</td>
-
-                            <th>프로젝트 상태</th>
-                            <td>
-                                <StatusBadge :status="projectStatus" />
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>참여자</th>
-                            <td colspan="3"><UserProfile /><UserProfile /><UserProfile /></td>
+                            <td>{{ projectDetail.startDate }} ~ {{ projectDetail.endDate }}</td>
                         </tr>
                         <tr>
                             <th>진행률</th>
-                            <td>
-                                <ProgressBar :progress="progressValue" />
-                            </td>
+                            <td><ProgressBar :progress="projectDetail.progress" /></td>
                             <th></th>
                             <td></td>
                         </tr>
                         <tr>
                             <td colspan="4">
                                 <div class="text-area">
-                                    안녕하세요, 저희는 최근에 장바구니 결제 로직을 변경하고자 합니다. 변경된 로직은 사용자 경험을 개선하고 결제 과정을 보다 간편하게 만들어줄 것입니다. 변경된 결제 로직은 사용자가 장바구니에 담은 상품을 확인하고
-                                    신속하게 결제할 수 있도록 도와줄 것입니다. 또한 보안과 안정성에 대한 고려도 함께 고려되었습니다. 이에 대한 자세한 내용은 저희와 함께 상의해 보겠습니다. 추가적인 문의나 의견이 있으시다면 언제든지 연락주시기
-                                    바랍니다. 감사합니다.
+                                    {{ projectDetail.description }}
                                 </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="4">
-                                <hr class="dash-line" />
                             </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
         </div>
+
+        <!-- 정렬 -->
+        <div class="row align-items-start justify-content-between mb-4 g-3 border-top">
+            <div class="col-auto"><h3 class="h3">담당업무</h3></div>
+            <div class="col-auto">
+                <a href="#" class="btn btn-primary"> <i class="bi bi-plus-circle"></i> 업무추가</a>
+            </div>
+        </div>
         <div class="row align-items-start justify-content-between mb-4 g-3">
             <div class="col-auto">
-                <CheckboxSelector :items="checkboxItems" selectAllId="flexCheckDefault" />
+                <div>
+                    <CheckboxSelector :items="checkboxItems" selectAllId="flexCheckDefault" />
+                </div>
             </div>
             <div class="col-auto d-flex">
                 <form class="d-flex me-4">
@@ -121,67 +124,49 @@ export default {
                         <li><a class="dropdown-item" href="#">우선순위순</a></li>
                     </ul>
                 </div>
-                <a href="#" class="btn btn-primary"><i class="bi bi-plus-circle"></i> 업무글쓰기</a>
             </div>
         </div>
+
+        <!-- 하위업무 -->
         <div class="row">
             <div class="col">
                 <table class="table fs-9 mb-5 border-top border-translucent">
                     <colgroup>
-                        <col style="min-width: 300px" />
-                        <col style="width: 65px" />
+                        <col />
+                        <col style="width: 80px" />
                         <col style="width: 126px" />
                         <col style="width: 126px" />
                         <col style="width: 100px" />
-                        <col style="width: 126px" />
-                        <col style="width: 150px" />
+                        <col style="width: 180px" />
                         <col style="width: 80px" />
                         <col style="width: 126px" />
                     </colgroup>
                     <thead>
                         <tr>
                             <th class="sort white-space-nowrap align-middle" scope="col" data-sort="project_title">프로젝트명</th>
-                            <th class="sort align-middle" scope="col" data-sort="pm">PM</th>
+                            <th class="sort align-middle" scope="col" data-sort="">담당자</th>
                             <th class="sort align-middle" scope="col" data-sort="start_date">시작일</th>
                             <th class="sort align-middle" scope="col" data-sort="end_date">종료일</th>
                             <th class="sort text-start ps-5 align-middle" scope="col" data-sort="status">진행상태</th>
-                            <th class="sort text-end align-middle" scope="col" data-sort="contributor">참여자</th>
                             <th class="sort text-end align-middle" scope="col" data-sort="progress">진행률</th>
                             <th class="sort text-end align-middle" scope="col" data-sort="priority">우선순위</th>
                             <th class="sort text-end pe-0 align-middle" scope="write_date">작성일</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td><a href="#" class="tb-project-title">5월 매출전표 페이지 요청</a></td>
+                        <tr v-for="(task, index) in tasks" :key="index">
                             <td>
-                                <UserProfile />
+                                <a href="#" class="tb-project-title">{{ task.title }}</a>
                             </td>
-                            <td>2024.03.20</td>
-                            <td>2024.03.25</td>
-                            <td>
-                                <div class="status">
-                                    <span class="todo">진행예정</span>
-                                    <span class="doing">진행중</span>
-                                    <span class="done">완료</span>
-                                    <span class="hold">보류</span>
-                                </div>
+                            <td class="text-start">
+                                <UserProfile v-for="participant in task.participants" :key="participant" :name="participant" />
                             </td>
-                            <td class="text-end">
-                                <div><UserProfile /><UserProfile /><UserProfile /></div>
-                            </td>
-                            <td>
-                                <div class="progress">
-                                    <div class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
-                                </div>
-                            </td>
-                            <td class="text-end">
-                                <span class="priority lv0">긴급</span>
-                                <span class="priority lv1">높음</span>
-                                <span class="priority lv2">보통</span>
-                                <span class="priority lv3">낮음</span>
-                            </td>
-                            <td class="text-end">2024.03.20</td>
+                            <td>{{ task.start_date }}</td>
+                            <td>{{ task.end_date }}</td>
+                            <td><StatusBadge :status="task.status" /></td>
+                            <td><ProgressBar :progress="task.progress" /></td>
+                            <td class="text-end"><PriorityBadge :priority="task.priority" /></td>
+                            <td class="text-end">{{ task.write_date }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -193,32 +178,28 @@ export default {
 <style scoped>
 .table-borderless {
     border-top: 2px solid #e6eef4;
-    /* border-bottom: 2px solid #e6eef4; */
-    /* border-block: 2px solid #e6eef4; */
 }
 
 .table-borderless th,
 .table-borderless td {
+    padding: 15px 0;
     font-size: 14px !important;
     text-align: left;
 }
 .table-borderless th {
-    padding: 14px 0;
     border-bottom: 0;
     color: #384554;
     font-weight: 700;
 }
-.table-borderless th :nth-child(3) {
-    padding-left: 30px;
-}
+
 .table-borderless td {
-    padding: 14px 0 14px 30px;
     border-bottom: 0 !important;
     color: #656f7d;
 }
-.table-borderless tr:first-child th .table-borderless tr:first-child td {
-    padding-top: 03px;
+.table-borderless th:nth-child(3) {
+    padding-left: 30px;
 }
+
 .dash-line {
     margin: 0;
     border: 0;
