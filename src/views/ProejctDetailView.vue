@@ -7,7 +7,9 @@ import StatusBadge from '../components/common/StatusBadge.vue'
 export default {
     components: {
         UserProfile,
-        CheckboxSelector
+        CheckboxSelector,
+        ProgressBar,
+        StatusBadge
     },
     data() {
         return {
