@@ -9,6 +9,15 @@ main {
     margin: 0 auto;
 }
 
+.title-area {
+    margin-bottom: 50px;
+}
+.title-area .h2 {
+    color: #333;
+    font-size: 32px;
+    text-align: left;
+    font-weight: 700;
+}
 .card {
     border-radius: 12px;
     border: solid 1px #e6eef4;
@@ -51,7 +60,7 @@ main {
 }
 .tb-project-title {
     width: 100%;
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 500;
 }
 .tb-project-title:hover {
@@ -82,9 +91,6 @@ main {
     border: 1px solid #e9ebf1;
 }
 
-.board-view {
-}
-
 .board-view li {
     display: flex;
     align-items: center;
@@ -97,6 +103,9 @@ main {
     font-weight: 500;
 }
 .board-view-title:hover {
-    /* text-decoration: underline; */
     opacity: 0.9;
+}
+.progress,
+.progress-stacked {
+    --bs-progress-bar-bg: #1bd689;
 }
