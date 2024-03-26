@@ -106,8 +106,10 @@ export default {
             </div>
         </div>
         <div class="row align-items-start justify-content-between mb-4 g-3">
-            <div>
-                <CheckboxSelector :items="checkboxItems" :selected="selectedStatuses" @update:selected="selectedStatuses = $event" />
+            <div class="col-auto">
+                <div>
+                    <CheckboxSelector :items="checkboxItems" selectAllId="flexCheckDefault" />
+                </div>
             </div>
             <div class="col-auto d-flex">
                 <form class="d-flex me-4">
