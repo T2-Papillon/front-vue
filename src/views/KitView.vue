@@ -3,6 +3,7 @@ import CheckboxSelector from '../components/common/CheckboxSelector.vue'
 import UserProfile from '../components/common/UserProfile.vue'
 import BarChart from '../components/common/BarChart.vue'
 import PieChart from '../components/common/PieChart.vue'
+import ProgressBar from '../components/common/ProgressBar.vue'
 import BtnHeartAction from '../components/common/BtnHeartAction.vue'
 
 export default {
@@ -11,7 +12,8 @@ export default {
         UserProfile,
         BarChart,
         PieChart,
-        BtnHeartAction
+        BtnHeartAction,
+        ProgressBar
     },
     data() {
         return {
@@ -21,7 +23,8 @@ export default {
                 { id: 3, name: '완료' },
                 { id: 4, name: '보류' }
             ],
-            filteredRows: [] // 필터링된 행을 저장할 배열 추가
+            filteredRows: [], // 필터링된 행을 저장할 배열 추가
+            progressValue: 75
         }
     },
     methods: {
@@ -146,9 +149,7 @@ export default {
                                 <div><UserProfile /><UserProfile /><UserProfile /></div>
                             </td>
                             <td>
-                                <div class="progress">
-                                    <div class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
-                                </div>
+                                <ProgressBar :progress="progressValue" />
                             </td>
                             <td class="text-end">
                                 <span class="priority lv0">긴급</span>
