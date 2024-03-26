@@ -30,12 +30,14 @@ const router = createRouter({
         {
             path: '/project',
             name: 'project',
-            component: () => import('../views/ProjectView.vue')
-        },
-        {
-            path: '/projectDetail',
-            name: 'ProejctDetailView',
-            component: () => import('../views/ProejctDetailView.vue')
+            component: () => import('../views/ProjectView.vue'),
+            children: [
+                {
+                    path: 'detail/:projectId',
+                    name: 'projectDetail',
+                    component: () => import('../views/ProjectDetailView.vue')
+                }
+            ]
         }
     ]
 })

@@ -13,6 +13,11 @@ export default {
         StatusBadge,
         PriorityBadge
     },
+    mounted() {
+        // URL에서 projectId를 추출합니다.
+        const projectId = this.$route.params.projectId
+        console.log(projectId) // 이 값을 사용하여 필요한 작업을 수행할 수 있습니다.
+    },
     data() {
         return {
             projectDetail: {

@@ -6,6 +6,7 @@ export default {
     },
     data() {
         return {
+            projectId: 5, //예시
             projectDetail: {
                 title: '프로젝트 타이틀입니다.',
                 startDate: '2024.03.28',
@@ -59,7 +60,9 @@ export default {
                     </thead>
                     <tbody>
                         <tr>
-                            <td><a href="#" class="tb-project-title">5월 매출전표 페이지 요청</a></td>
+                            <td>
+                                <router-link :to="`/project/detail/${projectId}`" class="tb-project-title">5월 매출전표 페이지 요청</router-link>
+                            </td>
                             <td>
                                 <UserProfile />
                             </td>
@@ -73,9 +76,7 @@ export default {
                                     <span class="hold">보류</span>
                                 </div>
                             </td>
-                            <td class="text-end">
-                                <div><UserProfile /><UserProfile /><UserProfile /></div>
-                            </td>
+                            <td class="text-end"><UserProfile /><UserProfile /><UserProfile /></td>
                             <td>
                                 <div class="progress">
                                     <div class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
@@ -123,7 +124,9 @@ export default {
                     </thead>
                     <tbody>
                         <tr>
-                            <td><a href="#" class="tb-project-title">5월 매출전표 페이지 요청</a></td>
+                            <td>
+                                <router-link :to="`/project/detail/${projectId}`" class="tb-project-title">5월 매출전표 페이지 요청</router-link>
+                            </td>
                             <td>
                                 <UserProfile />
                             </td>
