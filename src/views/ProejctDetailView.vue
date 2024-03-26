@@ -22,8 +22,16 @@ export default {
                 { id: 4, name: '보류' }
             ],
             filteredRows: [],
-            progressValue: 45,
-            projectStatus: 'doing',
+            projectDetail: {
+                title: '프로젝트 타이틀입니다.',
+                startDate: '2024.03.28',
+                endDate: '2024.04.28',
+                status: 'doing', // 'done', 'todo', 'hold' 등이 될 수 있음
+                progress: 45, // 진행률
+                writeDate: '2024.03.26',
+                description: '안녕하세요, 저희는 최근에 장바구니 결제 로직을 변경하고자 합니다...'
+            },
+
             tasks: [
                 { title: '프로젝트 A', participants: ['최'], start_date: '202.03.24', end_date: '2024.04.05', status: 'done', progress: 100, priority: '보통', write_date: '2024.03.26' },
                 { title: '프로젝트 B', participants: ['고'], start_date: '2024.03.24', end_date: '2024.04.05', status: 'doing', progress: 50, priority: '높음', write_date: '2024.03.26' },
@@ -46,7 +54,7 @@ export default {
         <div class="row align-items-start justify-content-between g-3">
             <div class="col-auto">
                 <div class="title-area">
-                    <h2 class="h2">프로젝트 타이틀타이틀타이틀</h2>
+                    <h2 class="h2">{{ projectDetail.title }}</h2>
                     <p class="text-body-tertiary lh-sm mb-0">PNO.00023130</p>
                 </div>
             </div>
@@ -70,45 +78,26 @@ export default {
                     </colgroup>
                     <tbody>
                         <tr>
-                            <th>프로젝트 제목</th>
-                            <td>프로젝트 타이틀입니다.</td>
+                            <th>프로젝트 상태</th>
+                            <td><StatusBadge :status="projectDetail.status" /></td>
                             <th>작성일</th>
-                            <td>2024.03.26</td>
+                            <td>{{ projectDetail.writeDate }}</td>
                         </tr>
-
                         <tr>
                             <th>프로젝트 기간</th>
-                            <td>2024.03.28 ~ 2024.04.28</td>
-
-                            <th>프로젝트 상태</th>
-                            <td>
-                                <StatusBadge :status="projectStatus" />
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>참여자</th>
-                            <td colspan="3"><UserProfile /><UserProfile /><UserProfile /></td>
+                            <td>{{ projectDetail.startDate }} ~ {{ projectDetail.endDate }}</td>
                         </tr>
                         <tr>
                             <th>진행률</th>
-                            <td>
-                                <ProgressBar :progress="progressValue" />
-                            </td>
+                            <td><ProgressBar :progress="projectDetail.progress" /></td>
                             <th></th>
                             <td></td>
                         </tr>
                         <tr>
                             <td colspan="4">
                                 <div class="text-area">
-                                    안녕하세요, 저희는 최근에 장바구니 결제 로직을 변경하고자 합니다. 변경된 로직은 사용자 경험을 개선하고 결제 과정을 보다 간편하게 만들어줄 것입니다. 변경된 결제 로직은 사용자가 장바구니에 담은 상품을 확인하고
-                                    신속하게 결제할 수 있도록 도와줄 것입니다. 또한 보안과 안정성에 대한 고려도 함께 고려되었습니다. 이에 대한 자세한 내용은 저희와 함께 상의해 보겠습니다. 추가적인 문의나 의견이 있으시다면 언제든지 연락주시기
-                                    바랍니다. 감사합니다.
+                                    {{ projectDetail.description }}
                                 </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="4">
-                                <hr class="dash-line" />
                             </td>
                         </tr>
                     </tbody>
@@ -193,26 +182,24 @@ export default {
 
 .table-borderless th,
 .table-borderless td {
+    padding: 15px 0;
     font-size: 14px !important;
     text-align: left;
 }
 .table-borderless th {
-    padding: 14px 0;
     border-bottom: 0;
     color: #384554;
     font-weight: 700;
 }
-.table-borderless th :nth-child(3) {
-    padding-left: 30px;
-}
+
 .table-borderless td {
-    padding: 14px 0 14px 30px;
     border-bottom: 0 !important;
     color: #656f7d;
 }
-.table-borderless tr:first-child th .table-borderless tr:first-child td {
-    padding-top: 03px;
+.table-borderless th:nth-child(3) {
+    padding-left: 30px;
 }
+
 .dash-line {
     margin: 0;
     border: 0;
