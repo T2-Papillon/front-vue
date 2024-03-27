@@ -13,6 +13,11 @@ export default {
         StatusBadge,
         PriorityBadge
     },
+    mounted() {
+        // URL에서 projectId를 추출합니다.
+        const projectId = this.$route.params.projectId
+        console.log(projectId) // 이 값을 사용하여 필요한 작업을 수행할 수 있습니다.
+    },
     data() {
         return {
             projectDetail: {
@@ -43,6 +48,15 @@ export default {
 </script>
 <template>
     <div class="inner">
+        <div class="row align-items-start justify-content-between g-3">
+            <div class="col">
+                <div class="btn-group">
+                    <button class="btn btn-black">대시보드</button>
+                    <button class="btn btn-black">통계분석</button>
+                </div>
+            </div>
+        </div>
+
         <!-- 프로젝트 타이틀 영역 -->
         <div class="row align-items-start justify-content-between g-3">
             <div class="col-auto">
