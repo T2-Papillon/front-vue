@@ -1,4 +1,6 @@
 <script>
+import axios from 'axios'
+
 import UserProfile from '../components/UserProfile.vue'
 import ProgressBar from '../components/ProgressBar.vue'
 import StatusBadge from '../components/StatusBadge.vue'
@@ -11,17 +13,15 @@ export default {
         StatusBadge,
         PriorityBadge
     },
-    data() {
-        return {
-            projects: [
-                { id: 1, title: '프로젝트 A', pm: ['영'], startDate: '2020.03.24', endDate: '2024.04.05', status: 'done', participants: ['최', '우', '단', '최', '우', '단'], progress: 100, priority: '보통', writeDate: '2024.03.26' },
-                { id: 2, title: '프로젝트 B', pm: ['진'], startDate: '2024.03.24', endDate: '2024.04.05', status: 'doing', participants: ['고', '희'], progress: 50, priority: '높음', writeDate: '2024.03.26' }
-            ]
-        }
+    props: {
+        projects: Array
     },
     methods: {
         //참여자 노출 최대 3명 나머지 .. 처리
         formatParticipants(participants) {
+            if (!Array.isArray(participants)) {
+                return { visibleParticipants: [], overflowCount: 0 }
+            }
             const maxVisible = 3
             const visibleParticipants = participants.slice(0, maxVisible)
             const overflowCount = participants.length - maxVisible
@@ -85,4 +85,4 @@ export default {
     </table>
 </template>
 
-<style></style>
+<style scoped></style>

@@ -5,7 +5,10 @@
 <script>
 export default {
     props: {
-        priority: String
+        priority: {
+            type: String,
+            default: 'LV2' // 문자열 값으로 정의
+        }
     },
     data() {
         return {
@@ -19,9 +22,11 @@ export default {
     },
     computed: {
         priorityClassName() {
+            // priority prop에 기본값이 있으므로 항상 정의된 값을 사용
             return `lv${this.priority.substring(2)}`
         },
         priorityText() {
+            // priorityLevels에서 해당하는 텍스트를 찾아 반환
             return this.priorityLevels[this.priority] || '알수없음'
         }
     }
