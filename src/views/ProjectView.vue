@@ -1,20 +1,32 @@
 <script>
 import UserProfile from '../components/UserProfile.vue'
+import ProgressBar from '../components/ProgressBar.vue'
+import StatusBadge from '../components/StatusBadge.vue'
+import PriorityBadge from '../components/PriorityBadge.vue'
 export default {
     components: {
-        UserProfile
+        UserProfile,
+        ProgressBar,
+        StatusBadge,
+        PriorityBadge
     },
     data() {
         return {
-            projectId: 5, //예시
-            projectDetail: {
-                title: '프로젝트 타이틀입니다.',
-                startDate: '2024.03.28',
-                endDate: '2024.04.28',
-                status: 'doing',
-                progress: 45,
-                writeDate: '2024.03.26',
-                description: '안녕하세요, 저희는 최근에 장바구니 결제 로직을 변경하고자 합니다...'
+            projects: [
+                { id: 1, title: '프로젝트 A', pm: ['영'], startDate: '2020.03.24', endDate: '2024.04.05', status: 'done', participants: ['최', '우', '단', '최', '우', '단'], progress: 100, priority: '보통', writeDate: '2024.03.26' },
+                { id: 2, title: '프로젝트 B', pm: ['진'], startDate: '2024.03.24', endDate: '2024.04.05', status: 'doing', participants: ['고', '희'], progress: 50, priority: '높음', writeDate: '2024.03.26' }
+            ]
+        }
+    },
+    methods: {
+        formatParticipants(participants) {
+            const maxVisible = 3
+            const visibleParticipants = participants.slice(0, maxVisible)
+            const overflowCount = participants.length - maxVisible
+
+            return {
+                visibleParticipants,
+                overflowCount
             }
         }
     }
@@ -25,7 +37,7 @@ export default {
         <div class="row align-items-start justify-content-between g-3">
             <div class="col-auto">
                 <div class="title-area">
-                    <h2 class="h2">프로젝트</h2>
+                    <h2 class="h2">프로젝트 👋</h2>
                     <p class="text-body-tertiary lh-sm mb-0">텍스트텍스트텍스트텍스트</p>
                 </div>
             </div>
@@ -39,7 +51,7 @@ export default {
 
         <div class="row">
             <div class="col">
-                <h3 class="h3 pb-4">진행예정 <span class="h3 text-bold">3</span>건</h3>
+                <h3 class="h3 pb-4 fw-light">진행예정 <span class="h3 fw-bold">3</span> 건</h3>
                 <table class="table fs-9 mb-5 border-top border-translucent">
                     <colgroup>
                         <col style="min-width: 300px" />
@@ -66,38 +78,25 @@ export default {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
+                        <tr v-for="project in projects" :key="project.id">
                             <td>
-                                <router-link :to="`/project/detail/${projectId}`" class="tb-project-title">5월 매출전표 페이지 요청</router-link>
-                            </td>
-                            <td>
-                                <UserProfile />
-                            </td>
-                            <td>2024.03.20</td>
-                            <td>2024.03.25</td>
-                            <td>
-                                <div class="status">
-                                    <span class="todo">진행예정</span>
-                                    <span class="doing">진행중</span>
-                                    <span class="done">완료</span>
-                                    <span class="hold">보류</span>
-                                </div>
-                            </td>
-                            <td class="text-end">
-                                <div><UserProfile /><UserProfile /><UserProfile /></div>
+                                <router-link :to="`/project/detail/${project.id}`" class="tb-project-title">{{ project.title }}</router-link>
                             </td>
                             <td>
-                                <div class="progress">
-                                    <div class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
-                                </div>
+                                <UserProfile v-for="pm in project.pm" :key="pm" :name="pm" />
                             </td>
-                            <td class="text-end">
-                                <span class="priority lv0">긴급</span>
-                                <span class="priority lv1">높음</span>
-                                <span class="priority lv2">보통</span>
-                                <span class="priority lv3">낮음</span>
+                            <td>{{ project.startDate }}</td>
+                            <td>{{ project.endDate }}</td>
+                            <td><StatusBadge :status="project.status" /></td>
+                            <td class="overflow-hidden text-nowrap text-end">
+                                <UserProfile v-for="(participant, index) in formatParticipants(project.participants).visibleParticipants" :key="index" :name="participant" />
+                                <span v-if="formatParticipants(project.participants).overflowCount > 0">...</span>
                             </td>
-                            <td class="text-end">2024.03.20</td>
+                            <td>
+                                <ProgressBar :progress="project.progress" />
+                            </td>
+                            <td class="text-end"><PriorityBadge :priority="project.priority" /></td>
+                            <td class="text-end">{{ project.writeDate }}</td>
                         </tr>
                     </tbody>
                 </table>
