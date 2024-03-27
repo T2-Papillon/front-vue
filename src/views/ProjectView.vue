@@ -13,9 +13,21 @@ export default {
     data() {
         return {
             projects: [
-                { id: 1, title: '프로젝트 A', pm: ['영'], startDate: '2020.03.24', endDate: '2024.04.05', status: 'done', participants: ['최', '우', '단'], progress: 100, priority: '보통', writeDate: '2024.03.26' },
+                { id: 1, title: '프로젝트 A', pm: ['영'], startDate: '2020.03.24', endDate: '2024.04.05', status: 'done', participants: ['최', '우', '단', '최', '우', '단'], progress: 100, priority: '보통', writeDate: '2024.03.26' },
                 { id: 2, title: '프로젝트 B', pm: ['진'], startDate: '2024.03.24', endDate: '2024.04.05', status: 'doing', participants: ['고', '희'], progress: 50, priority: '높음', writeDate: '2024.03.26' }
             ]
+        }
+    },
+    methods: {
+        formatParticipants(participants) {
+            const maxVisible = 3
+            const visibleParticipants = participants.slice(0, maxVisible)
+            const overflowCount = participants.length - maxVisible
+
+            return {
+                visibleParticipants,
+                overflowCount
+            }
         }
     }
 }
@@ -39,7 +51,7 @@ export default {
 
         <div class="row">
             <div class="col">
-                <h3 class="h3 pb-4">진행예정 <span class="h3 text-bold">3</span>건</h3>
+                <h3 class="h3 pb-4 fw-light">진행예정 <span class="h3 fw-bold">3</span> 건</h3>
                 <table class="table fs-9 mb-5 border-top border-translucent">
                     <colgroup>
                         <col style="min-width: 300px" />
@@ -66,9 +78,9 @@ export default {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="(project, index) in projects" :key="index">
+                        <tr v-for="project in projects" :key="project.id">
                             <td>
-                                <router-link :to="`/project/detail/${projectId}`" class="tb-project-title">{{ project.title }}</router-link>
+                                <router-link :to="`/project/detail/${project.id}`" class="tb-project-title">{{ project.title }}</router-link>
                             </td>
                             <td>
                                 <UserProfile v-for="pm in project.pm" :key="pm" :name="pm" />
@@ -76,8 +88,9 @@ export default {
                             <td>{{ project.startDate }}</td>
                             <td>{{ project.endDate }}</td>
                             <td><StatusBadge :status="project.status" /></td>
-                            <td class="text-end">
-                                <UserProfile v-for="participant in project.participants" :key="participant" :name="participant" />
+                            <td class="overflow-hidden text-nowrap text-end">
+                                <UserProfile v-for="(participant, index) in formatParticipants(project.participants).visibleParticipants" :key="index" :name="participant" />
+                                <span v-if="formatParticipants(project.participants).overflowCount > 0">...</span>
                             </td>
                             <td>
                                 <ProgressBar :progress="project.progress" />
