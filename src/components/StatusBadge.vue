@@ -5,10 +5,7 @@
 <script>
 export default {
     props: {
-        status: {
-            type: String,
-            default: 'unknown' // 기본값 설정
-        }
+        status: String
     },
     computed: {
         statusName() {
