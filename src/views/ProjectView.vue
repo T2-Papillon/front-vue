@@ -37,7 +37,7 @@ export default {
         <div class="row align-items-start justify-content-between g-3">
             <div class="col-auto">
                 <div class="title-area">
-                    <h2 class="h2">프로젝트</h2>
+                    <h2 class="h2">프로젝트 👋</h2>
                     <p class="text-body-tertiary lh-sm mb-0">텍스트텍스트텍스트텍스트</p>
                 </div>
             </div>
