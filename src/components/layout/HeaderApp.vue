@@ -20,6 +20,9 @@
                                 <router-link to="/project" class="nav-link">project</router-link>
                             </li>
                             <li class="nav-item">
+                                <router-link to="/analyze" class="nav-link">analyze</router-link>
+                            </li>
+                            <li class="nav-item">
                                 <router-link to="/kit" class="nav-link">kit</router-link>
                             </li>
                         </ul>
