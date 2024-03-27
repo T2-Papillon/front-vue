@@ -2,7 +2,9 @@
     <header>
         <div class="inner">
             <div class="d-flex align-items-center justify-content-between">
-                <h1 class="logo"><a href="#">logo</a></h1>
+                <h1 class="logo">
+                    <a href="#"><img src="/public/images/logo.svg" alt="boogle logo" /></a>
+                </h1>
 
                 <nav class="navbar navbar-expand-lg">
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
