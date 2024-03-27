@@ -43,23 +43,24 @@ export default {
         fetchProjects() {
             axios
                 .get('http://localhost:8080/search')
-                .then(response => {
+                .then((response) => {
                     // 서버로부터 받은 데이터 배열을 처리하여 컴포넌트의 상태에 할당
-                    const formattedProjects = response.data.map(project => ({
+                    const formattedProjects = response.data.map((project) => ({
                         title: project.projTitle,
                         participants: [`${project.projPm.charAt(0)}`],
                         start_date: project.projStartDate,
                         end_date: project.projEndDate,
-                        status: project.projectStatus.projectStatusId, // '진행중', '완료' 등의 상태
+                        status: project.projectStatus, // '진행중', '완료' 등의 상태
                         progress: project.projPercent,
-                        priority: project.projectPriority.project_priority_name, // '긴급', '높음', '보통', '낮음'
+                        priority: project.projectPriority, // '긴급', '높음', '보통', '낮음'
                         write_date: project.projCreateDate,
                         description: project.projDesc
                     }))
+                    console.log(formattedProjects)
                     // 변환된 데이터를 컴포넌트의 상태에 저장
                     this.projects = formattedProjects
                 })
-                .catch(error => {
+                .catch((error) => {
                     console.error(error)
                 })
         }
@@ -83,7 +84,6 @@ export default {
             <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
             <button class="btn btn-outline-success" type="submit"><i class="bi bi-search"></i></button>
         </form>
-
         <!-- 진행상태별 필터링, 정렬기준 필터 기능 -->
         <div class="row align-items-center justify-content-between mb-4 g-3 project-list">
             <div class="col-auto">
@@ -149,7 +149,6 @@ export default {
                             <td class="text-end">{{ project.write_date }}</td>
                         </tr>
                     </tbody>
-
                     <!-- <tbody>
                         <tr v-for="(project, index) in project" :key="index">
                             <td>
@@ -213,9 +212,11 @@ export default {
     color: #333;
     line-height: 1.8;
 }
+
 .project-list {
     padding-top: 100px;
 }
+
 .sort-area {
     padding: 0;
 }
