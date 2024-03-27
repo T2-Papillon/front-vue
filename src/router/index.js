@@ -23,6 +23,11 @@ const router = createRouter({
             component: () => import('../views/LoginView.vue')
         },
         {
+            path: '/analyze',
+            name: 'analyze',
+            component: () => import('../views/AnalyzeView.vue')
+        },
+        {
             path: '/kit',
             name: 'kit',
             component: () => import('../views/KitView.vue')
@@ -30,6 +35,7 @@ const router = createRouter({
         {
             path: '/project',
             name: 'project',
+
             component: () => import('../views/ProjectView.vue')
         },
         {
@@ -41,6 +47,16 @@ const router = createRouter({
             path: '/search',
             name: 'SearchView',
             component: () => import('../views/SearchView.vue')
+
+            component: () => import('../views/ProjectView.vue'),
+            children: [
+                {
+                    path: 'detail/:id',
+                    name: 'projectDetail',
+                    component: () => import('../views/ProjectDetailView.vue')
+                }
+            ]
+
         }
     ]
 })

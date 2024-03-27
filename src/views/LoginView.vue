@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="inner">
         <div class="card">
             <div class="card-body">
                 <div class="title-area">

@@ -8,19 +8,19 @@
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                             <li class="nav-item">
-                                <router-link to="/" class="nav-link">Home</router-link>
+                                <router-link to="/" class="nav-link">x</router-link>
                             </li>
                             <li class="nav-item">
-                                <router-link to="/about" class="nav-link">About</router-link>
+                                <router-link to="/about" class="nav-link">x</router-link>
                             </li>
                             <li class="nav-item">
-                                <router-link to="/login" class="nav-link">login</router-link>
+                                <router-link to="/login" class="nav-link">로그인</router-link>
                             </li>
                             <li class="nav-item">
-                                <router-link to="/project" class="nav-link">project</router-link>
+                                <router-link to="/project" class="nav-link">프로젝트</router-link>
                             </li>
                             <li class="nav-item">
-                                <router-link to="/projectDetail" class="nav-link">projectDetail</router-link>
+                                <router-link to="/analyze" class="nav-link">analyze</router-link>
                             </li>
                             <li class="nav-item">
                                 <router-link to="/kit" class="nav-link">kit</router-link>
