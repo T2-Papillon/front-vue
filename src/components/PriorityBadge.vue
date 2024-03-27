@@ -1,5 +1,5 @@
 <template>
-    <span :class="`priority ${priorityClass}`">{{ priorityText }}</span>
+    <div :class="[priorityClassName, 'priority']">{{ priorityText }}</div>
 </template>
 
 <script>
@@ -7,21 +7,22 @@ export default {
     props: {
         priority: String
     },
-    computed: {
-        priorityClass() {
-            return `lv${this.priorityLevel}`
-        },
-        priorityLevel() {
-            const levels = {
-                긴급: '0',
-                높음: '1',
-                보통: '2',
-                낮음: '3'
+    data() {
+        return {
+            priorityLevels: {
+                LV0: '긴급',
+                LV1: '높음',
+                LV2: '보통',
+                LV3: '낮음'
             }
-            return levels[this.priority] || ''
+        }
+    },
+    computed: {
+        priorityClassName() {
+            return `lv${this.priority.substring(2)}`
         },
         priorityText() {
-            return this.priority
+            return this.priorityLevels[this.priority] || '알수없음'
         }
     }
 }

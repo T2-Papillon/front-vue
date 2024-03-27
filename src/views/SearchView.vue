@@ -135,25 +135,6 @@ export default {
                             <td class="text-end">{{ project.write_date }}</td>
                         </tr>
                     </tbody>
-                    <!-- <tbody>
-                        <tr v-for="(project, index) in project" :key="index">
-                            <td>
-                                <a href="#" class="tb-project-title">{{ project.title }}</a>
-                            </td>
-                            <td class="text-start">
-                                <UserProfile v-for="participant in project.participants" :key="participant" :name="participant" />
-                            </td>
-                            <td>{{ project.start_date }}</td>
-                            <td>{{ project.end_date }}</td>
-                            <td><StatusBadge :status="project.status" /></td>
-                            <td class="text-end">
-                                <div><UserProfile /><UserProfile /><UserProfile /></div>
-                            </td>
-                            <td><ProgressBar :progress="project.progress" /></td>
-                            <td class="text-end"><PriorityBadge :priority="project.priority" /></td>
-                            <td class="text-end">{{ project.write_date }}</td>
-                        </tr>
-                    </tbody> -->
                 </table>
             </div>
         </div>
