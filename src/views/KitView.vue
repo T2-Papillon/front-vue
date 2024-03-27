@@ -1,15 +1,21 @@
 <script>
-import CheckboxSelector from '../components/common/CheckboxSelector.vue'
-import UserProfile from '../components/common/UserProfile.vue'
-import BarChart from '../components/common/BarChart.vue'
-import BtnHeartAction from '../components/common/BtnHeartAction.vue'
+import CheckboxSelector from '../components/CheckboxSelector.vue'
+import UserProfile from '../components/UserProfile.vue'
+import BarChart from '../components/BarChart.vue'
+import PieChart from '../components/PieChart.vue'
+import ProgressBar from '../components/ProgressBar.vue'
+import BtnHeartAction from '../components/BtnHeartAction.vue'
+import StatusBadge from '../components/StatusBadge.vue'
 
 export default {
     components: {
         CheckboxSelector,
         UserProfile,
         BarChart,
-        BtnHeartAction
+        PieChart,
+        BtnHeartAction,
+        ProgressBar,
+        StatusBadge
     },
     data() {
         return {
@@ -19,7 +25,9 @@ export default {
                 { id: 3, name: '완료' },
                 { id: 4, name: '보류' }
             ],
-            filteredRows: [] // 필터링된 행을 저장할 배열 추가
+            filteredRows: [], // 필터링된 행을 저장할 배열 추가
+            progressValue: 75,
+            projectStatus: 'done'
         }
     },
     methods: {
@@ -31,7 +39,7 @@ export default {
 }
 </script>
 <template>
-    <main class="content inner">
+    <div class="inner">
         <div class="row align-items-end justify-content-between pb-5 g-3">
             <div class="col-auto">
                 <h3>Latest reviews</h3>
@@ -133,20 +141,11 @@ export default {
                             <td>2024.03.20</td>
                             <td>2024.03.25</td>
                             <td>
-                                <div class="status">
-                                    <span class="todo">진행예정</span>
-                                    <span class="doing">진행중</span>
-                                    <span class="done">완료</span>
-                                    <span class="hold">보류</span>
-                                </div>
+                                <StatusBadge :status="projectStatus" />
                             </td>
-                            <td class="text-end">
-                                <div><UserProfile /><UserProfile /><UserProfile /></div>
-                            </td>
+                            <td class="text-end"><UserProfile /><UserProfile /><UserProfile /></td>
                             <td>
-                                <div class="progress">
-                                    <div class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
-                                </div>
+                                <ProgressBar :progress="progressValue" />
                             </td>
                             <td class="text-end">
                                 <span class="priority lv0">긴급</span>
@@ -155,6 +154,11 @@ export default {
                                 <span class="priority lv3">낮음</span>
                             </td>
                             <td class="text-end">2024.03.20</td>
+                        </tr>
+                        <tr>
+                            <td colspan="9">
+                                <div class="text-center pt-5 pb-5">내용이 없어요 🤚</div>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -166,7 +170,9 @@ export default {
                 <BarChart />
             </div>
 
-            <div class="col-6"></div>
+            <div class="col-6">
+                <PieChart />
+            </div>
         </div>
 
         <div class="row">
@@ -189,99 +195,35 @@ export default {
                 <div class="card">
                     <div class="card-body">
                         <h3 class="h4">알림</h3>
-                        <ul class="mt-4">
-                            <li>
-                                <a href="#" class="h5">제목제목제목</a>
-                                <span class="desc">24.03.21</span>
-                            </li>
-                        </ul>
+                        <div class="list-group">
+                            <a href="#" class="list-group-item list-group-item-action active" aria-current="true">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h5 class="mb-1">List group item heading</h5>
+                                    <small>3 days ago</small>
+                                </div>
+                                <p class="mb-1">Some placeholder content in a paragraph.</p>
+                                <small>And some small print.</small>
+                            </a>
+                            <a href="#" class="list-group-item list-group-item-action">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h5 class="mb-1">List group item heading</h5>
+                                    <small class="text-body-secondary">3 days ago</small>
+                                </div>
+                                <p class="mb-1">Some placeholder content in a paragraph.</p>
+                                <small class="text-body-secondary">And some muted small print.</small>
+                            </a>
+                            <a href="#" class="list-group-item list-group-item-action">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h5 class="mb-1">List group item heading</h5>
+                                    <small class="text-body-secondary">3 days ago</small>
+                                </div>
+                                <p class="mb-1">Some placeholder content in a paragraph.</p>
+                                <small class="text-body-secondary">And some muted small print.</small>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </main>
+    </div>
 </template>
-<style scoped>
-.priority {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid;
-    border-radius: 5px;
-    min-width: 40px;
-    height: 23px;
-    padding: 0 10px;
-    color: #fff;
-}
-.priority.lv0 {
-    border-color: #ffbebe;
-    background-color: #ffe5e5;
-    color: #f05353;
-}
-.priority.lv1 {
-    border-color: #ffc350;
-    background-color: #ffe4b2;
-    color: #e88600;
-}
-.priority.lv2 {
-    border-color: #9ce8c5;
-    background-color: #eafff5;
-    color: #10aa64;
-}
-.priority.lv3 {
-    border-color: #bfd2ff;
-    background-color: #edf2ff;
-    color: #336cfa;
-}
-.tb-project-title {
-    width: 100%;
-    font-size: 15px;
-    font-weight: 500;
-}
-.tb-project-title:hover {
-    text-decoration: underline;
-    opacity: 0.9;
-}
-
-.status span {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 26px;
-    border-radius: 5px;
-    border: 1px solid transparent;
-    font-weight: 500;
-}
-.status .todo {
-    background-color: #fedddb;
-    color: #ef5c51;
-}
-.status .doing {
-    background-color: #eafff5;
-}
-.status .done {
-    background-color: #e9ebf1;
-}
-.status .hold {
-    border: 1px solid #e9ebf1;
-}
-
-.board-view {
-}
-
-.board-view li {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 12px 10px;
-    /* border-bottom: 1px solid var(--bs-border-color); */
-}
-.board-view-title {
-    font-size: 14px;
-    font-weight: 500;
-}
-.board-view-title:hover {
-    /* text-decoration: underline; */
-    opacity: 0.9;
-}
-</style>

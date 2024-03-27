@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import ProjectDetailsView from '../views/ProjectDetailsView.vue'
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -34,9 +33,9 @@ const router = createRouter({
             component: () => import('../views/ProjectView.vue'),
             children: [
                 {
-                    path: ':id',
-                    name: 'project-details',
-                    component: ProjectDetailsView // 새로운 하위 페이지 컴포넌트 지정
+                    path: 'detail/:projectId',
+                    name: 'projectDetail',
+                    component: () => import('../views/ProjectDetailView.vue')
                 }
             ]
         }

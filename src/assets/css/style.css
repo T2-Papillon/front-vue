@@ -1,9 +1,22 @@
+main {
+    padding-top: 80px;
+    padding-bottom: 100px;
+}
+
 .inner {
     max-width: 1200px !important;
     width: 100%;
     margin: 0 auto;
 }
-
+.title-area {
+    margin-bottom: 50px;
+}
+.title-area .h2 {
+    color: #333;
+    font-size: 32px;
+    text-align: left;
+    font-weight: 700;
+}
 .card {
     border-radius: 12px;
     border: solid 1px #e6eef4;
@@ -11,4 +24,48 @@
 }
 .card-body {
     padding: 30px;
+}
+
+.tb-project-title {
+    width: 100%;
+    font-size: 14px;
+    font-weight: 500;
+}
+.tb-project-title:hover {
+    text-decoration: underline;
+    opacity: 0.9;
+}
+
+.board-view li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 10px;
+    /* border-bottom: 1px solid var(--bs-border-color); */
+}
+.board-view-title {
+    font-size: 14px;
+    font-weight: 500;
+}
+.board-view-title:hover {
+    opacity: 0.9;
+}
+.top-btn-area .btn {
+    height: 48px;
+    padding: 0 30px;
+    border: 1px solid;
+    border-radius: 4px;
+
+    font-size: 16px;
+}
+
+.top-btn-area .btn-dark {
+    border-color: #1c2733;
+    background-color: #1c2733;
+}
+
+.top-btn-area .btn-outline-dark:hover {
+    border-color: #1c2733;
+    background-color: #e6eef4;
+    color: #1c2733;
 }
