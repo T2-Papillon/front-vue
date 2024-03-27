@@ -1,9 +1,13 @@
 <script>
+import axios from 'axios'
 import UserProfile from '../components/UserProfile.vue'
 import CheckboxSelector from '../components/CheckboxSelector.vue'
 import ProgressBar from '../components/ProgressBar.vue'
 import StatusBadge from '../components/StatusBadge.vue'
 import PriorityBadge from '../components/PriorityBadge.vue'
+
+// const route = useRoute()
+// const projectId = route.params.id
 
 export default {
     components: {
@@ -13,14 +17,11 @@ export default {
         StatusBadge,
         PriorityBadge
     },
-    mounted() {
-        // URL에서 projectId를 추출합니다.
-        const projectId = this.$route.params.projectId
-        console.log(projectId) // 이 값을 사용하여 필요한 작업을 수행할 수 있습니다.
-    },
+
     data() {
         return {
-            projectDetail: {
+            projectId: null,
+            project: {
                 title: '프로젝트 타이틀입니다.',
                 startDate: '2024.03.28',
                 endDate: '2024.04.28',
@@ -43,6 +44,22 @@ export default {
                 { title: '프로젝트 D', participants: ['우'], start_date: '2024.03.24', end_date: '2024.04.05', status: 'hold', progress: 15, priority: '낮음', write_date: '2024.03.26' }
             ]
         }
+    },
+    mounted() {
+        this.projectId = this.$route.params.id // projectId를 데이터 속성으로 저장
+        this.fetchProjectDetail()
+    },
+    methods: {
+        async fetchProjectDetail() {
+            try {
+                // 여기에서 this.projectId를 사용
+                const response = await axios.get(`/api/projects/${this.projectId}`)
+                this.projectDetail = response.data
+            } catch (error) {
+                console.error('프로젝트 상세 정보를 가져오는데 실패했습니다.', error)
+                // 에러 처리 로직 구현 (예: 사용자에게 에러 메시지 표시)
+            }
+        }
     }
 }
 </script>
@@ -61,7 +78,7 @@ export default {
         <div class="row align-items-start justify-content-between g-3">
             <div class="col-auto">
                 <div class="title-area">
-                    <h2 class="h2">{{ projectDetail.title }}</h2>
+                    <h2 class="h2">{{ project.title }}</h2>
                     <p class="text-body-tertiary lh-sm mb-0">PNO.00023130</p>
                 </div>
             </div>
@@ -86,24 +103,24 @@ export default {
                     <tbody>
                         <tr>
                             <th>프로젝트 상태</th>
-                            <td><StatusBadge :status="projectDetail.status" /></td>
+                            <td><StatusBadge :status="project.status" /></td>
                             <th>작성일</th>
-                            <td>{{ projectDetail.writeDate }}</td>
+                            <td>{{ project.writeDate }}</td>
                         </tr>
                         <tr>
                             <th>프로젝트 기간</th>
-                            <td>{{ projectDetail.startDate }} ~ {{ projectDetail.endDate }}</td>
+                            <td>{{ project.startDate }} ~ {{ project.endDate }}</td>
                         </tr>
                         <tr>
                             <th>진행률</th>
-                            <td><ProgressBar :progress="projectDetail.progress" /></td>
+                            <td><ProgressBar :progress="project.progress" /></td>
                             <th></th>
                             <td></td>
                         </tr>
                         <tr>
                             <td colspan="4">
                                 <div class="text-area">
-                                    {{ projectDetail.description }}
+                                    {{ project.description }}
                                 </div>
                             </td>
                         </tr>
