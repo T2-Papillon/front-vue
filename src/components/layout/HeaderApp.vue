@@ -27,9 +27,9 @@
                             <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
                             <button class="btn btn-outline-success" type="submit"><i class="bi bi-search"></i></button>
                         </form>
-                        <ul class="me-auto mb-2 mb-lg-0">
+                        <ul class="me-auto mb-2 mb-lg-0" v-if="$cookies.get('user') !== null">
                             <li class="dropdown">
-                                <a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"> 홍길동 </a>
+                                <a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">{{ name }}</a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     <li><span class="dropdown-item">개발 1팀</span></li>
                                     <li><a class="dropdown-item" href="#">마이페이지</a></li>
@@ -51,11 +51,27 @@
 </template>
 
 <script>
-export default {}
+export default {
+    data() {
+        return {
+            userInfo: '',
+            name: '홍길동',
+            email: ''
+        }
+    },
+    mounted() {
+        this.userInfo = this.$cookies.get('user')
+        if (this.userInfo) {
+            console.log('초기 쿠키 값:', this.userInfo)
+            this.name = this.userInfo['name']
+            this.email = this.userInfo['email']
+        }
+    }
+}
 </script>
 
 <style scoped>
 header {
-    border-bottom: 1px solid #eaeaea;
+    border-bottom: 1px solid #1a1515;
 }
 </style>
