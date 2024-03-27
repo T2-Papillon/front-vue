@@ -27,6 +27,9 @@
                             <li class="nav-item">
                                 <router-link to="/kit" class="nav-link">kit</router-link>
                             </li>
+                            <li class="nav-item">
+                                <router-link to="/search" class="nav-link">search</router-link>
+                            </li>
                         </ul>
                         <form class="d-flex mr-2">
                             <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
