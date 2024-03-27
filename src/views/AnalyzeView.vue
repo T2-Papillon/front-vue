@@ -3,7 +3,7 @@
         <div class="row align-items-start justify-content-between g-3">
             <div class="col-auto">
                 <div class="title-area">
-                    <h2 class="h2">통계분석 타이틀 별로야 뭐가 좋을까📌📊</h2>
+                    <h2 class="h2">통계분석 타이틀 별로야 뭐가 좋을까요📌📊</h2>
                     <p class="text-body-tertiary lh-sm mb-0">텍스트텍스트텍스트텍스트</p>
                 </div>
             </div>
