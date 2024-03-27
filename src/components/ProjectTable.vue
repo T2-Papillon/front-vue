@@ -20,6 +20,7 @@ export default {
         }
     },
     methods: {
+        //참여자 노출 최대 3명 나머지 .. 처리
         formatParticipants(participants) {
             const maxVisible = 3
             const visibleParticipants = participants.slice(0, maxVisible)
