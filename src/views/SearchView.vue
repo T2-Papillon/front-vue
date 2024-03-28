@@ -10,7 +10,13 @@ export default {
     },
     data() {
         return {
-            checkboxItems: [],
+            checkboxItems: [
+                { id: 'all', name: '전체' },
+                { id: 'todo', name: '진행예정' },
+                { id: 'doing', name: '진행중' },
+                { id: 'done', name: '완료' },
+                { id: 'hold', name: '보류' }
+            ],
             selectedCheckboxes: [],
             projects: []
         }
@@ -19,16 +25,18 @@ export default {
         async fetchProjects() {
             try {
                 const apiUrl = import.meta.env.VITE_API_URL
-                const response = await axios.get(`${apiUrl}/search`)
-                const formattedProjects = response.data.map((project) => ({
+                const response = await axios.get(`${apiUrl}/api/search`)
+                console.log(response.data)
+                const formattedProjects = response.data.map(project => ({
                     title: project.projTitle,
-                    participants: project.projParticipants,
+                    pm: [`${project.projPm.charAt(0)}`],
+                    participants: [`${project.projPm.charAt(0)}`],
                     startDate: project.projStartDate,
                     endDate: project.projEndDate,
-                    status: project.projStatus,
-                    progress: project.projProgress,
-                    priority: project.projPriority,
-                    writeDate: project.projWriteDate
+                    status: project.projectStatus, // '전체','진행중', '완료'
+                    progress: project.projPercent,
+                    priority: project.projectPriority, // '긴급', '높음', '보통', '낮음'
+                    writeDate: project.projCreateDate
                 }))
                 this.projects = formattedProjects
             } catch (error) {
@@ -59,7 +67,6 @@ export default {
             <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
             <button class="btn btn-outline-success" type="submit"><i class="bi bi-search"></i></button>
         </form>
-
         <!-- 진행상태별 필터링, 정렬기준 필터 기능 -->
         <div class="row align-items-center justify-content-between mb-4 g-3 project-list">
             <div class="col-auto">
@@ -88,4 +95,11 @@ export default {
     </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.project-list {
+    padding-top: 100px;
+}
+.sort-area {
+    padding: 0;
+}
+</style>
