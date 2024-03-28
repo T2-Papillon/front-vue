@@ -25,8 +25,17 @@ export default {
         async fetchProjects() {
             try {
                 const apiUrl = import.meta.env.VITE_API_URL
-                const response = await axios.get(`${apiUrl}/api/search`)
-                console.log(response.data)
+                const response = await axios.get(`${apiUrl}/search`)
+                const formattedProjects = response.data.map(project => ({
+                    title: project.projTitle,
+                    participants: project.projParticipants,
+                    startDate: project.projStartDate,
+                    endDate: project.projEndDate,
+                    status: project.projStatus,
+                    progress: project.projProgress,
+                    priority: project.projPriority,
+                    writeDate: project.projWriteDate
+                }))
                 this.projects = formattedProjects
             } catch (error) {
                 console.error(error)
