@@ -2,11 +2,14 @@
 import { ref } from 'vue'
 import CheckboxSelector from '../components/CheckboxSelector.vue'
 // import ProjectInfo from '../components/ProjectInfo.vue'
+import TaskInputModal from '../components/TaskInputModal.vue'
+
 import TasksTable from '../components/TasksTable.vue'
 
 export default {
     components: {
         CheckboxSelector,
+        TaskInputModal,
         // ProjectInfo,
         TasksTable
     },
@@ -19,7 +22,8 @@ export default {
 
         // project와 formatParticipants를 반환하여 템플릿에서 사용할 수 있도록 함
         return {
-            project
+            project,
+            isModalVisible: ref(false)
         }
     },
     data() {
@@ -30,18 +34,19 @@ export default {
                 { id: 'done', name: '완료' },
                 { id: 'hold', name: '보류' }
             ],
-            selectedCheckboxes: [],
-            tasks: [
-                { title: '프로젝트 A', participants: ['최'], start_date: '202.03.24', end_date: '2024.04.05', status: 'done', progress: 100, priority: '보통', write_date: '2024.03.26' },
-                { title: '프로젝트 B', participants: ['고'], start_date: '2024.03.24', end_date: '2024.04.05', status: 'doing', progress: 50, priority: '높음', write_date: '2024.03.26' },
-                { title: '프로젝트 C', participants: ['김'], start_date: '2024.03.24', end_date: '2024.04.05', status: 'todo', progress: 0, priority: '낮음', write_date: '2024.03.26' },
-                { title: '프로젝트 D', participants: ['우'], start_date: '2024.03.24', end_date: '2024.04.05', status: 'hold', progress: 15, priority: '낮음', write_date: '2024.03.26' }
-            ]
+            selectedCheckboxes: []
         }
     },
     mounted() {
         this.projectId = this.$route.params.id // projectId를 데이터 속성으로 저장
         // this.fetchProjectDetail()
+    },
+    methods: {
+        openTaskInputModal() {
+            console.log(1)
+            this.isModalVisible = true
+            console.log(2)
+        }
     }
 }
 </script>
@@ -63,7 +68,7 @@ export default {
         <div class="row align-items-start justify-content-between mb-4 g-3 border-top">
             <div class="col-auto"><h3 class="h3">담당업무</h3></div>
             <div class="col-auto">
-                <a href="#" class="btn btn-primary"> <i class="bi bi-plus-circle"></i> 업무추가</a>
+                <a href="#" class="btn btn-primary" @click="openTaskInputModal"> <i class="bi bi-plus-circle"></i> 업무추가</a>
             </div>
         </div>
         <div class="row align-items-start justify-content-between mb-4 g-3">
@@ -95,6 +100,8 @@ export default {
             </div>
         </div>
     </div>
+
+    <TaskInputModal v-model="isModalVisible" />
 </template>
 
 <style scoped>

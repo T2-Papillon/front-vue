@@ -46,7 +46,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-                    <button type="button" class="btn btn-primary">저장</button>
+                    <button type="button" class="btn btn-primary" @click="saveTask">저장</button>
                 </div>
             </div>
         </div>
@@ -55,6 +55,12 @@
 
 <script>
 export default {
-    // 모달 관련 메소드 및 데이터
+    props: ['modelValue'],
+    emits: ['update:modelValue'],
+    methods: {
+        closeModal() {
+            this.$emit('update:modelValue', false)
+        }
+    }
 }
 </script>

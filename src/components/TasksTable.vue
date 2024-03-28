@@ -49,9 +49,7 @@ export default {
         </thead>
         <tbody>
             <tr v-for="(task, index) in tasks" :key="index">
-                <td>
-                    <a href="#" class="tb-project-title">{{ task.title }}</a>
-                </td>
+                <td>{{ task.title }}</td>
                 <td class="text-start">
                     <UserProfile v-for="participant in task.participants" :key="participant" :name="participant" />
                 </td>
