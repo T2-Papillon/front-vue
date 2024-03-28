@@ -3,7 +3,7 @@
         <div class="row align-items-start justify-content-between g-3">
             <div class="col-auto">
                 <div class="title-area">
-                    <h2 class="h2">통계분석 타이틀 별로야 뭐가 좋을까요📌📊</h2>
+                    <h2 class="h2">통계분석</h2>
                     <p class="text-body-tertiary lh-sm mb-0">텍스트텍스트텍스트텍스트</p>
                 </div>
             </div>
@@ -22,19 +22,24 @@
             <div class="col-6">
                 <TaskTable />
             </div>
+            <div class="col-6">
+                <ProjectThisWeek />
+            </div>
         </div>
     </div>
 </template>
 <script>
 import PieChart from '../components/PieChart.vue'
 import ProjectOutline from '../components/ProjectOutline.vue'
-import TaskTable from '@/components/TaskTable.vue'
+import TaskTable from '../components/TaskTable.vue'
+import ProjectThisWeek from '../components/ProjectThisWeek.vue'
 
 export default {
     components: {
         PieChart,
         ProjectOutline,
-        TaskTable
+        TaskTable,
+        ProjectThisWeek
     },
     data() {
         return {
