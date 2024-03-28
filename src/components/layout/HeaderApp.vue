@@ -35,7 +35,8 @@
                             <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
                             <button class="btn btn-outline-success" type="submit"><i class="bi bi-search"></i></button>
                         </form>
-                        <ul class="me-auto mb-2 mb-lg-0" v-if="$cookies.get('user') !== null">
+                        <ul class="me-auto mb-2 mb-lg-0">
+                            <!-- <ul class="me-auto mb-2 mb-lg-0" v-if="$cookies.get('user') !== null"> -->
                             <li class="dropdown">
                                 <a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">{{ name }}</a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">

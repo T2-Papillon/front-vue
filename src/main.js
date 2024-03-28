@@ -2,7 +2,7 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
 import axios from 'axios'
-import cookie from 'vue-cookies'
+// import cookie from 'vue-cookies'
 
 import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -13,7 +13,7 @@ const app = createApp(App)
 app.config.globalProperties.axios = axios
 app.use(router)
 
-app.use(cookie)
-app.$cookies.config('1h')
+// app.use(cookie)
+// app.$cookies.config('1h')
 
 app.mount('#app')
