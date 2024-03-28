@@ -50,31 +50,32 @@ export default {
             </div>
         </div>
 
-        <div class="row">
+        <section class="row pt-5" v-if="todoProjects.length > 0">
             <div class="col">
                 <h3 class="h3 pb-4 fw-light">진행예정 <span class="h3 fw-bold">3</span> 건</h3>
                 <ProjectTable :projects="todoProjects" />
             </div>
-        </div>
-
-        <section v-if="todoProjects.length > 0">
-            <h2>진행예정 프로젝트</h2>
-            <ProjectTable :projects="todoProjects" />
         </section>
 
-        <section v-if="doingProjects.length > 0">
-            <h2>진행중 프로젝트</h2>
-            <ProjectTable :projects="doingProjects" />
+        <section class="row pt-5" v-if="doingProjects.length > 0">
+            <div class="col">
+                <h2 class="h3 pb-4 fw-light">진행중 <span class="h3 fw-bold">2</span></h2>
+                <ProjectTable :projects="doingProjects" />
+            </div>
         </section>
 
-        <section v-if="doneProjects.length > 0">
-            <h2>완료 프로젝트</h2>
-            <ProjectTable :projects="doneProjects" />
+        <section class="row pt-5" v-if="doneProjects.length > 0">
+            <div class="col">
+                <h2 class="h3 pb-4 fw-light">완료 <span class="h3 fw-bold">2</span></h2>
+                <ProjectTable :projects="doneProjects" />
+            </div>
         </section>
 
-        <section v-if="holdProjects.length > 0">
-            <h2>보류 프로젝트</h2>
-            <ProjectTable :projects="holdProjects" />
+        <section class="row pt-5" v-if="holdProjects.length > 0">
+            <div class="col">
+                <h2 class="h3 pb-4 fw-light">보류 <span class="h3 fw-bold">2</span></h2>
+                <ProjectTable :projects="holdProjects" />
+            </div>
         </section>
     </div>
 </template>
