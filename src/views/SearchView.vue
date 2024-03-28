@@ -27,17 +27,6 @@ export default {
                 const apiUrl = import.meta.env.VITE_API_URL
                 const response = await axios.get(`${apiUrl}/api/search`)
                 console.log(response.data)
-                const formattedProjects = response.data.map(project => ({
-                    title: project.projTitle,
-                    pm: [`${project.projPm.charAt(0)}`],
-                    participants: [`${project.projPm.charAt(0)}`],
-                    startDate: project.projStartDate,
-                    endDate: project.projEndDate,
-                    status: project.projectStatus, // '전체','진행중', '완료'
-                    progress: project.projPercent,
-                    priority: project.projectPriority, // '긴급', '높음', '보통', '낮음'
-                    writeDate: project.projCreateDate
-                }))
                 this.projects = formattedProjects
             } catch (error) {
                 console.error(error)
