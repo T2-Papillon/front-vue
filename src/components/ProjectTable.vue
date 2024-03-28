@@ -22,7 +22,7 @@ export default {
                 const apiUrl = import.meta.env.VITE_API_URL
                 const response = await axios.get(`${apiUrl}/search`)
                 // 프로젝트 데이터 처리 로직
-                projects.value = response.data.map(project => ({
+                projects.value = response.data.map((project) => ({
                     id: project.projNo,
                     title: project.projTitle,
                     pm: [`${project.projPm.charAt(0)}`],

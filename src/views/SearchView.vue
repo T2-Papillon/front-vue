@@ -10,7 +10,13 @@ export default {
     },
     data() {
         return {
-            checkboxItems: [],
+            checkboxItems: [
+                { id: 'all', name: '전체' },
+                { id: 'todo', name: '진행예정' },
+                { id: 'doing', name: '진행중' },
+                { id: 'done', name: '완료' },
+                { id: 'hold', name: '보류' }
+            ],
             selectedCheckboxes: [],
             projects: []
         }
@@ -59,7 +65,6 @@ export default {
             <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
             <button class="btn btn-outline-success" type="submit"><i class="bi bi-search"></i></button>
         </form>
-
         <!-- 진행상태별 필터링, 정렬기준 필터 기능 -->
         <div class="row align-items-center justify-content-between mb-4 g-3 project-list">
             <div class="col-auto">
@@ -88,4 +93,11 @@ export default {
     </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.project-list {
+    padding-top: 100px;
+}
+.sort-area {
+    padding: 0;
+}
+</style>
