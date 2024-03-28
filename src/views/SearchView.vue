@@ -2,11 +2,13 @@
 import axios from 'axios'
 import CheckboxSelector from '../components/CheckboxSelector.vue'
 import ProjectTable from '../components/ProjectTable.vue'
+import SortFilter from '../components/SortFilter.vue'
 
 export default {
     components: {
         CheckboxSelector,
-        ProjectTable
+        ProjectTable,
+        SortFilter
     },
     data() {
         return {
@@ -26,7 +28,7 @@ export default {
             try {
                 const apiUrl = import.meta.env.VITE_API_URL
                 const response = await axios.get(`${apiUrl}/search`)
-                const formattedProjects = response.data.map(project => ({
+                const formattedProjects = response.data.map((project) => ({
                     title: project.projTitle,
                     participants: project.projParticipants,
                     startDate: project.projStartDate,
@@ -73,13 +75,7 @@ export default {
                 </div>
             </div>
             <div class="col-auto d-flex">
-                <div class="btn-group">
-                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-funnel"></i> 정렬</button>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">최신순</a></li>
-                        <li><a class="dropdown-item" href="#">우선순위순</a></li>
-                    </ul>
-                </div>
+                <SortFilter />
             </div>
         </div>
 
