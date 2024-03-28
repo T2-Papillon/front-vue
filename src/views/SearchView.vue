@@ -10,6 +10,7 @@ export default {
     },
     data() {
         return {
+            searchTerm: '', // 검색어를 저장하는 상태
             checkboxItems: [
                 { id: 'all', name: '전체' },
                 { id: 'todo', name: '진행예정' },
@@ -25,21 +26,18 @@ export default {
         async fetchProjects() {
             try {
                 const apiUrl = import.meta.env.VITE_API_URL
-                const response = await axios.get(`${apiUrl}/search`)
-                const formattedProjects = response.data.map(project => ({
-                    title: project.projTitle,
-                    participants: project.projParticipants,
-                    startDate: project.projStartDate,
-                    endDate: project.projEndDate,
-                    status: project.projStatus,
-                    progress: project.projProgress,
-                    priority: project.projPriority,
-                    writeDate: project.projWriteDate
-                }))
-                this.projects = formattedProjects
+                // 검색어가 있을 경우 검색 API 호출, 없을 경우 전체 프로젝트 목록 호출
+                const searchPath = this.searchTerm ? `/search/project2?term=${this.searchTerm}` : '/search';
+                console.log(`Request URL: ${apiUrl}${searchPath}`) // 요청 URL 로그 출력
+                const response = await axios.get(`${apiUrl}${searchPath}`)
+                console.log('Response data:', response.data) // 응답 데이터 로그 출력
+                this.projects = response.data
             } catch (error) {
                 console.error(error)
             }
+        },
+        searchProjects() {
+            this.fetchProjects() // 검색어 상태를 기반으로 프로젝트 목록을 다시 불러옵니다.
         }
     },
     mounted() {
@@ -61,10 +59,11 @@ export default {
             </div>
         </div>
 
-        <form class="d-flex me-4">
-            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
+        <form @submit.prevent="searchProjects" class="d-flex me-4">
+            <input v-model="searchTerm" class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
             <button class="btn btn-outline-success" type="submit"><i class="bi bi-search"></i></button>
         </form>
+
         <!-- 진행상태별 필터링, 정렬기준 필터 기능 -->
         <div class="row align-items-center justify-content-between mb-4 g-3 project-list">
             <div class="col-auto">
@@ -86,7 +85,6 @@ export default {
         <!-- 프로젝트 목록 -->
         <div class="row pb-4">
             <div class="col">
-                <!-- 프로젝트 table -->
                 <ProjectTable :projects="projects" />
             </div>
         </div>
