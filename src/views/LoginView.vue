@@ -22,6 +22,8 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
     data() {
         return {
@@ -32,14 +34,31 @@ export default {
     },
     methods: {
         login() {
-            // 예시: 실제로는 서버로 인증 요청을 보내야 합니다.
-            if (this.username === 'admin' && this.password === 'password') {
-                // 로그인 성공 시 처리
-                this.$router.push('/dashboard') // 대시보드 페이지로 이동
-            } else {
-                // 로그인 실패 시 에러 메시지 표시
-                this.errorMessage = 'Invalid username or password'
+            let url = 'http://localhost:8080/api/signin'
+            console.log(this.username + ' / ' + this.password)
+            let data = {
+                email: this.username,
+                password: this.password
             }
+            axios
+                .post(url, data, {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Credentials': true
+                })
+                .then((res) => {
+                    if (res.status == 200) {
+                        console.log('login 성공')
+                        this.$cookies.set('user', res.data)
+                        this.$router.push('/').then(() => {
+                            location.reload()
+                        })
+                    } else {
+                        console.log(res.status)
+                    }
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
         }
     }
 }
