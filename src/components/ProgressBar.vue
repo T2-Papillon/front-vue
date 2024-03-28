@@ -18,9 +18,6 @@ export default {
 </script>
 
 <style scoped>
-.progress-wrap {
-    margin-top: 7px;
-}
 .progress-bar {
     background-color: #1bd689;
 }
