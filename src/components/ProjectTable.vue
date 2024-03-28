@@ -13,8 +13,26 @@ export default {
         StatusBadge,
         PriorityBadge
     },
+    props: {
+        projects: Array, // 프로젝트 목록
+        filterStatus: {
+            // 필터링할 상태값, 필요하지 않을 경우 null 또는 빈 문자열
+            type: String,
+            default: ''
+        }
+    },
+    computed: {
+        filteredProjects() {
+            // filterStatus가 지정되어 있지 않다면 전체 프로젝트 목록을 반환
+            if (!this.filterStatus) {
+                return this.projects
+            }
+            // filterStatus에 따라 프로젝트 목록 필터링
+            return this.projects.filter((project) => project.status === this.filterStatus)
+        }
+    },
     setup() {
-        const projects = ref([]) // projects 상태를 ref로 선언
+        const projects = ref([])
 
         // API에서 프로젝트 데이터 가져오기
         async function fetchProjects() {
@@ -23,16 +41,16 @@ export default {
                 const response = await axios.get(`${apiUrl}/search`)
                 // 프로젝트 데이터 처리 로직
                 projects.value = response.data.map((project) => ({
-                    id: project.id,
-                    title: project.title,
-                    pm: project.pm,
-                    startDate: project.startDate,
-                    endDate: project.endDate,
-                    status: project.status,
-                    participants: project.participants,
-                    progress: project.progress,
-                    priority: project.priority,
-                    writeDate: project.writeDate
+                    id: project.projNo,
+                    title: project.projTitle,
+                    pm: [`${project.projPm.charAt(0)}`],
+                    participants: [`${project.projPm.charAt(0)}`],
+                    startDate: project.projStartDate,
+                    endDate: project.projEndDate,
+                    status: project.projectStatus, // '전체','진행중', '완료'
+                    progress: project.projPercent,
+                    priority: project.projectPriority, // '긴급', '높음', '보통', '낮음'
+                    writeDate: project.projCreateDate
                 }))
             } catch (error) {
                 console.error('Error fetching projects:', error)
@@ -41,24 +59,14 @@ export default {
 
         onMounted(fetchProjects) // 컴포넌트 마운트 시 fetchProjects 호출
 
-        // 참여자 포맷 함수
-        function formatParticipants(participants) {
-            const maxVisible = 3
-
-            const safeParticipants = Array.isArray(participants) ? participants : []
-
-            const visibleParticipants = safeParticipants.slice(0, maxVisible)
-            const overflowCount = safeParticipants.length - maxVisible
-
-            return {
-                visibleParticipants,
-                overflowCount
-            }
-        }
-
         return {
             projects,
-            formatParticipants
+            formatParticipants: (participants) => {
+                const maxVisible = 3
+                const visibleParticipants = participants.slice(0, maxVisible)
+                const overflowCount = participants.length - maxVisible
+                return { visibleParticipants, overflowCount }
+            }
         }
     }
 }
@@ -84,7 +92,7 @@ export default {
                 <th class="sort align-middle" scope="col" data-sort="start_date">시작일</th>
                 <th class="sort align-middle" scope="col" data-sort="end_date">종료일</th>
                 <th class="sort text-start ps-5 align-middle" scope="col" data-sort="status">진행상태</th>
-                <th class="sort text-end align-middle" scope="col" data-sort="contributor">참여자</th>
+                <th class="sort text-center align-middle" scope="col" data-sort="contributor">참여자</th>
                 <th class="sort text-end align-middle" scope="col" data-sort="progress">진행률</th>
                 <th class="sort text-end align-middle" scope="col" data-sort="priority">우선순위</th>
                 <th class="sort text-end pe-0 align-middle" scope="write_date">작성일</th>
@@ -101,7 +109,7 @@ export default {
                 <td>{{ project.startDate }}</td>
                 <td>{{ project.endDate }}</td>
                 <td><StatusBadge :status="project.status" /></td>
-                <td class="overflow-hidden text-nowrap text-end">
+                <td class="overflow-hidden text-nowrap text-center">
                     <UserProfile v-for="(participant, index) in formatParticipants(project.participants).visibleParticipants" :key="index" :name="participant" />
                     <span v-if="formatParticipants(project.participants).overflowCount > 0">...</span>
                 </td>
@@ -109,10 +117,14 @@ export default {
                     <ProgressBar :progress="project.progress" />
                 </td>
                 <td class="text-end"><PriorityBadge :priority="project.priority" /></td>
-                <td class="text-end">{{ project.writeDate }}</td>
+                <td class="text-end text-secondary" style="font-size: 12px">{{ project.writeDate }}</td>
             </tr>
         </tbody>
     </table>
 </template>
 
-<style scoped></style>
+<style scoped>
+table tbody td {
+    vertical-align: middle;
+}
+</style>
