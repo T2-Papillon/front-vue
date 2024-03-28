@@ -20,7 +20,7 @@ export default {
             try {
                 const apiUrl = import.meta.env.VITE_API_URL
                 const response = await axios.get(`${apiUrl}/search`)
-                const formattedProjects = response.data.map((project) => ({
+                const formattedProjects = response.data.map(project => ({
                     title: project.projTitle,
                     participants: project.projParticipants,
                     startDate: project.projStartDate,
