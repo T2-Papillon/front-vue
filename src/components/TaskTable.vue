@@ -49,7 +49,9 @@ export default {
         </thead>
         <tbody>
             <tr v-for="(task, index) in tasks" :key="index">
-                <td>{{ task.title }}</td>
+                <td>
+                    <a href="#" class="task-title">{{ task.title }}</a>
+                </td>
                 <td class="text-start">
                     <UserProfile v-for="participant in task.participants" :key="participant" :name="participant" />
                 </td>
@@ -64,4 +66,7 @@ export default {
     </table>
 </template>
 
-<style lang=""></style>
+<style>
+.task-title {
+}
+</style>
