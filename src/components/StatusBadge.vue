@@ -38,6 +38,7 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
+    max-width: 110px;
     height: 26px;
     border-radius: 5px;
     border: 1px solid transparent;
