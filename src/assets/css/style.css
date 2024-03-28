@@ -2,7 +2,9 @@ main {
     padding-top: 80px;
     padding-bottom: 100px;
 }
-
+header {
+    border-bottom: 1px solid #eaeaea;
+}
 .inner {
     max-width: 1200px !important;
     width: 100%;

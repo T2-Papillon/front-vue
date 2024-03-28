@@ -41,14 +41,14 @@ const router = createRouter({
         {
             path: '/project',
             name: 'project',
-            component: () => import('../views/ProjectView.vue')
-            // children: [
-            //     {
-            //         path: 'detail/:id',
-            //         name: 'projectDetail',
-            //         component: () => import('../views/ProjectDetailView.vue')
-            //     }
-            // ]
+            component: () => import('../views/ProjectView.vue'),
+            children: [
+                {
+                    path: 'detail/:id',
+                    name: 'projectDetail',
+                    component: () => import('../views/ProjectDetailView.vue')
+                }
+            ]
         },
         {
             path: '/projectdetail',

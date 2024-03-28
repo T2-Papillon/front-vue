@@ -4,14 +4,14 @@ import CheckboxSelector from '../components/CheckboxSelector.vue'
 // import ProjectInfo from '../components/ProjectInfo.vue'
 import TaskInputModal from '../components/TaskInputModal.vue'
 
-import TasksTable from '../components/TasksTable.vue'
+import TaskTable from '../components/TaskTable.vue'
 
 export default {
     components: {
         CheckboxSelector,
         TaskInputModal,
         // ProjectInfo,
-        TasksTable
+        TaskTable
     },
     props: {
         project: Object // props로 project를 받아옴
@@ -96,7 +96,7 @@ export default {
         <!-- 하위업무 -->
         <div class="row">
             <div class="col">
-                <TasksTable />
+                <TaskTable />
             </div>
         </div>
     </div>
