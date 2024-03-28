@@ -10,7 +10,14 @@ export default {
     },
     data() {
         return {
-            checkboxItems: [],
+            searchTerm: '', // 검색어를 저장하는 상태
+            checkboxItems: [
+                { id: 'all', name: '전체' },
+                { id: 'todo', name: '진행예정' },
+                { id: 'doing', name: '진행중' },
+                { id: 'done', name: '완료' },
+                { id: 'hold', name: '보류' }
+            ],
             selectedCheckboxes: [],
             projects: []
         }
@@ -19,21 +26,16 @@ export default {
         async fetchProjects() {
             try {
                 const apiUrl = import.meta.env.VITE_API_URL
-                const response = await axios.get(`${apiUrl}/search`)
-                const formattedProjects = response.data.map((project) => ({
-                    title: project.projTitle,
-                    participants: project.projParticipants,
-                    startDate: project.projStartDate,
-                    endDate: project.projEndDate,
-                    status: project.projStatus,
-                    progress: project.projProgress,
-                    priority: project.projPriority,
-                    writeDate: project.projWriteDate
-                }))
-                this.projects = formattedProjects
+                // 검색어가 있을 경우 검색 API 호출, 없을 경우 전체 프로젝트 목록 호출
+                const searchPath = this.searchTerm ? `/search/project?searchTerm=${this.searchTerm}` : '/search'
+                const response = await axios.get(`${apiUrl}${searchPath}`)
+                this.projects = response.data
             } catch (error) {
                 console.error(error)
             }
+        },
+        searchProjects() {
+            this.fetchProjects() // 검색어 상태를 기반으로 프로젝트 목록을 다시 불러옵니다.
         }
     },
     mounted() {
@@ -55,8 +57,8 @@ export default {
             </div>
         </div>
 
-        <form class="d-flex me-4">
-            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
+        <form @submit.prevent="searchProjects" class="d-flex me-4">
+            <input v-model="searchTerm" class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
             <button class="btn btn-outline-success" type="submit"><i class="bi bi-search"></i></button>
         </form>
 
@@ -88,4 +90,11 @@ export default {
     </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.project-list {
+    padding-top: 100px;
+}
+.sort-area {
+    padding: 0;
+}
+</style>

@@ -15,12 +15,12 @@ export default {
     },
     setup() {
         const projects = ref([]) // projects 상태를 ref로 선언
-
         // API에서 프로젝트 데이터 가져오기
         async function fetchProjects() {
             try {
                 const apiUrl = import.meta.env.VITE_API_URL
                 const response = await axios.get(`${apiUrl}/search`)
+                console.log(response.data)
                 // 프로젝트 데이터 처리 로직
                 projects.value = response.data.map((project) => ({
                     id: project.projNo,
