@@ -20,7 +20,7 @@
                 <PieChart />
             </div>
             <div class="col-6">
-                <ProjectTable />
+                <TaskTable />
             </div>
         </div>
     </div>
@@ -28,13 +28,13 @@
 <script>
 import PieChart from '../components/PieChart.vue'
 import ProjectOutline from '../components/ProjectOutline.vue'
-import ProjectTable from '@/components/ProjectTable.vue'
+import TaskTable from '@/components/TaskTable.vue'
 
 export default {
     components: {
         PieChart,
         ProjectOutline,
-        ProjectTable
+        TaskTable
     },
     data() {
         return {
