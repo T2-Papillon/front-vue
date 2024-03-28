@@ -170,6 +170,7 @@ export default {
                         <col style="width: 100px" />
                         <col style="width: 180px" />
                         <col style="width: 80px" />
+                        <col />
                         <col style="width: 126px" />
                     </colgroup>
                     <thead>
@@ -197,6 +198,7 @@ export default {
                             <td><StatusBadge :status="task.status" /></td>
                             <td><ProgressBar :progress="task.progress" /></td>
                             <td class="text-end"><PriorityBadge :priority="task.priority" /></td>
+                            <td></td>
                             <td class="text-end">{{ task.write_date }}</td>
                         </tr>
                     </tbody>
