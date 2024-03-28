@@ -52,7 +52,7 @@ export default {
         <div class="col-auto">
             <div class="title-area">
                 <h2 class="h2">{{ project.projTitle }}</h2>
-                <h2 class="h2">타이틀타이틀</h2>
+                <h2 class="h2">📌 타이틀타이틀 안보임 수정해야함</h2>
                 <p class="text-body-tertiary lh-sm mb-0">ProjectNo.00000001</p>
             </div>
         </div>
