@@ -1,6 +1,6 @@
 <script>
+import { ref, onMounted } from 'vue'
 import axios from 'axios'
-
 import UserProfile from '../components/UserProfile.vue'
 import ProgressBar from '../components/ProgressBar.vue'
 import StatusBadge from '../components/StatusBadge.vue'
@@ -13,27 +13,57 @@ export default {
         StatusBadge,
         PriorityBadge
     },
-    props: {
-        projects: Array
-    },
-    methods: {
-        //참여자 노출 최대 3명 나머지 .. 처리
-        formatParticipants(participants) {
-            if (!Array.isArray(participants)) {
-                return { visibleParticipants: [], overflowCount: 0 }
+    setup() {
+        const projects = ref([]) // projects 상태를 ref로 선언
+
+        // API에서 프로젝트 데이터 가져오기
+        async function fetchProjects() {
+            try {
+                const apiUrl = import.meta.env.VITE_API_URL
+                const response = await axios.get(`${apiUrl}/search`)
+                // 프로젝트 데이터 처리 로직
+                projects.value = response.data.map((project) => ({
+                    id: project.id,
+                    title: project.title,
+                    pm: project.pm,
+                    startDate: project.startDate,
+                    endDate: project.endDate,
+                    status: project.status,
+                    participants: project.participants,
+                    progress: project.progress,
+                    priority: project.priority,
+                    writeDate: project.writeDate
+                }))
+            } catch (error) {
+                console.error('Error fetching projects:', error)
             }
+        }
+
+        onMounted(fetchProjects) // 컴포넌트 마운트 시 fetchProjects 호출
+
+        // 참여자 포맷 함수
+        function formatParticipants(participants) {
             const maxVisible = 3
-            const visibleParticipants = participants.slice(0, maxVisible)
-            const overflowCount = participants.length - maxVisible
+
+            const safeParticipants = Array.isArray(participants) ? participants : []
+
+            const visibleParticipants = safeParticipants.slice(0, maxVisible)
+            const overflowCount = safeParticipants.length - maxVisible
 
             return {
                 visibleParticipants,
                 overflowCount
             }
         }
+
+        return {
+            projects,
+            formatParticipants
+        }
     }
 }
 </script>
+
 <template>
     <table class="table fs-9 mb-5 border-top border-translucent">
         <colgroup>
