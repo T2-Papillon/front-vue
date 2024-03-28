@@ -50,7 +50,7 @@ export default {
         <tbody>
             <tr v-for="(task, index) in tasks" :key="index">
                 <td>
-                    <a href="#" class="task-title">{{ task.title }}</a>
+                    <a href="#" class="tb-project-title">{{ task.title }}</a>
                 </td>
                 <td class="text-start">
                     <UserProfile v-for="participant in task.participants" :key="participant" :name="participant" />
@@ -60,13 +60,10 @@ export default {
                 <td><StatusBadge :status="task.status" /></td>
                 <td><ProgressBar :progress="task.progress" /></td>
                 <td class="text-end"><PriorityBadge :priority="task.priority" /></td>
-                <td class="text-end">{{ task.write_date }}</td>
+                <td class="text-end text-secondary">{{ task.write_date }}</td>
             </tr>
         </tbody>
     </table>
 </template>
 
-<style>
-.task-title {
-}
-</style>
+<style></style>

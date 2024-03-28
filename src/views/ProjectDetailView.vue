@@ -17,9 +17,8 @@ export default {
         }
     },
     setup() {
-        const project = ref({}) // `reactive` 대신 `ref` 사용
+        const project = ref({})
         const checkboxItems = ref([
-            // 배열도 `ref`로 반응형 만들기
             { id: 'todo', name: '진행예정' },
             { id: 'doing', name: '진행중' },
             { id: 'done', name: '완료' },
@@ -32,7 +31,7 @@ export default {
                 const response = await axios.get(`${apiUrl}/search`)
                 console.log(response.data)
 
-                project.value = response.data // `ref`의 값에 접근할 때는 `.value` 사용
+                project.value = response.data
             } catch (error) {
                 console.error('프로젝트 데이터를 가져오는데 실패했습니다:', error)
             }
@@ -49,13 +48,14 @@ export default {
     },
 
     mounted() {
-        this.fetchProjectDetail() // 특정 프로젝트 정보를 가져오는 메서드 호출
+        this.fetchProjectDetail()
     }
 }
 </script>
 
 <template>
     <div class="inner">
+        <!-- 프로젝트 정보 -->
         <ProjectInfo :project="project" />
 
         <!-- 정렬 -->
@@ -96,42 +96,4 @@ export default {
     </div>
 </template>
 
-<style scoped>
-.table-borderless {
-    border-top: 2px solid #e6eef4;
-}
-
-.table-borderless th,
-.table-borderless td {
-    padding: 15px 0;
-    font-size: 14px !important;
-    text-align: left;
-}
-.table-borderless th {
-    border-bottom: 0;
-    color: #384554;
-    font-weight: 700;
-}
-
-.table-borderless td {
-    border-bottom: 0 !important;
-    color: #656f7d;
-}
-.table-borderless th:nth-child(3) {
-    padding-left: 30px;
-}
-
-.dash-line {
-    margin: 0;
-    border: 0;
-    border-top: 1px dashed #d2dce5;
-    opacity: 0.6;
-}
-.text-area {
-    padding: 30px;
-    padding-left: 0;
-    font-size: 14px;
-    color: #333;
-    line-height: 1.8;
-}
-</style>
+<style scoped></style>

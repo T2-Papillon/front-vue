@@ -4,7 +4,6 @@ import UserProfile from '../components/UserProfile.vue'
 import ProgressBar from '../components/ProgressBar.vue'
 import StatusBadge from '../components/StatusBadge.vue'
 import PriorityBadge from '../components/PriorityBadge.vue'
-// import { useProjects } from '@/composables/useProjects'
 
 export default {
     components: {
@@ -54,13 +53,13 @@ export default {
             <div class="title-area">
                 <h2 class="h2">{{ project.projTitle }}</h2>
                 <h2 class="h2">타이틀타이틀</h2>
-                <p class="text-body-tertiary lh-sm mb-0">텍스트텍스트텍스트텍스트</p>
+                <p class="text-body-tertiary lh-sm mb-0">ProjectNo.00000001</p>
             </div>
         </div>
         <div class="col-auto">
             <div class="top-btn-area">
-                <button class="btn btn-outline-dark me-4">대시보드</button>
-                <button class="btn btn-dark">통계분석</button>
+                <button class="btn btn-outline-dark me-4">대시보드 바로가기</button>
+                <button class="btn btn-dark">통계분석 바로가기</button>
             </div>
         </div>
     </div>
@@ -88,6 +87,7 @@ export default {
             <tr>
                 <th>참여자</th>
                 <td>
+                    참여자 수정해야해수정해야해
                     <!-- <div v-for="(participant, index) in formatParticipants(project.participants).visibleParticipants" :key="index">
                         <UserProfile :name="participant" />
                     </div>
@@ -96,13 +96,57 @@ export default {
                 <th>프로젝트 상태</th>
                 <td><StatusBadge :status="project.status" /></td>
             </tr>
-
             <tr>
                 <th>진행률</th>
                 <td><ProgressBar :progress="project.progress" /></td>
                 <th></th>
                 <td></td>
             </tr>
+            <tr>
+                <th>내용</th>
+                <td colspan="3">
+                    <div class="text-area">내용추가해야함 db데이터가져오기</div>
+                </td>
+            </tr>
         </tbody>
     </table>
 </template>
+<style scoped>
+.table-borderless {
+    border-top: 2px solid #e6eef4;
+}
+
+.table-borderless th,
+.table-borderless td {
+    padding: 15px 0;
+    font-size: 14px !important;
+    text-align: left;
+}
+.table-borderless th {
+    border-bottom: 0;
+    color: #384554;
+    font-weight: 700;
+}
+
+.table-borderless td {
+    border-bottom: 0 !important;
+    color: #656f7d;
+}
+.table-borderless th:nth-child(3) {
+    padding-left: 30px;
+}
+
+.dash-line {
+    margin: 0;
+    border: 0;
+    border-top: 1px dashed #d2dce5;
+    opacity: 0.6;
+}
+.text-area {
+    padding: 30px;
+    padding-left: 0;
+    font-size: 14px;
+    color: #333;
+    line-height: 1.8;
+}
+</style>
