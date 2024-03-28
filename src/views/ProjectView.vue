@@ -1,53 +1,26 @@
 <script>
-import { ref, onMounted, computed } from 'vue'
-import axios from 'axios'
+import { ref, onMounted } from 'vue'
 import ProjectTable from '../components/ProjectTable.vue'
+import { useProjects } from '@/composables/useProjects'
 
 export default {
     components: {
         ProjectTable
     },
     setup() {
-        const projects = ref([])
+        const { projects, fetchProjects } = useProjects()
 
-        // 프로젝트 데이터를 API에서 가져오는 함수
-        async function fetchProjects() {
-            try {
-                const apiUrl = import.meta.env.VITE_API_URL
-                const response = await axios.get(`${apiUrl}/search`) // API 호출 주소 수정
+        const todoProjects = ref([])
+        const doingProjects = ref([])
+        const doneProjects = ref([])
+        const holdProjects = ref([])
 
-                projects.value = response.data.map((project) => ({
-                    id: project.projNo,
-                    title: project.projTitle,
-                    pm: [`${project.projPm.charAt(0)}`],
-                    participants: [`${project.projPm.charAt(0)}`],
-                    startDate: project.projStartDate,
-                    endDate: project.projEndDate,
-                    status: project.projectStatus ? project.projectStatus.toLowerCase() : 'unknown', // '전체','진행중', '완료'
-                    progress: project.projPercent,
-                    priority: project.projectPriority, // '긴급', '높음', '보통', '낮음'
-                    writeDate: project.projCreateDate
-                }))
-                console.log('Loaded Projects:', projects.value) // 전체 프로젝트 데이터 로깅
-            } catch (error) {
-                console.error('Error fetching projects:', error)
-            }
-        }
-
-        onMounted(fetchProjects)
-
-        const todoProjects = computed(() => projects.value.filter((project) => project.status === 'todo'))
-        const doingProjects = computed(() => projects.value.filter((project) => project.status === 'doing'))
-        const doneProjects = computed(() => projects.value.filter((project) => project.status === 'done'))
-        const holdProjects = computed(() => projects.value.filter((project) => project.status === 'hold'))
-
-        onMounted(() => {
-            fetchProjects().then(() => {
-                console.log('Todo Projects:', todoProjects.value)
-                console.log('Doing Projects:', doingProjects.value)
-                console.log('Done Projects:', doneProjects.value)
-                console.log('Hold Projects:', holdProjects.value)
-            })
+        onMounted(async () => {
+            await fetchProjects()
+            todoProjects.value = projects.value.filter((p) => p.status === 'todo')
+            doingProjects.value = projects.value.filter((p) => p.status === 'doing')
+            doneProjects.value = projects.value.filter((p) => p.status === 'done')
+            holdProjects.value = projects.value.filter((p) => p.status === 'hold')
         })
 
         return {

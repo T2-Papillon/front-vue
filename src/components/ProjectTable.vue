@@ -1,10 +1,10 @@
 <script>
-import { ref, onMounted } from 'vue'
-import axios from 'axios'
+import { onMounted } from 'vue'
 import UserProfile from '../components/UserProfile.vue'
 import ProgressBar from '../components/ProgressBar.vue'
 import StatusBadge from '../components/StatusBadge.vue'
 import PriorityBadge from '../components/PriorityBadge.vue'
+import { useProjects } from '@/composables/useProjects'
 
 export default {
     components: {
@@ -15,41 +15,15 @@ export default {
     },
 
     setup() {
-        const projects = ref([])
+        const { projects, fetchProjects } = useProjects()
 
-        // 참여자 목록을 포맷하는 함수
+        // 참여자 목록을 포맷하는 함수 정의
         const formatParticipants = (participants) => {
             const maxVisible = 3
             const visibleParticipants = participants.slice(0, maxVisible)
             const overflowCount = participants.length - maxVisible
 
             return { visibleParticipants, overflowCount }
-        }
-
-        // API에서 프로젝트 데이터 가져오기
-        async function fetchProjects() {
-            try {
-                const apiUrl = import.meta.env.VITE_API_URL
-                const response = await axios.get(`${apiUrl}/search`)
-
-                projects.value = response.data.map((project) => ({
-                    id: project.projNo,
-                    title: project.projTitle,
-                    pm: [`${project.projPm.charAt(0)}`],
-                    participants: [`${project.projPm.charAt(0)}`],
-                    startDate: project.projStartDate,
-                    endDate: project.projEndDate,
-                    status: project.projectStatus ? project.projectStatus.toLowerCase() : 'unknown', // 상태를 소문자로 변경
-                    progress: project.projPercent,
-                    priority: project.projectPriority,
-                    writeDate: project.projCreateDate
-                }))
-
-                // 로드된 프로젝트 데이터 로깅
-                console.log('Loaded Projects:', projects.value)
-            } catch (error) {
-                console.error('Error fetching projects:', error)
-            }
         }
 
         onMounted(fetchProjects)
