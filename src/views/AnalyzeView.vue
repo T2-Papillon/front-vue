@@ -1,6 +1,6 @@
 <template>
     <div class="inner">
-        <br class="row align-items-start justify-content-between g-3">
+        <div class="row align-items-start justify-content-between g-3">
             <div class="col-auto">
                 <div class="title-area">
                     <h2 class="h2">통계분석 타이틀 별로야 뭐가 좋을까요📌📊</h2>
@@ -19,17 +19,22 @@
             <div class="col-6">
                 <PieChart />
             </div>
+            <div class="col-6">
+                <ProjectTable />
+            </div>
         </div>
     </div>
 </template>
 <script>
 import PieChart from '../components/PieChart.vue'
 import ProjectOutline from '../components/ProjectOutline.vue'
+import ProjectTable from '@/components/ProjectTable.vue'
 
 export default {
     components: {
         PieChart,
-        ProjectOutline
+        ProjectOutline,
+        ProjectTable
     },
     data() {
         return {
@@ -41,7 +46,6 @@ export default {
                 progress: 70,
                 writeDate: '2024.03.03'
             }
-
         }
     }
 }
