@@ -1,5 +1,5 @@
 <script>
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted } from 'vue'
 import axios from 'axios'
 import UserProfile from '../components/UserProfile.vue'
 import ProgressBar from '../components/ProgressBar.vue'
@@ -31,6 +31,7 @@ export default {
             try {
                 const apiUrl = import.meta.env.VITE_API_URL
                 const response = await axios.get(`${apiUrl}/search`)
+
                 projects.value = response.data.map((project) => ({
                     id: project.projNo,
                     title: project.projTitle,
@@ -43,6 +44,9 @@ export default {
                     priority: project.projectPriority,
                     writeDate: project.projCreateDate
                 }))
+
+                // 로드된 프로젝트 데이터 로깅
+                console.log('Loaded Projects:', projects.value)
             } catch (error) {
                 console.error('Error fetching projects:', error)
             }
