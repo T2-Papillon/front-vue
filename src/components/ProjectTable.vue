@@ -1,5 +1,5 @@
 <script>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import axios from 'axios'
 import UserProfile from '../components/UserProfile.vue'
 import ProgressBar from '../components/ProgressBar.vue'
@@ -13,33 +13,24 @@ export default {
         StatusBadge,
         PriorityBadge
     },
-    props: {
-        projects: Array, // 프로젝트 목록
-        filterStatus: {
-            // 필터링할 상태값, 필요하지 않을 경우 null 또는 빈 문자열
-            type: String,
-            default: ''
-        }
-    },
-    computed: {
-        filteredProjects() {
-            // filterStatus가 지정되어 있지 않다면 전체 프로젝트 목록을 반환
-            if (!this.filterStatus) {
-                return this.projects
-            }
-            // filterStatus에 따라 프로젝트 목록 필터링
-            return this.projects.filter((project) => project.status === this.filterStatus)
-        }
-    },
+
     setup() {
         const projects = ref([])
+
+        // 참여자 목록을 포맷하는 함수
+        const formatParticipants = (participants) => {
+            const maxVisible = 3
+            const visibleParticipants = participants.slice(0, maxVisible)
+            const overflowCount = participants.length - maxVisible
+
+            return { visibleParticipants, overflowCount }
+        }
 
         // API에서 프로젝트 데이터 가져오기
         async function fetchProjects() {
             try {
                 const apiUrl = import.meta.env.VITE_API_URL
                 const response = await axios.get(`${apiUrl}/search`)
-                // 프로젝트 데이터 처리 로직
                 projects.value = response.data.map((project) => ({
                     id: project.projNo,
                     title: project.projTitle,
@@ -47,9 +38,9 @@ export default {
                     participants: [`${project.projPm.charAt(0)}`],
                     startDate: project.projStartDate,
                     endDate: project.projEndDate,
-                    status: project.projectStatus, // '전체','진행중', '완료'
+                    status: project.projectStatus ? project.projectStatus.toLowerCase() : 'unknown', // 상태를 소문자로 변경
                     progress: project.projPercent,
-                    priority: project.projectPriority, // '긴급', '높음', '보통', '낮음'
+                    priority: project.projectPriority,
                     writeDate: project.projCreateDate
                 }))
             } catch (error) {
@@ -57,16 +48,11 @@ export default {
             }
         }
 
-        onMounted(fetchProjects) // 컴포넌트 마운트 시 fetchProjects 호출
+        onMounted(fetchProjects)
 
         return {
             projects,
-            formatParticipants: (participants) => {
-                const maxVisible = 3
-                const visibleParticipants = participants.slice(0, maxVisible)
-                const overflowCount = participants.length - maxVisible
-                return { visibleParticipants, overflowCount }
-            }
+            formatParticipants
         }
     }
 }
