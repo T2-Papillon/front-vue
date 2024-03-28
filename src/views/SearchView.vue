@@ -27,8 +27,10 @@ export default {
             try {
                 const apiUrl = import.meta.env.VITE_API_URL
                 // 검색어가 있을 경우 검색 API 호출, 없을 경우 전체 프로젝트 목록 호출
-                const searchPath = this.searchTerm ? `/search/project?searchTerm=${this.searchTerm}` : '/search'
+                const searchPath = this.searchTerm ? `/search/project2?term=${this.searchTerm}` : '/search';
+                console.log(`Request URL: ${apiUrl}${searchPath}`) // 요청 URL 로그 출력
                 const response = await axios.get(`${apiUrl}${searchPath}`)
+                console.log('Response data:', response.data) // 응답 데이터 로그 출력
                 this.projects = response.data
             } catch (error) {
                 console.error(error)
