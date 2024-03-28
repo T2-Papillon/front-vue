@@ -86,7 +86,6 @@ export default {
         <!-- 프로젝트 목록 -->
         <div class="row pb-4">
             <div class="col">
-                <!-- 프로젝트 table -->
                 <ProjectTable :projects="projects" />
             </div>
         </div>
