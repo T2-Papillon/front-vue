@@ -32,18 +32,6 @@ export default {
                 const response = await axios.get(`${apiUrl}${searchPath}`)
                 console.log('Response data:', response.data) // 응답 데이터 로그 출력
                 this.projects = response.data
-                const response = await axios.get(`${apiUrl}/search`)
-                const formattedProjects = response.data.map(project => ({
-                    title: project.projTitle,
-                    participants: project.projParticipants,
-                    startDate: project.projStartDate,
-                    endDate: project.projEndDate,
-                    status: project.projStatus,
-                    progress: project.projProgress,
-                    priority: project.projPriority,
-                    writeDate: project.projWriteDate
-                }))
-                this.projects = formattedProjects
             } catch (error) {
                 console.error(error)
             }
@@ -75,6 +63,7 @@ export default {
             <input v-model="searchTerm" class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
             <button class="btn btn-outline-success" type="submit"><i class="bi bi-search"></i></button>
         </form>
+
         <!-- 진행상태별 필터링, 정렬기준 필터 기능 -->
         <div class="row align-items-center justify-content-between mb-4 g-3 project-list">
             <div class="col-auto">
