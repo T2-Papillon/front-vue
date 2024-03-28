@@ -57,7 +57,7 @@ export default {
         <section class="row pt-5" v-if="todoProjects.length > 0">
             <div class="col">
                 <h3 class="h3 pb-4 fw-light">
-                    진행예정 <span class="h3 fw-bold">{{ todoProjects.length }}</span> 건
+                    📌 진행예정 <span class="h3 fw-bold">{{ todoProjects.length }}</span> 건
                 </h3>
                 <ProjectTable :projects="todoProjects" />
             </div>
@@ -66,7 +66,7 @@ export default {
         <section class="row pt-5" v-if="doingProjects.length > 0">
             <div class="col">
                 <h2 class="h3 pb-4 fw-light">
-                    진행중 <span class="h3 fw-bold">{{ doingProjects.length }}</span> 건
+                    📌 진행중 <span class="h3 fw-bold">{{ doingProjects.length }}</span> 건
                 </h2>
                 <ProjectTable :projects="doingProjects" />
             </div>
@@ -75,7 +75,7 @@ export default {
         <section class="row pt-5" v-if="doneProjects.length > 0">
             <div class="col">
                 <h2 class="h3 pb-4 fw-light">
-                    완료 <span class="h3 fw-bold">{{ doneProjects.length }}</span> 건
+                    📌 완료 <span class="h3 fw-bold">{{ doneProjects.length }}</span> 건
                 </h2>
                 <ProjectTable :projects="doneProjects" />
             </div>
@@ -84,7 +84,7 @@ export default {
         <section class="row pt-5" v-if="holdProjects.length > 0">
             <div class="col">
                 <h2 class="h3 pb-4 fw-light">
-                    보류 <span class="h3 fw-bold">{{ holdProjects.length }}</span> 건
+                    📌 보류 <span class="h3 fw-bold">{{ holdProjects.length }}</span> 건
                 </h2>
                 <ProjectTable :projects="holdProjects" />
             </div>
