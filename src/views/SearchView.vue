@@ -53,29 +53,34 @@ export default {
     <div class="inner">
         <!-- 통합검색 영역 -->
         <div class="row align-items-center justify-content-center g-3">
-            <div class="col text-center d-flex justify-content-center align-items-center">
+            <div class="col d-flex justify-content-center align-items-center">
                 <div class="search-area">
                     <div class="title-area">
-                        <h2 class="h2">통합 검색</h2>
-                        <p class="text-body-tertiary lh-sm mb-0">검색어를 입력해주세요</p>
+                        <h2 class="h2 text-center">통합 검색 🔍</h2>
+                        <p class="text-body-tertiary lh-sm mb-0">자유롭게 검색을 시작하세요! 알맞는 검색어를 입력해보세요. >> 멘트아무거나아무거나</p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <form class="d-flex me-4">
-            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-            <button class="btn btn-outline-success" type="submit"><i class="bi bi-search"></i></button>
-        </form>
-        <!-- 진행상태별 필터링, 정렬기준 필터 기능 -->
+        <div class="row d-flex align-items-center justify-content-center mx-auto w-50">
+            <form class="d-flex align-items-center">
+                <input class="form-control me-2" type="search" placeholder="프로젝트명 또는 이름으로 검색해주세요" aria-label="Search" />
+                <button class="btn btn-outline-success" type="submit"><i class="bi bi-search"></i></button>
+            </form>
+        </div>
+
         <div class="row align-items-center justify-content-between mb-4 g-3 project-list">
             <div class="col-auto">
                 <div>
+                    <!-- 체크박스 -->
                     <CheckboxSelector :items="checkboxItems" selectAllId="flexCheckDefault" />
                 </div>
             </div>
             <div class="col-auto d-flex">
-                <SortFilter />
+                <!-- 정렬기준 필터 -->
+                <!-- <SortFilter /> -->
+                <SortFilter :sortByLatest="sortByLatest" :sortByPriority="sortByPriority" />
             </div>
         </div>
 

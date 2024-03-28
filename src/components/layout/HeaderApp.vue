@@ -1,9 +1,17 @@
+<script>
+import UserProfile from '@/components/UserProfile.vue'
+export default {
+    components: {
+        UserProfile
+    }
+}
+</script>
 <template>
     <header>
         <div class="inner">
             <div class="d-flex align-items-center justify-content-between">
                 <h1 class="logo">
-                    <a href="#"><img src="/public/images/logo.svg" alt="boogle logo" /></a>
+                    <a href="/"><img src="/public/images/logo.svg" alt="boogle logo" /></a>
                 </h1>
 
                 <nav class="navbar navbar-expand-lg">
@@ -38,6 +46,9 @@
                         </form>
                         <ul class="me-auto mb-2 mb-lg-0">
                             <li class="dropdown">
+                                <UserProfile />
+                            </li>
+                            <!-- <li class="dropdown">
                                 <a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"> 홍길동 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     <li><span class="dropdown-item">개발 1팀</span></li>
@@ -50,7 +61,7 @@
                                         <a class="dropdown-item" href="#">Something else here</a>
                                     </li>
                                 </ul>
-                            </li>
+                            </li> -->
                         </ul>
                     </div>
                 </nav>
@@ -58,9 +69,5 @@
         </div>
     </header>
 </template>
-
-<script>
-export default {}
-</script>
 
 <style scoped></style>

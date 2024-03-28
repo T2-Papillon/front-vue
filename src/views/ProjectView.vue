@@ -1,13 +1,11 @@
 <script>
 import { ref, onMounted } from 'vue'
 import ProjectTable from '../components/ProjectTable.vue'
-import SortFilter from '../components/SortFilter.vue'
 import { useProjects } from '@/composables/useProjects'
 
 export default {
     components: {
-        ProjectTable,
-        SortFilter
+        ProjectTable
     },
     setup() {
         const { projects, fetchProjects } = useProjects()
@@ -61,7 +59,6 @@ export default {
                 <h3 class="h3 pb-4 fw-light">
                     📌 진행예정 <span class="h3 fw-bold">{{ todoProjects.length }}</span> 건
                 </h3>
-                <SortFilter />
                 <ProjectTable :projects="todoProjects" />
             </div>
         </section>
@@ -71,7 +68,6 @@ export default {
                 <h2 class="h3 pb-4 fw-light">
                     📌 진행중 <span class="h3 fw-bold">{{ doingProjects.length }}</span> 건
                 </h2>
-                <SortFilter />
                 <ProjectTable :projects="doingProjects" />
             </div>
         </section>
@@ -81,7 +77,6 @@ export default {
                 <h2 class="h3 pb-4 fw-light">
                     📌 완료 <span class="h3 fw-bold">{{ doneProjects.length }}</span> 건
                 </h2>
-                <SortFilter />
                 <ProjectTable :projects="doneProjects" />
             </div>
         </section>
@@ -91,7 +86,6 @@ export default {
                 <h2 class="h3 pb-4 fw-light">
                     📌 보류 <span class="h3 fw-bold">{{ holdProjects.length }}</span> 건
                 </h2>
-                <SortFilter />
                 <ProjectTable :projects="holdProjects" />
             </div>
         </section>
