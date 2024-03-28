@@ -10,7 +10,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="project in projects" :key="project.id">                
+                <tr v-for="project in projects" :key="project.id">
                     <td>
                         <user-profile :name="project.assignee" />
                     </td>
@@ -32,26 +32,45 @@ import StatusBadge from '../components/StatusBadge.vue'
 import PriorityBadge from '../components/PriorityBadge.vue'
 
 export default {
-  components: {
-    UserProfile,
-    StatusBadge,
-    PriorityBadge
-  },
-  props: {
-    projects: Array
-  }
+    components: {
+        UserProfile,
+        StatusBadge,
+        PriorityBadge
+    },
+    props: {
+        projects: Array
+    }
 }
 </script>
 
 <style>
-/* 이곳에 CSS 스타일을 추가하세요. */
 .project-table {
-  /* 테이블 스타일 */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    width: 100%;
+    border-collapse: collapse;
 }
-.project-table table {
-  /* 기본 테이블 스타일 */
+
+.project-table thead {
+    background-color: #f3f3f3;
 }
-.project-table th, .project-table td {
-  /* 헤더와 셀 스타일 */
+
+.project-table th,
+.project-table td {
+    border: 1px solid #e1e1e1;
+    padding: 12px 15px;
+    text-align: left;
+}
+
+.project-table th {
+    font-weight: 600;
+    color: #333;
+}
+
+.project-table tr:nth-child(even) {
+    background-color: #fafafa;
+}
+
+.project-table td {
+    color: #666;
 }
 </style>

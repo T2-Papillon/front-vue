@@ -22,19 +22,24 @@
             <div class="col-6">
                 <TaskTable />
             </div>
+            <div class="col-6">
+                <ProjectThisWeek />
+            </div>
         </div>
     </div>
 </template>
 <script>
 import PieChart from '../components/PieChart.vue'
 import ProjectOutline from '../components/ProjectOutline.vue'
-import TaskTable from '@/components/TaskTable.vue'
+import TaskTable from '../components/TaskTable.vue'
+import ProjectThisWeek from '../components/ProjectThisWeek.vue'
 
 export default {
     components: {
         PieChart,
         ProjectOutline,
-        TaskTable
+        TaskTable,
+        ProjectThisWeek
     },
     data() {
         return {
