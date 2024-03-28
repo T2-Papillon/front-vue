@@ -87,19 +87,8 @@ export default {
     </table>
 </template>
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<style scoped></style>
-=======
-=======
->>>>>>> 37445464cb82ca12b56535e913774219d12ba598
 <style scoped>
 table tbody td {
     vertical-align: middle;
 }
-<<<<<<< HEAD
 </style>
->>>>>>> ba4a3d5ef23db8d83ab8254641d0c70db20371e5
-=======
-</style>
->>>>>>> 37445464cb82ca12b56535e913774219d12ba598
