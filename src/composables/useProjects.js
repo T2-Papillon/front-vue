@@ -23,6 +23,8 @@ export function useProjects() {
                 priority: project.projectPriority, // '긴급', '높음', '보통', '낮음'
                 writeDate: formatDate(project.projCreateDate)
             }))
+
+            console.log('Projects:', projects.value)
         } catch (error) {
             console.error('Error fetching projects:', error)
         }

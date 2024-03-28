@@ -88,7 +88,5 @@ export default {
 </template>
 
 <style scoped>
-table tbody td {
-    vertical-align: middle;
-}
+
 </style>

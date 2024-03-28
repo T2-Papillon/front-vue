@@ -1,35 +1,27 @@
 <script>
-import axios from 'axios'
-import UserProfile from '../components/UserProfile.vue'
+import { ref } from 'vue'
 import CheckboxSelector from '../components/CheckboxSelector.vue'
-import ProgressBar from '../components/ProgressBar.vue'
-import StatusBadge from '../components/StatusBadge.vue'
-import PriorityBadge from '../components/PriorityBadge.vue'
-
-// const route = useRoute()
-// const projectId = route.params.id
+import ProjectInfo from '../components/ProjectInfo.vue'
 
 export default {
     components: {
-        UserProfile,
         CheckboxSelector,
-        ProgressBar,
-        StatusBadge,
-        PriorityBadge
+        ProjectInfo
     },
+    props: {
+        project: Object // props로 project를 받아옴
+    },
+    setup(props) {
+        // props로 전달된 project 속성 사용
+        const project = ref(props.project)
 
+        // project와 formatParticipants를 반환하여 템플릿에서 사용할 수 있도록 함
+        return {
+            project
+        }
+    },
     data() {
         return {
-            projectId: null,
-            project: {
-                title: '프로젝트 타이틀입니다.',
-                startDate: '2024.03.28',
-                endDate: '2024.04.28',
-                status: 'doing',
-                progress: 45,
-                writeDate: '2024.03.26',
-                description: '안녕하세요, 저희는 최근에 장바구니 결제 로직을 변경하고자 합니다...'
-            },
             checkboxItems: [
                 { id: 'todo', name: '진행예정' },
                 { id: 'doing', name: '진행중' },
@@ -47,22 +39,11 @@ export default {
     },
     mounted() {
         this.projectId = this.$route.params.id // projectId를 데이터 속성으로 저장
-        this.fetchProjectDetail()
-    },
-    methods: {
-        async fetchProjectDetail() {
-            try {
-                // 여기에서 this.projectId를 사용
-                const response = await axios.get(`/api/projects/${this.projectId}`)
-                this.projectDetail = response.data
-            } catch (error) {
-                console.error('프로젝트 상세 정보를 가져오는데 실패했습니다.', error)
-                // 에러 처리 로직 구현 (예: 사용자에게 에러 메시지 표시)
-            }
-        }
+        // this.fetchProjectDetail()
     }
 }
 </script>
+
 <template>
     <div class="inner">
         <div class="row align-items-start justify-content-between g-3">
@@ -74,60 +55,7 @@ export default {
             </div>
         </div>
 
-        <!-- 프로젝트 타이틀 영역 -->
-        <div class="row align-items-start justify-content-between g-3">
-            <div class="col-auto">
-                <div class="title-area">
-                    <h2 class="h2">{{ project.title }}</h2>
-                    <p class="text-body-tertiary lh-sm mb-0">PNO.00023130</p>
-                </div>
-            </div>
-            <div class="col-auto">
-                <div class="btn-group" role="group" aria-label="Basic outlined example">
-                    <button type="button" class="btn btn-outline-secondary"><i class="bi bi-pencil"></i> 수정</button>
-                    <button type="button" class="btn btn-outline-secondary"><i class="bi bi-trash"></i> 삭제</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- 프로젝트 상세글 -->
-        <div class="row pb-4">
-            <div class="col">
-                <table class="table table-borderless fs-9 mb-5 border-top border-translucent">
-                    <colgroup>
-                        <col style="width: 154px" />
-                        <col />
-                        <col style="width: 154px" />
-                        <col />
-                    </colgroup>
-                    <tbody>
-                        <tr>
-                            <th>프로젝트 상태</th>
-                            <td><StatusBadge :status="project.status" /></td>
-                            <th>작성일</th>
-                            <td>{{ project.writeDate }}</td>
-                        </tr>
-                        <tr>
-                            <th>프로젝트 기간</th>
-                            <td>{{ project.startDate }} ~ {{ project.endDate }}</td>
-                        </tr>
-                        <tr>
-                            <th>진행률</th>
-                            <td><ProgressBar :progress="project.progress" /></td>
-                            <th></th>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td colspan="4">
-                                <div class="text-area">
-                                    {{ project.description }}
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+        <ProjectInfo :project="project" />
 
         <!-- 정렬 -->
         <div class="row align-items-start justify-content-between mb-4 g-3 border-top">
@@ -159,7 +87,7 @@ export default {
         </div>
 
         <!-- 하위업무 -->
-        <div class="row">
+        <!-- <div class="row">
             <div class="col">
                 <table class="table fs-9 mb-5 border-top border-translucent">
                     <colgroup>
@@ -170,7 +98,6 @@ export default {
                         <col style="width: 100px" />
                         <col style="width: 180px" />
                         <col style="width: 80px" />
-                        <col />
                         <col style="width: 126px" />
                     </colgroup>
                     <thead>
@@ -198,13 +125,12 @@ export default {
                             <td><StatusBadge :status="task.status" /></td>
                             <td><ProgressBar :progress="task.progress" /></td>
                             <td class="text-end"><PriorityBadge :priority="task.priority" /></td>
-                            <td></td>
                             <td class="text-end">{{ task.write_date }}</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
-        </div>
+        </div> -->
     </div>
 </template>
 

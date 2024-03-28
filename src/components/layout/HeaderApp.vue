@@ -22,6 +22,9 @@
                                 <router-link to="/project" class="nav-link">프로젝트</router-link>
                             </li>
                             <li class="nav-item">
+                                <router-link to="/projectdetail" class="nav-link">프로젝트 상세 test</router-link>
+                            </li>
+                            <li class="nav-item">
                                 <router-link to="/analyze" class="nav-link">analyze</router-link>
                             </li>
                             <li class="nav-item">
