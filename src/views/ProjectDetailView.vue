@@ -1,52 +1,55 @@
 <script>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import axios from 'axios'
 import CheckboxSelector from '../components/CheckboxSelector.vue'
-// import ProjectInfo from '../components/ProjectInfo.vue'
-import TaskInputModal from '../components/TaskInputModal.vue'
-
+import ProjectInfo from '../components/ProjectInfo.vue'
 import TaskTable from '../components/TaskTable.vue'
 
 export default {
     components: {
         CheckboxSelector,
-        TaskInputModal,
-        // ProjectInfo,
+        ProjectInfo,
         TaskTable
-    },
-    props: {
-        project: Object // props로 project를 받아옴
-    },
-    setup(props) {
-        // props로 전달된 project 속성 사용
-        const project = ref(props.project)
-
-        // project와 formatParticipants를 반환하여 템플릿에서 사용할 수 있도록 함
-        return {
-            project,
-            isModalVisible: ref(false)
-        }
     },
     data() {
         return {
-            checkboxItems: [
-                { id: 'todo', name: '진행예정' },
-                { id: 'doing', name: '진행중' },
-                { id: 'done', name: '완료' },
-                { id: 'hold', name: '보류' }
-            ],
-            selectedCheckboxes: []
+            projects: []
         }
     },
+    setup() {
+        const project = ref({}) // `reactive` 대신 `ref` 사용
+        const checkboxItems = ref([
+            // 배열도 `ref`로 반응형 만들기
+            { id: 'todo', name: '진행예정' },
+            { id: 'doing', name: '진행중' },
+            { id: 'done', name: '완료' },
+            { id: 'hold', name: '보류' }
+        ])
+
+        async function fetchProjectDetail() {
+            try {
+                const apiUrl = import.meta.env.VITE_API_URL
+                const response = await axios.get(`${apiUrl}/search`)
+                console.log(response.data)
+
+                project.value = response.data // `ref`의 값에 접근할 때는 `.value` 사용
+            } catch (error) {
+                console.error('프로젝트 데이터를 가져오는데 실패했습니다:', error)
+            }
+        }
+
+        onMounted(() => {
+            fetchProjectDetail()
+        })
+
+        return {
+            project,
+            checkboxItems
+        }
+    },
+
     mounted() {
-        this.projectId = this.$route.params.id // projectId를 데이터 속성으로 저장
-        // this.fetchProjectDetail()
-    },
-    methods: {
-        openTaskInputModal() {
-            console.log(1)
-            this.isModalVisible = true
-            console.log(2)
-        }
+        this.fetchProjectDetail() // 특정 프로젝트 정보를 가져오는 메서드 호출
     }
 }
 </script>
@@ -55,14 +58,14 @@ export default {
     <div class="inner">
         <div class="row align-items-start justify-content-between g-3">
             <div class="col">
-                <div class="btn-group">
-                    <button class="btn btn-black">대시보드</button>
-                    <button class="btn btn-black">통계분석</button>
+                <div class="top-btn-area">
+                    <button class="btn btn-outline-dark me-4">대시보드</button>
+                    <button class="btn btn-dark">통계분석</button>
                 </div>
             </div>
         </div>
 
-        <!-- <ProjectInfo :project="project" /> -->
+        <ProjectInfo :project="project" />
 
         <!-- 정렬 -->
         <div class="row align-items-start justify-content-between mb-4 g-3 border-top">
@@ -100,8 +103,6 @@ export default {
             </div>
         </div>
     </div>
-
-    <TaskInputModal v-model="isModalVisible" />
 </template>
 
 <style scoped>

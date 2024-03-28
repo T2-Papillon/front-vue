@@ -1,10 +1,10 @@
 <script>
-import { ref } from 'vue'
+import axios from 'axios'
 import UserProfile from '../components/UserProfile.vue'
 import ProgressBar from '../components/ProgressBar.vue'
 import StatusBadge from '../components/StatusBadge.vue'
 import PriorityBadge from '../components/PriorityBadge.vue'
-import { useProjects } from '@/composables/useProjects'
+// import { useProjects } from '@/composables/useProjects'
 
 export default {
     components: {
@@ -13,17 +13,38 @@ export default {
         StatusBadge,
         PriorityBadge
     },
-
     props: {
-        project: Object // props로 project를 받아옴
-    },
-
-    setup() {
-        const { projects, fetchProjects } = useProjects()
-
-        return {
-            projects
+        project: {
+            type: Object,
+            required: true
         }
+    },
+    methods: {
+        async fetchProjects() {
+            try {
+                const apiUrl = import.meta.env.VITE_API_URL
+                const response = await axios.get(`${apiUrl}/search`)
+
+                const formattedProjects = response.data.map((project) => ({
+                    id: project.projNo,
+                    title: project.projTitle,
+                    pm: [`${project.projPm.charAt(0)}`],
+                    participants: [`${project.projPm.charAt(0)}`],
+                    startDate: project.projStartDate,
+                    endDate: project.projEndDate,
+                    status: project.projectStatus ? project.projectStatus.toLowerCase() : 'unknown', // '전체','진행중', '완료'
+                    progress: project.projPercent,
+                    priority: project.projectPriority, // '긴급', '높음', '보통', '낮음'
+                    writeDate: project.projCreateDate
+                }))
+                this.projects = formattedProjects
+            } catch (error) {
+                console.error(error)
+            }
+        }
+    },
+    mounted() {
+        this.fetchProjects() // 컴포넌트가 마운트된 후 데이터 호출
     }
 }
 </script>
@@ -35,7 +56,6 @@ export default {
             <col style="width: 154px" />
             <col />
         </colgroup>
-
         <tbody>
             <tr>
                 <th>작성자</th>
@@ -53,10 +73,10 @@ export default {
             <tr>
                 <th>참여자</th>
                 <td>
-                    <div v-for="(participant, index) in formatParticipants(project.participants).visibleParticipants" :key="index">
+                    <!-- <div v-for="(participant, index) in formatParticipants(project.participants).visibleParticipants" :key="index">
                         <UserProfile :name="participant" />
                     </div>
-                    <span v-if="formatParticipants(project.participants).overflowCount > 0">...</span>
+                    <span v-if="formatParticipants(project.participants).overflowCount > 0">...</span> -->
                 </td>
                 <th>프로젝트 상태</th>
                 <td><StatusBadge :status="project.status" /></td>
