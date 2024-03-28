@@ -15,16 +15,20 @@ export default {
         const doneProjects = ref([])
         const holdProjects = ref([])
 
-        onMounted(async () => {
-            await fetchProjects()
+        // 프로젝트 상태별로 필터링하는 함수
+        function filterProjects() {
             todoProjects.value = projects.value.filter((p) => p.status === 'todo')
             doingProjects.value = projects.value.filter((p) => p.status === 'doing')
             doneProjects.value = projects.value.filter((p) => p.status === 'done')
             holdProjects.value = projects.value.filter((p) => p.status === 'hold')
+        }
+
+        onMounted(async () => {
+            await fetchProjects()
+            filterProjects()
         })
 
         return {
-            projects,
             todoProjects,
             doingProjects,
             doneProjects,
@@ -52,28 +56,36 @@ export default {
 
         <section class="row pt-5" v-if="todoProjects.length > 0">
             <div class="col">
-                <h3 class="h3 pb-4 fw-light">진행예정 <span class="h3 fw-bold">3</span> 건</h3>
+                <h3 class="h3 pb-4 fw-light">
+                    진행예정 <span class="h3 fw-bold">{{ todoProjects.length }}</span> 건
+                </h3>
                 <ProjectTable :projects="todoProjects" />
             </div>
         </section>
 
         <section class="row pt-5" v-if="doingProjects.length > 0">
             <div class="col">
-                <h2 class="h3 pb-4 fw-light">진행중 <span class="h3 fw-bold">2</span></h2>
+                <h2 class="h3 pb-4 fw-light">
+                    진행중 <span class="h3 fw-bold">{{ doingProjects.length }}</span> 건
+                </h2>
                 <ProjectTable :projects="doingProjects" />
             </div>
         </section>
 
         <section class="row pt-5" v-if="doneProjects.length > 0">
             <div class="col">
-                <h2 class="h3 pb-4 fw-light">완료 <span class="h3 fw-bold">2</span></h2>
+                <h2 class="h3 pb-4 fw-light">
+                    완료 <span class="h3 fw-bold">{{ doneProjects.length }}</span> 건
+                </h2>
                 <ProjectTable :projects="doneProjects" />
             </div>
         </section>
 
         <section class="row pt-5" v-if="holdProjects.length > 0">
             <div class="col">
-                <h2 class="h3 pb-4 fw-light">보류 <span class="h3 fw-bold">2</span></h2>
+                <h2 class="h3 pb-4 fw-light">
+                    보류 <span class="h3 fw-bold">{{ holdProjects.length }}</span> 건
+                </h2>
                 <ProjectTable :projects="holdProjects" />
             </div>
         </section>
