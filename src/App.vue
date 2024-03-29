@@ -6,11 +6,25 @@ import Footer from './components/layout/FooterApp.vue'
 </script>
 
 <template>
-    <Header />
-    <main>
-        <RouterView />
-    </main>
-    <Footer />
+    <div id="wrap">
+        <Header />
+        <main>
+            <RouterView />
+        </main>
+        <Footer />
+    </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+#wrap {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+header {
+    border-bottom: 1px solid #eaeaea;
+}
+main {
+    flex-grow: 1;
+}
+</style>
