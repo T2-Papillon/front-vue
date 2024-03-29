@@ -18,13 +18,8 @@ export default {
         console.log(this.$route)
     },
     setup() {
-        const route = useRoute()
         const project = ref({})
-<<<<<<< HEAD
         const route = useRoute()
-=======
-
->>>>>>> 5c3314cf127f3b8cfa4a83f4f979777734ea302f
         const checkboxItems = ref([
             { id: 'todo', name: '진행예정' },
             { id: 'doing', name: '진행중' },
@@ -37,14 +32,11 @@ export default {
             try {
                 const projNo = route.params.id
                 const apiUrl = import.meta.env.VITE_API_URL
-<<<<<<< HEAD
                 const response = await axios.get(`${apiUrl}/project/${projectId}`)
-=======
-                // const apiUrl2 = `${apiUrl}/project/${projNo}?projNo=${projNo}`
-                const apiUrl2 = `${apiUrl}/project/${projNo}?projNo=${projNo}`
 
+                const apiUrl2 = `${apiUrl}/project/${projNo}?projNo=${projNo}`
                 const response = await axios.get(apiUrl2)
->>>>>>> 5c3314cf127f3b8cfa4a83f4f979777734ea302f
+
                 project.value = response.data
             } catch (error) {
                 console.error('프로젝트 데이터를 가져오는데 실패했습니다:', error)
