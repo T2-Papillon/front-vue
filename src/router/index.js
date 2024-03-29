@@ -37,21 +37,13 @@ const router = createRouter({
         {
             path: '/project',
             name: 'project',
-            component: () => import('../views/ProjectView.vue'),
-
+            component: () => import('../views/ProjectView.vue')
         },
         {
             path: '/project/detail/:id',
             name: 'projectdetail',
             component: () => import('../views/ProjectDetailView.vue')
         }
-            // children: [
-            //     {
-            //         path: 'detail/:id/task',
-            //         name: 'task',
-            //         component: () => import('../views/TaskInput.vue')
-            //     }
-            // ]
     ]
 })
 
