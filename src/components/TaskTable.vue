@@ -1,7 +1,9 @@
 <script>
+
 import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import axios from 'axios'
+
 import UserProfile from '../components/UserProfile.vue'
 import ProgressBar from '../components/ProgressBar.vue'
 import StatusBadge from '../components/StatusBadge.vue'
@@ -60,9 +62,11 @@ export default {
         })
 
         return {
+
             tasks,
             checkboxItems,
             formatDate
+
         }
     }
 }
