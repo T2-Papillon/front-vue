@@ -28,22 +28,18 @@ export default {
         async fetchProjects() {
             try {
                 const apiUrl = import.meta.env.VITE_API_URL
-
-                const response = await axios.get(`${apiUrl}/search`)
-                const formattedProjects = response.data.map((project) => ({
-                    title: project.projTitle,
-                    participants: project.projParticipants,
-                    startDate: project.projStartDate,
-                    endDate: project.projEndDate,
-                    status: project.projStatus,
-                    progress: project.projProgress,
-                    priority: project.projPriority,
-                    writeDate: project.projWriteDate
-                }))
-                this.projects = formattedProjects
+                // 검색어가 있을 경우 검색 API 호출, 없을 경우 전체 프로젝트 목록 호출
+                const searchPath = this.searchTerm ? `/search/project?term=${this.searchTerm}` : '/search'
+                const response = await axios.get(`${apiUrl}${searchPath}`)
+                console.log('Response data:', response.data) // 응답 데이터 로그 출력
+                this.projects = [...response.data]
             } catch (error) {
                 console.error(error)
+                this.error = '프로젝트를 불러오는 데 실패했습니다.'
+            } finally {
+                this.isLoading = false
             }
+
         },
         searchProjects() {
             this.fetchProjects() // 검색어 상태를 기반으로 프로젝트 목록을 다시 불러옵니다.
@@ -71,11 +67,12 @@ export default {
 
         <div class="row d-flex align-items-center justify-content-center mx-auto w-50">
             <form  @submit.prevent="searchProjects"  class="d-flex align-items-center">
-                <input class="form-control me-2" type="search" placeholder="프로젝트명 또는 이름으로 검색해주세요" aria-label="Search" />
+                <input v-model="searchTerm" class="form-control me-2" type="search" placeholder="프로젝트명 또는 이름으로 검색해주세요" aria-label="Search" />
                 <button class="btn btn-outline-success" type="submit"><i class="bi bi-search"></i></button>
             </form>
         </div>
 
+        <!-- 진행상태별 필터링, 정렬기준 필터 기능 -->
         <div class="row align-items-center justify-content-between mb-4 g-3 project-list">
             <div class="col-auto">
                 <div>
@@ -86,7 +83,7 @@ export default {
             <div class="col-auto d-flex">
                 <!-- 정렬기준 필터 -->
                 <!-- <SortFilter /> -->
-                <SortFilter :sortByLatest="sortByLatest" :sortByPriority="sortByPriority" />
+                <!-- <SortFilter :sortByLatest="sortByLatest" :sortByPriority="sortByPriority" /> -->
             </div>
         </div>
 
