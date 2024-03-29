@@ -80,6 +80,9 @@ main .inner {
     color: #333;
     background-color: rgb(231, 231, 140);
 }
+table tbody td {
+    vertical-align: middle;
+}
 /* .table.border-translucent th {
     padding-top: 12px;
     padding-bottom: 12px;

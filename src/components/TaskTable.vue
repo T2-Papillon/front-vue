@@ -11,6 +11,13 @@ export default {
         StatusBadge,
         PriorityBadge
     },
+    props: {
+        // 새로운 업무 데이터를 받아오는 props
+        newTask: {
+            type: Object,
+            default: null
+        }
+    },
     data() {
         return {
             tasks: [
@@ -61,10 +68,17 @@ export default {
                 <td><ProgressBar :progress="task.progress" /></td>
                 <td class="text-end"><PriorityBadge :priority="task.priority" /></td>
                 <td class="text-end text-secondary" style="font-size: 12px">{{ task.write_date }}</td>
+            </tr>
 
+            <!-- 새로 추가된 내용 -->
+            <tr v-if="newTask" :key="newTask.id">
+                <td>{{ newTask.title }}</td>
+                <td>{{ newTask.assignee }}</td>
+                <td>{{ newTask.startDate }}</td>
+                <td>{{ newTask.endDate }}</td>
+                <td>{{ newTask.status }}</td>
+                <td>{{ newTask.description }}</td>
             </tr>
         </tbody>
     </table>
 </template>
-
-
