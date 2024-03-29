@@ -9,9 +9,9 @@ export function formatProjectData(project) {
         participants: [`${project.projPm.charAt(0)}`],
         startDate: formatDate(project.projStartDate),
         endDate: formatDate(project.projEndDate),
-        status: project.projectStatus ? project.projectStatus.toLowerCase() : 'unknown', // '전체','진행중', '완료'
+        status: project.projectStatus ? project.projectStatus.toLowerCase() : 'unknown',
         progress: project.projPercent,
-        priority: project.projectPriority, // '긴급', '높음', '보통', '낮음'
+        priority: project.projectPriority,
         writeDate: formatDate(project.projCreateDate)
     }
 }
