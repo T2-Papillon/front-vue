@@ -1,6 +1,7 @@
 <script>
 import { ref, onMounted } from 'vue'
-import ProjectInfo from '../components/ProjectInfo.vue'
+import axios from 'axios'
+import AnalyzeProjectInfo from '../components/AnalyzeProjectInfo.vue'
 import PieChart from '../components/PieChart.vue'
 import TaskTable from '../components/TaskTable.vue'
 import ProjectTable from '../components/ProjectTable.vue'
@@ -8,7 +9,7 @@ import ProjectThisWeek from '../components/ProjectThisWeek.vue'
 
 export default {
     components: {
-        ProjectInfo,
+        AnalyzeProjectInfo,
         PieChart,
         TaskTable,
         ProjectTable,
@@ -76,7 +77,7 @@ export default {
 
         <div class="row mt-4">
             <div class="col">
-                <!-- 프로젝트상세info 컴포넌트 들어올 예정 -->
+                <AnalyzeProjectInfo :project="project" />
             </div>
         </div>
 
@@ -100,7 +101,7 @@ export default {
         </div>
         <div class="row">
             <div class="col">
-                <ProectTable />
+                <ProjectTable />
             </div>
         </div>
         <div class="row">
