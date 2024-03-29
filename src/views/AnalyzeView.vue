@@ -58,6 +58,8 @@ export default {
 </script>
 <template>
     <div class="inner">
+        <!-- 프로젝트 정보 -->
+        <ProjectInfo :project="project" />
         <div class="row align-items-start justify-content-between g-3">
             <div class="col-auto">
                 <div class="title-area">
