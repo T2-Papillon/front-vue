@@ -84,12 +84,13 @@ export default {
         <ProjectInfo :project="project" />
 
         <!-- 정렬 -->
-        <div class="row align-items-start justify-content-between mb-4 g-3 border-top">
-            <div class="col-auto"><h3 class="h3">담당업무</h3></div>
+        <div class="row align-items-start justify-content-between mb-4 g-3 border-top" style="margin-top: 40px; padding-top: 80px">
+            <div class="col-auto"><h3 class="h3">✔ 담당업무</h3></div>
             <div class="col-auto">
                 <router-link :to="`/project/detail/${projectNo}/task/save`" class="btn btn-primary"><i class="bi bi-plus-circle"></i> 업무추가</router-link>
             </div>
         </div>
+
         <div class="row align-items-start justify-content-between mb-4 g-3">
             <div class="col-auto">
                 <div>

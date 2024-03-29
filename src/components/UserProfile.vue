@@ -4,9 +4,10 @@
         <!-- <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" :style="{ 'background-color': randomColor }">{{ displayName }}</button> -->
         <ul class="dropdown-menu">
             <li>
-                <span class="dropdown-item">{{ name }}</span>
+                <span class="dropdown-item fw-bold">{{ name }}</span>
             </li>
             <li><span class="dropdown-item">개발 1팀</span></li>
+            <li><a class="dropdown-item" href="#">대시보드</a></li>
             <li><a class="dropdown-item" href="#">마이페이지</a></li>
             <li><a class="dropdown-item" href="#">로그아웃</a></li>
         </ul>

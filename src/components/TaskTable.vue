@@ -76,6 +76,7 @@ export default {
             <col style="width: 100px" />
             <col style="width: 180px" />
             <col style="width: 80px" />
+            <col style="width: 50px" />
             <col style="width: 126px" />
         </colgroup>
         <thead>
@@ -87,6 +88,7 @@ export default {
                 <th class="sort text-start ps-5 align-middle" scope="col" data-sort="status">진행상태</th>
                 <th class="sort text-end align-middle" scope="col" data-sort="progress">진행률</th>
                 <th class="sort text-end align-middle" scope="col" data-sort="priority">우선순위</th>
+                <th class="sort text-end align-middle" scope="col" data-sort="test">TEST</th>
                 <th class="sort text-end pe-0 align-middle" scope="write_date">작성일</th>
             </tr>
         </thead>
@@ -103,8 +105,9 @@ export default {
                 <td>{{ task.start_date }}</td>
                 <td>{{ task.end_date }}</td>
                 <td><StatusBadge :status="task.task_status" /></td>
-                <td><ProgressBar :progress="task.task_percent" /></td>
+                <td class="text-end"><ProgressBar :progress="task.task_percent" /></td>
                 <td class="text-end"><PriorityBadge :priority="task.task_priority" /></td>
+                <td class="text-end text-secondary">{{ task.task_test }}</td>
                 <td class="text-end text-secondary" style="font-size: 12px">{{ task.create_date }}</td>
             </tr>
             <!-- {
