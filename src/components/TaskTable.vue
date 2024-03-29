@@ -1,4 +1,5 @@
 <script>
+import { onMounted } from 'vue'
 import UserProfile from '../components/UserProfile.vue'
 import ProgressBar from '../components/ProgressBar.vue'
 import StatusBadge from '../components/StatusBadge.vue'
@@ -11,14 +12,23 @@ export default {
         StatusBadge,
         PriorityBadge
     },
-    data() {
+    setup() {
+        const { projects, fetchProjects } = useProjects()
+
+        // 참여자 목록을 포맷하는 함수 정의
+        const formatParticipants = (participants) => {
+            const maxVisible = 3
+            const visibleParticipants = participants.slice(0, maxVisible)
+            const overflowCount = participants.length - maxVisible
+
+            return { visibleParticipants, overflowCount }
+        }
+
+        onMounted(fetchProjects)
+
         return {
-            tasks: [
-                { title: '프로젝트 A', participants: ['최'], start_date: '202.03.24', end_date: '2024.04.05', status: 'done', progress: 100, priority: '보통', write_date: '2024.03.26' },
-                { title: '프로젝트 B', participants: ['고'], start_date: '2024.03.24', end_date: '2024.04.05', status: 'doing', progress: 50, priority: '높음', write_date: '2024.03.26' },
-                { title: '프로젝트 C', participants: ['김'], start_date: '2024.03.24', end_date: '2024.04.05', status: 'todo', progress: 0, priority: '낮음', write_date: '2024.03.26' },
-                { title: '프로젝트 D', participants: ['우'], start_date: '2024.03.24', end_date: '2024.04.05', status: 'hold', progress: 15, priority: '낮음', write_date: '2024.03.26' }
-            ]
+            projects,
+            formatParticipants
         }
     }
 }
