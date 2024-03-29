@@ -13,20 +13,9 @@ export default {
         PriorityBadge
     },
     props: {
-        projectId: {
-            type: Number, // 또는 String, 실제 프로젝트 ID의 타입에 맞춰주세요.
+        project: {
+            type: Object,
             required: true
-        }
-    },
-    data() {
-        return {
-            projects: []
-        }
-    },
-    computed: {
-        currentProject() {
-            // projects 배열에서 prop으로 받은 projectId와 일치하는 프로젝트를 찾아 반환합니다.
-            return this.projects.find(project => project.id === this.projectId) || {};
         }
     },
     methods: {
