@@ -38,25 +38,20 @@ const router = createRouter({
             path: '/project',
             name: 'project',
             component: () => import('../views/ProjectView.vue'),
-            children: [
-                {
-                    // '/project/detail/:id' 형태로 경로를 정의
-                    path: 'detail/:id',
-                    name: 'projectDetail',
-                    component: () => import('../views/ProjectDetailView.vue')
-                },
-                {
-                    path: 'detail/:id/task',
-                    name: 'task',
-                    component: () => import('../views/TaskInput.vue')
-                }
-            ]
+
         },
         {
-            path: '/project/detail',
-            name: 'detail',
+            path: '/project/detail/:id',
+            name: 'projectdetail',
             component: () => import('../views/ProjectDetailView.vue')
         }
+            // children: [
+            //     {
+            //         path: 'detail/:id/task',
+            //         name: 'task',
+            //         component: () => import('../views/TaskInput.vue')
+            //     }
+            // ]
     ]
 })
 
