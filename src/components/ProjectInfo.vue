@@ -1,5 +1,4 @@
 <script>
-import axios from 'axios'
 import UserProfile from '../components/UserProfile.vue'
 import ProgressBar from '../components/ProgressBar.vue'
 import StatusBadge from '../components/StatusBadge.vue'
@@ -17,7 +16,7 @@ export default {
             type: Object,
             required: true
         }
-    },
+    }
 }
 </script>
 <template>

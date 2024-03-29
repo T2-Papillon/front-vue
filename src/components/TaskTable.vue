@@ -12,20 +12,18 @@ export default {
         PriorityBadge
     },
     props: {
+        projectId: {
+            type: Number,
+            required: true
+        },
+        // tasks: {
+        //     type: Array,
+        //     required: true
+        // },
         // 새로운 업무 데이터를 받아오는 props
         newTask: {
             type: Object,
             default: null
-        }
-    },
-    data() {
-        return {
-            tasks: [
-                { title: '프로젝트 A', participants: ['최'], start_date: '202.03.24', end_date: '2024.04.05', status: 'done', progress: 100, priority: '보통', write_date: '2024.03.26' },
-                { title: '프로젝트 B', participants: ['고'], start_date: '2024.03.24', end_date: '2024.04.05', status: 'doing', progress: 50, priority: '높음', write_date: '2024.03.26' },
-                { title: '프로젝트 C', participants: ['김'], start_date: '2024.03.24', end_date: '2024.04.05', status: 'todo', progress: 0, priority: '낮음', write_date: '2024.03.26' },
-                { title: '프로젝트 D', participants: ['우'], start_date: '2024.03.24', end_date: '2024.04.05', status: 'hold', progress: 15, priority: '낮음', write_date: '2024.03.26' }
-            ]
         }
     }
 }
@@ -44,7 +42,7 @@ export default {
         </colgroup>
         <thead>
             <tr>
-                <th class="sort white-space-nowrap align-middle" scope="col" data-sort="project_title">프로젝트명</th>
+                <th class="sort white-space-nowrap align-middle" scope="col" data-sort="project_title">업무명</th>
                 <th class="sort align-middle" scope="col" data-sort="">담당자</th>
                 <th class="sort align-middle" scope="col" data-sort="start_date">시작일</th>
                 <th class="sort align-middle" scope="col" data-sort="end_date">종료일</th>
@@ -62,23 +60,23 @@ export default {
                 <td class="text-start">
                     <UserProfile v-for="participant in task.participants" :key="participant" :name="participant" />
                 </td>
-                <td>{{ task.start_date }}</td>
-                <td>{{ task.end_date }}</td>
+                <td>{{ task.startDate }}</td>
+                <td>{{ task.endDate }}</td>
                 <td><StatusBadge :status="task.status" /></td>
                 <td><ProgressBar :progress="task.progress" /></td>
                 <td class="text-end"><PriorityBadge :priority="task.priority" /></td>
-                <td class="text-end text-secondary" style="font-size: 12px">{{ task.write_date }}</td>
+                <td class="text-end text-secondary" style="font-size: 12px">{{ task.writeDate }}</td>
             </tr>
 
             <!-- 새로 추가된 내용 -->
-            <tr v-if="newTask" :key="newTask.id">
+            <!-- <tr v-if="newTask" :key="newTask.id">
                 <td>{{ newTask.title }}</td>
                 <td>{{ newTask.assignee }}</td>
                 <td>{{ newTask.startDate }}</td>
                 <td>{{ newTask.endDate }}</td>
                 <td>{{ newTask.status }}</td>
                 <td>{{ newTask.description }}</td>
-            </tr>
+            </tr> -->
         </tbody>
     </table>
 </template>

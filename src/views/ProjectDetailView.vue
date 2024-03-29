@@ -35,9 +35,6 @@ export default {
                 const apiUrl = import.meta.env.VITE_API_URL
                 const response = await axios.get(`${apiUrl}/project/detail?projNo=${projectId}`)
 
-                // const apiUrl2 = `${apiUrl}/project/${projNo}?projNo=${projNo}`
-                // const response = await axios.get(apiUrl2)
-
                 project.value = response.data
             } catch (error) {
                 console.error('프로젝트 데이터를 가져오는데 실패했습니다:', error)
@@ -49,8 +46,10 @@ export default {
             const projectId = route.params.id
             try {
                 const apiUrl = import.meta.env.VITE_API_URL
-                const response = await axios.get(`${apiUrl}/tasks/${projectId}`)
+                const response = await axios.get(`${apiUrl}/project/detail?projNo=${projectId}`)
+
                 tasks.value = response.data
+                console.log('프로젝트 태스크 데이터:', tasks.value)
             } catch (error) {
                 console.error('프로젝트 태스크 데이터를 가져오는데 실패했습니다:', error)
             }
@@ -79,8 +78,6 @@ export default {
         <div class="row align-items-start justify-content-between mb-4 g-3 border-top">
             <div class="col-auto"><h3 class="h3">담당업무</h3></div>
             <div class="col-auto">
-                <!-- <a href="#" class="btn btn-primary" @click="openTaskInputModal"> <i class="bi bi-plus-circle"></i> 업무추가</a> -->
-                <!-- <router-link to="/taskinput" class="btn btn-primary"><i class="bi bi-plus-circle"></i> 업무추가</router-link> -->
                 <router-link :to="`/project/detail/${project.id}/task`" class="btn btn-primary"><i class="bi bi-plus-circle"></i> 업무추가</router-link>
             </div>
         </div>
@@ -104,7 +101,7 @@ export default {
         <!-- 하위업무 -->
         <div class="row">
             <div class="col">
-                <TaskTable />
+                <TaskTable :projectId="project.id" />
             </div>
         </div>
     </div>
