@@ -1,14 +1,19 @@
-main {
-    padding-top: 80px;
-    padding-bottom: 100px;
+html,
+body {
+    height: 100%;
 }
 header {
     border-bottom: 1px solid #eaeaea;
 }
+
 .inner {
     max-width: 1200px !important;
     width: 100%;
     margin: 0 auto;
+}
+main .inner {
+    padding-top: 80px;
+    padding-bottom: 100px;
 }
 .title-area {
     margin-bottom: 50px;
