@@ -72,13 +72,13 @@ export default {
         <colgroup>
             <col />
             <col style="width: 80px" />
-            <col style="width: 126px" />
-            <col style="width: 126px" />
+            <col style="width: 100px" />
+            <col style="width: 100px" />
             <col style="width: 100px" />
             <col style="width: 180px" />
             <col style="width: 80px" />
             <col style="width: 50px" />
-            <col style="width: 126px" />
+            <col style="width: 100px" />
         </colgroup>
         <thead>
             <tr>
@@ -87,7 +87,7 @@ export default {
                 <th class="sort align-middle" scope="col" data-sort="start_date">시작일</th>
                 <th class="sort align-middle" scope="col" data-sort="end_date">종료일</th>
                 <th class="sort text-start ps-5 align-middle" scope="col" data-sort="status">진행상태</th>
-                <th class="sort text-end align-middle" scope="col" data-sort="progress">진행률</th>
+                <th class="sort text-center align-middle" scope="col" data-sort="progress">진행률</th>
                 <th class="sort text-end align-middle" scope="col" data-sort="priority">우선순위</th>
                 <th class="sort text-end align-middle" scope="col" data-sort="test">TEST</th>
                 <th class="sort text-end pe-0 align-middle" scope="write_date">작성일</th>
@@ -109,7 +109,7 @@ export default {
                 <td class="text-end"><ProgressBar :progress="task.task_percent" /></td>
                 <td class="text-end"><PriorityBadge :priority="task.task_priority" /></td>
                 <td class="text-end text-secondary">{{ task.task_test }}</td>
-                <td class="text-end text-secondary" style="font-size: 12px">{{ task.create_date }}</td>
+                <td class="text-end text-secondary" style="font-size: 12px">{{ formatDate(task.create_date) }}</td>
             </tr>
 
             <!-- 새로 추가된 내용 -->
@@ -124,3 +124,18 @@ export default {
         </tbody>
     </table>
 </template>
+<style scoped>
+.tb-project-title {
+    position: relative;
+    padding-left: 15px;
+}
+.tb-project-title::after {
+    display: block;
+    content: 'ㄴ';
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0.7;
+    font-weight: 300;
+}
+</style>
