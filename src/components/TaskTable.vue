@@ -6,15 +6,15 @@ import UserProfile from '../components/UserProfile.vue'
 import ProgressBar from '../components/ProgressBar.vue'
 import StatusBadge from '../components/StatusBadge.vue'
 import PriorityBadge from '../components/PriorityBadge.vue'
-// import { formatDate } from '@/utils/dateUtils.js'
+import { formatDate } from '@/utils/dateUtils.js'
 
 export default {
     components: {
         UserProfile,
         ProgressBar,
         StatusBadge,
-        PriorityBadge
-        // formatDate
+        PriorityBadge,
+        formatDate
     },
     props: {
         projectId: {
@@ -61,7 +61,8 @@ export default {
 
         return {
             tasks,
-            checkboxItems
+            checkboxItems,
+            formatDate
         }
     }
 }
@@ -100,31 +101,17 @@ export default {
                 <td class="text-start">
                     <UserProfile :name="task.assignee" />
                 </td>
-                <!-- <td>{{ formatDate(task.start_date) }}</td>
-                <td>{{ formatDate(task.end_date) }}</td> -->
-                <td>{{ task.start_date }}</td>
-                <td>{{ task.end_date }}</td>
+                <td>{{ formatDate(task.start_date) }}</td>
+                <td>{{ formatDate(task.end_date) }}</td>
+                <!-- <td>{{ task.start_date }}</td>
+                <td>{{ task.end_date }}</td> -->
                 <td><StatusBadge :status="task.task_status" /></td>
                 <td class="text-end"><ProgressBar :progress="task.task_percent" /></td>
                 <td class="text-end"><PriorityBadge :priority="task.task_priority" /></td>
                 <td class="text-end text-secondary">{{ task.task_test }}</td>
                 <td class="text-end text-secondary" style="font-size: 12px">{{ task.create_date }}</td>
             </tr>
-            <!-- {
-    "assignee": "차은우",
-    "task_no": 61,
-    "proj_no": 7,
-    "task_title": "목표 및 목적 설정",
-    "task_status": "TODO",
-    "task_priority": "LV0",
-    "start_date": 1711897200000,
-    "end_date": 1711897200000,
-    "task_percent": 0,
-    "task_test": false,
-    "update_date": null,
-    "create_date": 1711033200000,
-    "task_desc": "목표 및 목적 설정"
-} -->
+
             <!-- 새로 추가된 내용 -->
             <!-- <tr v-if="newTask" :key="newTask.id">
                 <td>{{ newTask.title }}</td>
