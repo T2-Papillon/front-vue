@@ -30,12 +30,11 @@ export default {
         async function fetchProjectDetail() {
             const projectId = route.params.id
             try {
-                const projNo = route.params.id
                 const apiUrl = import.meta.env.VITE_API_URL
                 const response = await axios.get(`${apiUrl}/project/${projectId}`)
 
-                const apiUrl2 = `${apiUrl}/project/${projNo}?projNo=${projNo}`
-                const response = await axios.get(apiUrl2)
+                // const apiUrl2 = `${apiUrl}/project/${projNo}?projNo=${projNo}`
+                // const response = await axios.get(apiUrl2)
 
                 project.value = response.data
             } catch (error) {
