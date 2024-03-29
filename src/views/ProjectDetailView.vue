@@ -1,5 +1,6 @@
 <script>
 import { ref, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
 import axios from 'axios'
 import CheckboxSelector from '../components/CheckboxSelector.vue'
 import ProjectInfo from '../components/ProjectInfo.vue'
@@ -18,6 +19,7 @@ export default {
     },
     setup() {
         const project = ref({})
+        const route = useRoute()
         const checkboxItems = ref([
             { id: 'todo', name: '진행예정' },
             { id: 'doing', name: '진행중' },
@@ -26,11 +28,10 @@ export default {
         ])
 
         async function fetchProjectDetail() {
+            const projectId = route.params.id
             try {
                 const apiUrl = import.meta.env.VITE_API_URL
-                const response = await axios.get(`${apiUrl}/search`)
-                console.log(response.data)
-
+                const response = await axios.get(`${apiUrl}/project/${projectId}`)
                 project.value = response.data
             } catch (error) {
                 console.error('프로젝트 데이터를 가져오는데 실패했습니다:', error)
