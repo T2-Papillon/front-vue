@@ -1,4 +1,7 @@
 <script>
+import { ref, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
+import axios from 'axios'
 import UserProfile from '../components/UserProfile.vue'
 import ProgressBar from '../components/ProgressBar.vue'
 import StatusBadge from '../components/StatusBadge.vue'
@@ -24,6 +27,40 @@ export default {
         newTask: {
             type: Object,
             default: null
+        }
+    },
+    setup() {
+        const project = ref({})
+        const tasks = ref([])
+        const route = useRoute()
+        const checkboxItems = ref([
+            { id: 'todo', name: '진행예정' },
+            { id: 'doing', name: '진행중' },
+            { id: 'done', name: '완료' },
+            { id: 'hold', name: '보류' }
+        ])
+
+        // 프로젝트 태스크 정보를 불러오는 함수
+        async function fetchProjectTasks() {
+            const projectId = route.params.id
+            try {
+                const apiUrl = import.meta.env.VITE_API_URL
+                const response = await axios.get(`${apiUrl}/project/detail?projNo=${projectId}`)
+
+                tasks.value = response.data
+                console.log('프로젝트 태스크 데이터:', tasks.value)
+            } catch (error) {
+                console.error('프로젝트 태스크 데이터를 가져오는데 실패했습니다:', error)
+            }
+        }
+
+        onMounted(() => {
+            fetchProjectTasks()
+        })
+
+        return {
+            tasks,
+            checkboxItems
         }
     }
 }
