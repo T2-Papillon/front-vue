@@ -2,7 +2,9 @@ main {
     padding-top: 80px;
     padding-bottom: 100px;
 }
-
+header {
+    border-bottom: 1px solid #eaeaea;
+}
 .inner {
     max-width: 1200px !important;
     width: 100%;
@@ -69,7 +71,12 @@ main {
     background-color: #e6eef4;
     color: #1c2733;
 }
-/* .border-translucent th,
-.border-translucent td {
-    padding: 8px 10px;
+::selection {
+    color: #333;
+    background-color: rgb(231, 231, 140);
+}
+/* .table.border-translucent th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    background-color: #f6f9fb;
 } */

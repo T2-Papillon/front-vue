@@ -21,6 +21,9 @@ table {
     border-spacing: 0;
     table-layout: fixed;
 }
+table tbody td {
+    vertical-align: middle;
+}
 
 a {
     display: inline-block;

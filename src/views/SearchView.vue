@@ -2,11 +2,13 @@
 import axios from 'axios'
 import CheckboxSelector from '../components/CheckboxSelector.vue'
 import ProjectTable from '../components/ProjectTable.vue'
+import SortFilter from '../components/SortFilter.vue'
 
 export default {
     components: {
         CheckboxSelector,
-        ProjectTable
+        ProjectTable,
+        SortFilter
     },
     data() {
         return {
@@ -26,12 +28,19 @@ export default {
         async fetchProjects() {
             try {
                 const apiUrl = import.meta.env.VITE_API_URL
-                // 검색어가 있을 경우 검색 API 호출, 없을 경우 전체 프로젝트 목록 호출
-                const searchPath = this.searchTerm ? `/search/project2?term=${this.searchTerm}` : '/search';
-                console.log(`Request URL: ${apiUrl}${searchPath}`) // 요청 URL 로그 출력
-                const response = await axios.get(`${apiUrl}${searchPath}`)
-                console.log('Response data:', response.data) // 응답 데이터 로그 출력
-                this.projects = response.data
+
+                const response = await axios.get(`${apiUrl}/search`)
+                const formattedProjects = response.data.map((project) => ({
+                    title: project.projTitle,
+                    participants: project.projParticipants,
+                    startDate: project.projStartDate,
+                    endDate: project.projEndDate,
+                    status: project.projStatus,
+                    progress: project.projProgress,
+                    priority: project.projPriority,
+                    writeDate: project.projWriteDate
+                }))
+                this.projects = formattedProjects
             } catch (error) {
                 console.error(error)
             }
@@ -49,36 +58,35 @@ export default {
     <div class="inner">
         <!-- 통합검색 영역 -->
         <div class="row align-items-center justify-content-center g-3">
-            <div class="col text-center d-flex justify-content-center align-items-center">
+            <div class="col d-flex justify-content-center align-items-center">
                 <div class="search-area">
                     <div class="title-area">
-                        <h2 class="h2">통합 검색</h2>
-                        <p class="text-body-tertiary lh-sm mb-0">검색어를 입력해주세요</p>
+                        <h2 class="h2 text-center">통합 검색 🔍</h2>
+                        <p class="text-body-tertiary lh-sm mb-0">자유롭게 검색을 시작하세요! 알맞는 검색어를 입력해보세요. >> 멘트아무거나아무거나</p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <form @submit.prevent="searchProjects" class="d-flex me-4">
-            <input v-model="searchTerm" class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-            <button class="btn btn-outline-success" type="submit"><i class="bi bi-search"></i></button>
-        </form>
 
-        <!-- 진행상태별 필터링, 정렬기준 필터 기능 -->
+        <div class="row d-flex align-items-center justify-content-center mx-auto w-50">
+            <form  @submit.prevent="searchProjects"  class="d-flex align-items-center">
+                <input class="form-control me-2" type="search" placeholder="프로젝트명 또는 이름으로 검색해주세요" aria-label="Search" />
+                <button class="btn btn-outline-success" type="submit"><i class="bi bi-search"></i></button>
+            </form>
+        </div>
+
         <div class="row align-items-center justify-content-between mb-4 g-3 project-list">
             <div class="col-auto">
                 <div>
+                    <!-- 체크박스 -->
                     <CheckboxSelector :items="checkboxItems" selectAllId="flexCheckDefault" />
                 </div>
             </div>
             <div class="col-auto d-flex">
-                <div class="btn-group">
-                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-funnel"></i> 정렬</button>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">최신순</a></li>
-                        <li><a class="dropdown-item" href="#">우선순위순</a></li>
-                    </ul>
-                </div>
+                <!-- 정렬기준 필터 -->
+                <!-- <SortFilter /> -->
+                <SortFilter :sortByLatest="sortByLatest" :sortByPriority="sortByPriority" />
             </div>
         </div>
 
