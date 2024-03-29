@@ -18,13 +18,41 @@ export default {
             required: true
         }
     },
+    methods: {
+        async fetchProjects() {
+            try {
+                const apiUrl = import.meta.env.VITE_API_URL
+                const response = await axios.get(`${apiUrl}/search`)
+
+                const formattedProjects = response.data.map((project) => ({
+                    id: project.projNo,
+                    title: project.projTitle,
+                    pm: [`${project.projPm.charAt(0)}`],
+                    participants: [`${project.projPm.charAt(0)}`],
+                    startDate: project.projStartDate,
+                    endDate: project.projEndDate,
+                    status: project.projectStatus ? project.projectStatus.toLowerCase() : 'unknown', // '전체','진행중', '완료'
+                    progress: project.projPercent,
+                    priority: project.projectPriority, // '긴급', '높음', '보통', '낮음'
+                    writeDate: project.projCreateDate
+                }))
+                this.projects = formattedProjects
+            } catch (error) {
+                console.error(error)
+            }
+        }
+    },
+    mounted() {
+        this.fetchProjects() // 컴포넌트가 마운트된 후 데이터 호출
+    }
 }
 </script>
 <template>
     <div class="row align-items-start justify-content-between g-3">
         <div class="col-auto">
             <div class="title-area">
-                <h2 class="h2">📌 {{ project.projTitle }}</h2>
+                <h2 class="h2">{{ project.projTitle }}</h2>
+                <h2 class="h2">📌 타이틀타이틀 안보임 수정해야함</h2>
                 <p class="text-body-tertiary lh-sm mb-0">ProjectNo.00000001</p>
             </div>
         </div>
@@ -45,15 +73,15 @@ export default {
         <tbody>
             <tr>
                 <th>작성자</th>
-                <td><UserProfile :name="project.projPm" /></td>
+                <td><UserProfile :name="project.pm" /></td>
                 <th>작성일</th>
-                <td>{{ project.projCreateDate }}</td>
+                <td>{{ project.writeDate }}</td>
             </tr>
             <tr>
                 <th>프로젝트 기간</th>
-                <td>{{ project.projStartDate }} ~ {{ project.projEndDate }}</td>
+                <td>{{ project.startDate }} ~ {{ project.endDate }}</td>
                 <th>우선순위</th>
-                <td><PriorityBadge :priority="project.projectPriority" /></td>
+                <td><PriorityBadge :priority="project.priority" /></td>
             </tr>
 
             <tr>
@@ -66,18 +94,18 @@ export default {
                     <span v-if="formatParticipants(project.participants).overflowCount > 0">...</span> -->
                 </td>
                 <th>프로젝트 상태</th>
-                <td><StatusBadge :status="project.projectStatus" /></td>
+                <td><StatusBadge :status="project.status" /></td>
             </tr>
             <tr>
                 <th>진행률</th>
-                <td><ProgressBar :progress="project.projPercent" /></td>
+                <td><ProgressBar :progress="project.progress" /></td>
                 <th></th>
                 <td></td>
             </tr>
             <tr>
                 <th>내용</th>
                 <td colspan="3">
-                    <div class="text-area">{{ project.projDesc }}</div>
+                    <div class="text-area">내용추가해야함 db데이터가져오기</div>
                 </td>
             </tr>
         </tbody>

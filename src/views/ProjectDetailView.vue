@@ -1,23 +1,26 @@
 <script>
 import { ref, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
 import axios from 'axios'
 import CheckboxSelector from '../components/CheckboxSelector.vue'
 import ProjectInfo from '../components/ProjectInfo.vue'
 import TaskTable from '../components/TaskTable.vue'
+import SortFilter from '@/components/SortFilter.vue'
 
 export default {
     components: {
         CheckboxSelector,
         ProjectInfo,
-        TaskTable
+        TaskTable,
+        SortFilter
     },
-    data() {
-        return {
-            projects: []
-        }
+    created() {
+        console.log(this.$route)
     },
     setup() {
         const project = ref({})
+        const tasks = ref([])
+        const route = useRoute()
         const checkboxItems = ref([
             { id: 'todo', name: '진행예정' },
             { id: 'doing', name: '진행중' },
@@ -25,11 +28,15 @@ export default {
             { id: 'hold', name: '보류' }
         ])
 
+        // 프로젝트 상세 정보를 불러오는 함수
         async function fetchProjectDetail() {
+            const projectId = route.params.id
             try {
                 const apiUrl = import.meta.env.VITE_API_URL
-                const response = await axios.get(`${apiUrl}/search`)
-                console.log(response.data)
+                const response = await axios.get(`${apiUrl}/project/detail?projNo=${projectId}`)
+
+                // const apiUrl2 = `${apiUrl}/project/${projNo}?projNo=${projNo}`
+                // const response = await axios.get(apiUrl2)
 
                 project.value = response.data
             } catch (error) {
@@ -37,18 +44,28 @@ export default {
             }
         }
 
+        // 프로젝트 태스크 정보를 불러오는 함수
+        async function fetchProjectTasks() {
+            const projectId = route.params.id
+            try {
+                const apiUrl = import.meta.env.VITE_API_URL
+                const response = await axios.get(`${apiUrl}/tasks/${projectId}`)
+                tasks.value = response.data
+            } catch (error) {
+                console.error('프로젝트 태스크 데이터를 가져오는데 실패했습니다:', error)
+            }
+        }
+
         onMounted(() => {
             fetchProjectDetail()
+            fetchProjectTasks()
         })
 
         return {
             project,
+            tasks,
             checkboxItems
         }
-    },
-
-    mounted() {
-        this.fetchProjectDetail()
     }
 }
 </script>
@@ -62,7 +79,9 @@ export default {
         <div class="row align-items-start justify-content-between mb-4 g-3 border-top">
             <div class="col-auto"><h3 class="h3">담당업무</h3></div>
             <div class="col-auto">
-                <a href="#" class="btn btn-primary" @click="openTaskInputModal"> <i class="bi bi-plus-circle"></i> 업무추가</a>
+                <!-- <a href="#" class="btn btn-primary" @click="openTaskInputModal"> <i class="bi bi-plus-circle"></i> 업무추가</a> -->
+                <!-- <router-link to="/taskinput" class="btn btn-primary"><i class="bi bi-plus-circle"></i> 업무추가</router-link> -->
+                <router-link :to="`/project/detail/${project.id}/task`" class="btn btn-primary"><i class="bi bi-plus-circle"></i> 업무추가</router-link>
             </div>
         </div>
         <div class="row align-items-start justify-content-between mb-4 g-3">
@@ -77,13 +96,8 @@ export default {
                     <button class="btn btn-outline-success" type="submit"><i class="bi bi-search"></i></button>
                 </form>
 
-                <div class="btn-group">
-                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-funnel"></i> 정렬</button>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">최신순</a></li>
-                        <li><a class="dropdown-item" href="#">우선순위순</a></li>
-                    </ul>
-                </div>
+                <!-- 최신순/우선순위 -->
+                <SortFilter />
             </div>
         </div>
 
