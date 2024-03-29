@@ -11,14 +11,14 @@ export default {
             email: ''
         }
     },
-        // mounted() {
-    //     this.userInfo = this.$cookies.get('user')
-    //     if (this.userInfo) {
-    //         console.log('초기 쿠키 값:', this.userInfo)
-    //         this.name = this.userInfo['name']
-    //         this.email = this.userInfo['email']
-    //     }
-    // }
+    mounted() {
+        this.userInfo = this.$cookies.get('user')
+        if (this.userInfo) {
+            console.log('초기 쿠키 값:', this.userInfo)
+            this.name = this.userInfo['name']
+            this.email = this.userInfo['email']
+        }
+    }
 }
 </script>
 <template>
@@ -59,10 +59,8 @@ export default {
                             <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
                             <button class="btn btn-outline-success" type="submit"><i class="bi bi-search"></i></button>
                         </form>
-                        <ul class="me-auto mb-2 mb-lg-0">
-                            <!-- <ul class="me-auto mb-2 mb-lg-0" v-if="$cookies.get('user') !== null"> -->
+                        <ul class="me-auto mb-2 mb-lg-0" v-if="$cookies.get('user') !== null">
                             <li class="dropdown">
-
                                 <UserProfile />
                             </li>
                             <!-- <li class="dropdown">
