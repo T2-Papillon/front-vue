@@ -6,6 +6,7 @@ import UserProfile from '../components/UserProfile.vue'
 import ProgressBar from '../components/ProgressBar.vue'
 import StatusBadge from '../components/StatusBadge.vue'
 import PriorityBadge from '../components/PriorityBadge.vue'
+// import { formatDate } from '@/utils/dateUtils.js'
 
 export default {
     components: {
@@ -13,6 +14,7 @@ export default {
         ProgressBar,
         StatusBadge,
         PriorityBadge
+        // formatDate
     },
     props: {
         projectId: {
@@ -94,8 +96,10 @@ export default {
                     <a href="#" class="tb-project-title">{{ task.task_title }}</a>
                 </td>
                 <td class="text-start">
-                    <UserProfile v-for="participant in task.assignee" :key="participant" :name="participant" />
+                    <UserProfile :name="task.assignee" />
                 </td>
+                <!-- <td>{{ formatDate(task.start_date) }}</td>
+                <td>{{ formatDate(task.end_date) }}</td> -->
                 <td>{{ task.start_date }}</td>
                 <td>{{ task.end_date }}</td>
                 <td><StatusBadge :status="task.task_status" /></td>
