@@ -21,7 +21,8 @@ export function useProjects() {
                 status: project.projectStatus ? project.projectStatus.toLowerCase() : 'unknown', // '전체','진행중', '완료'
                 progress: project.projPercent,
                 priority: project.projectPriority, // '긴급', '높음', '보통', '낮음'
-                writeDate: formatDate(project.projCreateDate)
+                writeDate: formatDate(project.projCreateDate),
+                Description: project.projDesc
             }))
 
             console.log('Projects:', projects.value)

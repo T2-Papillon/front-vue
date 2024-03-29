@@ -19,6 +19,7 @@ export default {
     },
     setup() {
         const project = ref({})
+        const tasks = ref([])
         const route = useRoute()
         const checkboxItems = ref([
             { id: 'todo', name: '진행예정' },
@@ -27,11 +28,12 @@ export default {
             { id: 'hold', name: '보류' }
         ])
 
+        // 프로젝트 상세 정보를 불러오는 함수
         async function fetchProjectDetail() {
             const projectId = route.params.id
             try {
                 const apiUrl = import.meta.env.VITE_API_URL
-                const response = await axios.get(`${apiUrl}/project/${projectId}`)
+                const response = await axios.get(`${apiUrl}/project/detail?projNo=${projectId}`)
 
                 // const apiUrl2 = `${apiUrl}/project/${projNo}?projNo=${projNo}`
                 // const response = await axios.get(apiUrl2)
@@ -42,10 +44,26 @@ export default {
             }
         }
 
-        onMounted(fetchProjectDetail)
+        // 프로젝트 태스크 정보를 불러오는 함수
+        async function fetchProjectTasks() {
+            const projectId = route.params.id
+            try {
+                const apiUrl = import.meta.env.VITE_API_URL
+                const response = await axios.get(`${apiUrl}/tasks/${projectId}`)
+                tasks.value = response.data
+            } catch (error) {
+                console.error('프로젝트 태스크 데이터를 가져오는데 실패했습니다:', error)
+            }
+        }
+
+        onMounted(() => {
+            fetchProjectDetail()
+            fetchProjectTasks()
+        })
 
         return {
             project,
+            tasks,
             checkboxItems
         }
     }
