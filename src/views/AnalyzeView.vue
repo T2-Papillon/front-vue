@@ -1,4 +1,7 @@
 <script>
+import { ref, onMounted } from 'vue'
+import axios from 'axios'
+import AnalyzeProjectInfo from '../components/AnalyzeProjectInfo.vue'
 import PieChart from '../components/PieChart.vue'
 import TaskTable from '../components/TaskTable.vue'
 import ProjectTable from '../components/ProjectTable.vue'
@@ -6,18 +9,57 @@ import ProjectThisWeek from '../components/ProjectThisWeek.vue'
 
 export default {
     components: {
+        AnalyzeProjectInfo,
         PieChart,
         TaskTable,
         ProjectTable,
         ProjectThisWeek
     },
     data() {
-        return {}
+        return {
+            projects: []
+        }
+    },
+    setup() {
+        const project = ref({})
+        const checkboxItems = ref([
+            { id: 'todo', name: '진행예정' },
+            { id: 'doing', name: '진행중' },
+            { id: 'done', name: '완료' },
+            { id: 'hold', name: '보류' }
+        ])
+
+        async function fetchProjectDetail() {
+            try {
+                const apiUrl = import.meta.env.VITE_API_URL
+                const response = await axios.get(`${apiUrl}/search`)
+                console.log(response.data)
+
+                project.value = response.data
+            } catch (error) {
+                console.error('프로젝트 데이터를 가져오는데 실패했습니다:', error)
+            }
+        }
+
+        onMounted(() => {
+            fetchProjectDetail()
+        })
+
+        return {
+            project,
+            checkboxItems
+        }
+    },
+
+    mounted() {
+        this.fetchProjectDetail()
     }
 }
 </script>
 <template>
     <div class="inner">
+        <!-- 프로젝트 정보 -->
+        <ProjectInfo :project="project" />
         <div class="row align-items-start justify-content-between g-3">
             <div class="col-auto">
                 <div class="title-area">
@@ -35,7 +77,7 @@ export default {
 
         <div class="row mt-4">
             <div class="col">
-                <!-- 프로젝트상세info 컴포넌트 들어올 예정 -->
+                <AnalyzeProjectInfo :project="project" />
             </div>
         </div>
 
@@ -59,7 +101,7 @@ export default {
         </div>
         <div class="row">
             <div class="col">
-                <ProectTable />
+                <ProjectTable />
             </div>
         </div>
         <div class="row">
