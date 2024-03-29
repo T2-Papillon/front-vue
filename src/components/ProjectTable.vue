@@ -13,7 +13,9 @@ export default {
         StatusBadge,
         PriorityBadge
     },
-
+    created() {
+        console.log(this.$route)
+    },
     setup() {
         const { projects, fetchProjects } = useProjects()
 
@@ -87,11 +89,3 @@ export default {
         </tbody>
     </table>
 </template>
-
-
-<style scoped>
-table tbody td {
-    vertical-align: middle;
-}
-</style>
-
