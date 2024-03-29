@@ -61,9 +61,10 @@ export default {
                 <td><ProgressBar :progress="task.progress" /></td>
                 <td class="text-end"><PriorityBadge :priority="task.priority" /></td>
                 <td class="text-end text-secondary" style="font-size: 12px">{{ task.write_date }}</td>
+
             </tr>
         </tbody>
     </table>
 </template>
 
-<style></style>
+

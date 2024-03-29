@@ -12,6 +12,7 @@ export default {
     },
     data() {
         return {
+            searchTerm: '', // 검색어를 저장하는 상태
             checkboxItems: [
                 { id: 'all', name: '전체' },
                 { id: 'todo', name: '진행예정' },
@@ -27,6 +28,7 @@ export default {
         async fetchProjects() {
             try {
                 const apiUrl = import.meta.env.VITE_API_URL
+
                 const response = await axios.get(`${apiUrl}/search`)
                 const formattedProjects = response.data.map((project) => ({
                     title: project.projTitle,
@@ -42,6 +44,9 @@ export default {
             } catch (error) {
                 console.error(error)
             }
+        },
+        searchProjects() {
+            this.fetchProjects() // 검색어 상태를 기반으로 프로젝트 목록을 다시 불러옵니다.
         }
     },
     mounted() {
@@ -63,8 +68,9 @@ export default {
             </div>
         </div>
 
+
         <div class="row d-flex align-items-center justify-content-center mx-auto w-50">
-            <form class="d-flex align-items-center">
+            <form  @submit.prevent="searchProjects"  class="d-flex align-items-center">
                 <input class="form-control me-2" type="search" placeholder="프로젝트명 또는 이름으로 검색해주세요" aria-label="Search" />
                 <button class="btn btn-outline-success" type="submit"><i class="bi bi-search"></i></button>
             </form>
