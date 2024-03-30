@@ -18,12 +18,6 @@ export default {
             type: Object,
             default: null
         }
-    },
-    data() {
-        return {
-            projects,
-            formatParticipants
-        }
     }
 }
 </script>

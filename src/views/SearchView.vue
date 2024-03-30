@@ -1,54 +1,35 @@
-<script>
+<script setup>
 import axios from 'axios'
 import CheckboxSelector from '../components/CheckboxSelector.vue'
 import ProjectTable from '../components/ProjectTable.vue'
 import SortFilter from '../components/SortFilter.vue'
+import { formatProjectData } from '@/utils/projectUtils'
+import { ref, watch, onMounted } from 'vue'
+import { useProjects } from '@/composables/useProjects'
 
-export default {
-    components: {
-        CheckboxSelector,
-        ProjectTable,
-        SortFilter
-    },
-    data() {
-        return {
-            searchTerm: '', // 검색어를 저장하는 상태
-            checkboxItems: [
-                { id: 'all', name: '전체' },
-                { id: 'todo', name: '진행예정' },
-                { id: 'doing', name: '진행중' },
-                { id: 'done', name: '완료' },
-                { id: 'hold', name: '보류' }
-            ],
-            selectedCheckboxes: [],
-            projects: []
-        }
-    },
-    methods: {
-        async fetchProjects() {
-            try {
-                const apiUrl = import.meta.env.VITE_API_URL
-                // 검색어가 있을 경우 검색 API 호출, 없을 경우 전체 프로젝트 목록 호출
-                const searchPath = this.searchTerm ? `/search/project?term=${this.searchTerm}` : '/search'
-                const response = await axios.get(`${apiUrl}${searchPath}`)
-                console.log('Response data:', response.data) // 응답 데이터 로그 출력
-                this.projects = [...response.data]
-            } catch (error) {
-                console.error(error)
-                this.error = '프로젝트를 불러오는 데 실패했습니다.'
-            } finally {
-                this.isLoading = false
-            }
+const searchTerm = ref('')
+const checkboxItems = ref([
+    { id: 'all', name: '전체' },
+    { id: 'todo', name: '진행예정' },
+    { id: 'doing', name: '진행중' },
+    { id: 'done', name: '완료' },
+    { id: 'hold', name: '보류' }
+])
+const selectedCheckboxes = ref([])
+const { projects, fetchProjects } = useProjects()
 
-        },
-        searchProjects() {
-            this.fetchProjects() // 검색어 상태를 기반으로 프로젝트 목록을 다시 불러옵니다.
-        }
+onMounted(() => {
+    console.log('Component mounted, fetching projects...')
+    fetchProjects()
+})
+
+watch(
+    searchTerm,
+    (newVal) => {
+        fetchProjects(newVal)
     },
-    mounted() {
-        this.fetchProjects() // 컴포넌트가 마운트된 후 데이터 호출
-    }
-}
+    { immediate: true }
+)
 </script>
 <template>
     <div class="inner">
@@ -64,9 +45,8 @@ export default {
             </div>
         </div>
 
-
         <div class="row d-flex align-items-center justify-content-center mx-auto w-50">
-            <form  @submit.prevent="searchProjects"  class="d-flex align-items-center">
+            <form @submit.prevent="fetchProjects(searchTerm)" class="d-flex align-items-center">
                 <input v-model="searchTerm" class="form-control me-2" type="search" placeholder="프로젝트명 또는 이름으로 검색해주세요" aria-label="Search" />
                 <button class="btn btn-outline-success" type="submit"><i class="bi bi-search"></i></button>
             </form>
@@ -77,7 +57,7 @@ export default {
             <div class="col-auto">
                 <div>
                     <!-- 체크박스 -->
-                    <CheckboxSelector :items="checkboxItems" selectAllId="flexCheckDefault" />
+                    <CheckboxSelector :items="checkboxItems" :selected="selectedCheckboxes" />
                 </div>
             </div>
             <div class="col-auto d-flex">

@@ -5,17 +5,21 @@ import { formatProjectData } from '@/utils/projectUtils'
 
 export function useProjects() {
     const projects = ref([])
+    const isLoading = ref(false)
 
-    async function fetchProjects() {
+    async function fetchProjects(searchTerm = '') {
+        isLoading.value = true
+        console.log('Fetching projects...')
         try {
             const apiUrl = import.meta.env.VITE_API_URL
-            const response = await axios.get(`${apiUrl}/search`)
-
-            projects.value = response.data.map(formatProjectData)
-
-            console.log('Projects:', projects.value)
+            const searchPath = searchTerm ? `/search/project?term=${searchTerm}` : '/project'
+            const response = await axios.get(`${apiUrl}${searchPath}`)
+            projects.value = response.data.map((project) => formatProjectData(project))
+            console.log('Projects loaded:', projects.value)
         } catch (error) {
             console.error('Error fetching projects:', error)
+        } finally {
+            isLoading.value = false
         }
     }
 
@@ -32,5 +36,5 @@ export function useProjects() {
         })
     }
 
-    return { projects, fetchProjects, sortByLatest, sortByPriority }
+    return { projects, fetchProjects, sortByLatest, sortByPriority, isLoading }
 }
