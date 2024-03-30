@@ -21,7 +21,8 @@ const props = defineProps({
     // 선택된 항목들을 받아오는 props
     selected: {
         type: Array,
-        required: true
+        required: true,
+        default: () => []
     }
 })
 
@@ -40,7 +41,6 @@ const handleChange = (id) => {
         isCheckedMap.value[key] = false
     })
     isCheckedMap.value[id] = true
-
     emit(
         'change',
         Object.keys(isCheckedMap.value).filter((key) => isCheckedMap.value[key])
