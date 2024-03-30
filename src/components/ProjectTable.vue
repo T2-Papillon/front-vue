@@ -10,12 +10,19 @@ const props = defineProps({
 })
 
 // 참여자 목록을 포맷하는 함수
+// const formatParticipants = (participants) => {
+//     if (!participants) {
+//         return { visibleParticipants: [], overflowCount: 0 }
+//     }
+//     const maxVisible = 3
+//     const visibleParticipants = participants.slice(0, maxVisible)
+//     const overflowCount = participants.length - maxVisible
+
+//     return { visibleParticipants, overflowCount }
+// }
 const formatParticipants = (participants) => {
-    if (!participants) {
-        return { visibleParticipants: [], overflowCount: 0 }
-    }
     const maxVisible = 3
-    const visibleParticipants = participants.slice(0, maxVisible)
+    const visibleParticipants = participants.slice(0, maxVisible).map((p) => p.email.charAt(0).toUpperCase())
     const overflowCount = participants.length - maxVisible
 
     return { visibleParticipants, overflowCount }
