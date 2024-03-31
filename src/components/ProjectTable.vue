@@ -59,7 +59,6 @@ const formatParticipants = (participants) => {
             <tr v-for="project in projects" :key="project.id">
                 <td>
                     <router-link :to="`/project/detail/${project.id}`" class="tb-project-title">{{ project.title }}</router-link>
-                    <!-- <router-link :to="`/projectdetail`" class="tb-project-title">{{ project.title }}</router-link> -->
                 </td>
                 <td>
                     <UserProfile v-for="pm in project.pm" :key="pm" :name="pm" />
