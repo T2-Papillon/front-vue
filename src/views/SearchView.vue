@@ -1,56 +1,60 @@
-<script>
+<script setup>
 import axios from 'axios'
 import CheckboxSelector from '../components/CheckboxSelector.vue'
 import ProjectTable from '../components/ProjectTable.vue'
 import SortFilter from '../components/SortFilter.vue'
+import { formatProjectData } from '@/utils/projectUtils'
+import { ref, watch, onMounted } from 'vue'
+import { useProjects } from '@/composables/useProjects'
 
-export default {
-    components: {
-        CheckboxSelector,
-        ProjectTable,
-        SortFilter
+const searchTerm = ref('')
+const checkboxItems = ref([
+    { id: 'all', name: '전체' },
+    { id: 'todo', name: '진행예정' },
+    { id: 'doing', name: '진행중' },
+    { id: 'done', name: '완료' },
+    { id: 'hold', name: '보류' }
+])
+const selectedCheckboxes = ref(['all']) // '전체'가 기본값
+const { projects, fetchProjects, fetchProjectsByStatus } = useProjects()
+
+onMounted(() => {
+    console.log('Component mounted, fetching projects...')
+    fetchProjects()
+})
+
+// 올바른 검색어 입력까지 프로젝트 데이터가 없다는 문구 출력됨
+watch(
+    searchTerm,
+    (newVal) => {
+        fetchProjects(newVal)
     },
-    data() {
-        return {
-            searchTerm: '', // 검색어를 저장하는 상태
-            checkboxItems: [
-                { id: 'all', name: '전체' },
-                { id: 'todo', name: '진행예정' },
-                { id: 'doing', name: '진행중' },
-                { id: 'done', name: '완료' },
-                { id: 'hold', name: '보류' }
-            ],
-            selectedCheckboxes: [],
-            projects: []
+    { immediate: true }
+)
+watch(
+    selectedCheckboxes,
+    () => {
+        if (selectedCheckboxes.value.includes('all')) {
+            fetchProjects()
+        } else {
+            // 선택된 진행 상태에 따라 필터링된 프로젝트 목록을 불러오기
+            fetchProjectsByStatus(selectedCheckboxes.value)
         }
     },
-    methods: {
-        async fetchProjects() {
-            try {
-                const apiUrl = import.meta.env.VITE_API_URL
+    { immediate: true }
+)
+const handleSelectedItems = (selectedItems) => {
+    // 중복 선택 방지를 위해 기존 선택된 항목들을 초기화합니다.
+    selectedCheckboxes.value = []
 
-                const response = await axios.get(`${apiUrl}/search`)
-                const formattedProjects = response.data.map((project) => ({
-                    title: project.projTitle,
-                    participants: project.projParticipants,
-                    startDate: project.projStartDate,
-                    endDate: project.projEndDate,
-                    status: project.projStatus,
-                    progress: project.projProgress,
-                    priority: project.projPriority,
-                    writeDate: project.projWriteDate
-                }))
-                this.projects = formattedProjects
-            } catch (error) {
-                console.error(error)
-            }
-        },
-        searchProjects() {
-            this.fetchProjects() // 검색어 상태를 기반으로 프로젝트 목록을 다시 불러옵니다.
-        }
-    },
-    mounted() {
-        this.fetchProjects() // 컴포넌트가 마운트된 후 데이터 호출
+    // 새롭게 선택된 항목만 저장합니다.
+    selectedCheckboxes.value.push(selectedItems[selectedItems.length - 1])
+
+    // 선택된 항목을 기반으로 프로젝트를 필터링합니다.
+    if (selectedItems.includes('all')) {
+        fetchProjects()
+    } else {
+        fetchProjectsByStatus(selectedItems)
     }
 }
 </script>
@@ -68,25 +72,25 @@ export default {
             </div>
         </div>
 
-
         <div class="row d-flex align-items-center justify-content-center mx-auto w-50">
-            <form  @submit.prevent="searchProjects"  class="d-flex align-items-center">
-                <input class="form-control me-2" type="search" placeholder="프로젝트명 또는 이름으로 검색해주세요" aria-label="Search" />
+            <form @submit.prevent="fetchProjects(searchTerm)" class="d-flex align-items-center">
+                <input v-model="searchTerm" class="form-control me-2" type="search" placeholder="프로젝트명 또는 이름으로 검색해주세요" aria-label="Search" />
                 <button class="btn btn-outline-success" type="submit"><i class="bi bi-search"></i></button>
             </form>
         </div>
 
+        <!-- 진행상태별 필터링, 정렬기준 필터 기능 -->
         <div class="row align-items-center justify-content-between mb-4 g-3 project-list">
             <div class="col-auto">
                 <div>
                     <!-- 체크박스 -->
-                    <CheckboxSelector :items="checkboxItems" selectAllId="flexCheckDefault" />
+                    <CheckboxSelector :items="checkboxItems" :selected="selectedCheckboxes" @change="handleSelectedItems" />
                 </div>
             </div>
             <div class="col-auto d-flex">
                 <!-- 정렬기준 필터 -->
-                <!-- <SortFilter /> -->
-                <SortFilter :sortByLatest="sortByLatest" :sortByPriority="sortByPriority" />
+                <SortFilter />
+                <!-- <SortFilter :sortByLatest="sortByLatest" :sortByPriority="sortByPriority" /> -->
             </div>
         </div>
 
