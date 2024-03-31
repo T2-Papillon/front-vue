@@ -1,42 +1,36 @@
-<script>
-import { onMounted } from 'vue'
+<script setup>
+import { defineProps } from 'vue'
 import UserProfile from '../components/UserProfile.vue'
 import ProgressBar from '../components/ProgressBar.vue'
 import StatusBadge from '../components/StatusBadge.vue'
 import PriorityBadge from '../components/PriorityBadge.vue'
-import { useProjects } from '@/composables/useProjects'
 
-export default {
-    components: {
-        UserProfile,
-        ProgressBar,
-        StatusBadge,
-        PriorityBadge
-    },
-    setup() {
-        const { projects, fetchProjects } = useProjects()
+const props = defineProps({
+    projects: Array
+})
 
-        // 참여자 목록을 포맷하는 함수 정의
-        const formatParticipants = (participants) => {
-            const maxVisible = 3
-            const visibleParticipants = participants.slice(0, maxVisible)
-            const overflowCount = participants.length - maxVisible
+// 참여자 목록을 포맷하는 함수
+// const formatParticipants = (participants) => {
+//     if (!participants) {
+//         return { visibleParticipants: [], overflowCount: 0 }
+//     }
+//     const maxVisible = 3
+//     const visibleParticipants = participants.slice(0, maxVisible)
+//     const overflowCount = participants.length - maxVisible
 
-            return { visibleParticipants, overflowCount }
-        }
+//     return { visibleParticipants, overflowCount }
+// }
+const formatParticipants = (participants) => {
+    const maxVisible = 3
+    const visibleParticipants = participants.slice(0, maxVisible).map((p) => p.email.charAt(0).toUpperCase())
+    const overflowCount = participants.length - maxVisible
 
-        onMounted(fetchProjects)
-
-        return {
-            projects,
-            formatParticipants
-        }
-    }
+    return { visibleParticipants, overflowCount }
 }
 </script>
 
 <template>
-    <table class="table fs-9 mb-5 border-top border-translucent">
+    <table v-if="projects.length > 0" class="table fs-9 mb-5 border-top border-translucent">
         <colgroup>
             <col style="min-width: 300px" />
             <col style="width: 65px" />
@@ -84,4 +78,5 @@ export default {
             </tr>
         </tbody>
     </table>
+    <p v-else>프로젝트 데이터가 없습니다.</p>
 </template>
