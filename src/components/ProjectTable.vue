@@ -13,9 +13,6 @@ export default {
         StatusBadge,
         PriorityBadge
     },
-    created() {
-        console.log(this.$route)
-    },
     setup() {
         const { projects, fetchProjects } = useProjects()
 
@@ -68,7 +65,6 @@ export default {
             <tr v-for="project in projects" :key="project.id">
                 <td>
                     <router-link :to="`/project/detail/${project.id}`" class="tb-project-title">{{ project.title }}</router-link>
-                    <!-- <router-link :to="`/projectdetail`" class="tb-project-title">{{ project.title }}</router-link> -->
                 </td>
                 <td>
                     <UserProfile v-for="pm in project.pm" :key="pm" :name="pm" />

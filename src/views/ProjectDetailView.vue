@@ -1,5 +1,5 @@
 <script>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import axios from 'axios'
 import CheckboxSelector from '../components/CheckboxSelector.vue'
@@ -14,13 +14,12 @@ export default {
         TaskTable,
         SortFilter
     },
-    created() {
-        console.log(this.$route)
-    },
     setup() {
         const project = ref({})
         const tasks = ref([])
         const route = useRoute()
+        const projectNo = ref(null) // projectId를 선언하고 초기화
+
         const checkboxItems = ref([
             { id: 'todo', name: '진행예정' },
             { id: 'doing', name: '진행중' },
@@ -35,10 +34,8 @@ export default {
                 const apiUrl = import.meta.env.VITE_API_URL
                 const response = await axios.get(`${apiUrl}/project/detail?projNo=${projectId}`)
 
-                // const apiUrl2 = `${apiUrl}/project/${projNo}?projNo=${projNo}`
-                // const response = await axios.get(apiUrl2)
-
                 project.value = response.data
+                projectNo.value = projectId
             } catch (error) {
                 console.error('프로젝트 데이터를 가져오는데 실패했습니다:', error)
             }
@@ -49,8 +46,10 @@ export default {
             const projectId = route.params.id
             try {
                 const apiUrl = import.meta.env.VITE_API_URL
-                const response = await axios.get(`${apiUrl}/tasks/${projectId}`)
+                const response = await axios.get(`${apiUrl}/task/project/${projectId}/task`)
                 tasks.value = response.data
+
+                console.log('디테일페이지', tasks.value)
             } catch (error) {
                 console.error('프로젝트 태스크 데이터를 가져오는데 실패했습니다:', error)
             }
@@ -61,10 +60,19 @@ export default {
             fetchProjectTasks()
         })
 
+        // projectId 변경 감지
+        watch(
+            () => route.params.id,
+            () => {
+                fetchProjectTasks()
+            }
+        )
+
         return {
             project,
             tasks,
-            checkboxItems
+            checkboxItems,
+            projectNo
         }
     }
 }
@@ -76,14 +84,13 @@ export default {
         <ProjectInfo :project="project" />
 
         <!-- 정렬 -->
-        <div class="row align-items-start justify-content-between mb-4 g-3 border-top">
-            <div class="col-auto"><h3 class="h3">담당업무</h3></div>
+        <div class="row align-items-start justify-content-between mb-4 g-3 border-top" style="margin-top: 40px; padding-top: 80px">
+            <div class="col-auto"><h3 class="h3">✔ 담당업무</h3></div>
             <div class="col-auto">
-                <!-- <a href="#" class="btn btn-primary" @click="openTaskInputModal"> <i class="bi bi-plus-circle"></i> 업무추가</a> -->
-                <!-- <router-link to="/taskinput" class="btn btn-primary"><i class="bi bi-plus-circle"></i> 업무추가</router-link> -->
-                <router-link :to="`/project/detail/${project.id}/task`" class="btn btn-primary"><i class="bi bi-plus-circle"></i> 업무추가</router-link>
+                <router-link :to="`/project/detail/${projectNo}/task/save`" class="btn btn-primary"><i class="bi bi-plus-circle"></i> 업무추가</router-link>
             </div>
         </div>
+
         <div class="row align-items-start justify-content-between mb-4 g-3">
             <div class="col-auto">
                 <div>
@@ -104,7 +111,7 @@ export default {
         <!-- 하위업무 -->
         <div class="row">
             <div class="col">
-                <TaskTable />
+                <TaskTable :projectId="projectNo" :tasks="tasks" />
             </div>
         </div>
     </div>

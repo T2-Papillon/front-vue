@@ -1,16 +1,17 @@
 <script>
-import axios from 'axios'
 import UserProfile from '../components/UserProfile.vue'
 import ProgressBar from '../components/ProgressBar.vue'
 import StatusBadge from '../components/StatusBadge.vue'
 import PriorityBadge from '../components/PriorityBadge.vue'
+import { formatDate } from '@/utils/dateUtils.js'
 
 export default {
     components: {
         UserProfile,
         ProgressBar,
         StatusBadge,
-        PriorityBadge
+        PriorityBadge,
+        formatDate
     },
     props: {
         project: {
@@ -18,6 +19,11 @@ export default {
             required: true
         }
     },
+    setup() {
+        return {
+            formatDate
+        }
+    }
 }
 </script>
 <template>
@@ -47,11 +53,11 @@ export default {
                 <th>작성자</th>
                 <td><UserProfile :name="project.projPm" /></td>
                 <th>작성일</th>
-                <td>{{ project.projCreateDate }}</td>
+                <td>{{ formatDate(project.projCreateDate) }}</td>
             </tr>
             <tr>
                 <th>프로젝트 기간</th>
-                <td>{{ project.projStartDate }} ~ {{ project.projEndDate }}</td>
+                <td>{{ formatDate(project.projStartDate) }} ~ {{ formatDate(project.projEndDate) }}</td>
                 <th>우선순위</th>
                 <td><PriorityBadge :priority="project.projectPriority" /></td>
             </tr>
