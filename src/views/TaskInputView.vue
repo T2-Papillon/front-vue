@@ -44,7 +44,7 @@ export default {
                 this.priority = ''
                 this.description = ''
             } catch (error) {
-                console.error('저장에 실패했습니다.', error.response.data)
+                // console.error('저장에 실패했습니다.', error.response.data)
             }
         },
         // 저장 후 추가 기능
