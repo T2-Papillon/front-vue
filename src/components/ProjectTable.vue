@@ -22,7 +22,8 @@ const props = defineProps({
 // }
 const formatParticipants = (participants) => {
     const maxVisible = 3
-    const visibleParticipants = participants.slice(0, maxVisible).map((p) => p.email.charAt(0).toUpperCase())
+    // 참여자의 실제 이름을 'email' 필드에서 가져오도록 수정
+    const visibleParticipants = participants.slice(0, maxVisible).map((p) => p.email)
     const overflowCount = participants.length - maxVisible
 
     return { visibleParticipants, overflowCount }
