@@ -92,6 +92,7 @@ export default {
 
         return {
             tasks,
+            fetchProjectTasks,
             formatDate,
             checkNewTask,
             selectedTask,
@@ -161,7 +162,7 @@ export default {
         </tbody>
     </table>
 
-    <TaskDetailModal :is-active="isModalActive" :task="selectedTask" @close-modal="isModalActive = false" />
+    <TaskDetailModal :is-active="isModalActive" :task="selectedTask" @close-modal="isModalActive = false" @refreshTasks="fetchProjectTasks" />
 </template>
 
 <style scoped>

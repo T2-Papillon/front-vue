@@ -20,6 +20,10 @@ export default {
             this.$emit('close-modal')
             console.log('close')
         },
+        handleTaskDeleted() {
+            this.closeModal() // 모달 창 닫기
+            this.$emit('refreshTasks') // 부모 컴포넌트에 태스크 목록 새로고침 요청
+        },
         formatDate
     }
 }
@@ -38,8 +42,7 @@ export default {
                 <div class="modal-body">
                     <div class="modal-body">
                         <!-- 수정/삭제 버튼 -->
-                        <EditDeleteButtonGroup :projectId="task.proj_no" :taskId="task.task_no" @taskDeleted="closeModal" />
-
+                        <EditDeleteButtonGroup :projectId="task.proj_no" :taskId="task.task_no" @taskDeleted="handleTaskDeleted" />
                         <!-- list -->
                         <ul class="list">
                             <li>
