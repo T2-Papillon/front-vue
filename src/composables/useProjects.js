@@ -24,6 +24,21 @@ export function useProjects() {
         }
     }
 
+    async function fetchProjectsForUser() {
+        isLoading.value = true
+        const eno = sessionStorage.getItem('EN') // 로그인한 사용자의 사번 불러오기
+        try {
+            const apiUrl = `${import.meta.env.VITE_API_URL}/dashboard/emp/${eno}/projects`
+            const response = await axios.get(apiUrl)
+            projects.value = response.data.map((project) => formatProjectData(project))
+            console.log('User-specific projects loaded:', projects.value)
+        } catch (error) {
+            console.error('Error fetching user-specific projects:', error)
+        } finally {
+            isLoading.value = false
+        }
+    }
+
     async function fetchProjectsByStatus(statusList) {
         isLoading.value = true
         try {
@@ -70,5 +85,5 @@ export function useProjects() {
         projects.value = [...projects.value]
     }
 
-    return { projects, fetchProjects, fetchProjectsByStatus, sortByLatest, sortByPriority, isLoading }
+    return { projects, fetchProjects, fetchProjectsForUser, fetchProjectsByStatus, sortByLatest, sortByPriority, isLoading }
 }
