@@ -10,6 +10,8 @@ const { projects, fetchProjects, sortByLatest, sortByPriority } = useProjects()
 // 임시로 현재 로그인한 사용자의 ID를 설정
 // 실제 애플리케이션에서는 인증 시스템을 통해 이 값을 동적으로 가져와야 함
 const currentUserId = 'finance2@boogle.com'
+// 현재 사용자의 이름을 저장할 변수
+const currentUserName = ref('서현우')
 
 // 프로젝트 상태별로 필터링된 목록을 저장하기 위한 반응형 참조
 const todoProjects = ref([])
@@ -39,7 +41,7 @@ onMounted(async () => {
         <div class="row align-items-start justify-content-between g-3">
             <div class="col-auto">
                 <div class="title-area">
-                    <h2 class="h2">프로젝트 목록 👋</h2>
+                    <h2 class="h2">{{ currentUserName }}님의 프로젝트 목록 👋</h2>
                     <p class="text-body-tertiary lh-sm mb-0">텍스트텍스트텍스트텍스트</p>
                 </div>
             </div>
