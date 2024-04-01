@@ -16,7 +16,7 @@ const checkboxItems = ref([
     { id: 'hold', name: '보류' }
 ])
 const selectedCheckboxes = ref(['all']) // '전체'가 기본값
-const { projects, fetchProjects, fetchProjectsByStatus } = useProjects()
+const { projects, fetchProjects, fetchProjectsByStatus, sortByLatest, sortByPriority } = useProjects()
 
 onMounted(() => {
     console.log('Component mounted, fetching projects...')
@@ -89,7 +89,7 @@ const handleSelectedItems = (selectedItems) => {
             </div>
             <div class="col-auto d-flex">
                 <!-- 정렬기준 필터 -->
-                <SortFilter />
+                <SortFilter :sortByLatest="sortByLatest" :sortByPriority="sortByPriority" />
                 <!-- <SortFilter :sortByLatest="sortByLatest" :sortByPriority="sortByPriority" /> -->
             </div>
         </div>

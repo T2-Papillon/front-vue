@@ -49,16 +49,22 @@ export function useProjects() {
     }
 
     function sortByLatest() {
+        console.log('Sorting by latest')
         projects.value.sort((a, b) => {
             return new Date(b.writeDate) - new Date(a.writeDate)
         })
+
+        projects.value = [...projects.value]
     }
 
     function sortByPriority() {
+        console.log('Sorting by priority')
         const priorityOrder = { 긴급: 0, 높음: 1, 보통: 2, 낮음: 3 }
         projects.value.sort((a, b) => {
             return priorityOrder[a.priority] - priorityOrder[b.priority]
         })
+
+        projects.value = [...projects.value]
     }
 
     return { projects, fetchProjects, fetchProjectsByStatus, sortByLatest, sortByPriority, isLoading }
