@@ -73,7 +73,7 @@ export default {
 <style scoped>
 .top-area {
     position: relative;
-    height: 350px;
+    height: 280px;
     background-color: #dbf6eb;
     background-image: url('../public/images/img-mypage.svg');
     background-position: 100% 140%;
@@ -87,9 +87,9 @@ export default {
 }
 .profile i {
     display: inline-block;
-    width: 220px;
-    height: 220px;
-    margin-top: 175px;
+    width: 160px;
+    height: 160px;
+    margin-top: 160px;
     margin-left: 60px;
     border-radius: 100%;
     border: 3px solid #fff;
