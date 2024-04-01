@@ -14,6 +14,7 @@ export function useProjects() {
             const apiUrl = import.meta.env.VITE_API_URL
             const searchPath = searchTerm ? `/search/project?term=${searchTerm}` : '/project'
             const response = await axios.get(`${apiUrl}${searchPath}`)
+
             projects.value = response.data.map((project) => formatProjectData(project))
             console.log('Projects loaded:', projects.value)
         } catch (error) {
@@ -28,7 +29,7 @@ export function useProjects() {
         try {
             // 'all'이 선택된 경우 모든 프로젝트를 불러옵니다.
             if (statusList.includes('all')) {
-                const response = await axios.get(`http://localhost:8080/api/search/project`, {
+                const response = await axios.get(`${apiUrl}/search/project`, {
                     params: { term: '' } // 'all'이 선택된 경우, 모든 프로젝트를 가져오기 위해 빈 검색어를 전송
                 })
                 projects.value = response.data.map((project) => formatProjectData(project))

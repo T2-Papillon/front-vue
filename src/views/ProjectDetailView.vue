@@ -2,23 +2,25 @@
 import { ref, onMounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import axios from 'axios'
-import CheckboxSelector from '../components/CheckboxSelector.vue'
 import ProjectInfo from '../components/ProjectInfo.vue'
 import TaskTable from '../components/TaskTable.vue'
+import EditDeleteButtonGroup from '../components/EditDeleteButtonGroup.vue'
 import SortFilter from '@/components/SortFilter.vue'
+// import CheckboxSelector from '../components/CheckboxSelector.vue'
 
 export default {
     components: {
-        CheckboxSelector,
         ProjectInfo,
         TaskTable,
-        SortFilter
+        SortFilter,
+        EditDeleteButtonGroup
+        // CheckboxSelector
     },
     setup() {
         const project = ref({})
         const tasks = ref([])
         const route = useRoute()
-        const projectNo = ref(null) // projectId를 선언하고 초기화
+        const projectNo = ref(null)
 
         const checkboxItems = ref([
             { id: 'todo', name: '진행예정' },
@@ -60,7 +62,6 @@ export default {
             fetchProjectTasks()
         })
 
-        // projectId 변경 감지
         watch(
             () => route.params.id,
             () => {
@@ -68,11 +69,16 @@ export default {
             }
         )
 
+        function addNewTask(newTask) {
+            tasks.value.push(newTask)
+        }
+
         return {
             project,
             tasks,
             checkboxItems,
-            projectNo
+            projectNo,
+            addNewTask
         }
     }
 }
@@ -80,6 +86,13 @@ export default {
 
 <template>
     <div class="inner">
+        <div class="row mb-4">
+            <div class="col d-flex align-items-center justify-content-end">
+                <!--  게시글 수정/삭제 버튼 -->
+                <EditDeleteButtonGroup />
+            </div>
+        </div>
+
         <!-- 프로젝트 정보 -->
         <ProjectInfo :project="project" />
 
@@ -93,9 +106,8 @@ export default {
 
         <div class="row align-items-start justify-content-between mb-4 g-3">
             <div class="col-auto">
-                <div>
-                    <CheckboxSelector :items="checkboxItems" selectAllId="flexCheckDefault" />
-                </div>
+                <!-- 체크박스 -->
+                <!-- <CheckboxSelector :items="checkboxItems" :selected="selectedCheckboxes" @change="handleSelectedItems" /> -->
             </div>
             <div class="col-auto d-flex">
                 <form class="d-flex me-4">
@@ -111,7 +123,8 @@ export default {
         <!-- 하위업무 -->
         <div class="row">
             <div class="col">
-                <TaskTable :projectId="projectNo" :tasks="tasks" />
+                <!-- <TaskTable :projectId="parseInt(projectNo)" :tasks="tasks" /> -->
+                <TaskTable :projectId="parseInt(projectNo)" :tasks="tasks" :addNewTask="addNewTask" />
             </div>
         </div>
     </div>

@@ -27,11 +27,11 @@ export default {
 }
 </script>
 <template>
-    <div class="row align-items-start justify-content-between g-3">
+    <div class="row align-items-center justify-content-between g-3 pb-4">
         <div class="col-auto">
             <div class="title-area">
+                <p class="text-body-tertiary lh-sm mb-3">ProjectNo.00000001</p>
                 <h2 class="h2">📌 {{ project.projTitle }}</h2>
-                <p class="text-body-tertiary lh-sm mb-0">ProjectNo.00000001</p>
             </div>
         </div>
         <div class="col-auto">
@@ -41,6 +41,7 @@ export default {
             </div>
         </div>
     </div>
+
     <table class="table table-borderless fs-9 mb-5 border-top border-translucent">
         <colgroup>
             <col style="width: 154px" />
