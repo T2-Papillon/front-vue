@@ -1,33 +1,41 @@
 <script>
+import { ref } from 'vue'
 import axios from 'axios'
+import { useRoute, useRouter } from 'vue-router'
 
 export default {
-    data() {
-        return {
-            title: '',
-            assignee: '',
-            startDate: '',
-            endDate: '',
-            status: '',
-            priority: '',
-            description: ''
-        }
-    },
-    methods: {
-        async saveTask() {
+    setup() {
+        const task_title = ref('')
+        const assignee = ref('')
+        const start_date = ref('')
+        const end_date = ref('')
+        const task_status = ref('TODO')
+        const task_priority = ref('LV2')
+        const task_desc = ref('')
+        const route = useRoute()
+        const router = useRouter()
+
+        async function saveTask() {
             try {
+                const projectId = route.params.id
                 const apiUrl = import.meta.env.VITE_API_URL
-                const projectId = this.$props.projectId
+                console.log('projectId:', projectId)
 
                 const postData = {
-                    title: this.title,
-                    assignee: this.assignee,
-                    startDate: this.startDate,
-                    endDate: this.endDate,
-                    status: this.status,
-                    priority: this.priority,
-                    description: this.description
+                    assignee: assignee.value,
+                    proj_no: projectId,
+                    task_title: task_title.value,
+                    task_status: task_status.value,
+                    task_priority: task_priority.value,
+                    start_date: new Date(start_date.value).getTime(),
+                    end_date: new Date(end_date.value).getTime(),
+                    task_percent: 0,
+                    task_test: false,
+                    create_date: new Date().getTime(),
+                    task_desc: task_desc.value
                 }
+
+                console.log(postData, '저장할데이터')
 
                 const response = await axios.post(`${apiUrl}/task/project/${projectId}/task`, postData)
 
@@ -37,24 +45,38 @@ export default {
 
                 console.log('저장되었습니다.', response.data)
 
-                this.clearFields()
+                clearFields()
+
+                router.push(`/project/detail/${projectId}`)
             } catch (error) {
                 console.error('저장에 실패했습니다.', error.response.data)
             }
-        },
-        // 입력 필드를 초기화하는 메서드
-        clearFields() {
-            this.title = ''
-            this.assignee = ''
-            this.startDate = ''
-            this.endDate = ''
-            this.status = ''
-            this.priority = ''
-            this.description = ''
+        }
+
+        function clearFields() {
+            task_title.value = ''
+            assignee.value = ''
+            start_date.value = ''
+            end_date.value = ''
+            task_status.value = 'TODO'
+            task_priority.value = 'LV2'
+            task_desc.value = ''
+        }
+
+        return {
+            task_title,
+            assignee,
+            start_date,
+            end_date,
+            task_status,
+            task_priority,
+            task_desc,
+            saveTask
         }
     }
 }
 </script>
+
 <template>
     <div class="inner">
         <div class="row align-items-start justify-content-between g-3">
@@ -64,19 +86,13 @@ export default {
                     <p class="text-body-tertiary lh-sm mb-0">예정된 업무를 적어주세요.</p>
                 </div>
             </div>
-            <!-- <div class="col-auto">
-                <div class="top-btn-area">
-                    <button class="btn btn-outline-dark me-4">대시보드</button>
-                    <button class="btn btn-dark">통계분석</button>
-                </div>
-            </div> -->
         </div>
 
         <div class="row">
             <form @submit.prevent="saveTask">
                 <div class="mb-3">
                     <label for="title" class="form-label">업무명</label>
-                    <input type="text" v-model="title" class="form-control" id="title" />
+                    <input type="text" v-model="task_title" class="form-control" id="title" />
                 </div>
                 <div class="mb-3">
                     <label for="assignee" class="form-label">담당자</label>
@@ -85,30 +101,30 @@ export default {
                 <div class="d-flex mb-3">
                     <div class="me-2">
                         <label for="startDate" class="form-label">시작 날짜</label>
-                        <input type="date" v-model="startDate" class="form-control" id="startDate" />
+                        <input type="date" v-model="start_date" class="form-control" id="startDate" />
                     </div>
                     <div>
                         <label for="endDate" class="form-label">종료 날짜</label>
-                        <input type="date" v-model="endDate" class="form-control" id="endDate" />
+                        <input type="date" v-model="end_date" class="form-control" id="endDate" />
                     </div>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">진행 상태</label>
                     <div class="d-flex align-items-start">
                         <div class="form-check me-4">
-                            <input class="form-check-input" type="radio" v-model="status" id="todo" value="todo" checked />
+                            <input class="form-check-input" type="radio" v-model="task_status" id="todo" value="TODO" checked />
                             <label class="form-check-label" for="todo"> 진행예정 </label>
                         </div>
                         <div class="form-check me-4">
-                            <input class="form-check-input" type="radio" v-model="status" id="doing" value="doing" />
+                            <input class="form-check-input" type="radio" v-model="task_status" id="doing" value="DOING" />
                             <label class="form-check-label" for="doing"> 진행중 </label>
                         </div>
                         <div class="form-check me-4">
-                            <input class="form-check-input" type="radio" v-model="status" id="done" value="done" />
+                            <input class="form-check-input" type="radio" v-model="task_status" id="done" value="DONE" />
                             <label class="form-check-label" for="done"> 완료 </label>
                         </div>
                         <div class="form-check me-4">
-                            <input class="form-check-input" type="radio" v-model="status" id="hold" value="hold" />
+                            <input class="form-check-input" type="radio" v-model="task_status" id="hold" value="HOLD" />
                             <label class="form-check-label" for="hold"> 보류 </label>
                         </div>
                     </div>
@@ -117,29 +133,30 @@ export default {
                     <label class="form-label">우선순위</label>
                     <div class="d-flex align-items-start">
                         <div class="form-check me-4">
-                            <input class="form-check-input" type="radio" v-model="priority" id="lv0" value="lv0" />
+                            <input class="form-check-input" type="radio" v-model="task_priority" id="lv0" value="LV0" />
                             <label class="form-check-label" for="lv0">긴급</label>
                         </div>
                         <div class="form-check me-4">
-                            <input class="form-check-input" type="radio" v-model="priority" id="lv1" value="lv1" />
+                            <input class="form-check-input" type="radio" v-model="task_priority" id="lv1" value="LV1" />
                             <label class="form-check-label" for="lv1">높음</label>
                         </div>
                         <div class="form-check me-4">
-                            <input class="form-check-input" type="radio" v-model="priority" id="lv2" value="lv2" checked />
+                            <input class="form-check-input" type="radio" v-model="task_priority" id="lv2" value="LV2" checked />
                             <label class="form-check-label" for="lv2">보통</label>
                         </div>
                         <div class="form-check me-4">
-                            <input class="form-check-input" type="radio" v-model="priority" id="lv3" value="lv3" />
+                            <input class="form-check-input" type="radio" v-model="task_priority" id="lv3" value="LV3" />
                             <label class="form-check-label" for="lv3">낮음</label>
                         </div>
                     </div>
                 </div>
+
                 <div class="mb-3">
                     <label for="description" class="form-label">설명</label>
-                    <textarea v-model="description" class="form-control textarea" id="description" rows="3"></textarea>
+                    <textarea v-model="task_desc" class="form-control textarea" id="description" rows="3"></textarea>
                 </div>
                 <div class="btn-area">
-                    <button class="btn btn-secondary me-2">취소</button>
+                    <button type="button" class="btn btn-secondary me-2">취소</button>
                     <button type="submit" class="btn btn-primary">저장</button>
                 </div>
             </form>

@@ -16,7 +16,7 @@ export default {
         const project = ref({})
         const tasks = ref([])
         const route = useRoute()
-        const projectNo = ref(null) // projectId를 선언하고 초기화
+        const projectNo = ref(null)
 
         const checkboxItems = ref([
             { id: 'todo', name: '진행예정' },
@@ -58,7 +58,6 @@ export default {
             fetchProjectTasks()
         })
 
-        // projectId 변경 감지
         watch(
             () => route.params.id,
             () => {
@@ -66,11 +65,16 @@ export default {
             }
         )
 
+        function addNewTask(newTask) {
+            tasks.value.push(newTask)
+        }
+
         return {
             project,
             tasks,
             checkboxItems,
-            projectNo
+            projectNo,
+            addNewTask
         }
     }
 }
@@ -105,7 +109,8 @@ export default {
         <!-- 하위업무 -->
         <div class="row">
             <div class="col">
-                <TaskTable :projectId="parseInt(projectNo)" :tasks="tasks" />
+                <!-- <TaskTable :projectId="parseInt(projectNo)" :tasks="tasks" /> -->
+                <TaskTable :projectId="parseInt(projectNo)" :tasks="tasks" :addNewTask="addNewTask" />
             </div>
         </div>
     </div>
