@@ -1,5 +1,6 @@
 <script>
 import axios from 'axios'
+import globalInfo from '@/utils/globalInfoUtils.js'
 
 export default {
     data() {
@@ -24,9 +25,13 @@ export default {
                 })
                 .then((res) => {
                     if (res.status == 200) {
-                        console.log('login 성공')
-                        this.$cookies.set('user', res.data)
-                        this.$router.push('/').then(() => {
+                        const userInfo = {
+                            name: res.data.name,
+                            email: res.data.email
+                        }
+                        this.$cookies.set('user', userInfo)
+                        this.setLoginInfo(res.data)
+                        this.$router.push('/dashboard').then(() => {
                             location.reload()
                         })
                     } else {
@@ -36,6 +41,12 @@ export default {
                 .catch((error) => {
                     console.log(error)
                 })
+        },
+        setLoginInfo(user) {
+            globalInfo.UserInfo.name = user.name
+            globalInfo.UserInfo.eno = user.eno
+            globalInfo.UserInfo.dept = user.dept_no
+            globalInfo.UserInfo.position = user.position_id
         }
     }
 }

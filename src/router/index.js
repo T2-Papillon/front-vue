@@ -48,6 +48,18 @@ const router = createRouter({
             path: '/project/detail/:id/task/save',
             name: 'TaskInput',
             component: () => import('../views/TaskInputView.vue')
+        },
+        {
+            path: '/dashboard',
+            name: 'DashBoard',
+            component: () => import('../views/DashboardView.vue'),
+            beforeEnter: (to, from, next) => {
+                if (sessionStorage.getItem('NM') != null) {
+                    next()
+                } else {
+                    next('/login')
+                }
+            }
         }
     ]
 })

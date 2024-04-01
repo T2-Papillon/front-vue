@@ -9,7 +9,7 @@
             <li>
                 <span class="dropdown-item">{{ dept }}</span>
             </li>
-            <li><a class="dropdown-item" href="#">대시보드</a></li>
+            <li><router-link to="/dashboard" class="dropdown-item">대시보드</router-link></li>
             <li><a class="dropdown-item" href="#">마이페이지</a></li>
             <li><a class="dropdown-item" href="#">로그아웃</a></li>
         </ul>
