@@ -17,23 +17,21 @@ export default {
     },
     setup() {
         const chartData = ref({
-            labels: ['TODO', 'DOING', 'DONE', 'HOLD', 'TEST'],
+            labels: ['TODO', 'DOING', 'DONE', 'HOLD'],
             datasets: [{
-                label: 'Task Status Counts',
-                data: [], // 상태 별 업무 개수를 담을 배열
+                label: 'Project Status Counts',
+                data: [], // 상태 별 프로젝트 개수를 담을 배열
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)', 
                     'rgba(54, 162, 235, 0.2)', 
                     'rgba(255, 206, 86, 0.2)', 
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)'
+                    'rgba(75, 192, 192, 0.2)'
                 ],
                 borderColor: [
                     'rgba(255, 99, 132, 1)', 
                     'rgba(54, 162, 235, 1)', 
                     'rgba(255, 206, 86, 1)', 
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)'
+                    'rgba(75, 192, 192, 1)'
                     ],
                     borderWidth: 1
             }]
@@ -47,32 +45,32 @@ export default {
                 },
                 title: {
                     display: true,
-                    text: '4번 프로젝트에 대한 업무 진행 상황'
+                    text: '4번 프로젝트 진행 상황'
                 }
             }
         })
 
         const loaded = ref(false) // 데이터 로딩 상태
 
-        async function fetchTasksByProject() {
+        async function fetchProjectsByStatus() {
+            const statuses = ['TODO', 'DOING', 'DONE', 'HOLD']
             const apiUrl = import.meta.env.VITE_API_URL
-            try {
-                const response = await axios.get(`${apiUrl}/task/project/4/task`)
-                const tasks = response.data
-                // 상태별로 업무를 필터링하고 개수를 계산
-                const counts = chartData.value.labels.map(status =>
-                    tasks.filter(task => task.status === status).length
-                )
-                chartData.value.datasets[0].data = counts;
-                console.log(counts); // 상태 별 프로젝트 개수 확인
-                loaded.value = true;
-            } catch (error) {
-                console.error(`Error fetching tasks by project:`, error)
+
+            const counts = await Promise.all(statuses.map(async (status) => {
+                try {
+                    const response = await axios.get(`${apiUrl}/project/status/status?status=${status}`);
+                    return response.data.length // 각 상태에 대한 프로젝트 개수
+                } catch (error) {
+                    console.error(`Error fetching projects for status ${status}:`, error)
+                    return 0
             }
-            
+        }))
+            console.log(counts); // 상태 별 프로젝트 개수 확인
+            chartData.value.datasets[0].data = counts
+        loaded.value = true // 데이터 로딩 완료
         }
 
-        onMounted(fetchTasksByProject)
+        onMounted(fetchProjectsByStatus)
 
         return {
             chartData,
@@ -85,7 +83,7 @@ export default {
 
 <style scoped>
 canvas {
-width: 340px !important;
-height: 340px !important;
+    width: 340px !important;
+    height: 340px !important;
 }
 </style>
