@@ -1,16 +1,16 @@
 <script>
 import PieChartProjectStatus from '../components/PieChartProjectStatus.vue'
 import PieChartTaskStatus from '../components/PieChartTaskStatus.vue'
-import BarChartTaskCount from '../components/BarChartTaskCount.vue'
-import BarChartTaskThisWeek from '../components/BarChartTaskThisWeek.vue'
+import BarChartTaskAssignee from '../components/BarChartTaskAssignee.vue'
+import BarChartTaskPriority from '../components/BarChartTaskPriority.vue'
 
 
 export default {
     components: {
         PieChartProjectStatus,
         PieChartTaskStatus,
-        BarChartTaskCount,
-        BarChartTaskThisWeek
+        BarChartTaskAssignee,
+        BarChartTaskPriority
     },
     data() {
         return {
@@ -58,12 +58,12 @@ export default {
 
         <div class="row mt-4">
             <div class="col">
-                <h3 class="h3">담당자별 업무 개수</h3>
-                <BarChartTaskCount />
+                <h3 class="h3">담당자별 업무 분포</h3>
+                <BarChartTaskAssignee />
             </div>
             <div class="col">
-                <h3 class="h3">이번주 각 담당자별 업무 개수</h3>
-                <BarChartTaskThisWeek />
+                <h3 class="h3">우선순위별 업무 분포</h3>
+                <BarChartTaskPriority />
             </div>
         </div>
     </div>

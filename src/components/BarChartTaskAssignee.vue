@@ -13,7 +13,7 @@ import axios from 'axios'
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
 
 export default {
-    name: 'BarChart',
+    name: 'BarChartTaskAssignee',
     components: { Bar },
     data() {
         return {
@@ -56,7 +56,7 @@ export default {
                 labels: Object.keys(tasksPerAssignee),
                 datasets: [
                     {
-                        label: '# of Tasks',
+                        label: '업무 개수',
                         data: Object.values(tasksPerAssignee),
                         backgroundColor: 'rgba(54, 162, 235, 0.2)',
                         borderColor: 'rgba(54, 162, 235, 1)',
