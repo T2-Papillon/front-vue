@@ -2,14 +2,12 @@
 import { ref, onMounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import axios from 'axios'
-import CheckboxSelector from '../components/CheckboxSelector.vue'
 import ProjectInfo from '../components/ProjectInfo.vue'
 import TaskTable from '../components/TaskTable.vue'
 import SortFilter from '@/components/SortFilter.vue'
 
 export default {
     components: {
-        CheckboxSelector,
         ProjectInfo,
         TaskTable,
         SortFilter
@@ -92,11 +90,7 @@ export default {
         </div>
 
         <div class="row align-items-start justify-content-between mb-4 g-3">
-            <div class="col-auto">
-                <div>
-                    <CheckboxSelector :items="checkboxItems" selectAllId="flexCheckDefault" />
-                </div>
-            </div>
+            <div class="col-auto"></div>
             <div class="col-auto d-flex">
                 <form class="d-flex me-4">
                     <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
@@ -111,7 +105,7 @@ export default {
         <!-- 하위업무 -->
         <div class="row">
             <div class="col">
-                <TaskTable :projectId="projectNo" :tasks="tasks" />
+                <TaskTable :projectId="parseInt(projectNo)" :tasks="tasks" />
             </div>
         </div>
     </div>

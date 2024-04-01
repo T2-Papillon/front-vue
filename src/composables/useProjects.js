@@ -14,6 +14,7 @@ export function useProjects() {
             const apiUrl = import.meta.env.VITE_API_URL
             const searchPath = searchTerm ? `/search/project?term=${searchTerm}` : '/project'
             const response = await axios.get(`${apiUrl}${searchPath}`)
+
             projects.value = response.data.map((project) => formatProjectData(project))
             console.log('Projects loaded:', projects.value)
         } catch (error) {

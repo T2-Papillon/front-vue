@@ -1,5 +1,4 @@
 <script>
-
 import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import axios from 'axios'
@@ -62,11 +61,9 @@ export default {
         })
 
         return {
-
             tasks,
             checkboxItems,
             formatDate
-
         }
     }
 }
@@ -107,8 +104,6 @@ export default {
                 </td>
                 <td>{{ formatDate(task.start_date) }}</td>
                 <td>{{ formatDate(task.end_date) }}</td>
-                <!-- <td>{{ task.start_date }}</td>
-                <td>{{ task.end_date }}</td> -->
                 <td><StatusBadge :status="task.task_status" /></td>
                 <td class="text-end"><ProgressBar :progress="task.task_percent" /></td>
                 <td class="text-end"><PriorityBadge :priority="task.task_priority" /></td>

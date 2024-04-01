@@ -17,11 +17,7 @@ export default {
         async saveTask() {
             try {
                 const apiUrl = import.meta.env.VITE_API_URL
-                const response = await axios.get(`${apiUrl}/task/project/${proNo}/task`)
-
-                if (!response || !response.data) {
-                    throw new Error('응답 객체 또는 응답 데이터가 유효하지 않습니다.')
-                }
+                const projectId = this.$props.projectId
 
                 const postData = {
                     title: this.title,
@@ -32,39 +28,29 @@ export default {
                     priority: this.priority,
                     description: this.description
                 }
-                const saveResponse = await axios.post(`${apiUrl}/task/project/${proNo}/task`, postData)
-                console.log('저장되었습니다.', saveResponse.data)
 
-                // 저장 후 입력 필드 초기화
-                this.title = ''
-                this.assignee = ''
-                this.startDate = ''
-                this.endDate = ''
-                this.status = ''
-                this.priority = ''
-                this.description = ''
+                const response = await axios.post(`${apiUrl}/task/project/${projectId}/task`, postData)
+
+                if (!response || !response.data) {
+                    throw new Error('응답 객체 또는 응답 데이터가 유효하지 않습니다.')
+                }
+
+                console.log('저장되었습니다.', response.data)
+
+                this.clearFields()
             } catch (error) {
-                // console.error('저장에 실패했습니다.', error.response.data)
+                console.error('저장에 실패했습니다.', error.response.data)
             }
         },
-        // 저장 후 추가 기능
-        saveAndAddTask() {
-            this.saveTask()
-                .then(() => {
-                    // 새로운 업무 데이터를 부모 컴포넌트로 emit하여 전달
-                    this.$emit('new-task-added', {
-                        title: this.title,
-                        assignee: this.assignee,
-                        startDate: this.startDate,
-                        endDate: this.endDate,
-                        status: this.status,
-                        priority: this.priority,
-                        description: this.description
-                    })
-                })
-                .catch((error) => {
-                    console.error('저장에 실패했습니다.', error.response.data)
-                })
+        // 입력 필드를 초기화하는 메서드
+        clearFields() {
+            this.title = ''
+            this.assignee = ''
+            this.startDate = ''
+            this.endDate = ''
+            this.status = ''
+            this.priority = ''
+            this.description = ''
         }
     }
 }
