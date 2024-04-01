@@ -1,10 +1,12 @@
 <script>
-import PieChartExample from '../components/PieChartExample.vue'
+import PieChartProjectStatus from '../components/PieChartProjectStatus.vue';
+import PieChartTaskStatus from '../components/PieChartTaskStatus.vue';
 
 
 export default {
     components: {
-        PieChartExample
+        PieChartProjectStatus,
+        PieChartTaskStatus
     },
     data() {
         return {
@@ -36,27 +38,18 @@ export default {
         </div>
 
         <div class="row mt-4">
+            <AnalyzeProjectInfo :project="project" />
+        </div>
+
+        <div class="row mt-4">
             <div class="col">
-                <AnalyzeProjectInfo :project="project" />
+                <PieChartProjectStatus />
             </div>
         </div>
 
         <div class="row mt-4">
             <div class="col">
-                <PieChart />
-            </div>
-        </div>
-
-        <div class="row mt-4">
-            <div class="col-6"></div>
-            <div class="col-6"></div>
-        </div>
-
-        <div class="row mt-4">
-            <div class="col">
-                <!-- 프로젝트 테이블이랑 project내 task 하위업무 이거 참고해서 projectThisWeek 만들어도 되지않을까 -->
-                <TaskTable />
-                <ProjectTable />
+                <PieChartTaskStatus />
             </div>
         </div>
         <div class="row">
