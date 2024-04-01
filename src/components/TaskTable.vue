@@ -46,7 +46,7 @@ export default {
 
             try {
                 const apiUrl = import.meta.env.VITE_API_URL
-                const response = await axios.get(`${apiUrl}/task/project/${projectId}/task`)
+                const response = await axios.get(`${apiUrl}/task/project/${projectId}/tasks`)
 
                 tasks.value = response.data
 
