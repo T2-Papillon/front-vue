@@ -39,8 +39,6 @@ export default {
         async function fetchProjectTasks() {
             const projectId = route.params.id
 
-            console.log('tasktable - projectId', projectId)
-
             try {
                 const apiUrl = import.meta.env.VITE_API_URL
                 const response = await axios.get(`${apiUrl}/task/project/${projectId}/task`)
@@ -61,6 +59,7 @@ export default {
                 props.addNewTask(props.newTaskData)
             }
         }
+
         // newTask 데이터가 변경될 때마다 해당 데이터를 추가
         watch(
             () => props.newTaskData,

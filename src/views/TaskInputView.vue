@@ -24,6 +24,24 @@ export default {
                 const apiUrl = import.meta.env.VITE_API_URL
                 console.log('projectId:', projectId)
 
+                let status = 'TODO' // 기본적으로 '진행예정'으로 설정
+
+                // 진행율에 따라 업무 상태 설정
+                if (task_percent.value > 0 && task_percent.value < 100) {
+                    status = 'DOING' // 진행중
+                } else if (task_percent.value === 100) {
+                    status = 'DONE' // 완료
+                }
+
+                // 사용자에게 업무 상태 변경 사항을 안내
+                if (task_status.value !== status) {
+                    const confirmMsg = `진행율이 ${task_percent.value}%이므로 업무 상태가 자동으로 변경됩니다. 계속하시겠습니까?`
+
+                    if (!confirm(confirmMsg)) {
+                        return // 사용자가 취소한 경우 저장 프로세스 중단
+                    }
+                }
+
                 const postData = {
                     assignee: assignee.value,
                     proj_no: projectId,
@@ -102,7 +120,7 @@ export default {
         <div class="row align-items-start justify-content-between g-3">
             <div class="col-auto">
                 <div class="title-area">
-                    <h2 class="h2">업무작성</h2>
+                    <h2 class="h2">업무 작성글쓰기</h2>
                     <p class="text-body-tertiary lh-sm mb-0">예정된 업무를 적어주세요.</p>
                 </div>
             </div>
@@ -110,99 +128,100 @@ export default {
 
         <div class="row">
             <form @submit.prevent="saveTask">
-                <div class="mb-3">
-                    <label for="title" class="form-label">업무명</label>
-                    <input type="text" v-model="task_title" class="form-control" id="title" placeholder="제목을 입력해주세요." required />
-                </div>
-
-                <div class="mb-3">
-                    <label for="assignee" class="form-label">담당자</label>
-                    <input type="text" v-model="assignee" class="form-control" id="assignee" />
-                </div>
-
-                <div class="d-flex mb-3">
-                    <div class="me-2">
-                        <label for="startDate" class="form-label">시작 날짜</label>
-                        <input type="date" v-model="start_date" class="form-control" id="startDate" required />
+                <div>
+                    <div class="mb-3">
+                        <label for="title" class="form-label">업무명</label>
+                        <input type="text" v-model="task_title" class="form-control" id="title" placeholder="제목을 입력해주세요." required />
                     </div>
-                    <div>
-                        <label for="endDate" class="form-label">종료 날짜</label>
-                        <input type="date" v-model="end_date" class="form-control" id="endDate" required />
-                    </div>
-                    <div v-if="end_date && start_date && new Date(end_date) < new Date(start_date)" class="text-danger">종료 날짜를 다시 선택해주세요.</div>
-                </div>
 
-                <div class="mb-3">
-                    <label class="form-label">진행 상태</label>
-                    <div class="d-flex align-items-start">
-                        <div class="form-check me-4">
-                            <input class="form-check-input" type="radio" v-model="task_status" id="todo" value="TODO" checked />
-                            <label class="form-check-label" for="todo">진행예정</label>
-                        </div>
-                        <div class="form-check me-4">
-                            <input class="form-check-input" type="radio" v-model="task_status" id="doing" value="DOING" />
-                            <label class="form-check-label" for="doing">진행중</label>
-                        </div>
-                        <div class="form-check me-4">
-                            <input class="form-check-input" type="radio" v-model="task_status" id="done" value="DONE" />
-                            <label class="form-check-label" for="done">완료</label>
-                        </div>
-                        <div class="form-check me-4">
-                            <input class="form-check-input" type="radio" v-model="task_status" id="hold" value="HOLD" />
-                            <label class="form-check-label" for="hold">보류</label>
-                        </div>
+                    <div class="mb-3">
+                        <label for="assignee" class="form-label">담당자</label>
+                        <input type="text" v-model="assignee" class="form-control" id="assignee" />
                     </div>
-                </div>
 
-                <div class="mb-3">
-                    <label class="form-label">우선순위</label>
-                    <div class="d-flex align-items-start">
-                        <div class="form-check me-4">
-                            <input class="form-check-input" type="radio" v-model="task_priority" id="lv0" value="LV0" />
-                            <label class="form-check-label" for="lv0">긴급</label>
+                    <div class="d-flex mb-3">
+                        <div class="me-2">
+                            <label for="startDate" class="form-label">시작 날짜</label>
+                            <input type="date" v-model="start_date" class="form-control" id="startDate" required />
                         </div>
-                        <div class="form-check me-4">
-                            <input class="form-check-input" type="radio" v-model="task_priority" id="lv1" value="LV1" />
-                            <label class="form-check-label" for="lv1">높음</label>
+
+                        <div>
+                            <label for="endDate" class="form-label">종료 날짜</label>
+                            <input type="date" v-model="end_date" class="form-control" id="endDate" required />
                         </div>
-                        <div class="form-check me-4">
-                            <input class="form-check-input" type="radio" v-model="task_priority" id="lv2" value="LV2" checked />
-                            <label class="form-check-label" for="lv2">보통</label>
-                        </div>
-                        <div class="form-check me-4">
-                            <input class="form-check-input" type="radio" v-model="task_priority" id="lv3" value="LV3" />
-                            <label class="form-check-label" for="lv3">낮음</label>
+                        <div v-if="end_date && start_date && new Date(end_date) < new Date(start_date)" class="text-danger">종료 날짜를 다시 선택해주세요.</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">진행율</label>
+                        <input type="number" v-model="task_percent" class="form-control" min="0" max="100" step="1" placeholder="0부터 100까지의 숫자를 입력하세요." />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">진행 상태</label>
+                        <div class="d-flex align-items-start">
+                            <div class="form-check me-4">
+                                <input class="form-check-input" type="radio" v-model="task_status" id="todo" value="TODO" checked />
+                                <label class="form-check-label" for="todo">진행예정</label>
+                            </div>
+                            <div class="form-check me-4">
+                                <input class="form-check-input" type="radio" v-model="task_status" id="doing" value="DOING" />
+                                <label class="form-check-label" for="doing">진행중</label>
+                            </div>
+                            <div class="form-check me-4">
+                                <input class="form-check-input" type="radio" v-model="task_status" id="done" value="DONE" />
+                                <label class="form-check-label" for="done">완료</label>
+                            </div>
+                            <div class="form-check me-4">
+                                <input class="form-check-input" type="radio" v-model="task_status" id="hold" value="HOLD" />
+                                <label class="form-check-label" for="hold">보류</label>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="mb-3">
-                    <label class="form-label">진행율</label>
-                    <input type="number" v-model="task_percent" class="form-control" min="0" max="100" step="1" placeholder="0부터 100까지의 숫자를 입력하세요." />
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label">테스트</label>
-                    <div class="d-flex align-items-start">
-                        <div class="form-check me-4">
-                            <input class="form-check-input" type="radio" v-model="task_test" id="test_true" value="true" />
-                            <label class="form-check-label" for="test_true">True</label>
-                        </div>
-                        <div class="form-check me-4">
-                            <input class="form-check-input" type="radio" v-model="task_test" id="test_false" value="false" checked />
-                            <label class="form-check-label" for="test_false">False</label>
+                    <div class="mb-3">
+                        <label class="form-label">우선순위</label>
+                        <div class="d-flex align-items-start">
+                            <div class="form-check me-4">
+                                <input class="form-check-input" type="radio" v-model="task_priority" id="lv0" value="LV0" />
+                                <label class="form-check-label" for="lv0">긴급</label>
+                            </div>
+                            <div class="form-check me-4">
+                                <input class="form-check-input" type="radio" v-model="task_priority" id="lv1" value="LV1" />
+                                <label class="form-check-label" for="lv1">높음</label>
+                            </div>
+                            <div class="form-check me-4">
+                                <input class="form-check-input" type="radio" v-model="task_priority" id="lv2" value="LV2" checked />
+                                <label class="form-check-label" for="lv2">보통</label>
+                            </div>
+                            <div class="form-check me-4">
+                                <input class="form-check-input" type="radio" v-model="task_priority" id="lv3" value="LV3" />
+                                <label class="form-check-label" for="lv3">낮음</label>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="mb-3">
+
+                    <div class="mb-3">
+                        <label class="form-label">테스트</label>
+                        <div class="d-flex align-items-start">
+                            <div class="form-check me-4">
+                                <input class="form-check-input" type="radio" v-model="task_test" id="test_true" value="true" />
+                                <label class="form-check-label" for="test_true">True</label>
+                            </div>
+                            <div class="form-check me-4">
+                                <input class="form-check-input" type="radio" v-model="task_test" id="test_false" value="false" checked />
+                                <label class="form-check-label" for="test_false">False</label>
+                            </div>
+                        </div>
+                    </div>
                     <div v-if="task_test === 'true'" class="mb-3">
                         <label for="url" class="form-label">URL 입력</label>
                         <input type="text" v-model="url" class="form-control" id="url" required />
                     </div>
-                </div>
-                <div class="mb-3">
-                    <label for="description" class="form-label">설명</label>
-                    <textarea v-model="task_desc" class="form-control textarea" id="description" rows="3" placeholder="업무내용을 입력하세요"></textarea>
+
+                    <div class="mb-3">
+                        <label for="description" class="form-label">설명</label>
+                        <textarea v-model="task_desc" class="form-control textarea" id="description" rows="3" placeholder="업무내용을 입력하세요"></textarea>
+                    </div>
                 </div>
 
                 <!-- 버튼영역 -->

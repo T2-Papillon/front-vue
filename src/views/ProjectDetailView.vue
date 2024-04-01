@@ -5,12 +5,14 @@ import axios from 'axios'
 import ProjectInfo from '../components/ProjectInfo.vue'
 import TaskTable from '../components/TaskTable.vue'
 import SortFilter from '@/components/SortFilter.vue'
+// import CheckboxSelector from '../components/CheckboxSelector.vue'
 
 export default {
     components: {
         ProjectInfo,
         TaskTable,
         SortFilter
+        // CheckboxSelector
     },
     setup() {
         const project = ref({})
@@ -82,6 +84,15 @@ export default {
 
 <template>
     <div class="inner">
+        <div class="row mb-4">
+            <div class="col d-flex align-items-center justify-content-end">
+                <div class="btn-group">
+                    <button class="btn btn-outline-secondary"><i class="bi bi-pencil"></i> 수정</button>
+                    <button class="btn btn-outline-secondary"><i class="bi bi-trash"></i> 삭제</button>
+                </div>
+            </div>
+        </div>
+
         <!-- 프로젝트 정보 -->
         <ProjectInfo :project="project" />
 
@@ -94,7 +105,10 @@ export default {
         </div>
 
         <div class="row align-items-start justify-content-between mb-4 g-3">
-            <div class="col-auto"></div>
+            <div class="col-auto">
+                <!-- 체크박스 -->
+                <!-- <CheckboxSelector :items="checkboxItems" :selected="selectedCheckboxes" @change="handleSelectedItems" /> -->
+            </div>
             <div class="col-auto d-flex">
                 <form class="d-flex me-4">
                     <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
