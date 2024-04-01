@@ -29,7 +29,7 @@ export default {
         <div class="row align-items-start justify-content-between g-3">
             <div class="col-auto">
                 <div class="title-area">
-                    <h2 class="h2">통계분석</h2>
+                    <h2 class="h2">4번 프로젝트 통계분석</h2>
                     <p class="text-body-tertiary lh-sm mb-0">4번 프로젝트</p>
                 </div>
             </div>

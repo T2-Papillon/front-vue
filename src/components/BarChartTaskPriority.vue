@@ -47,16 +47,26 @@ export default {
             }
         },
         processChartData(tasks) {
+            const priorityMapping = {
+                'LV0': '긴급',
+                'LV1': '높음',
+                'LV2': '보통',
+                'LV3': '낮음'
+            }
+
+
             const tasksPerPriority = tasks.reduce((acc, task) => {
-                const priority = task.task_priority; // 우선순위 필드명
-                if (!acc[priority]) {
-                    acc[priority] = 0;
+                // task.taskPriority 값에 따라 매핑된 레이블을 사용
+                const priorityLabel = priorityMapping[task.task_priority];
+
+                if (!acc[priorityLabel]) {
+                    acc[priorityLabel] = 0;
                 }
-                acc[priority]++;
+                acc[priorityLabel]++;
                 return acc;
             }, {});
 
-            // 우선순위별 데이터를 차트 데이터 형식에 맞춰 업데이트
+            // 매핑된 레이블을 기반으로 차트 데이터 생성
             this.chartData = {
                 labels: Object.keys(tasksPerPriority),
                 datasets: [
