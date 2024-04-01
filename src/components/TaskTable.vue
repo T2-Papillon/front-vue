@@ -1,9 +1,7 @@
 <script>
-
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import axios from 'axios'
-
 import UserProfile from '../components/UserProfile.vue'
 import ProgressBar from '../components/ProgressBar.vue'
 import StatusBadge from '../components/StatusBadge.vue'
@@ -24,31 +22,27 @@ export default {
             required: true
         },
         // 새로운 업무 데이터를 받아오는 props
-        newTask: {
+        newTaskData: {
             type: Object,
             default: null
+        },
+        addNewTask: {
+            type: Function,
+            required: true
         }
     },
     setup(props) {
         const tasks = ref([])
         const route = useRoute()
-        const checkboxItems = ref([
-            { id: 'todo', name: '진행예정' },
-            { id: 'doing', name: '진행중' },
-            { id: 'done', name: '완료' },
-            { id: 'hold', name: '보류' }
-        ])
 
         // 프로젝트 태스크 정보를 불러오는 함수
         async function fetchProjectTasks() {
             const projectId = route.params.id
 
-            console.log(projectId)
-
             try {
                 const apiUrl = import.meta.env.VITE_API_URL
                 const response = await axios.get(`${apiUrl}/task/project/${projectId}/task`)
-                // tasks.value = response.data.map(formatTaskData)
+
                 tasks.value = response.data
 
                 console.log('tasktable', tasks.value)
@@ -57,16 +51,33 @@ export default {
             }
         }
 
+        // 데이터를 가져온 후에 테이블에 새로운 태스크가 추가되었는지 확인하는 함수
+        function checkNewTask() {
+            console.log('New Task:', props.newTaskData)
+            // 새로운 태스크가 존재하면 addNewTask 함수를 호출하여 tasks 배열에 추가
+            if (props.newTaskData) {
+                props.addNewTask(props.newTaskData)
+            }
+        }
+
+        // newTask 데이터가 변경될 때마다 해당 데이터를 추가
+        watch(
+            () => props.newTaskData,
+            (newVal) => {
+                if (newVal) {
+                    props.addNewTask(newVal)
+                }
+            }
+        )
+
         onMounted(() => {
             fetchProjectTasks()
         })
 
         return {
-
             tasks,
-            checkboxItems,
-            formatDate
-
+            formatDate,
+            checkNewTask
         }
     }
 }
@@ -107,8 +118,6 @@ export default {
                 </td>
                 <td>{{ formatDate(task.start_date) }}</td>
                 <td>{{ formatDate(task.end_date) }}</td>
-                <!-- <td>{{ task.start_date }}</td>
-                <td>{{ task.end_date }}</td> -->
                 <td><StatusBadge :status="task.task_status" /></td>
                 <td class="text-end"><ProgressBar :progress="task.task_percent" /></td>
                 <td class="text-end"><PriorityBadge :priority="task.task_priority" /></td>
@@ -116,15 +125,18 @@ export default {
                 <td class="text-end text-secondary" style="font-size: 12px">{{ formatDate(task.create_date) }}</td>
             </tr>
 
-            <!-- 새로 추가된 내용 -->
-            <!-- <tr v-if="newTask" :key="newTask.id">
-                <td>{{ newTask.title }}</td>
-                <td>{{ newTask.assignee }}</td>
-                <td>{{ newTask.startDate }}</td>
-                <td>{{ newTask.endDate }}</td>
-                <td>{{ newTask.status }}</td>
-                <td>{{ newTask.description }}</td>
-            </tr> -->
+            <!-- 새로운 업무 표시 -->
+            <tr v-if="newTaskData" :key="newTaskData.id">
+                <td>{{ newTaskData.task_title }}</td>
+                <td>{{ newTaskData.assignee }}</td>
+                <td>{{ formatDate(newTaskData.start_date) }}</td>
+                <td>{{ formatDate(newTaskData.end_date) }}</td>
+                <td>{{ newTaskData.task_status }}</td>
+                <td>{{ newTaskData.task_percent }}</td>
+                <td>{{ newTaskData.task_priority }}</td>
+                <td>{{ newTaskData.task_test }}</td>
+                <td>{{ formatDate(newTaskData.create_date) }}</td>
+            </tr>
         </tbody>
     </table>
 </template>
