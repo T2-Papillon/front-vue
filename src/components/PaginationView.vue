@@ -14,35 +14,32 @@
     </nav>
 </template>
 
-<script>
-export default {
-    props: {
-        currentPage: {
-            type: Number,
-            required: true
-        },
-        totalPages: {
-            type: Number,
-            required: true
-        }
+<script setup>
+import { ref, defineProps, onMounted, watch } from 'vue'
+
+const props = defineProps({
+    currentPage: {
+        type: Number,
+        required: true
     },
-    computed: {
-        pages() {
-            let pages = []
-            for (let i = 1; i <= this.totalPages; i++) {
-                pages.push(i)
-            }
-            return pages
-        }
+    totalPages: {
+        type: Number,
+        required: true
     },
-    methods: {
-        changePage(page) {
-            if (page < 1 || page > this.totalPages) {
-                return
-            }
-            this.$emit('page-changed', page)
-        }
+    onPageChanged: Function
+})
+
+const pages = []
+for (let i = 1; i <= props.totalPages; i++) {
+    pages.push(i)
+}
+
+const changePage = (page) => {
+    if (page < 1 || page > props.totalPages) {
+        return
     }
+    // 페이지 변경 이벤트를 부모 컴포넌트로 전달합니다.
+    props.onPageChanged(page)
 }
 </script>
 

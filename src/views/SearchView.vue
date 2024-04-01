@@ -6,6 +6,7 @@ import SortFilter from '../components/SortFilter.vue'
 import { formatProjectData } from '@/utils/projectUtils'
 import { ref, watch, onMounted } from 'vue'
 import { useProjects } from '@/composables/useProjects'
+import PaginationView from '../components/PaginationView.vue'
 
 const searchTerm = ref('')
 const checkboxItems = ref([
@@ -16,10 +17,17 @@ const checkboxItems = ref([
     { id: 'hold', name: '보류' }
 ])
 const selectedCheckboxes = ref(['all']) // '전체'가 기본값
-const { projects, fetchProjects, fetchProjectsByStatus, sortByLatest, sortByPriority } = useProjects()
+const { projects, fetchProjects, fetchProjectsByStatus, sortByLatest, sortByPriority, currentPage, totalPages, changePage } = useProjects()
+
+// 페이지 변경 이벤트를 처리하는 메서드를 정의합니다.
+const handlePageChange = (page) => {
+    // 페이지 변경 시 수행할 작업을 정의합니다.
+    console.log('Page changed:', page)
+    // 예시로 currentPage 값을 변경하는 작업을 수행합니다.
+    currentPage.value = page
+}
 
 onMounted(() => {
-    console.log('Component mounted, fetching projects...')
     fetchProjects()
 })
 
@@ -99,6 +107,9 @@ const handleSelectedItems = (selectedItems) => {
                 <ProjectTable :projects="projects" />
             </div>
         </div>
+
+        <!-- 페이지네이션 -->
+        <PaginationView :currentPage="currentPage" :totalPages="totalPages" @page-changed="handlePageChange" />
     </div>
 </template>
 
