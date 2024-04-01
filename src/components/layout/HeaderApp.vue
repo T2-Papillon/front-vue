@@ -32,12 +32,6 @@ export default {
 
                 <nav class="navbar navbar-expand-lg">
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <!-- <li class="nav-item">
-                                <router-link to="/" class="nav-link">x</router-link>
-                            </li>
-                            <li class="nav-item">
-                                <router-link to="/about" class="nav-link">x</router-link>
-                            </li> -->
                         <!-- 로그인한 상태에서 보여줄 탭 -->
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0" v-if="userInfo">
                             <li class="nav-item">
@@ -46,32 +40,26 @@ export default {
                             <li class="nav-item">
                                 <router-link to="/analyze" class="nav-link">analyze</router-link>
                             </li>
-                            <!-- <li class="nav-item">
-                                <router-link to="/kit" class="nav-link">kit</router-link>
-                            </li> -->
-                            <div class="vertical-line"></div>
+                            <li>
+                                <div class="vertical-line"></div>
+                            </li>
+                            <li class="nav-item">
+                                <router-link to="/search" class="nav-link">
+                                    <button class="btn" type="submit"><i class="bi bi-search"></i></button>
+                                </router-link>
+                            </li>
                         </ul>
 
-                        <!-- 모든 상태에서 보여줄 검색 아이콘 -->
-                        <form class="d-flex mr-2">
-                            <router-link to="/search" class="nav-link">
-                                <button class="btn" type="submit"><i class="bi bi-search"></i></button>
-                            </router-link>
-                        </form>
-
-                        <div class="vertical-line"></div>
+                        <ul>
+                            <li>
+                                <router-link to="/mypage" class="nav-link">mypage 개인분석</router-link>
+                            </li>
+                        </ul>
 
                         <!-- 로그인한 상태에서 보여줄 UserProfile 드롭다운 -->
                         <ul class="me-auto mb-2 mb-lg-0" v-if="userInfo">
                             <li class="dropdown">
                                 <UserProfile :name="userInfo.name" :dept="userInfo.dept" />
-                            </li>
-                        </ul>
-
-                        <!-- 로그인하지 않은 상태에서 보여줄 로그인 탭 -->
-                        <ul class="navbar-nav me-auto mb-2 mb-lg-0" v-else>
-                            <li class="nav-item">
-                                <router-link to="/login" class="nav-link">로그인</router-link>
                             </li>
                         </ul>
                     </div>
