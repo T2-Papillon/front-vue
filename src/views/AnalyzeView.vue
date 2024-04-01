@@ -1,12 +1,18 @@
 <script>
-import PieChartProjectStatus from '../components/PieChartProjectStatus.vue';
-import PieChartTaskStatus from '../components/PieChartTaskStatus.vue';
+// import AnalyzeProjectDetail from '../components/AnalyzeProjectDetail.vue'
+import PieChartProjectStatus from '../components/PieChartProjectStatus.vue'
+import BarChartTaskStatus from '../components/BarChartTaskStatus.vue'
+import BarChartTaskAssignee from '../components/BarChartTaskAssignee.vue'
+import BarChartTaskPriority from '../components/BarChartTaskPriority.vue'
 
 
 export default {
     components: {
+        // AnalyzeProjectDetail,
         PieChartProjectStatus,
-        PieChartTaskStatus
+        BarChartTaskStatus,
+        BarChartTaskAssignee,
+        BarChartTaskPriority
     },
     data() {
         return {
@@ -25,8 +31,8 @@ export default {
         <div class="row align-items-start justify-content-between g-3">
             <div class="col-auto">
                 <div class="title-area">
-                    <h2 class="h2">통계분석</h2>
-                    <p class="text-body-tertiary lh-sm mb-0">텍스트텍스트텍스트텍스트</p>
+                    <h2 class="h2">4번 프로젝트 통계분석</h2>
+                    <p class="text-body-tertiary lh-sm mb-0">4번 프로젝트</p>
                 </div>
             </div>
             <div class="col-auto">
@@ -43,24 +49,29 @@ export default {
 
         <div class="row mt-4">
             <div class="col">
-                <PieChartProjectStatus />
+                <!-- <AnalyzeProjectDetail /> -->
             </div>
         </div>
 
         <div class="row mt-4">
             <div class="col">
-                <PieChartTaskStatus />
+                <h3 class="h3">전체 프로젝트 진행 상태</h3>
+                <PieChartProjectStatus />
+            </div>
+            <div class="col">
+                <h3 class="h3">업무 진행 상태 분포</h3>
+                <BarChartTaskStatus />
             </div>
         </div>
-        <div class="row">
+
+        <div class="row mt-4">
             <div class="col">
-                <ProjectTable />
+                <h3 class="h3">담당자별 업무 분포</h3>
+                <BarChartTaskAssignee />
             </div>
-        </div>
-        <div class="row">
             <div class="col">
-                <!-- 굿 -->
-                <ProjectThisWeek />
+                <h3 class="h3">우선순위별 업무 분포</h3>
+                <BarChartTaskPriority />
             </div>
         </div>
     </div>
