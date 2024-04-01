@@ -29,15 +29,15 @@ export function useProjects() {
         try {
             // 'all'이 선택된 경우 모든 프로젝트를 불러옵니다.
             if (statusList.includes('all')) {
+                const apiUrl = import.meta.env.VITE_API_URL
                 const response = await axios.get(`${apiUrl}/search/project`, {
                     params: { term: '' } // 'all'이 선택된 경우, 모든 프로젝트를 가져오기 위해 빈 검색어를 전송
                 })
                 projects.value = response.data.map((project) => formatProjectData(project))
             } else {
-                // 단일 상태에 대한 프로젝트 목록을 요청합니다.
-                // 현재 백엔드 구현상, statusList 배열의 첫 번째 요소만 사용합니다.
+                const apiUrl = import.meta.env.VITE_API_URL
                 const statusId = statusList[0]
-                const response = await axios.get(`http://localhost:8080/api/search`, {
+                const response = await axios.get(`${apiUrl}/search`, {
                     params: { projectStatusId: statusId }
                 })
                 projects.value = response.data.map((project) => formatProjectData(project))
@@ -50,16 +50,24 @@ export function useProjects() {
     }
 
     function sortByLatest() {
+        console.log('Sorting by latest')
         projects.value.sort((a, b) => {
             return new Date(b.writeDate) - new Date(a.writeDate)
         })
+
+        projects.value = [...projects.value]
     }
 
     function sortByPriority() {
-        const priorityOrder = { 긴급: 0, 높음: 1, 보통: 2, 낮음: 3 }
+        console.log('Sorting by priority')
+        const priorityOrder = { LV0: 0, LV1: 1, LV2: 2, LV3: 3 } // 우선순위 숫자로 매핑
         projects.value.sort((a, b) => {
-            return priorityOrder[a.priority] - priorityOrder[b.priority]
+            const priorityA = priorityOrder[a.priority] ?? Number.MAX_SAFE_INTEGER
+            const priorityB = priorityOrder[b.priority] ?? Number.MAX_SAFE_INTEGER
+            return priorityA - priorityB
         })
+
+        projects.value = [...projects.value]
     }
 
     return { projects, fetchProjects, fetchProjectsByStatus, sortByLatest, sortByPriority, isLoading }

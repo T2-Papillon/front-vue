@@ -1,48 +1,47 @@
-<script>
+<script setup>
 import { ref, onMounted } from 'vue'
+import axios from 'axios'
 import ProjectTable from '../components/ProjectTable.vue'
 import { useProjects } from '@/composables/useProjects'
+import SortFilter from '../components/SortFilter.vue'
 
-export default {
-    components: {
-        ProjectTable
-    },
-    setup() {
-        const { projects, fetchProjects } = useProjects()
+const { projects, fetchProjects, sortByLatest, sortByPriority } = useProjects()
 
-        const todoProjects = ref([])
-        const doingProjects = ref([])
-        const doneProjects = ref([])
-        const holdProjects = ref([])
+// 임시로 현재 로그인한 사용자의 ID를 설정
+// 실제 애플리케이션에서는 인증 시스템을 통해 이 값을 동적으로 가져와야 함
+const currentUserId = 'finance2@boogle.com'
+// 현재 사용자의 이름을 저장할 변수
+const currentUserName = ref('서현우')
 
-        // 프로젝트 상태별로 필터링하는 함수
-        function filterProjects() {
-            todoProjects.value = projects.value.filter((p) => p.status === 'todo')
-            doingProjects.value = projects.value.filter((p) => p.status === 'doing')
-            doneProjects.value = projects.value.filter((p) => p.status === 'done')
-            holdProjects.value = projects.value.filter((p) => p.status === 'hold')
-        }
+// 프로젝트 상태별로 필터링된 목록을 저장하기 위한 반응형 참조
+const todoProjects = ref([])
+const doingProjects = ref([])
+const doneProjects = ref([])
+const holdProjects = ref([])
 
-        onMounted(async () => {
-            await fetchProjects()
-            filterProjects()
-        })
+// 프로젝트 상태별로 필터링하는 함수
+function filterProjects() {
+    // 현재 사용자와 관련된 프로젝트만 필터링
+    const currentUserProjects = projects.value.filter((p) => p.pm.includes(currentUserId) || p.participants.some((participant) => participant.email === currentUserId))
 
-        return {
-            todoProjects,
-            doingProjects,
-            doneProjects,
-            holdProjects
-        }
-    }
+    todoProjects.value = currentUserProjects.filter((p) => p.status === 'todo')
+    doingProjects.value = currentUserProjects.filter((p) => p.status === 'doing')
+    doneProjects.value = currentUserProjects.filter((p) => p.status === 'done')
+    holdProjects.value = currentUserProjects.filter((p) => p.status === 'hold')
 }
+
+onMounted(async () => {
+    await fetchProjects()
+    filterProjects()
+})
 </script>
+
 <template>
     <div class="inner">
         <div class="row align-items-start justify-content-between g-3">
             <div class="col-auto">
                 <div class="title-area">
-                    <h2 class="h2">프로젝트 목록 👋</h2>
+                    <h2 class="h2">{{ currentUserName }}님의 프로젝트 목록 👋</h2>
                     <p class="text-body-tertiary lh-sm mb-0">텍스트텍스트텍스트텍스트</p>
                 </div>
             </div>
@@ -54,39 +53,75 @@ export default {
             </div>
         </div>
 
-        <section class="row pt-5" v-if="todoProjects.length > 0">
+        <section class="row pt-5">
             <div class="col">
-                <h3 class="h3 pb-4 fw-light">
-                    📌 진행예정 <span class="h3 fw-bold">{{ todoProjects.length }}</span> 건
-                </h3>
-                <ProjectTable :projects="todoProjects" />
+                <div class="row align-items-center justify-content-between mb-4 g-3 project-list">
+                    <div class="col-auto">
+                        <h3 class="h3 fw-light">
+                            📌 진행예정 <span class="h3 fw-bold">{{ todoProjects.length }}</span> 건
+                        </h3>
+                    </div>
+                    <!-- <div class="col-auto"> -->
+                    <!-- 정렬기준 필터 -->
+                    <!-- <SortFilter :sortByLatest="() => sortByLatest(todoProjects)" :sortByPriority="() => sortByPriority(todoProjects)" />
+                    </div> -->
+                </div>
+                <ProjectTable v-if="todoProjects.length > 0" :projects="todoProjects" />
+                <p v-else>프로젝트가 없습니다.</p>
             </div>
         </section>
 
-        <section class="row pt-5" v-if="doingProjects.length > 0">
+        <section class="row pt-5">
             <div class="col">
-                <h2 class="h3 pb-4 fw-light">
-                    📌 진행중 <span class="h3 fw-bold">{{ doingProjects.length }}</span> 건
-                </h2>
-                <ProjectTable :projects="doingProjects" />
+                <div class="row align-items-center justify-content-between mb-4 g-3 project-list">
+                    <div class="col-auto">
+                        <h3 class="h3 fw-light">
+                            📌 진행중 <span class="h3 fw-bold">{{ doingProjects.length }}</span> 건
+                        </h3>
+                    </div>
+                    <!-- <div class="col-auto"> -->
+                    <!-- 정렬기준 필터 -->
+                    <!-- <SortFilter :sortByLatest="() => sortByLatest(doingProjects)" :sortByPriority="() => sortByPriority(doingProjects)" />
+                    </div> -->
+                </div>
+                <ProjectTable v-if="doingProjects.length > 0" :projects="doingProjects" />
+                <p v-else>프로젝트가 없습니다.</p>
             </div>
         </section>
 
-        <section class="row pt-5" v-if="doneProjects.length > 0">
+        <section class="row pt-5">
             <div class="col">
-                <h2 class="h3 pb-4 fw-light">
-                    📌 완료 <span class="h3 fw-bold">{{ doneProjects.length }}</span> 건
-                </h2>
-                <ProjectTable :projects="doneProjects" />
+                <div class="row align-items-center justify-content-between mb-4 g-3 project-list">
+                    <div class="col-auto">
+                        <h3 class="h3 fw-light">
+                            📌 완료 <span class="h3 fw-bold">{{ doneProjects.length }}</span> 건
+                        </h3>
+                    </div>
+                    <!-- <div class="col-auto"> -->
+                    <!-- 정렬기준 필터 -->
+                    <!-- <SortFilter :sortByLatest="() => sortByLatest(doneProjects)" :sortByPriority="() => sortByPriority(doneProjects)" />
+                    </div> -->
+                </div>
+                <ProjectTable v-if="doneProjects.length > 0" :projects="doneProjects" />
+                <p v-else>프로젝트가 없습니다.</p>
             </div>
         </section>
 
-        <section class="row pt-5" v-if="holdProjects.length > 0">
+        <section class="row pt-5">
             <div class="col">
-                <h2 class="h3 pb-4 fw-light">
-                    📌 보류 <span class="h3 fw-bold">{{ holdProjects.length }}</span> 건
-                </h2>
-                <ProjectTable :projects="holdProjects" />
+                <div class="row align-items-center justify-content-between mb-4 g-3 project-list">
+                    <div class="col-auto">
+                        <h3 class="h3 fw-light">
+                            📌 보류 <span class="h3 fw-bold">{{ holdProjects.length }}</span> 건
+                        </h3>
+                    </div>
+                    <!-- <div class="col-auto"> -->
+                    <!-- 정렬기준 필터 -->
+                    <!-- <SortFilter :sortByLatest="() => sortByLatest(holdProjects)" :sortByPriority="() => sortByPriority(holdProjects)" />
+                    </div> -->
+                </div>
+                <ProjectTable v-if="holdProjects.length > 0" :projects="holdProjects" />
+                <p v-else>프로젝트가 없습니다.</p>
             </div>
         </section>
     </div>

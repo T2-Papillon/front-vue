@@ -56,7 +56,7 @@ const formatParticipants = (participants) => {
                 <td>{{ project.endDate }}</td>
                 <td><StatusBadge :status="project.status" /></td>
                 <td class="overflow-hidden text-nowrap text-center">
-                    <UserProfile v-for="participant in formatParticipants(project.participants).visibleParticipants" :key="participant.eno" :name="participant.email" :dept="participant.dept_no" />
+                    <UserProfile v-for="participant in formatParticipants(project.participants).visibleParticipants" :key="participant.eno" :name="participant.name" :dept="participant.dept_no" />
                     <span v-if="formatParticipants(project.participants).overflowCount > 0">...</span>
                 </td>
                 <td>
