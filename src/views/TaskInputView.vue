@@ -23,12 +23,6 @@ export default {
                 const apiUrl = import.meta.env.VITE_API_URL
                 console.log('projectId:', projectId)
 
-                // Check if any field is empty
-                if (!task_title.value || !assignee.value || !start_date.value || !end_date.value || !task_desc.value) {
-                    alert('빈 칸을 채워주세요')
-                    return
-                }
-
                 const postData = {
                     assignee: assignee.value,
                     proj_no: projectId,
@@ -74,7 +68,6 @@ export default {
 
         function toggleUrlInput() {
             if (task_test.value === 'true') {
-                // task_test 값이 true 일 때 URL 입력 input 창을 보이도록 설정
                 url.value = ''
             }
         }
@@ -110,22 +103,27 @@ export default {
             <form @submit.prevent="saveTask">
                 <div class="mb-3">
                     <label for="title" class="form-label">업무명</label>
-                    <input type="text" v-model="task_title" class="form-control" id="title" placeholder="제목을 입력해주세요." />
+                    <input type="text" v-model="task_title" class="form-control" id="title" placeholder="제목을 입력해주세요." required />
                 </div>
+
                 <div class="mb-3">
                     <label for="assignee" class="form-label">담당자</label>
                     <input type="text" v-model="assignee" class="form-control" id="assignee" />
                 </div>
+
                 <div class="d-flex mb-3">
                     <div class="me-2">
                         <label for="startDate" class="form-label">시작 날짜</label>
-                        <input type="date" v-model="start_date" class="form-control" id="startDate" />
+                        <input type="date" v-model="start_date" class="form-control" id="startDate" required />
                     </div>
                     <div>
                         <label for="endDate" class="form-label">종료 날짜</label>
-                        <input type="date" v-model="end_date" class="form-control" id="endDate" />
+                        <input type="date" v-model="end_date" class="form-control" id="endDate" required />
                     </div>
+                    <!-- 종료 날짜가 시작 날짜보다 빠를 경우 경고 표시 -->
+                    <div v-if="end_date && start_date && new Date(end_date) < new Date(start_date)" class="text-danger">종료 날짜를 다시 선택해주세요.</div>
                 </div>
+
                 <div class="mb-3">
                     <label class="form-label">진행 상태</label>
                     <div class="d-flex align-items-start">
@@ -147,6 +145,7 @@ export default {
                         </div>
                     </div>
                 </div>
+
                 <div class="mb-3">
                     <label class="form-label">우선순위</label>
                     <div class="d-flex align-items-start">
@@ -168,6 +167,7 @@ export default {
                         </div>
                     </div>
                 </div>
+
                 <div class="mb-3">
                     <label class="form-label">테스트</label>
                     <div class="d-flex align-items-start">
@@ -184,13 +184,15 @@ export default {
                 <div class="mb-3">
                     <div v-if="task_test === 'true'" class="mb-3">
                         <label for="url" class="form-label">URL 입력</label>
-                        <input type="text" v-model="url" class="form-control" id="url" />
+                        <input type="text" v-model="url" class="form-control" id="url" required />
                     </div>
                 </div>
                 <div class="mb-3">
                     <label for="description" class="form-label">설명</label>
-                    <textarea v-model="task_desc" class="form-control textarea" id="description" rows="3"></textarea>
+                    <textarea v-model="task_desc" class="form-control textarea" id="description" rows="3" placeholder="업무내용을 입력하세요"></textarea>
                 </div>
+
+                <!-- 버튼영역 -->
                 <div class="btn-area">
                     <button type="button" class="btn btn-secondary me-2">취소</button>
                     <button type="submit" class="btn btn-primary">저장</button>
