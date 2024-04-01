@@ -1,12 +1,12 @@
 <script>
 import PieChartProjectStatus from '../components/PieChartProjectStatus.vue';
-import PieChartTaskStatus from '../components/PieChartTaskStatus.vue';
+import BarChart from '../components/chart/BarChart.vue'
 
 
 export default {
     components: {
         PieChartProjectStatus,
-        PieChartTaskStatus
+        BarChart
     },
     data() {
         return {
@@ -26,7 +26,7 @@ export default {
             <div class="col-auto">
                 <div class="title-area">
                     <h2 class="h2">통계분석</h2>
-                    <p class="text-body-tertiary lh-sm mb-0">텍스트텍스트텍스트텍스트</p>
+                    <p class="text-body-tertiary lh-sm mb-0">4번 프로젝트</p>
                 </div>
             </div>
             <div class="col-auto">
@@ -43,24 +43,23 @@ export default {
 
         <div class="row mt-4">
             <div class="col">
+                <h3 class="h3">전체 프로젝트 진행 상태</h3>
+                <PieChartProjectStatus />
+            </div>
+            <div class="col">
+                <h3 class="h3">업무별 진행 상태</h3>
                 <PieChartProjectStatus />
             </div>
         </div>
 
         <div class="row mt-4">
             <div class="col">
-                <PieChartTaskStatus />
+                <h3 class="h3">담당자별 업무 개수</h3>
+                <BarChart />
             </div>
-        </div>
-        <div class="row">
             <div class="col">
-                <ProjectTable />
-            </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                <!-- 굿 -->
-                <ProjectThisWeek />
+                <h3 class="h3">이번주 각 담당자별 업무 개수</h3>
+                <BarChart />
             </div>
         </div>
     </div>
