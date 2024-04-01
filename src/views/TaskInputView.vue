@@ -11,6 +11,8 @@ export default {
         const end_date = ref('')
         const task_status = ref('TODO')
         const task_priority = ref('LV2')
+        const task_test = ref('')
+        const url = ref('')
         const task_desc = ref('')
         const route = useRoute()
         const router = useRouter()
@@ -20,6 +22,12 @@ export default {
                 const projectId = route.params.id
                 const apiUrl = import.meta.env.VITE_API_URL
                 console.log('projectId:', projectId)
+
+                // Check if any field is empty
+                if (!task_title.value || !assignee.value || !start_date.value || !end_date.value || !task_desc.value) {
+                    alert('빈 칸을 채워주세요')
+                    return
+                }
 
                 const postData = {
                     assignee: assignee.value,
@@ -60,9 +68,16 @@ export default {
             end_date.value = ''
             task_status.value = 'TODO'
             task_priority.value = 'LV2'
+            task_test.value = 'false'
             task_desc.value = ''
         }
 
+        function toggleUrlInput() {
+            if (task_test.value === 'true') {
+                // task_test 값이 true 일 때 URL 입력 input 창을 보이도록 설정
+                url.value = ''
+            }
+        }
         return {
             task_title,
             assignee,
@@ -70,8 +85,11 @@ export default {
             end_date,
             task_status,
             task_priority,
+            task_test,
             task_desc,
-            saveTask
+            saveTask,
+            url,
+            toggleUrlInput
         }
     }
 }
@@ -92,7 +110,7 @@ export default {
             <form @submit.prevent="saveTask">
                 <div class="mb-3">
                     <label for="title" class="form-label">업무명</label>
-                    <input type="text" v-model="task_title" class="form-control" id="title" />
+                    <input type="text" v-model="task_title" class="form-control" id="title" placeholder="제목을 입력해주세요." />
                 </div>
                 <div class="mb-3">
                     <label for="assignee" class="form-label">담당자</label>
@@ -113,19 +131,19 @@ export default {
                     <div class="d-flex align-items-start">
                         <div class="form-check me-4">
                             <input class="form-check-input" type="radio" v-model="task_status" id="todo" value="TODO" checked />
-                            <label class="form-check-label" for="todo"> 진행예정 </label>
+                            <label class="form-check-label" for="todo">진행예정</label>
                         </div>
                         <div class="form-check me-4">
                             <input class="form-check-input" type="radio" v-model="task_status" id="doing" value="DOING" />
-                            <label class="form-check-label" for="doing"> 진행중 </label>
+                            <label class="form-check-label" for="doing">진행중</label>
                         </div>
                         <div class="form-check me-4">
                             <input class="form-check-input" type="radio" v-model="task_status" id="done" value="DONE" />
-                            <label class="form-check-label" for="done"> 완료 </label>
+                            <label class="form-check-label" for="done">완료</label>
                         </div>
                         <div class="form-check me-4">
                             <input class="form-check-input" type="radio" v-model="task_status" id="hold" value="HOLD" />
-                            <label class="form-check-label" for="hold"> 보류 </label>
+                            <label class="form-check-label" for="hold">보류</label>
                         </div>
                     </div>
                 </div>
@@ -150,7 +168,25 @@ export default {
                         </div>
                     </div>
                 </div>
-
+                <div class="mb-3">
+                    <label class="form-label">테스트</label>
+                    <div class="d-flex align-items-start">
+                        <div class="form-check me-4">
+                            <input class="form-check-input" type="radio" v-model="task_test" id="test_true" value="true" />
+                            <label class="form-check-label" for="test_true">True</label>
+                        </div>
+                        <div class="form-check me-4">
+                            <input class="form-check-input" type="radio" v-model="task_test" id="test_false" value="false" checked />
+                            <label class="form-check-label" for="test_false">False</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <div v-if="task_test === 'true'" class="mb-3">
+                        <label for="url" class="form-label">URL 입력</label>
+                        <input type="text" v-model="url" class="form-control" id="url" />
+                    </div>
+                </div>
                 <div class="mb-3">
                     <label for="description" class="form-label">설명</label>
                     <textarea v-model="task_desc" class="form-control textarea" id="description" rows="3"></textarea>
