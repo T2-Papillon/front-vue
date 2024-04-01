@@ -17,7 +17,6 @@ export default {
     },
     methods: {
         closeModal() {
-            // 모달 닫기 이벤트를 부모 컴포넌트로 전달하여 isActive를 false로 변경합니다.
             this.$emit('close-modal')
             console.log('close')
         },
@@ -39,7 +38,7 @@ export default {
                 <div class="modal-body">
                     <div class="modal-body">
                         <!-- 수정/삭제 버튼 -->
-                        <EditDeleteButtonGroup />
+                        <EditDeleteButtonGroup :projectId="task.proj_no" :taskId="task.task_no" @taskDeleted="closeModal" />
 
                         <!-- list -->
                         <ul class="list">
@@ -147,6 +146,6 @@ export default {
 }
 
 .value {
-    margin-left: 10px; /* 값과의 간격 조절 */
+    margin-left: 10px;
 }
 </style>
