@@ -17,22 +17,12 @@ export default {
     },
     setup() {
         const chartData = ref({
-            labels: ['TODO', 'DOING', 'DONE', 'HOLD'],
+            labels: ['진행예정', '진행중', '완료', '보류'],
             datasets: [{
                 label: 'Project Status Counts',
                 data: [], // 상태 별 프로젝트 개수를 담을 배열
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)', 
-                    'rgba(54, 162, 235, 0.2)', 
-                    'rgba(255, 206, 86, 0.2)', 
-                    'rgba(75, 192, 192, 0.2)'
-                ],
-                borderColor: [
-                    'rgba(255, 99, 132, 1)', 
-                    'rgba(54, 162, 235, 1)', 
-                    'rgba(255, 206, 86, 1)', 
-                    'rgba(75, 192, 192, 1)'
-                    ],
+                    backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)'],
+                    borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)'],
                     borderWidth: 1
             }]
         })
@@ -42,11 +32,11 @@ export default {
             plugins: {
                 legend: {
                     position: 'bottom'
-                },
-                title: {
-                    display: true,
-                    text: '전체 프로젝트 진행 상황'
                 }
+                // title: {
+                //     display: true,
+                //     text: '전체 프로젝트 진행 상황'
+                // }
             }
         })
 
@@ -56,18 +46,20 @@ export default {
             const statuses = ['TODO', 'DOING', 'DONE', 'HOLD']
             const apiUrl = import.meta.env.VITE_API_URL
 
-            const counts = await Promise.all(statuses.map(async (status) => {
-                try {
-                    const response = await axios.get(`${apiUrl}/project/status/status?status=${status}`);
-                    return response.data.length // 각 상태에 대한 프로젝트 개수
-                } catch (error) {
-                    console.error(`Error fetching projects for status ${status}:`, error)
-                    return 0
-            }
-        }))
+            const counts = await Promise.all(
+                statuses.map(async status => {
+                    try {
+                        const response = await axios.get(`${apiUrl}/project/status/status?status=${status}`)
+                        return response.data.length // 각 상태에 대한 프로젝트 개수
+                    } catch (error) {
+                        console.error(`Error fetching projects for status ${status}:`, error)
+                        return 0
+                    }
+                })
+            )
             console.log(counts); // 상태 별 프로젝트 개수 확인
             chartData.value.datasets[0].data = counts
-        loaded.value = true // 데이터 로딩 완료
+            loaded.value = true // 데이터 로딩 완료
         }
 
         onMounted(fetchProjectsByStatus)

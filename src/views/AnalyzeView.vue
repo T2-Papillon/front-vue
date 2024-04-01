@@ -1,6 +1,6 @@
 <script>
 import PieChartProjectStatus from '../components/PieChartProjectStatus.vue'
-import PieChartTaskStatus from '../components/PieChartTaskStatus.vue'
+import BarChartTaskStatus from '../components/BarChartTaskStatus.vue'
 import BarChartTaskAssignee from '../components/BarChartTaskAssignee.vue'
 import BarChartTaskPriority from '../components/BarChartTaskPriority.vue'
 
@@ -8,7 +8,7 @@ import BarChartTaskPriority from '../components/BarChartTaskPriority.vue'
 export default {
     components: {
         PieChartProjectStatus,
-        PieChartTaskStatus,
+        BarChartTaskStatus,
         BarChartTaskAssignee,
         BarChartTaskPriority
     },
@@ -51,8 +51,8 @@ export default {
                 <PieChartProjectStatus />
             </div>
             <div class="col">
-                <h3 class="h3">업무별 진행 상태</h3>
-                <PieChartTaskStatus />
+                <h3 class="h3">업무 진행 상태 분포</h3>
+                <BarChartTaskStatus />
             </div>
         </div>
 
