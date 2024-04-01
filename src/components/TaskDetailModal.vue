@@ -1,5 +1,6 @@
 <script>
 import { formatDate } from '@/utils/dateUtils.js'
+import PriorityBadge from '../components/PriorityBadge.vue'
 
 export default {
     props: {
@@ -22,15 +23,54 @@ export default {
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Task Detail</h5>
+                    <h5 class="modal-title">담당업무 상세보기</h5>
+                    <button class="btn"><i class="bi bi-copy"></i></button>
                     <button type="button" class="btn-close" aria-label="Close" @click="closeModal"></button>
                 </div>
                 <div class="modal-body">
                     <div class="modal-body">
-                        <p><strong>업무명:</strong> {{ task.task_title }}</p>
-                        <p><strong>시작일:</strong> {{ formatDate(task.start_date) }}</p>
-                        <p><strong>종료일:</strong> {{ formatDate(task.end_date) }}</p>
-                        <p><strong>내용:</strong> {{ task.task_desc }}</p>
+                        <ul class="list">
+                            <li>
+                                <span class="title">업무명</span>
+                                <span class="value">{{ task.task_title }}</span>
+                            </li>
+                            <li>
+                                <span class="title">담당자</span>
+                                <span class="value">{{ task.assignee }}</span>
+                            </li>
+                            <li>
+                                <span class="title">작성일</span>
+                                <span class="value">{{ formatDate(task.create_date) }}</span>
+                            </li>
+                            <li>
+                                <span class="title">업무 기간</span>
+                                <span class="value">{{ formatDate(task.start_date) }} ~ {{ formatDate(task.end_date) }}</span>
+                            </li>
+                            <li>
+                                <span class="title">진행상태</span>
+                                <span class="value">{{ task.task_status }}</span>
+                            </li>
+                            <li>
+                                <span class="title">진행률</span>
+                                <span class="value">{{ task.task_percent }}</span>
+                            </li>
+                            <li>
+                                <span class="title">우선순위</span>
+                                <span class="value">{{ task.task_priority }}</span>
+                            </li>
+                            <li>
+                                <span class="title">우선순위</span>
+                                <span class="value"><PriorityBadge :priority="task.task_priority" /></span>
+                            </li>
+                            <li>
+                                <span class="title">테스트</span>
+                                <span class="value">{{ task.task_test }}</span>
+                            </li>
+                            <li>
+                                <span class="title">내용</span>
+                                <span class="value">{{ task.task_desc }}</span>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -80,5 +120,24 @@ export default {
     display: block;
     opacity: 0.5;
     z-index: 100;
+}
+
+.list {
+    list-style-type: none;
+    padding: 0;
+}
+.list li {
+    margin-bottom: 13px;
+}
+.list li span {
+    display: inline-block;
+}
+.title {
+    width: 110px;
+    font-weight: bold;
+}
+
+.value {
+    margin-left: 10px; /* 값과의 간격 조절 */
 }
 </style>
