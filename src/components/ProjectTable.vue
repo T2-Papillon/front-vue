@@ -22,7 +22,7 @@ const props = defineProps({
 // }
 const formatParticipants = (participants) => {
     const maxVisible = 3
-    const visibleParticipants = participants.slice(0, maxVisible).map((p) => p.email.charAt(0).toUpperCase())
+    const visibleParticipants = participants.slice(0, maxVisible)
     const overflowCount = participants.length - maxVisible
 
     return { visibleParticipants, overflowCount }
@@ -67,7 +67,7 @@ const formatParticipants = (participants) => {
                 <td>{{ project.endDate }}</td>
                 <td><StatusBadge :status="project.status" /></td>
                 <td class="overflow-hidden text-nowrap text-center">
-                    <UserProfile v-for="(participant, index) in formatParticipants(project.participants).visibleParticipants" :key="index" :name="participant" />
+                    <UserProfile v-for="participant in formatParticipants(project.participants).visibleParticipants" :key="participant.eno" :name="participant.email" :dept="participant.dept_no" />
                     <span v-if="formatParticipants(project.participants).overflowCount > 0">...</span>
                 </td>
                 <td>

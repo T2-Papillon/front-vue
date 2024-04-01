@@ -6,7 +6,9 @@
             <li>
                 <span class="dropdown-item fw-bold">{{ name }}</span>
             </li>
-            <li><span class="dropdown-item">개발 1팀</span></li>
+            <li>
+                <span class="dropdown-item">{{ dept }}</span>
+            </li>
             <li><a class="dropdown-item" href="#">대시보드</a></li>
             <li><a class="dropdown-item" href="#">마이페이지</a></li>
             <li><a class="dropdown-item" href="#">로그아웃</a></li>
@@ -16,7 +18,7 @@
 
 <script scoped>
 export default {
-    props: ['name'],
+    props: ['name', 'dept'],
     computed: {
         displayName() {
             if (this.name && this.name.length === 3) {
