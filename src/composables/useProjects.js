@@ -28,15 +28,15 @@ export function useProjects() {
         try {
             // 'all'이 선택된 경우 모든 프로젝트를 불러옵니다.
             if (statusList.includes('all')) {
-                const response = await axios.get(`http://localhost:8080/api/search/project`, {
+                const apiUrl = import.meta.env.VITE_API_URL
+                const response = await axios.get(`${apiUrl}/search/project`, {
                     params: { term: '' } // 'all'이 선택된 경우, 모든 프로젝트를 가져오기 위해 빈 검색어를 전송
                 })
                 projects.value = response.data.map((project) => formatProjectData(project))
             } else {
-                // 단일 상태에 대한 프로젝트 목록을 요청합니다.
-                // 현재 백엔드 구현상, statusList 배열의 첫 번째 요소만 사용합니다.
+                const apiUrl = import.meta.env.VITE_API_URL
                 const statusId = statusList[0]
-                const response = await axios.get(`http://localhost:8080/api/search`, {
+                const response = await axios.get(`${apiUrl}/search`, {
                     params: { projectStatusId: statusId }
                 })
                 projects.value = response.data.map((project) => formatProjectData(project))
