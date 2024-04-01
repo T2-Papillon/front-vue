@@ -40,29 +40,29 @@ export default {
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="col-6">
+                <div class="row mb-5">
+                    <div class="col-xl-6">
                         <h3 class="h3">주간 프로젝트 참여율</h3>
                         <LineChart />
                     </div>
-                    <div class="col-6">
+                    <div class="col-xl-6">
                         <h3 class="h3">업무리포트</h3>
                         <ScatterChart />
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="col-6">
+                <div class="row mb-5">
+                    <div class="col-xl-6">
                         <h3 class="h3">333</h3>
                         <BarChart />
                     </div>
-                    <div class="col-6">
+                    <div class="col-xl-6">
                         <h3 class="h3">444</h3>
                         <PieChart />
                     </div>
                 </div>
 
-                <div class="row mt-4">
+                <div class="row mb-5">
                     <div class="col"></div>
                 </div>
             </div>
