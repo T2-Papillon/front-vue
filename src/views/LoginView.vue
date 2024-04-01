@@ -12,7 +12,7 @@ export default {
     },
     methods: {
         login() {
-            let url = 'http://localhost:9090/api/signin'
+            let url = import.meta.env.VITE_API_URL + '/signin'
             console.log(this.username + ' / ' + this.password)
             let data = {
                 email: this.username,

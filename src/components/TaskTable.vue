@@ -1,7 +1,7 @@
-<script>
+<script setup>
+import { ref, defineProps, onMounted, watch } from 'vue'
 import axios from 'axios'
 
-import { ref, onMounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { formatDate } from '@/utils/dateUtils.js'
 
@@ -11,92 +11,71 @@ import StatusBadge from '../components/StatusBadge.vue'
 import PriorityBadge from '../components/PriorityBadge.vue'
 import TaskDetailModal from '../components/TaskDetailModal.vue'
 
-export default {
-    components: {
-        UserProfile,
-        ProgressBar,
-        StatusBadge,
-        PriorityBadge,
-        TaskDetailModal,
-        formatDate
-    },
-    props: {
-        projectId: {
-            type: Number,
-            required: true
-        },
-        newTaskData: {
-            type: Object,
-            default: null
-        },
-        addNewTask: {
-            type: Function,
-            required: true
-        }
-    },
-    setup(props) {
-        const tasks = ref([])
-        const route = useRoute()
-        const isModalActive = ref(false)
-        const selectedTask = ref(null)
+const props = defineProps({
+    initialTasks: Array,
+    newTaskData: Object,
+    addNewTask: Function,
+    projectId: Number
+})
 
-        // 프로젝트 태스크 정보를 불러오는 함수
-        async function fetchProjectTasks() {
-            const projectId = route.params.id
+const tasks = ref(props.initialTasks)
 
-            try {
-                const apiUrl = import.meta.env.VITE_API_URL
-                const response = await axios.get(`${apiUrl}/task/project/${projectId}/tasks`)
+const route = useRoute()
+const isModalActive = ref(false)
+const selectedTask = ref(null)
 
-                tasks.value = response.data
+async function fetchProjectTasks() {
+    const projectId = route.params.id
 
-                console.log('tasktable', tasks.value)
-            } catch (error) {
-                console.error('프로젝트 태스크 데이터를 가져오는데 실패했습니다:', error)
-            }
-        }
+    try {
+        const apiUrl = import.meta.env.VITE_API_URL
+        const response = await axios.get(`${apiUrl}/task/project/${projectId}/tasks`)
 
-        // 데이터를 가져온 후에 테이블에 새로운 태스크가 추가되었는지 확인하는 함수
-        function checkNewTask() {
-            console.log('New Task:', props.newTaskData)
+        tasks.value = response.data
 
-            // 새로운 태스크가 존재하면 addNewTask 함수를 호출하여 tasks 배열에 추가
-            if (props.newTaskData) {
-                props.addNewTask(props.newTaskData)
-            }
-        }
-
-        // newTask 데이터가 변경될 때마다 해당 데이터를 추가
-        watch(
-            () => props.newTaskData,
-            (newVal) => {
-                if (newVal) {
-                    props.addNewTask(newVal)
-                }
-            }
-        )
-
-        onMounted(() => {
-            fetchProjectTasks()
-        })
-
-        const openModal = (task) => {
-            selectedTask.value = task
-            isModalActive.value = true
-            console.log('modal open')
-        }
-
-        return {
-            tasks,
-            formatDate,
-            checkNewTask,
-            selectedTask,
-            isModalActive,
-            openModal
-        }
+        console.log(tasks.value)
+    } catch (error) {
+        console.error('프로젝트 태스크 데이터를 가져오는데 실패했습니다:', error)
     }
 }
+
+// 데이터를 가져온 후에 테이블에 새로운 태스크가 추가되었는지 확인하는 함수
+function checkNewTask() {
+    console.log('New Task:', props.newTaskData)
+
+    // 새로운 태스크가 존재하면 addNewTask 함수를 호출하여 tasks 배열에 추가
+    if (props.newTaskData) {
+        props.addNewTask(props.newTaskData)
+    }
+}
+
+watch(
+    () => props.newTaskData,
+    (newVal) => {
+        if (newVal) {
+            props.addNewTask(newVal)
+        }
+    }
+)
+watch(
+    () => props.initialTasks,
+    (newVal, oldVal) => {
+        tasks.value = props.initialTasks
+    }
+)
+onMounted(() => {
+    if (props.initialTasks == undefined || props.initialTasks == null) {
+        fetchProjectTasks()
+    }
+})
+
+const openModal = (task) => {
+    selectedTask.value = task
+    isModalActive.value = true
+    console.log('modal open')
+}
 </script>
+
 <template>
     <table class="table fs-9 mb-5 border-top border-translucent">
         <colgroup>
