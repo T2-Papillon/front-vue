@@ -1,10 +1,14 @@
 <template>
-    <Bar id="my-chart-id" :options="chartOptions" :data="chartData" />
+    <div v-if="chartData">
+        <Bar id="my-chart-id" :options="chartOptions" :data="chartData" />
+    </div>
+    <div v-else>데이터를 불러오는 중입니다...</div>
 </template>
 
 <script>
 import { Bar } from 'vue-chartjs'
 import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js'
+import axios from 'axios'
 
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
 
@@ -13,21 +17,53 @@ export default {
     components: { Bar },
     data() {
         return {
-            chartData: {
-                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+            chartData: null, // 차트 데이터를 null로 초기화
+            chartOptions: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        }
+    },
+    async mounted() {
+        await this.fetchTasks();
+    },
+    methods: {
+        async fetchTasks() {
+            const apiUrl = import.meta.env.VITE_API_URL; // API URL을 환경변수에서 가져옴
+            try {
+                const response = await axios.get(`${apiUrl}/task/project/4/task`); // 수정된 API URL 사용
+                const tasks = response.data;
+                this.processChartData(tasks);
+            } catch (error) {
+                console.error("Error fetching tasks from:", apiUrl, error);
+            }
+        },
+        processChartData(tasks) {
+            const tasksPerAssignee = tasks.reduce((acc, task) => {
+                const assigneeName = task.assignee;
+                if (!acc[assigneeName]) {
+                    acc[assigneeName] = 0;
+                }
+                acc[assigneeName]++;
+                return acc;
+            }, {});
+
+            this.chartData = {
+                labels: Object.keys(tasksPerAssignee),
                 datasets: [
                     {
-                        label: 'My First Dataset',
-                        data: [40, 20, 12, 14, 50, 45],
-                        backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)'],
-                        borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)'],
+                        label: '# of Tasks',
+                        data: Object.values(tasksPerAssignee),
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
                         borderWidth: 1
                     }
                 ]
-            },
-            chartOptions: {
-                responsive: true
-            }
+            };
         }
     }
 }
