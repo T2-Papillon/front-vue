@@ -4,12 +4,12 @@ import axios from 'axios'
 import ProjectTable from '../components/ProjectTable.vue'
 import { useProjects } from '@/composables/useProjects'
 import SortFilter from '../components/SortFilter.vue'
+import globalInfo from '@/utils/globalInfoUtils.js'
 
-const { projects, fetchProjects, sortByLatest, sortByPriority } = useProjects()
+const { projects, fetchProjectsForUser, sortByLatest, sortByPriority } = useProjects()
 
-// 임시로 현재 로그인한 사용자의 ID를 설정
-// 실제 애플리케이션에서는 인증 시스템을 통해 이 값을 동적으로 가져와야 함
-const currentUserId = 'finance2@boogle.com'
+// 로그인한 사용자의 이름을 저장하기 위한 반응형 참조
+const userName = ref(sessionStorage.getItem('NM') || '사용자')
 
 // 프로젝트 상태별로 필터링된 목록을 저장하기 위한 반응형 참조
 const todoProjects = ref([])
@@ -17,19 +17,16 @@ const doingProjects = ref([])
 const doneProjects = ref([])
 const holdProjects = ref([])
 
-// 프로젝트 상태별로 필터링하는 함수
+// 프로젝트 상태별로 필터링하는 함수, projects를 사용하여 필터링합니다.
 function filterProjects() {
-    // 현재 사용자와 관련된 프로젝트만 필터링
-    const currentUserProjects = projects.value.filter((p) => p.pm.includes(currentUserId) || p.participants.some((participant) => participant.email === currentUserId))
-
-    todoProjects.value = currentUserProjects.filter((p) => p.status === 'todo')
-    doingProjects.value = currentUserProjects.filter((p) => p.status === 'doing')
-    doneProjects.value = currentUserProjects.filter((p) => p.status === 'done')
-    holdProjects.value = currentUserProjects.filter((p) => p.status === 'hold')
+    todoProjects.value = projects.value.filter((p) => p.status === 'todo')
+    doingProjects.value = projects.value.filter((p) => p.status === 'doing')
+    doneProjects.value = projects.value.filter((p) => p.status === 'done')
+    holdProjects.value = projects.value.filter((p) => p.status === 'hold')
 }
 
 onMounted(async () => {
-    await fetchProjects()
+    await fetchProjectsForUser()
     filterProjects()
 })
 </script>
@@ -39,7 +36,7 @@ onMounted(async () => {
         <div class="row align-items-start justify-content-between g-3">
             <div class="col-auto">
                 <div class="title-area">
-                    <h2 class="h2">프로젝트 목록 👋</h2>
+                    <h2 class="h2">{{ userName }} 님의 프로젝트 목록 👋</h2>
                     <p class="text-body-tertiary lh-sm mb-0">텍스트텍스트텍스트텍스트</p>
                 </div>
             </div>

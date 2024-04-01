@@ -7,10 +7,10 @@
                 <span class="dropdown-item fw-bold">{{ name }}</span>
             </li>
             <li>
-                <span class="dropdown-item">{{ dept }}</span>
+                <span class="dropdown-item">{{ dept || '개발 1팀' }}</span>
             </li>
-            <li><router-link to="/dashboard" class="dropdown-item">대시보드</router-link></li>
-            <li><a class="dropdown-item" href="#">마이페이지</a></li>
+            <li><router-link to="/dashboard" class="dropdown-item">마이페이지</router-link></li>
+            <!-- <li><a class="dropdown-item" href="#">마이페이지</a></li> -->
             <li><a class="dropdown-item" href="#">로그아웃</a></li>
         </ul>
     </div>
