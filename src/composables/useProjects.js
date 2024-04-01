@@ -59,9 +59,11 @@ export function useProjects() {
 
     function sortByPriority() {
         console.log('Sorting by priority')
-        const priorityOrder = { 긴급: 0, 높음: 1, 보통: 2, 낮음: 3 }
+        const priorityOrder = { LV0: 0, LV1: 1, LV2: 2, LV3: 3 } // 우선순위 숫자로 매핑
         projects.value.sort((a, b) => {
-            return priorityOrder[a.priority] - priorityOrder[b.priority]
+            const priorityA = priorityOrder[a.priority] ?? Number.MAX_SAFE_INTEGER
+            const priorityB = priorityOrder[b.priority] ?? Number.MAX_SAFE_INTEGER
+            return priorityA - priorityB
         })
 
         projects.value = [...projects.value]
