@@ -11,6 +11,7 @@ export default {
         const end_date = ref('')
         const task_status = ref('TODO')
         const task_priority = ref('LV2')
+        const task_percent = ref(0)
         const task_test = ref('')
         const url = ref('')
         const task_desc = ref('')
@@ -31,7 +32,7 @@ export default {
                     task_priority: task_priority.value,
                     start_date: new Date(start_date.value).getTime(),
                     end_date: new Date(end_date.value).getTime(),
-                    task_percent: 0,
+                    task_percent: task_percent.value,
                     task_test: false,
                     create_date: new Date().getTime(),
                     task_desc: task_desc.value
@@ -62,6 +63,7 @@ export default {
             end_date.value = ''
             task_status.value = 'TODO'
             task_priority.value = 'LV2'
+            task_percent.value = 0
             task_test.value = 'false'
             task_desc.value = ''
         }
@@ -71,6 +73,11 @@ export default {
                 url.value = ''
             }
         }
+
+        function goBack() {
+            router.back()
+        }
+
         return {
             task_title,
             assignee,
@@ -78,11 +85,13 @@ export default {
             end_date,
             task_status,
             task_priority,
+            task_percent,
             task_test,
             task_desc,
             saveTask,
             url,
-            toggleUrlInput
+            toggleUrlInput,
+            goBack
         }
     }
 }
@@ -120,7 +129,6 @@ export default {
                         <label for="endDate" class="form-label">종료 날짜</label>
                         <input type="date" v-model="end_date" class="form-control" id="endDate" required />
                     </div>
-                    <!-- 종료 날짜가 시작 날짜보다 빠를 경우 경고 표시 -->
                     <div v-if="end_date && start_date && new Date(end_date) < new Date(start_date)" class="text-danger">종료 날짜를 다시 선택해주세요.</div>
                 </div>
 
@@ -169,6 +177,11 @@ export default {
                 </div>
 
                 <div class="mb-3">
+                    <label class="form-label">진행율</label>
+                    <input type="number" v-model="task_percent" class="form-control" min="0" max="100" step="1" placeholder="0부터 100까지의 숫자를 입력하세요." />
+                </div>
+
+                <div class="mb-3">
                     <label class="form-label">테스트</label>
                     <div class="d-flex align-items-start">
                         <div class="form-check me-4">
@@ -194,7 +207,7 @@ export default {
 
                 <!-- 버튼영역 -->
                 <div class="btn-area">
-                    <button type="button" class="btn btn-secondary me-2">취소</button>
+                    <button type="button" class="btn btn-secondary me-2" @click="goBack">취소</button>
                     <button type="submit" class="btn btn-primary">저장</button>
                 </div>
             </form>
