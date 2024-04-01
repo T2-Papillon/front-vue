@@ -1,4 +1,5 @@
 <script>
+// import AnalyzeProjectDetail from '../components/AnalyzeProjectDetail.vue'
 import PieChartProjectStatus from '../components/PieChartProjectStatus.vue'
 import BarChartTaskStatus from '../components/BarChartTaskStatus.vue'
 import BarChartTaskAssignee from '../components/BarChartTaskAssignee.vue'
@@ -7,6 +8,7 @@ import BarChartTaskPriority from '../components/BarChartTaskPriority.vue'
 
 export default {
     components: {
+        // AnalyzeProjectDetail,
         PieChartProjectStatus,
         BarChartTaskStatus,
         BarChartTaskAssignee,
@@ -43,6 +45,12 @@ export default {
 
         <div class="row mt-4">
             <AnalyzeProjectInfo :project="project" />
+        </div>
+
+        <div class="row mt-4">
+            <div class="col">
+                <!-- <AnalyzeProjectDetail /> -->
+            </div>
         </div>
 
         <div class="row mt-4">
