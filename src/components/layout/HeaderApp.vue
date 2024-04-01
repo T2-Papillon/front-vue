@@ -14,7 +14,6 @@ export default {
     mounted() {
         this.userInfo = this.$cookies.get('user')
         if (this.userInfo) {
-            console.log('초기 쿠키 값:', this.userInfo)
             this.name = this.userInfo['name']
             this.email = this.userInfo['email']
         }
