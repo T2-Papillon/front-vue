@@ -1,5 +1,5 @@
-<script>
-import { ref, onMounted, watch } from 'vue'
+<script setup>
+import { ref, defineProps, onMounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import axios from 'axios'
 import UserProfile from '../components/UserProfile.vue'
@@ -8,80 +8,61 @@ import StatusBadge from '../components/StatusBadge.vue'
 import PriorityBadge from '../components/PriorityBadge.vue'
 import { formatDate } from '@/utils/dateUtils.js'
 
-export default {
-    components: {
-        UserProfile,
-        ProgressBar,
-        StatusBadge,
-        PriorityBadge,
-        formatDate
-    },
-    props: {
-        projectId: {
-            type: Number,
-            required: true
-        },
-        // 새로운 업무 데이터를 받아오는 props
-        newTaskData: {
-            type: Object,
-            default: null
-        },
-        addNewTask: {
-            type: Function,
-            required: true
-        }
-    },
-    setup(props) {
-        const tasks = ref([])
-        const route = useRoute()
+const props = defineProps({
+    initialTasks: Array,
+    newTaskData: Object,
+    addNewTask: Function
+})
 
-        // 프로젝트 태스크 정보를 불러오는 함수
-        async function fetchProjectTasks() {
-            const projectId = route.params.id
+const tasks = ref(props.initialTasks)
 
-            try {
-                const apiUrl = import.meta.env.VITE_API_URL
-                const response = await axios.get(`${apiUrl}/task/project/${projectId}/task`)
+const route = useRoute()
 
-                tasks.value = response.data
+async function fetchProjectTasks() {
+    const projectId = route.params.id
 
-                console.log('tasktable', tasks.value)
-            } catch (error) {
-                console.error('프로젝트 태스크 데이터를 가져오는데 실패했습니다:', error)
-            }
-        }
+    try {
+        const apiUrl = import.meta.env.VITE_API_URL
+        const response = await axios.get(`${apiUrl}/task/project/${projectId}/task`)
 
-        // 데이터를 가져온 후에 테이블에 새로운 태스크가 추가되었는지 확인하는 함수
-        function checkNewTask() {
-            console.log('New Task:', props.newTaskData)
-            // 새로운 태스크가 존재하면 addNewTask 함수를 호출하여 tasks 배열에 추가
-            if (props.newTaskData) {
-                props.addNewTask(props.newTaskData)
-            }
-        }
+        // tasks 초기화
+        tasks.value = response.data
 
-        // newTask 데이터가 변경될 때마다 해당 데이터를 추가
-        watch(
-            () => props.newTaskData,
-            (newVal) => {
-                if (newVal) {
-                    props.addNewTask(newVal)
-                }
-            }
-        )
-
-        onMounted(() => {
-            fetchProjectTasks()
-        })
-
-        return {
-            tasks,
-            formatDate,
-            checkNewTask
-        }
+        console.log(tasks.value)
+    } catch (error) {
+        console.error('프로젝트 태스크 데이터를 가져오는데 실패했습니다:', error)
     }
 }
+
+function checkNewTask() {
+    console.log('New Task:', props.newTaskData)
+    if (props.newTaskData) {
+        props.addNewTask(props.newTaskData)
+    }
+}
+
+watch(
+    () => props.newTaskData,
+    (newVal) => {
+        if (newVal) {
+            props.addNewTask(newVal)
+        }
+    }
+)
+watch(
+    () => props.initialTasks,
+    (newVal, oldVal) => {
+        tasks.value = props.initialTasks
+    }
+)
+onMounted(() => {
+    console.log(props.initialTasks)
+    if (props.initialTasks == undefined || props.initialTasks == null) {
+        fetchProjectTasks()
+    }
+})
 </script>
+
 <template>
     <table class="table fs-9 mb-5 border-top border-translucent">
         <colgroup>
