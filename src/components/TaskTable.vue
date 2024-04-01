@@ -1,12 +1,15 @@
 <script>
+import axios from 'axios'
+
 import { ref, onMounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
-import axios from 'axios'
+import { formatDate } from '@/utils/dateUtils.js'
+
 import UserProfile from '../components/UserProfile.vue'
 import ProgressBar from '../components/ProgressBar.vue'
 import StatusBadge from '../components/StatusBadge.vue'
 import PriorityBadge from '../components/PriorityBadge.vue'
-import { formatDate } from '@/utils/dateUtils.js'
+import TaskDetailModal from '../components/TaskDetailModal.vue'
 
 export default {
     components: {
@@ -14,6 +17,7 @@ export default {
         ProgressBar,
         StatusBadge,
         PriorityBadge,
+        TaskDetailModal,
         formatDate
     },
     props: {
@@ -21,7 +25,6 @@ export default {
             type: Number,
             required: true
         },
-        // 새로운 업무 데이터를 받아오는 props
         newTaskData: {
             type: Object,
             default: null
@@ -34,6 +37,8 @@ export default {
     setup(props) {
         const tasks = ref([])
         const route = useRoute()
+        const isModalActive = ref(false)
+        const selectedTask = ref(null)
 
         // 프로젝트 태스크 정보를 불러오는 함수
         async function fetchProjectTasks() {
@@ -54,6 +59,7 @@ export default {
         // 데이터를 가져온 후에 테이블에 새로운 태스크가 추가되었는지 확인하는 함수
         function checkNewTask() {
             console.log('New Task:', props.newTaskData)
+
             // 새로운 태스크가 존재하면 addNewTask 함수를 호출하여 tasks 배열에 추가
             if (props.newTaskData) {
                 props.addNewTask(props.newTaskData)
@@ -74,10 +80,19 @@ export default {
             fetchProjectTasks()
         })
 
+        const openModal = (task) => {
+            selectedTask.value = task
+            isModalActive.value = true
+            console.log('modal open')
+        }
+
         return {
             tasks,
             formatDate,
-            checkNewTask
+            checkNewTask,
+            selectedTask,
+            isModalActive,
+            openModal
         }
     }
 }
@@ -111,7 +126,7 @@ export default {
         <tbody>
             <tr v-for="(task, index) in tasks" :key="index">
                 <td>
-                    <a href="#" class="tb-project-title">{{ task.task_title }}</a>
+                    <a class="tb-project-title" @click="openModal(task)">{{ task.task_title }}</a>
                 </td>
                 <td class="text-start">
                     <UserProfile :name="task.assignee" />
@@ -127,7 +142,9 @@ export default {
 
             <!-- 새로운 업무 표시 -->
             <tr v-if="newTaskData" :key="newTaskData.id">
-                <td>{{ newTaskData.task_title }}</td>
+                <td>
+                    <a class="tb-project-title" @click="openModal(newTaskData)">{{ newTaskData.task_title }}</a>
+                </td>
                 <td>{{ newTaskData.assignee }}</td>
                 <td>{{ formatDate(newTaskData.start_date) }}</td>
                 <td>{{ formatDate(newTaskData.end_date) }}</td>
@@ -139,11 +156,14 @@ export default {
             </tr>
         </tbody>
     </table>
+
+    <TaskDetailModal :is-active="isModalActive" :task="selectedTask" @close-modal="isModalActive = false" />
 </template>
 <style scoped>
 .tb-project-title {
     position: relative;
     padding-left: 15px;
+    cursor: pointer;
 }
 .tb-project-title::after {
     display: block;
