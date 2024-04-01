@@ -90,7 +90,6 @@ const handleSelectedItems = (selectedItems) => {
             <div class="col-auto d-flex">
                 <!-- 정렬기준 필터 -->
                 <SortFilter :sortByLatest="sortByLatest" :sortByPriority="sortByPriority" />
-                <!-- <SortFilter :sortByLatest="sortByLatest" :sortByPriority="sortByPriority" /> -->
             </div>
         </div>
 
