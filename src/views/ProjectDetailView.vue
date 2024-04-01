@@ -4,6 +4,7 @@ import { useRoute } from 'vue-router'
 import axios from 'axios'
 import ProjectInfo from '../components/ProjectInfo.vue'
 import TaskTable from '../components/TaskTable.vue'
+import EditDeleteButtonGroup from '../components/EditDeleteButtonGroup.vue'
 import SortFilter from '@/components/SortFilter.vue'
 // import CheckboxSelector from '../components/CheckboxSelector.vue'
 
@@ -11,7 +12,8 @@ export default {
     components: {
         ProjectInfo,
         TaskTable,
-        SortFilter
+        SortFilter,
+        EditDeleteButtonGroup
         // CheckboxSelector
     },
     setup() {
@@ -86,10 +88,8 @@ export default {
     <div class="inner">
         <div class="row mb-4">
             <div class="col d-flex align-items-center justify-content-end">
-                <div class="btn-group">
-                    <button class="btn btn-outline-secondary"><i class="bi bi-pencil"></i> 수정</button>
-                    <button class="btn btn-outline-secondary"><i class="bi bi-trash"></i> 삭제</button>
-                </div>
+                <!--  게시글 수정/삭제 버튼 -->
+                <EditDeleteButtonGroup />
             </div>
         </div>
 
