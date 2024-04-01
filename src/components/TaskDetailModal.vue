@@ -1,8 +1,16 @@
 <script>
 import { formatDate } from '@/utils/dateUtils.js'
+import EditDeleteButtonGroup from '../components/EditDeleteButtonGroup.vue'
+import StatusBadge from '../components/StatusBadge.vue'
 import PriorityBadge from '../components/PriorityBadge.vue'
 
 export default {
+    components: {
+        EditDeleteButtonGroup,
+        StatusBadge,
+        PriorityBadge
+    },
+    emits: ['closeModal'],
     props: {
         isActive: Boolean, // 모달 활성/비활성 상태
         task: Object // 선택된 작업 데이터
@@ -27,8 +35,13 @@ export default {
                     <button class="btn"><i class="bi bi-copy"></i></button>
                     <button type="button" class="btn-close" aria-label="Close" @click="closeModal"></button>
                 </div>
+
                 <div class="modal-body">
                     <div class="modal-body">
+                        <!-- 수정/삭제 버튼 -->
+                        <EditDeleteButtonGroup />
+
+                        <!-- list -->
                         <ul class="list">
                             <li>
                                 <span class="title">업무명</span>
@@ -48,19 +61,15 @@ export default {
                             </li>
                             <li>
                                 <span class="title">진행상태</span>
-                                <span class="value">{{ task.task_status }}</span>
+                                <span class="value"><StatusBadge :status="task.task_status" /></span>
                             </li>
                             <li>
                                 <span class="title">진행률</span>
-                                <span class="value">{{ task.task_percent }}</span>
+                                <span class="value">{{ task.task_percent }} %</span>
                             </li>
                             <li>
                                 <span class="title">우선순위</span>
-                                <span class="value">{{ task.task_priority }}</span>
-                            </li>
-                            <li>
-                                <span class="title">우선순위</span>
-                                <span class="value"><PriorityBadge :priority="task.task_priority" /></span>
+                                <span class="value"> <PriorityBadge :priority="task.task_priority" /></span>
                             </li>
                             <li>
                                 <span class="title">테스트</span>
@@ -130,7 +139,7 @@ export default {
     margin-bottom: 13px;
 }
 .list li span {
-    display: inline-block;
+    display: inline-flex;
 }
 .title {
     width: 110px;

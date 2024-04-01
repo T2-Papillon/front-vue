@@ -25,6 +25,10 @@ export default {
             type: Number,
             required: true
         },
+        tasks: {
+            type: Array,
+            default: () => []
+        },
         newTaskData: {
             type: Object,
             default: null
