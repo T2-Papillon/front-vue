@@ -1,4 +1,6 @@
 <script>
+import { formatDate } from '@/utils/dateUtils.js'
+
 export default {
     props: {
         isActive: Boolean, // 모달 활성/비활성 상태
@@ -9,7 +11,8 @@ export default {
             // 모달 닫기 이벤트를 부모 컴포넌트로 전달하여 isActive를 false로 변경합니다.
             this.$emit('close-modal')
             console.log('close')
-        }
+        },
+        formatDate
     }
 }
 </script>
@@ -22,7 +25,14 @@ export default {
                     <h5 class="modal-title">Task Detail</h5>
                     <button type="button" class="btn-close" aria-label="Close" @click="closeModal"></button>
                 </div>
-                <div class="modal-body">{{ task }}</div>
+                <div class="modal-body">
+                    <div class="modal-body">
+                        <p><strong>업무명:</strong> {{ task.task_title }}</p>
+                        <p><strong>시작일:</strong> {{ formatDate(task.start_date) }}</p>
+                        <p><strong>종료일:</strong> {{ formatDate(task.end_date) }}</p>
+                        <p><strong>내용:</strong> {{ task.task_desc }}</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

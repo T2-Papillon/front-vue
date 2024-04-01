@@ -159,6 +159,7 @@ export default {
 
     <TaskDetailModal :is-active="isModalActive" :task="selectedTask" @close-modal="isModalActive = false" />
 </template>
+
 <style scoped>
 .tb-project-title {
     position: relative;
