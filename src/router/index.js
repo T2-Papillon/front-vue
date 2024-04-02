@@ -46,7 +46,7 @@ const router = createRouter({
         },
         {
             path: '/project/detail/:id/task/save',
-            name: 'TaskInput',
+            name: 'taskInput',
             component: () => import('../views/TaskInputView.vue')
         },
         {
@@ -57,7 +57,7 @@ const router = createRouter({
         },
         {
             path: '/dashboard',
-            name: 'DashBoard',
+            name: 'dashBoard',
             component: () => import('../views/DashboardView.vue'),
             beforeEnter: (to, from, next) => {
                 if (sessionStorage.getItem('NM') != null) {

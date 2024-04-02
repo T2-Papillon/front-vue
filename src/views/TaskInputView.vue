@@ -60,7 +60,8 @@ export default {
         // 수정 기능 구현
         async function updateTask() {
             try {
-                const { id: projectId, taskId } = route.params
+                const projectId = route.params.projectId
+                const taskId = route.params.taskId
                 const apiUrl = import.meta.env.VITE_API_URL
 
                 const postData = {
@@ -74,20 +75,21 @@ export default {
                     task_percent: task_percent.value,
                     task_test: task_test.value === 'true',
                     task_desc: task_desc.value,
+
                     url: url.value
                 }
 
                 const response = await axios.put(`${apiUrl}/task/project/${projectId}/task/${taskId}`, postData)
                 handleApiResponse(response, projectId)
             } catch (error) {
-                console.error('데이터를 업데이트하는 데 실패했습니다.', error.response.data)
+                console.error('데이터를 업데이트하는 데 실패했습니다.', error.response?.data || error)
             }
         }
 
         // 업무 글쓰기
         async function saveTask() {
             try {
-                const projectId = route.params.id
+                const projectId = route.params.projectId
                 const apiUrl = import.meta.env.VITE_API_URL
                 console.log('projectId:', projectId)
 
@@ -167,7 +169,7 @@ export default {
         }
 
         onMounted(() => {
-            fetchData() // 마운트 시 데이터 불러오기
+            fetchData()
         })
 
         return {
@@ -197,8 +199,8 @@ export default {
         <div class="row align-items-center justify-content-center text-center g-3">
             <div class="col-auto">
                 <div class="title-area">
-                    <h2 class="h2">업무 작성글쓰기</h2>
-                    <p class="text-body-tertiary lh-sm mb-0">예정된 업무를 적어주세요.</p>
+                    <h2 class="h2">{{ isEditing ? '업무 수정하기' : '업무 작성하기' }}</h2>
+                    <p class="text-body-tertiary lh-sm mb-0">{{ isEditing ? '업무를 수정해주세요.' : '예정된 업무를 적어주세요.' }}</p>
                 </div>
             </div>
         </div>
