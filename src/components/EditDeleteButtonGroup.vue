@@ -9,8 +9,8 @@ export default {
     methods: {
         async handleEdit() {
             try {
-                if (!this.taskId) {
-                    console.error('btn console.log Task ID가 유효하지 않습니다.')
+                if (!this.projectId || !this.taskId) {
+                    console.error('Project ID 또는 Task ID가 유효하지 않습니다.')
                     return
                 }
 
@@ -22,8 +22,10 @@ export default {
                     name: 'taskedit',
                     params: {
                         projectId: this.projectId,
-                        taskId: this.taskId,
-                        taskData: taskData
+                        taskId: this.taskId
+                    },
+                    query: {
+                        taskData: JSON.stringify(this.taskData)
                     }
                 })
             } catch (error) {
@@ -33,6 +35,11 @@ export default {
         async handleDelete() {
             if (confirm('정말 삭제하시겠습니까?')) {
                 try {
+                    if (!this.projectId || !this.taskId) {
+                        console.error('Project ID 또는 Task ID가 유효하지 않습니다.')
+                        return
+                    }
+
                     const apiUrl = import.meta.env.VITE_API_URL
                     await axios.delete(`${apiUrl}/task/project/${this.projectId}/task/${this.taskId}`)
 

@@ -1,5 +1,5 @@
 <script>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import axios from 'axios'
 import { useRoute, useRouter } from 'vue-router'
 
@@ -20,43 +20,32 @@ export default {
         const url = ref('')
         const task_desc = ref('')
 
+        // 데이터를 불러오는 함수 수정
         async function fetchData() {
-            try {
-                const projectId = route.params.id
-                const taskId = route.params.taskId
-                const apiUrl = import.meta.env.VITE_API_URL
+            const projectId = route.params.projectId // 이 부분을 수정
+            const taskId = route.params.taskId // 이 부분을 수정
+            const apiUrl = import.meta.env.VITE_API_URL
 
-                if (taskId) {
-                    isEditing.value = true
+            if (taskId) {
+                isEditing.value = true // 수정 모드 활성화
+                try {
                     const response = await axios.get(`${apiUrl}/task/project/${projectId}/task/${taskId}`)
-                    if (response && response.data) {
-                        const taskData = response.data(
-                            // 객체 분해 할당을 사용하여 각 필드에 값을 설정합니다.
-                            ({
-                                task_title: task_title.value,
-                                assignee: assignee.value,
-                                start_date: start_date.value,
-                                end_date: end_date.value,
-                                task_status: task_status.value,
-                                task_priority: task_priority.value,
-                                task_percent: task_percent.value,
-                                task_test: task_test.value,
-                                url: url.value,
-                                task_desc: task_desc.value
-                            } = taskData)
-                        )
-                        // start_date와 end_date를 새로 설정합니다.
-                        start_date.value = new Date(taskData.start_date).toISOString().substr(0, 10)
-                        end_date.value = new Date(taskData.end_date).toISOString().substr(0, 10)
-                        // task_test와 url을 따로 처리합니다.
-                        task_test.value = taskData.task_test ? 'true' : 'false'
-                        url.value = taskData.url || ''
-                    } else {
-                        console.error('응답 객체 또는 응답 데이터가 유효하지 않습니다.')
-                    }
+                    const taskData = response.data
+                    // 데이터를 폼 필드에 할당
+                    task_title.value = taskData.task_title
+                    assignee.value = taskData.assignee
+                    // 날짜 포맷 수정
+                    start_date.value = new Date(taskData.start_date).toISOString().substr(0, 10)
+                    end_date.value = new Date(taskData.end_date).toISOString().substr(0, 10)
+                    task_status.value = taskData.task_status
+                    task_priority.value = taskData.task_priority
+                    task_percent.value = taskData.task_percent
+                    task_test.value = taskData.task_test ? 'true' : 'false'
+                    url.value = taskData.url || ''
+                    task_desc.value = taskData.task_desc
+                } catch (error) {
+                    console.error('데이터를 불러오는 데 실패했습니다.', error)
                 }
-            } catch (error) {
-                console.error('데이터를 불러오는 데 실패했습니다.', error.response.data)
             }
         }
 
@@ -177,6 +166,10 @@ export default {
             router.back()
         }
 
+        onMounted(() => {
+            fetchData() // 마운트 시 데이터 불러오기
+        })
+
         return {
             task_title,
             assignee,
@@ -195,9 +188,6 @@ export default {
             goBack,
             isEditing
         }
-    },
-    mounted() {
-        this.fetchData()
     }
 }
 </script>
