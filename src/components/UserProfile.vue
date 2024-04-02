@@ -1,21 +1,3 @@
-<template>
-    <div class="profile">
-        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">{{ displayName }}</button>
-        <!-- <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" :style="{ 'background-color': randomColor }">{{ displayName }}</button> -->
-        <ul class="dropdown-menu">
-            <li>
-                <span class="dropdown-item fw-bold">{{ name }}</span>
-            </li>
-            <li>
-                <span class="dropdown-item">{{ dept }}</span>
-            </li>
-            <li><router-link to="/dashboard" class="dropdown-item">대시보드</router-link></li>
-            <li><a class="dropdown-item" href="#">마이페이지</a></li>
-            <li><a class="dropdown-item" href="#">로그아웃</a></li>
-        </ul>
-    </div>
-</template>
-
 <script scoped>
 export default {
     props: ['name', 'dept'],
@@ -27,12 +9,24 @@ export default {
                 return this.name
             }
         }
-        // randomColor() {
-        //     return '#' + Math.floor(Math.random() * 16777215).toString(16)
-        // }
     }
 }
 </script>
+<template>
+    <div class="profile">
+        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">{{ displayName }}</button>
+        <ul class="dropdown-menu">
+            <li>
+                <span class="dropdown-item fw-bold">{{ name }}</span>
+            </li>
+            <li>
+                <span class="dropdown-item">{{ dept }}</span>
+            </li>
+            <li><router-link to="/dashboard" class="dropdown-item">마이페이지</router-link></li>
+            <li><a class="dropdown-item" href="#">로그아웃</a></li>
+        </ul>
+    </div>
+</template>
 
 <style scoped>
 .profile {
