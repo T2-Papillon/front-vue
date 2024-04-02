@@ -2,13 +2,13 @@
     <nav aria-label="Page navigation example">
         <ul class="pagination">
             <li class="page-item" :class="{ disabled: currentPage <= 1 }">
-                <button class="page-link" @click="changePage(currentPage - 1)">Previous</button>
+                <button class="page-link" @click="changePage(currentPage - 1)">&lt;&lt;</button>
             </li>
             <li class="page-item" v-for="page in pages" :key="page" :class="{ active: currentPage === page }">
                 <button class="page-link" @click="changePage(page)">{{ page }}</button>
             </li>
             <li class="page-item" :class="{ disabled: currentPage >= totalPages }">
-                <button class="page-link" @click="changePage(currentPage + 1)" :disabled="currentPage >= totalPages">Next</button>
+                <button class="page-link" @click="changePage(currentPage + 1)" :disabled="currentPage >= totalPages">&gt;&gt;</button>
             </li>
         </ul>
     </nav>

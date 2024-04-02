@@ -55,6 +55,7 @@ export default {
 </script>
 
 <template>
+    <!--  v-if="userInfo" -->
     <div class="btn-group">
         <button class="btn btn-outline-secondary" @click="handleEdit"><i class="bi bi-pencil"></i> 수정</button>
         <button class="btn btn-outline-secondary" @click="handleDelete"><i class="bi bi-trash"></i> 삭제</button>

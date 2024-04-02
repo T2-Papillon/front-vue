@@ -22,7 +22,7 @@ export default {
             <li>
                 <span class="dropdown-item">{{ dept }}</span>
             </li>
-            <li><router-link to="/dashboard" class="dropdown-item">마이페이지</router-link></li>
+            <li><router-link to="/mypage" class="dropdown-item">마이페이지</router-link></li>
             <li><a class="dropdown-item" href="#">로그아웃</a></li>
         </ul>
     </div>
