@@ -74,20 +74,17 @@ export default {
                     assignee: assignee.value,
                     proj_no: projectId,
                     task_title: task_title.value,
-                    task_status: task_status.value,
-                    task_priority: task_priority.value,
-                    start_date: start_date.value, // 변환 불필요
-                    end_date: end_date.value, // 변환 불필요
+                    task_start_date: start_date.value,
+                    task_end_date: end_date.value,
                     task_percent: task_percent.value,
-                    task_test: task_test.value === 'true' ? true : false,
+                    task_test: task_test.value === 'true',
                     task_desc: task_desc.value,
-                    url: url.value,
-                    update_date: new Date().getTime()
+                    task_update_date: new Date().toISOString()
                 }
 
                 console.log(projectId, taskId, postData)
 
-                const response = await axios.put(`${apiUrl}/task/project/${projectId}/task/${taskId}`, postData)
+                const response = await axios.post(`${apiUrl}/task/project/${projectId}/task/${taskId}`, postData)
                 handleApiResponse(response, projectId)
             } catch (error) {
                 console.error('데이터를 업데이트하는 데 실패했습니다.', error.response?.data || error)
