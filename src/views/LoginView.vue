@@ -88,7 +88,7 @@ export default {
     position: relative;
     min-height: 82.4vh;
     /* background-color: #f5f5f5; */
-    background-color: #0e6cc4;
+    background-color: #dff0d8;
 }
 .card {
     width: 850px;
@@ -107,11 +107,11 @@ export default {
     position: fixed;
     top: 0;
     left: 0;
-    opacity: 0.4;
+    opacity: 0.3;
     position: absolute;
     top: 3%;
     left: 10%;
-    background: #0af;
+    background: #1bd689;
     width: 1500px;
     height: 1300px;
     margin-left: -150px;
@@ -124,13 +124,13 @@ export default {
 .wave.-three {
     animation: drift 15000ms infinite linear;
     position: fixed;
-    background-color: #77daff;
+    background-color: #dff0d8;
 }
 
 .wave.-two {
     animation: drift 5000ms infinite linear;
-    opacity: 0.1;
-    background: black;
+    opacity: 0.15;
+    background: #1bd689;
     position: fixed;
 }
 
