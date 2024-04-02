@@ -45,6 +45,23 @@ export function useProjects() {
         }
     }
 
+    const changePage = async (page) => {
+        if (page < 1 || page > totalPages.value) {
+            return
+        }
+
+        currentPage.value = page
+
+        // 페이지가 마지막 페이지인 경우 다음 버튼 비활성화
+        const isNextButtonEnabled = currentPage.value < totalPages.value
+        if (!isNextButtonEnabled) {
+            console.log('마지막 페이지입니다. 다음 버튼이 비활성화됩니다.')
+        }
+
+        // currentPage 값을 변경한 후에 프로젝트를 다시 불러옵니다.
+        await fetchProjects(searchTerm.value)
+    }
+
     async function fetchProjectsForUser() {
         isLoading.value = true
         const eno = sessionStorage.getItem('EN') // 로그인한 사용자의 사번 불러오기
