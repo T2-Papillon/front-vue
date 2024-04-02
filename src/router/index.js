@@ -45,7 +45,7 @@ const router = createRouter({
             component: () => import('../views/ProjectDetailView.vue')
         },
         {
-            path: '/project/detail/:id/task/save',
+            path: '/project/detail/:projectId/task/save',
             name: 'taskInput',
             component: () => import('../views/TaskInputView.vue')
         },

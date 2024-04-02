@@ -22,19 +22,17 @@ export default {
 
         // 데이터를 불러오는 함수 수정
         async function fetchData() {
-            const projectId = route.params.projectId // 이 부분을 수정
-            const taskId = route.params.taskId // 이 부분을 수정
             const apiUrl = import.meta.env.VITE_API_URL
+            const projectId = route.params.projectId
+            const taskId = route.params.taskId
 
             if (taskId) {
                 isEditing.value = true // 수정 모드 활성화
                 try {
                     const response = await axios.get(`${apiUrl}/task/project/${projectId}/task/${taskId}`)
                     const taskData = response.data
-                    // 데이터를 폼 필드에 할당
                     task_title.value = taskData.task_title
                     assignee.value = taskData.assignee
-                    // 날짜 포맷 수정
                     start_date.value = new Date(taskData.start_date).toISOString().substr(0, 10)
                     end_date.value = new Date(taskData.end_date).toISOString().substr(0, 10)
                     task_status.value = taskData.task_status
@@ -62,27 +60,34 @@ export default {
             try {
                 const projectId = route.params.projectId
                 const taskId = route.params.taskId
-                const apiUrl = import.meta.env.VITE_API_URL
 
-                const postData = {
-                    assignee: assignee.value,
-                    proj_no: projectId,
-                    task_title: task_title.value,
-                    task_status: task_status.value,
-                    task_priority: task_priority.value,
-                    start_date: new Date(start_date.value).getTime(),
-                    end_date: new Date(end_date.value).getTime(),
-                    task_percent: task_percent.value,
-                    task_test: task_test.value === 'true',
-                    task_desc: task_desc.value,
-
-                    url: url.value
+                if (!projectId || !taskId) {
+                    console.error('Project ID or Task ID is missing')
+                    return
                 }
 
-                const response = await axios.put(`${apiUrl}/task/project/${projectId}/task/${taskId}`, postData)
-                handleApiResponse(response, projectId)
+                const apiUrl = import.meta.env.VITE_API_URL
+                const updateUrl = `${apiUrl}/task/project/${projectId}/task/${taskId}`
+
+                const postData = {
+                    assignee: this.assignee,
+                    proj_no: projectId,
+                    task_title: this.task_title,
+                    task_status: this.task_status,
+                    task_priority: this.task_priority,
+                    start_date: this.start_date,
+                    end_date: this.end_date,
+                    task_percent: this.task_percent,
+                    task_test: this.task_test === 'true',
+                    task_desc: this.task_desc,
+                    url: this.url
+                }
+
+                const response = await axios.put(updateUrl, postData)
+                // 응답 처리
+                this.handleApiResponse(response)
             } catch (error) {
-                console.error('데이터를 업데이트하는 데 실패했습니다.', error.response?.data || error)
+                console.error('데이터를 업데이트하는 데 실패했습니다.', error)
             }
         }
 
