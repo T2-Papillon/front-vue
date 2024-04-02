@@ -27,11 +27,12 @@ export default {
 }
 </script>
 <template>
-    <div class="row align-items-center justify-content-between g-3 pb-4">
+    <div v-if="project && project.projTitle" class="row align-items-center justify-content-between g-3 pb-4">
         <div class="col-auto">
             <div class="title-area">
-                <p class="text-body-tertiary lh-sm mb-3">ProjectNo.00000001</p>
-                <h2 class="h2">📌 {{ project.projTitle }}</h2>
+                <p class="text-body-tertiary lh-sm mb-3">ProjectNo.{{ project.projNo }}</p>
+                <h2 class="h2">📊[통계분석] {{ project.projTitle }}</h2>
+                <div class="text-area">{{ project.projDesc }}</div>
             </div>
         </div>
     </div>
@@ -45,20 +46,14 @@ export default {
         </colgroup>
         <tbody>
             <tr>
-                <th>작성자</th>
-                <td><UserProfile :name="project.projPm" /></td>
-                <th>작성일</th>
-                <td>{{ formatDate(project.projCreateDate) }}</td>
-            </tr>
-            <tr>
                 <th>프로젝트 기간</th>
-                <td>{{ formatDate(project.projStartDate) }} ~ {{ formatDate(project.projEndDate) }}</td>
-                <th>우선순위</th>
-                <td><PriorityBadge :priority="project.projectPriority" /></td>
+                <td>
+                    {{ formatDate(project.projStartDate) }} ~ {{ formatDate(project.projEndDate) }}
+                    <StatusBadge :status="project.projectStatus" />
+                </td>
             </tr>
-
             <tr>
-                <th>참여자</th>
+                <th>프로젝트 참여자</th>
                 <td>
                     참여자 수정해야해수정해야해
                     <!-- <div v-for="(participant, index) in formatParticipants(project.participants).visibleParticipants" :key="index">
@@ -66,8 +61,6 @@ export default {
                     </div>
                     <span v-if="formatParticipants(project.participants).overflowCount > 0">...</span> -->
                 </td>
-                <th>프로젝트 상태</th>
-                <td><StatusBadge :status="project.projectStatus" /></td>
             </tr>
             <tr>
                 <th>진행률</th>
@@ -76,10 +69,8 @@ export default {
                 <td></td>
             </tr>
             <tr>
-                <th>내용</th>
-                <td colspan="3">
-                    <div class="text-area">{{ project.projDesc }}</div>
-                </td>
+                <th>작성일</th>
+                <td>{{ formatDate(project.projCreateDate) }}</td>
             </tr>
         </tbody>
     </table>
