@@ -7,8 +7,23 @@ export default {
         taskId: Number
     },
     methods: {
-        handleEdit() {
-            alert('준비중입니다.')
+        async handleEdit() {
+            try {
+                const apiUrl = import.meta.env.VITE_API_URL
+                const response = await axios.get(`${apiUrl}/task/project/${this.projectId}/task/${this.taskId}`)
+                const taskData = response.data
+                console.log(taskData, 'taskData')
+                this.$router.push({
+                    name: 'taskedit',
+                    params: {
+                        projectId: this.projectId,
+                        taskId: this.taskId,
+                        taskData: JSON.stringify(taskData)
+                    }
+                })
+            } catch (error) {
+                console.error('태스크 데이터를 가져오는 중 에러가 발생했습니다.', error)
+            }
         },
         async handleDelete() {
             if (confirm('정말 삭제하시겠습니까?')) {
