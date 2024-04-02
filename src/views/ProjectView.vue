@@ -41,11 +41,11 @@ onMounted(async () => {
                     <p class="text-body-tertiary lh-sm mb-0">텍스트텍스트텍스트텍스트</p>
                 </div>
             </div>
-            <div class="col-auto">
-                <div class="top-btn-area">
-                    <button class="btn btn-outline-dark me-4">대시보드</button>
-                    <button class="btn btn-dark">통계분석</button>
-                </div>
+            <div class="col-auto d-flex">
+                <form class="d-flex me-4">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
+                    <button class="btn btn-outline-success" type="submit"><i class="bi bi-search"></i></button>
+                </form>
             </div>
         </div>
 
