@@ -21,25 +21,31 @@ const tasks = ref(props.initialTasks)
 const route = useRoute()
 const isModalActive = ref(false)
 const selectedTask = ref(null)
+const error = ref(null)
 
 async function fetchProjectTasks() {
     const projectId = route.params.id || props.projectId
 
     try {
         const apiUrl = import.meta.env.VITE_API_URL
-        const response = await axios.get(`${apiUrl}/task/project/${projectId}/tasks`)
-
+        const response = await axios.get(`${apiUrl}/task/project/${projectId}/task`)
         tasks.value = response.data
+        error.value = null
     } catch (error) {
         console.error('프로젝트 태스크 데이터를 가져오는데 실패했습니다:', error)
+        error.value = '프로젝트 태스크 데이터를 가져오는데 실패했습니다.'
+        tasks.value = [] // 데이터를 비워 테이블을 숨깁니다.
     }
 }
 
-watch(() => props.newTaskData, (newVal) => {
-    if (newVal) {
-        tasks.value.push(newVal)
+watch(
+    () => props.newTaskData,
+    (newVal) => {
+        if (newVal) {
+            tasks.value.push(newVal)
+        }
     }
-})
+)
 
 onMounted(() => {
     if (!props.initialTasks || props.initialTasks.length === 0) {
@@ -54,6 +60,7 @@ const openModal = (task) => {
 </script>
 
 <template>
+    <div v-if="error">{{ error }}</div>
     <table class="table fs-9 mb-5 border-top border-translucent">
         <colgroup>
             <col />
