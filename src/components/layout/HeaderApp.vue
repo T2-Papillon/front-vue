@@ -30,6 +30,11 @@ export default {
                     <a href="/dashboard"><img src="/public/images/logo.svg" alt="boogle logo" /></a>
                 </h1>
 
+                <!-- 햄버거 메뉴 버튼 추가 -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
                 <nav class="navbar navbar-expand-lg">
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <!-- 로그인한 상태에서 보여줄 탭 -->

@@ -27,7 +27,7 @@ dashboardData()
 </script>
 <template>
     <div class="dashboard-wrap">
-        <div class="inner">
+        <div class="container inner">
             <div class="row align-items-start justify-content-between g-3">
                 <div class="col-auto">
                     <div class="title-area">
@@ -36,7 +36,7 @@ dashboardData()
                     </div>
                 </div>
             </div>
-            <div class="row pb-4">
+            <div class="row g-5 g-xl-10 mb-5 mb-xl-10">
                 <div class="col-xl-4">
                     <div class="card">
                         <div class="card-body">
@@ -62,7 +62,7 @@ dashboardData()
                     </div>
                 </div>
             </div>
-            <div class="row pb-5 mb-3">
+            <div class="row g-5 g-xl-10 mb-5 mb-xl-10">
                 <div class="col-xl-4">
                     <div class="card">
                         <div class="card-body">
@@ -88,8 +88,7 @@ dashboardData()
                     </div>
                 </div>
             </div>
-
-            <div class="row pb-4">
+            <div class="row g-5 g-xl-10 mb-5 mb-xl-10">
                 <div class="col">
                     <div class="card">
                         <div class="card-body">
@@ -101,8 +100,7 @@ dashboardData()
                     </div>
                 </div>
             </div>
-
-            <div class="row pb-4">
+            <div class="row g-5 g-xl-10 mb-5 mb-xl-10">
                 <div class="col">
                     <div class="card">
                         <div class="card-body">
@@ -114,8 +112,7 @@ dashboardData()
                     </div>
                 </div>
             </div>
-
-            <div class="row pb-5 mb-3">
+            <div class="row g-5 g-xl-10 mb-5 mb-xl-10">
                 <div class="col-xl-6">
                     <div class="card">
                         <div class="card-body">
