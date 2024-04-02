@@ -5,8 +5,9 @@ import ProjectTable from '../components/ProjectTable.vue'
 import { useProjects } from '@/composables/useProjects'
 import SortFilter from '../components/SortFilter.vue'
 import globalInfo from '@/utils/globalInfoUtils.js'
+import PaginationView from '../components/PaginationView.vue'
 
-const { projects, fetchProjectsForUser, sortByLatest, sortByPriority } = useProjects()
+const { projects, fetchProjectsForUser, sortByLatest, sortByPriority, currentPage, totalPages } = useProjects()
 
 // 로그인한 사용자의 이름을 저장하기 위한 반응형 참조
 const userName = ref(sessionStorage.getItem('NM') || '사용자')
@@ -53,7 +54,7 @@ onMounted(async () => {
                 <div class="row align-items-center justify-content-between mb-4 g-3 project-list">
                     <div class="col-auto">
                         <h3 class="h3 fw-light">
-                            📌 진행예정 <span class="h3 fw-bold">{{ todoProjects.length }}</span> 건
+                            📬 진행예정 <span class="h3 fw-bold">{{ todoProjects.length }}</span> 건
                         </h3>
                     </div>
                     <!-- <div class="col-auto"> -->
@@ -62,6 +63,7 @@ onMounted(async () => {
                     </div> -->
                 </div>
                 <ProjectTable v-if="todoProjects.length > 0" :projects="todoProjects" />
+                <PaginationView v-if="todoProjects.length > 0" :currentPage="currentPage" :totalPages="totalPages" />
                 <p v-else>프로젝트가 없습니다.</p>
             </div>
         </section>
@@ -71,7 +73,7 @@ onMounted(async () => {
                 <div class="row align-items-center justify-content-between mb-4 g-3 project-list">
                     <div class="col-auto">
                         <h3 class="h3 fw-light">
-                            📌 진행중 <span class="h3 fw-bold">{{ doingProjects.length }}</span> 건
+                            🚗 진행중 <span class="h3 fw-bold">{{ doingProjects.length }}</span> 건
                         </h3>
                     </div>
                     <!-- <div class="col-auto"> -->
@@ -80,6 +82,7 @@ onMounted(async () => {
                     </div> -->
                 </div>
                 <ProjectTable v-if="doingProjects.length > 0" :projects="doingProjects" />
+                <PaginationView v-if="doingProjects.length > 0" :currentPage="currentPage" :totalPages="totalPages" />
                 <p v-else>프로젝트가 없습니다.</p>
             </div>
         </section>
@@ -89,7 +92,7 @@ onMounted(async () => {
                 <div class="row align-items-center justify-content-between mb-4 g-3 project-list">
                     <div class="col-auto">
                         <h3 class="h3 fw-light">
-                            📌 완료 <span class="h3 fw-bold">{{ doneProjects.length }}</span> 건
+                            🎉 완료 <span class="h3 fw-bold">{{ doneProjects.length }}</span> 건
                         </h3>
                     </div>
                     <!-- <div class="col-auto"> -->
@@ -98,6 +101,7 @@ onMounted(async () => {
                     </div> -->
                 </div>
                 <ProjectTable v-if="doneProjects.length > 0" :projects="doneProjects" />
+                <PaginationView v-if="doneProjects.length > 0" :currentPage="currentPage" :totalPages="totalPages" />
                 <p v-else>프로젝트가 없습니다.</p>
             </div>
         </section>
@@ -107,7 +111,7 @@ onMounted(async () => {
                 <div class="row align-items-center justify-content-between mb-4 g-3 project-list">
                     <div class="col-auto">
                         <h3 class="h3 fw-light">
-                            📌 보류 <span class="h3 fw-bold">{{ holdProjects.length }}</span> 건
+                            🧩 보류 <span class="h3 fw-bold">{{ holdProjects.length }}</span> 건
                         </h3>
                     </div>
                     <!-- <div class="col-auto"> -->
@@ -116,6 +120,7 @@ onMounted(async () => {
                     </div> -->
                 </div>
                 <ProjectTable v-if="holdProjects.length > 0" :projects="holdProjects" />
+                <PaginationView v-if="holdProjects.length > 0" :currentPage="currentPage" :totalPages="totalPages" />
                 <p v-else>프로젝트가 없습니다.</p>
             </div>
         </section>

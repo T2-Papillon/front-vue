@@ -30,13 +30,12 @@ export default {
     <div class="row align-items-center justify-content-between g-3 pb-4">
         <div class="col-auto">
             <div class="title-area">
-                <p class="text-body-tertiary lh-sm mb-3">ProjectNo.00000001</p>
+                <p class="text-body-tertiary lh-sm mb-3">ProjectNo.000{{ project.projNo }}</p>
                 <h2 class="h2">📌 {{ project.projTitle }}</h2>
             </div>
         </div>
         <div class="col-auto">
             <div class="top-btn-area">
-                <button class="btn btn-outline-dark me-4">대시보드 바로가기</button>
                 <button class="btn btn-dark">통계분석 바로가기</button>
             </div>
         </div>

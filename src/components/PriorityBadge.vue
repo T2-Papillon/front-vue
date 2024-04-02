@@ -1,5 +1,5 @@
 <template>
-    <div :class="[priorityClassName, 'priority']">{{ priorityText }}</div>
+    <span :class="[priorityClassName, 'priority']">{{ priorityText }}</span>
 </template>
 
 <script>

@@ -1,17 +1,24 @@
 <script>
-import LineChart from '../components/chart/LineChart.vue'
-import ScatterChart from '../components/chart/ScatterChart.vue'
-import PolarChart from '../components/chart/PolarChart.vue'
 import BarChart from '../components/chart/BarChart.vue'
 import PieChart from '../components/chart/PieChart.vue'
+import TaskTable from '../components/TaskTable.vue'
+import UserProjectTable from '../components/UserProjectTable.vue'
+import { useProjects } from '@/composables/useProjects'
+import { ref, watch, onMounted } from 'vue'
+
+const { projects, fetchProjects } = useProjects()
+
+onMounted(() => {
+    console.log('Component mounted, fetching projects...')
+    fetchProjects()
+})
 
 export default {
     components: {
-        LineChart,
-        ScatterChart,
-        PolarChart,
         BarChart,
-        PieChart
+        PieChart,
+        TaskTable,
+        UserProjectTable
     }
 }
 </script>
@@ -33,37 +40,42 @@ export default {
                 <div class="row align-items-center justify-content-between g-3 pb-4">
                     <div class="col-auto">
                         <div class="title-area">
-                            <h2 class="h2">홍길동 님 업무도표???</h2>
+                            <h2 class="h2">[개인통계]마이페이지 작업</h2>
                             <p class="text-body-tertiary lh-sm mb-3">testesttextext</p>
                         </div>
-                        <PolarChart />
                     </div>
                 </div>
 
                 <div class="row mb-5">
                     <div class="col-xl-6">
-                        <h3 class="h3">주간 프로젝트 참여율</h3>
-                        <LineChart />
-                    </div>
-                    <div class="col-xl-6">
-                        <h3 class="h3">업무리포트</h3>
-                        <ScatterChart />
-                    </div>
-                </div>
-
-                <div class="row mb-5">
-                    <div class="col-xl-6">
-                        <h3 class="h3">333</h3>
+                        <h3 class="h3">나의 업무 진행 상태 분포</h3>
                         <BarChart />
                     </div>
                     <div class="col-xl-6">
-                        <h3 class="h3">444</h3>
+                        <h3 class="h3">나의 우선순위별 업무 분포</h3>
+                        <BarChart />
+                    </div>
+                </div>
+
+                <div class="row mb-5">
+                    <div class="col">
+                        <h3 class="h3">나의 주간 참여 프로젝트 분포</h3>
                         <PieChart />
                     </div>
                 </div>
 
                 <div class="row mb-5">
-                    <div class="col"></div>
+                    <div class="col">
+                        <h3 class="h3">나의 전체 프로젝트 목록</h3>
+                        <UserProjectTable :projects="projects" />
+                    </div>
+                </div>
+
+                <div class="row mb-5">
+                    <div class="col-xl-6">
+                        <h3 class="h3">나의 전체 업무 목록</h3>
+                        <TaskTable />
+                    </div>
                 </div>
             </div>
         </div>

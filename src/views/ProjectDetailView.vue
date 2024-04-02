@@ -50,8 +50,6 @@ export default {
                 const apiUrl = import.meta.env.VITE_API_URL
                 const response = await axios.get(`${apiUrl}/task/project/${projectId}/task`)
                 tasks.value = response.data
-
-                console.log('디테일페이지', tasks.value)
             } catch (error) {
                 console.error('프로젝트 태스크 데이터를 가져오는데 실패했습니다:', error)
             }
@@ -73,12 +71,33 @@ export default {
             tasks.value.push(newTask)
         }
 
+        // 최신순으로 정렬하는 함수
+        function sortByLatest() {
+            console.log('Sorting by latest')
+            tasks.value.sort((a, b) => new Date(b.create_date) - new Date(a.create_date))
+            tasks.value = [...tasks.value]
+        }
+
+        // 우선순위순으로 정렬하는 함수
+        function sortByPriority() {
+            console.log('Sorting by priority')
+            const priorityOrder = { LV0: 0, LV1: 1, LV2: 2, LV3: 3 } // 우선순위 숫자로 매핑
+            tasks.value.sort((a, b) => {
+                const priorityA = priorityOrder[a.task_priority] ?? Number.MAX_SAFE_INTEGER
+                const priorityB = priorityOrder[b.task_priority] ?? Number.MAX_SAFE_INTEGER
+                return priorityA - priorityB
+            })
+            tasks.value = [...tasks.value]
+        }
+
         return {
             project,
             tasks,
             checkboxItems,
             projectNo,
-            addNewTask
+            addNewTask,
+            sortByLatest,
+            sortByPriority
         }
     }
 }
@@ -116,7 +135,7 @@ export default {
                 </form>
 
                 <!-- 최신순/우선순위 -->
-                <SortFilter />
+                <SortFilter :sortByLatest="sortByLatest" :sortByPriority="sortByPriority" />
             </div>
         </div>
 

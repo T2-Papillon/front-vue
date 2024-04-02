@@ -34,13 +34,19 @@ const router = createRouter({
             component: () => import('../views/ProjectDetailView.vue')
         },
         {
-            path: '/project/detail/:id/task/save',
-            name: 'TaskInput',
+            path: '/project/detail/:projectId/task/save',
+            name: 'taskInput',
             component: () => import('../views/TaskInputView.vue')
         },
         {
+            path: '/project/detail/:projectId/task/:taskId/edit',
+            name: 'taskedit',
+            component: () => import('../views/TaskInputView.vue'),
+            props: true
+        },
+        {
             path: '/dashboard',
-            name: 'DashBoard',
+            name: 'dashBoard',
             component: () => import('../views/DashboardView.vue'),
             beforeEnter: (to, from, next) => {
                 if (sessionStorage.getItem('NM') != null) {

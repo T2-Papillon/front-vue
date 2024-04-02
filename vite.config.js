@@ -10,5 +10,17 @@ export default defineConfig({
         alias: {
             '@': fileURLToPath(new URL('./src', import.meta.url))
         }
+    },
+    build: {// 빌드 결과물이 생성되는 경로
+        outDir: '../Spring/papplan/src/main/resources/static'
+    },
+    server: {
+        proxy: {
+            '/api': {
+                target: 'http://localhost:8081',
+                changeOrigin: true,
+                rewrite: (path) => path.replace(/^\/api/, '')
+            }
+        }
     }
 })
