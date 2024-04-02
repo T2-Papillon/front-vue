@@ -3,9 +3,13 @@ import { ref } from 'vue'
 import axios from 'axios'
 import { formatProjectData } from '@/utils/projectUtils'
 
+const PAGE_SIZE = 10
+
 export function useProjects() {
     const projects = ref([])
     const isLoading = ref(false)
+    const currentPage = ref(1) // 현재 페이지
+    const totalPages = ref(1) // 전체 페이지 수
 
     async function fetchProjects(searchTerm = '') {
         isLoading.value = true
@@ -13,15 +17,49 @@ export function useProjects() {
         try {
             const apiUrl = import.meta.env.VITE_API_URL
             const searchPath = searchTerm ? `/search/project?term=${searchTerm}` : '/project'
-            const response = await axios.get(`${apiUrl}${searchPath}`)
+            const pageSize = 10
+
+            const response = await axios.get(`${apiUrl}${searchPath}`, {
+                params: {
+                    page: currentPage.value - 1,
+                    size: pageSize
+                }
+            })
+
+            if (response.data.length === 0) {
+                // 데이터가 없는 경우 메시지 출력
+                projects.value = []
+                totalPages.value = 0
+                console.log('No projects found.')
+                return
+            }
 
             projects.value = response.data.map((project) => formatProjectData(project))
+            // 직접 숫자를 사용하여 전체 페이지 수 계산
+            totalPages.value = Math.ceil(response.data.totalCount / pageSize)
             console.log('Projects loaded:', projects.value)
         } catch (error) {
             console.error('Error fetching projects:', error)
         } finally {
             isLoading.value = false
         }
+    }
+
+    const changePage = async (page) => {
+        if (page < 1 || page > totalPages.value) {
+            return
+        }
+
+        currentPage.value = page
+
+        // 페이지가 마지막 페이지인 경우 다음 버튼 비활성화
+        const isNextButtonEnabled = currentPage.value < totalPages.value
+        if (!isNextButtonEnabled) {
+            console.log('마지막 페이지입니다. 다음 버튼이 비활성화됩니다.')
+        }
+
+        // currentPage 값을 변경한 후에 프로젝트를 다시 불러옵니다.
+        await fetchProjects(searchTerm.value)
     }
 
     async function fetchProjectsForUser() {
@@ -49,13 +87,20 @@ export function useProjects() {
                     params: { term: '' } // 'all'이 선택된 경우, 모든 프로젝트를 가져오기 위해 빈 검색어를 전송
                 })
                 projects.value = response.data.map((project) => formatProjectData(project))
+                // 전체 페이지 수 계산
+                totalPages.value = Math.ceil(response.data.length / PAGE_SIZE)
             } else {
                 const apiUrl = import.meta.env.VITE_API_URL
                 const statusId = statusList[0]
                 const response = await axios.get(`${apiUrl}/search`, {
-                    params: { projectStatusId: statusId }
+                    params: {
+                        projectStatusId: statusId,
+                        size: PAGE_SIZE // 여기서 PAGE_SIZE 사용
+                    }
                 })
                 projects.value = response.data.map((project) => formatProjectData(project))
+                // 전체 페이지 수 계산
+                totalPages.value = Math.ceil(response.data.length / PAGE_SIZE)
             }
         } catch (error) {
             console.error('Error fetching projects by status:', error)
@@ -85,5 +130,5 @@ export function useProjects() {
         projects.value = [...projects.value]
     }
 
-    return { projects, fetchProjects, fetchProjectsForUser, fetchProjectsByStatus, sortByLatest, sortByPriority, isLoading }
+    return { projects, fetchProjects, fetchProjectsForUser, fetchProjectsByStatus, sortByLatest, sortByPriority, isLoading, currentPage, totalPages }
 }

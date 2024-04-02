@@ -8,45 +8,71 @@
                 <button class="page-link" @click="changePage(page)">{{ page }}</button>
             </li>
             <li class="page-item" :class="{ disabled: currentPage >= totalPages }">
-                <button class="page-link" @click="changePage(currentPage + 1)">Next</button>
+                <button class="page-link" @click="changePage(currentPage + 1)" :disabled="currentPage >= totalPages">Next</button>
             </li>
         </ul>
     </nav>
 </template>
 
-<script>
-export default {
-    props: {
-        currentPage: {
-            type: Number,
-            required: true
-        },
-        totalPages: {
-            type: Number,
-            required: true
-        }
+<script setup>
+import { ref, defineProps, defineEmits } from 'vue'
+import { useProjects } from '@/composables/useProjects'
+
+const { fetchProjects, totalPages } = useProjects()
+
+const props = defineProps({
+    currentPage: {
+        type: Number,
+        required: true
     },
-    computed: {
-        pages() {
-            let pages = []
-            for (let i = 1; i <= this.totalPages; i++) {
-                pages.push(i)
-            }
-            return pages
-        }
-    },
-    methods: {
-        changePage(page) {
-            if (page < 1 || page > this.totalPages) {
-                return
-            }
-            this.$emit('page-changed', page)
-        }
+    totalPages: {
+        type: Number,
+        required: true
     }
+})
+
+const emit = defineEmits(['update:currentPage'])
+
+const pages = ref([])
+
+for (let i = 1; i <= props.totalPages; i++) {
+    pages.value.push(i)
+}
+
+const changePage = (page) => {
+    if (page < 1 || page > props.totalPages) {
+        return
+    }
+
+    emit('update:currentPage', page)
 }
 </script>
 
 <style scoped>
+.pagination {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    padding: 0;
+}
+
+.pagination li button {
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    cursor: pointer;
+}
+
+.pagination li button:hover {
+    background-color: #f0f0f0;
+}
+
+.pagination li.active button {
+    background-color: #007bff;
+    color: #fff;
+    border-color: #007bff;
+}
+
 .pagination li.active .page-link {
     background-color: #007bff;
     border-color: #007bff;

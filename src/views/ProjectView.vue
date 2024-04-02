@@ -5,8 +5,9 @@ import ProjectTable from '../components/ProjectTable.vue'
 import { useProjects } from '@/composables/useProjects'
 import SortFilter from '../components/SortFilter.vue'
 import globalInfo from '@/utils/globalInfoUtils.js'
+import PaginationView from '../components/PaginationView.vue'
 
-const { projects, fetchProjectsForUser, sortByLatest, sortByPriority } = useProjects()
+const { projects, fetchProjectsForUser, sortByLatest, sortByPriority, currentPage, totalPages } = useProjects()
 
 // 로그인한 사용자의 이름을 저장하기 위한 반응형 참조
 const userName = ref(sessionStorage.getItem('NM') || '사용자')
@@ -62,6 +63,7 @@ onMounted(async () => {
                     </div> -->
                 </div>
                 <ProjectTable v-if="todoProjects.length > 0" :projects="todoProjects" />
+                <PaginationView v-if="todoProjects.length > 0" :currentPage="currentPage" :totalPages="totalPages" />
                 <p v-else>프로젝트가 없습니다.</p>
             </div>
         </section>
@@ -80,6 +82,7 @@ onMounted(async () => {
                     </div> -->
                 </div>
                 <ProjectTable v-if="doingProjects.length > 0" :projects="doingProjects" />
+                <PaginationView v-if="doingProjects.length > 0" :currentPage="currentPage" :totalPages="totalPages" />
                 <p v-else>프로젝트가 없습니다.</p>
             </div>
         </section>
@@ -98,6 +101,7 @@ onMounted(async () => {
                     </div> -->
                 </div>
                 <ProjectTable v-if="doneProjects.length > 0" :projects="doneProjects" />
+                <PaginationView v-if="doneProjects.length > 0" :currentPage="currentPage" :totalPages="totalPages" />
                 <p v-else>프로젝트가 없습니다.</p>
             </div>
         </section>
@@ -116,6 +120,7 @@ onMounted(async () => {
                     </div> -->
                 </div>
                 <ProjectTable v-if="holdProjects.length > 0" :projects="holdProjects" />
+                <PaginationView v-if="holdProjects.length > 0" :currentPage="currentPage" :totalPages="totalPages" />
                 <p v-else>프로젝트가 없습니다.</p>
             </div>
         </section>
