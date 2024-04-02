@@ -8,14 +8,18 @@
                 <button class="page-link" @click="changePage(page)">{{ page }}</button>
             </li>
             <li class="page-item" :class="{ disabled: currentPage >= totalPages }">
-                <button class="page-link" @click="changePage(currentPage + 1)">Next</button>
+                <button class="page-link" @click="changePage(currentPage + 1)" :disabled="currentPage >= totalPages">Next</button>
             </li>
         </ul>
     </nav>
 </template>
 
 <script setup>
-import { ref, defineProps, onMounted, watch } from 'vue'
+import { ref, defineProps, defineEmits } from 'vue'
+import { useRouter } from 'vue-router'
+import { useProjects } from '@/composables/useProjects'
+
+const { fetchProjects } = useProjects()
 
 const props = defineProps({
     currentPage: {
@@ -25,25 +29,55 @@ const props = defineProps({
     totalPages: {
         type: Number,
         required: true
-    },
-    onPageChanged: Function
+    }
 })
 
-const pages = []
+const emit = defineEmits(['update:currentPage'])
+
+const pages = ref([])
+
 for (let i = 1; i <= props.totalPages; i++) {
-    pages.push(i)
+    pages.value.push(i)
 }
+
+const router = useRouter()
 
 const changePage = (page) => {
     if (page < 1 || page > props.totalPages) {
         return
     }
-    // 페이지 변경 이벤트를 부모 컴포넌트로 전달합니다.
-    props.onPageChanged(page)
+
+    emit('update:currentPage', page)
+
+    fetchProjects()
 }
 </script>
 
 <style scoped>
+.pagination {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    padding: 0;
+}
+
+.pagination li button {
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    cursor: pointer;
+}
+
+.pagination li button:hover {
+    background-color: #f0f0f0;
+}
+
+.pagination li.active button {
+    background-color: #007bff;
+    color: #fff;
+    border-color: #007bff;
+}
+
 .pagination li.active .page-link {
     background-color: #007bff;
     border-color: #007bff;

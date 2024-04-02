@@ -31,6 +31,15 @@ onMounted(() => {
     fetchProjects()
 })
 
+// currentPage가 변경될 때마다 fetchProjects를 호출합니다.
+watch(
+    currentPage,
+    () => {
+        fetchProjects()
+    },
+    { immediate: true }
+)
+
 // 올바른 검색어 입력까지 프로젝트 데이터가 없다는 문구 출력됨
 watch(
     searchTerm,
@@ -109,7 +118,7 @@ const handleSelectedItems = (selectedItems) => {
         </div>
 
         <!-- 페이지네이션 -->
-        <PaginationView :currentPage="currentPage" :totalPages="totalPages" @page-changed="handlePageChange" />
+        <PaginationView :currentPage="currentPage" :totalPages="totalPages" @update:currentPage="handlePageChange" />
     </div>
 </template>
 
