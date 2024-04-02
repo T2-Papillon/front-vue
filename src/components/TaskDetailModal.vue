@@ -1,15 +1,30 @@
 <script>
+import { formatDate } from '@/utils/dateUtils.js'
+import EditDeleteButtonGroup from '../components/EditDeleteButtonGroup.vue'
+import StatusBadge from '../components/StatusBadge.vue'
+import PriorityBadge from '../components/PriorityBadge.vue'
+
 export default {
+    components: {
+        EditDeleteButtonGroup,
+        StatusBadge,
+        PriorityBadge
+    },
+    emits: ['closeModal'],
     props: {
-        isActive: Boolean, // 모달 활성/비활성 상태
-        task: Object // 선택된 작업 데이터
+        isActive: Boolean,
+        task: Object
     },
     methods: {
         closeModal() {
-            // 모달 닫기 이벤트를 부모 컴포넌트로 전달하여 isActive를 false로 변경합니다.
             this.$emit('close-modal')
             console.log('close')
-        }
+        },
+        handleTaskDeleted() {
+            this.closeModal()
+            this.$emit('refreshTasks')
+        },
+        formatDate
     }
 }
 </script>
@@ -19,10 +34,56 @@ export default {
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Task Detail</h5>
+                    <h5 class="modal-title">담당업무 상세보기</h5>
+                    <button class="btn"><i class="bi bi-copy"></i></button>
                     <button type="button" class="btn-close" aria-label="Close" @click="closeModal"></button>
                 </div>
-                <div class="modal-body">{{ task }}</div>
+
+                <div class="modal-body">
+                    <div class="modal-body">
+                        <!-- 수정/삭제 버튼 -->
+                        <EditDeleteButtonGroup :projectId="task.proj_no" :taskId="task.task_no" @taskDeleted="handleTaskDeleted" />
+                        <!-- list -->
+                        <ul class="list">
+                            <li>
+                                <span class="title">업무명</span>
+                                <span class="value">{{ task.task_title }}</span>
+                            </li>
+                            <li>
+                                <span class="title">담당자</span>
+                                <span class="value">{{ task.assignee }}</span>
+                            </li>
+                            <li>
+                                <span class="title">작성일</span>
+                                <span class="value">{{ formatDate(task.create_date) }}</span>
+                            </li>
+                            <li>
+                                <span class="title">업무 기간</span>
+                                <span class="value">{{ formatDate(task.start_date) }} ~ {{ formatDate(task.end_date) }}</span>
+                            </li>
+                            <li>
+                                <span class="title">진행상태</span>
+                                <span class="value"><StatusBadge :status="task.task_status" /></span>
+                            </li>
+                            <li>
+                                <span class="title">진행률</span>
+                                <span class="value">{{ task.task_percent }} %</span>
+                            </li>
+                            <li>
+                                <span class="title">우선순위</span>
+                                <span class="value"> <PriorityBadge :priority="task.task_priority" /></span>
+                            </li>
+                            <li>
+                                <span class="title">테스트</span>
+                                <span class="value">{{ task.task_test }}</span>
+                            </li>
+                            <li>
+                                <span class="title">내용</span>
+                                <span class="value">{{ task.task_desc }}</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -70,5 +131,24 @@ export default {
     display: block;
     opacity: 0.5;
     z-index: 100;
+}
+
+.list {
+    list-style-type: none;
+    padding: 0;
+}
+.list li {
+    margin-bottom: 13px;
+}
+.list li span {
+    display: inline-flex;
+}
+.title {
+    width: 110px;
+    font-weight: bold;
+}
+
+.value {
+    margin-left: 10px;
 }
 </style>

@@ -1,7 +1,6 @@
 <script setup>
 import { ref, defineProps, onMounted, watch } from 'vue'
 import axios from 'axios'
-
 import { useRoute } from 'vue-router'
 import { formatDate } from '@/utils/dateUtils.js'
 
@@ -19,52 +18,31 @@ const props = defineProps({
 })
 
 const tasks = ref(props.initialTasks)
-
 const route = useRoute()
 const isModalActive = ref(false)
 const selectedTask = ref(null)
 
 async function fetchProjectTasks() {
-    const projectId = route.params.id
+    const projectId = route.params.id || props.projectId
 
     try {
         const apiUrl = import.meta.env.VITE_API_URL
         const response = await axios.get(`${apiUrl}/task/project/${projectId}/tasks`)
 
         tasks.value = response.data
-
-        console.log(tasks.value)
     } catch (error) {
         console.error('프로젝트 태스크 데이터를 가져오는데 실패했습니다:', error)
     }
 }
 
-// 데이터를 가져온 후에 테이블에 새로운 태스크가 추가되었는지 확인하는 함수
-function checkNewTask() {
-    console.log('New Task:', props.newTaskData)
+watch(() => props.newTaskData, (newVal) => {
+    if (newVal) {
+        tasks.value.push(newVal)
+    }
+})
 
-    // 새로운 태스크가 존재하면 addNewTask 함수를 호출하여 tasks 배열에 추가
-    if (props.newTaskData) {
-        props.addNewTask(props.newTaskData)
-    }
-}
-
-watch(
-    () => props.newTaskData,
-    (newVal) => {
-        if (newVal) {
-            props.addNewTask(newVal)
-        }
-    }
-)
-watch(
-    () => props.initialTasks,
-    (newVal, oldVal) => {
-        tasks.value = props.initialTasks
-    }
-)
 onMounted(() => {
-    if (props.initialTasks == undefined || props.initialTasks == null) {
+    if (!props.initialTasks || props.initialTasks.length === 0) {
         fetchProjectTasks()
     }
 })
@@ -72,7 +50,6 @@ onMounted(() => {
 const openModal = (task) => {
     selectedTask.value = task
     isModalActive.value = true
-    console.log('modal open')
 }
 </script>
 
@@ -136,8 +113,9 @@ const openModal = (task) => {
         </tbody>
     </table>
 
-    <TaskDetailModal :is-active="isModalActive" :task="selectedTask" @close-modal="isModalActive = false" />
+    <TaskDetailModal :is-active="isModalActive" :task="selectedTask" @close-modal="isModalActive = false" @refreshTasks="fetchProjectTasks" />
 </template>
+
 <style scoped>
 .tb-project-title {
     position: relative;

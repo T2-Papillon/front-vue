@@ -50,8 +50,6 @@ export default {
                 const apiUrl = import.meta.env.VITE_API_URL
                 const response = await axios.get(`${apiUrl}/task/project/${projectId}/task`)
                 tasks.value = response.data
-
-                console.log('디테일페이지', tasks.value)
             } catch (error) {
                 console.error('프로젝트 태스크 데이터를 가져오는데 실패했습니다:', error)
             }

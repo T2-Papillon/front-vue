@@ -1,10 +1,14 @@
 <script>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import axios from 'axios'
 import { useRoute, useRouter } from 'vue-router'
 
 export default {
     setup() {
+        const route = useRoute()
+        const router = useRouter()
+
+        const isEditing = ref(false)
         const task_title = ref('')
         const assignee = ref('')
         const start_date = ref('')
@@ -15,32 +19,83 @@ export default {
         const task_test = ref('')
         const url = ref('')
         const task_desc = ref('')
-        const route = useRoute()
-        const router = useRouter()
 
+        // 데이터를 불러오는 함수 수정
+        async function fetchData() {
+            const apiUrl = import.meta.env.VITE_API_URL
+            const projectId = route.params.projectId
+            const taskId = route.params.taskId
+
+            if (taskId) {
+                isEditing.value = true // 수정 모드 활성화
+                try {
+                    const response = await axios.get(`${apiUrl}/task/project/${projectId}/task/${taskId}`)
+                    const taskData = response.data
+
+                    task_title.value = taskData.task_title
+                    assignee.value = taskData.assignee
+                    start_date.value = new Date(taskData.start_date).toISOString().substr(0, 10)
+                    end_date.value = new Date(taskData.end_date).toISOString().substr(0, 10)
+                    task_status.value = taskData.task_status
+                    task_priority.value = taskData.task_priority
+                    task_percent.value = taskData.task_percent
+                    task_test.value = taskData.task_test ? 'true' : 'false'
+                    url.value = taskData.url || ''
+                    task_desc.value = taskData.task_desc
+                } catch (error) {
+                    console.error('데이터를 불러오는 데 실패했습니다.', error)
+                }
+            }
+        }
+
+        async function saveOrUpdateTask() {
+            if (isEditing.value) {
+                await updateTask()
+            } else {
+                await saveTask()
+            }
+        }
+
+        // 수정 기능 구현
+        async function updateTask() {
+            const projectId = route.params.projectId
+            const taskId = route.params.taskId
+            const apiUrl = import.meta.env.VITE_API_URL
+
+            if (!projectId || !taskId) {
+                alert('Project ID or Task ID is missing.')
+                return
+            }
+
+            try {
+                const postData = {
+                    assignee: assignee.value,
+                    proj_no: projectId,
+                    task_title: task_title.value,
+                    task_status: task_status.value,
+                    task_priority: task_priority.value,
+                    start_date: start_date.value,
+                    end_date: end_date.value,
+                    task_percent: task_percent.value,
+                    task_test: task_test.value === 'true' ? true : false,
+                    task_desc: task_desc.value,
+                    url: url.value
+                }
+
+                const response = await axios.put(`${apiUrl}/task/project/${projectId}/task/${taskId}`, postData)
+                handleApiResponse(response, projectId)
+            } catch (error) {
+                console.error('데이터를 업데이트하는 데 실패했습니다.', error.response?.data || error)
+                alert('데이터 업데이트에 실패했습니다. 오류를 확인해주세요.')
+            }
+        }
+
+        // 업무 글쓰기
         async function saveTask() {
             try {
-                const projectId = route.params.id
+                const projectId = route.params.projectId
                 const apiUrl = import.meta.env.VITE_API_URL
                 console.log('projectId:', projectId)
-
-                let status = 'TODO' // 기본적으로 '진행예정'으로 설정
-
-                // 진행율에 따라 업무 상태 설정
-                if (task_percent.value > 0 && task_percent.value < 100) {
-                    status = 'DOING' // 진행중
-                } else if (task_percent.value === 100) {
-                    status = 'DONE' // 완료
-                }
-
-                // 사용자에게 업무 상태 변경 사항을 안내
-                if (task_status.value !== status) {
-                    const confirmMsg = `진행율이 ${task_percent.value}%이므로 업무 상태가 자동으로 변경됩니다. 계속하시겠습니까?`
-
-                    if (!confirm(confirmMsg)) {
-                        return // 사용자가 취소한 경우 저장 프로세스 중단
-                    }
-                }
 
                 const postData = {
                     assignee: assignee.value,
@@ -51,29 +106,50 @@ export default {
                     start_date: new Date(start_date.value).getTime(),
                     end_date: new Date(end_date.value).getTime(),
                     task_percent: task_percent.value,
-                    task_test: false,
+                    task_test: task_test.value === 'true',
                     create_date: new Date().getTime(),
                     task_desc: task_desc.value
                 }
 
-                console.log(postData, '저장할데이터')
-
-                const response = await axios.post(`${apiUrl}/task/project/${projectId}/task`, postData)
-
-                if (!response || !response.data) {
-                    throw new Error('응답 객체 또는 응답 데이터가 유효하지 않습니다.')
+                // 업무 상태 변경 여부 확인
+                const status = determineTaskStatus()
+                if (confirmTaskStatusChange(status)) {
+                    const response = await axios.post(`${apiUrl}/task/project/${projectId}/task`, postData)
+                    handleApiResponse(response, projectId)
                 }
-
-                console.log('저장되었습니다.', response.data)
-
-                clearFields()
-
-                router.push(`/project/detail/${projectId}`)
             } catch (error) {
                 console.error('저장에 실패했습니다.', error.response.data)
             }
         }
 
+        // 업무 상태 결정 함수
+        function determineTaskStatus() {
+            return task_percent.value > 0 && task_percent.value < 100 ? 'DOING' : task_percent.value === 100 ? 'DONE' : 'TODO'
+        }
+
+        // 업무 상태 변경 확인 함수
+        function confirmTaskStatusChange(status) {
+            if (task_status.value !== status) {
+                const confirmMsg = `진행율이 ${task_percent.value}%이므로 업무 상태가 자동으로 변경됩니다. 계속하시겠습니까?`
+                return confirm(confirmMsg)
+            }
+            return true
+        }
+
+        // API 응답 처리 함수
+        function handleApiResponse(response, projectId) {
+            if (!response || !response.data) {
+                throw new Error('응답 객체 또는 응답 데이터가 유효하지 않습니다.')
+            }
+            // 사용자에게 성공 알림을 표시
+            alert('저장되었습니다.')
+            // 입력 필드를 초기화
+            clearFields()
+            // 사용자를 프로젝트 상세 페이지로 리다이렉트
+            router.push(`/project/detail/${projectId}`)
+        }
+
+        // 필드 초기화
         function clearFields() {
             task_title.value = ''
             assignee.value = ''
@@ -86,15 +162,21 @@ export default {
             task_desc.value = ''
         }
 
+        // test 가 true 이면 url 필드 노출
         function toggleUrlInput() {
             if (task_test.value === 'true') {
                 url.value = ''
             }
         }
 
+        //뒤로가기
         function goBack() {
             router.back()
         }
+
+        onMounted(() => {
+            fetchData()
+        })
 
         return {
             task_title,
@@ -106,10 +188,13 @@ export default {
             task_percent,
             task_test,
             task_desc,
-            saveTask,
+            saveOrUpdateTask,
+            fetchData,
+            updateTask,
             url,
             toggleUrlInput,
-            goBack
+            goBack,
+            isEditing
         }
     }
 }
@@ -117,17 +202,17 @@ export default {
 
 <template>
     <div class="inner">
-        <div class="row align-items-start justify-content-between g-3">
+        <div class="row align-items-center justify-content-center text-center g-3">
             <div class="col-auto">
                 <div class="title-area">
-                    <h2 class="h2">업무 작성글쓰기</h2>
-                    <p class="text-body-tertiary lh-sm mb-0">예정된 업무를 적어주세요.</p>
+                    <h2 class="h2">{{ isEditing ? '업무 수정하기' : '업무 작성하기' }}</h2>
+                    <p class="text-body-tertiary lh-sm mb-0">{{ isEditing ? '업무를 수정해주세요.' : '예정된 업무를 적어주세요.' }}</p>
                 </div>
             </div>
         </div>
 
         <div class="row">
-            <form @submit.prevent="saveTask">
+            <form @submit.prevent="saveOrUpdateTask">
                 <div>
                     <div class="mb-3">
                         <label for="title" class="form-label">업무명</label>
@@ -159,21 +244,18 @@ export default {
                     <div class="mb-3">
                         <label class="form-label">진행 상태</label>
                         <div class="d-flex align-items-start">
-                            <div class="form-check me-4">
-                                <input class="form-check-input" type="radio" v-model="task_status" id="todo" value="TODO" checked />
-                                <label class="form-check-label" for="todo">진행예정</label>
-                            </div>
-                            <div class="form-check me-4">
-                                <input class="form-check-input" type="radio" v-model="task_status" id="doing" value="DOING" />
-                                <label class="form-check-label" for="doing">진행중</label>
-                            </div>
-                            <div class="form-check me-4">
-                                <input class="form-check-input" type="radio" v-model="task_status" id="done" value="DONE" />
-                                <label class="form-check-label" for="done">완료</label>
-                            </div>
-                            <div class="form-check me-4">
-                                <input class="form-check-input" type="radio" v-model="task_status" id="hold" value="HOLD" />
-                                <label class="form-check-label" for="hold">보류</label>
+                            <div
+                                v-for="(value, key) in [
+                                    { text: '진행예정', value: 'TODO' },
+                                    { text: '진행중', value: 'DOING' },
+                                    { text: '완료', value: 'DONE' },
+                                    { text: '보류', value: 'HOLD' }
+                                ]"
+                                :key="key"
+                                class="form-check me-4"
+                            >
+                                <input class="form-check-input" type="radio" v-model="task_status" :id="value.value.toLowerCase()" :value="value.value" />
+                                <label class="form-check-label" :for="value.value.toLowerCase()">{{ value.text }}</label>
                             </div>
                         </div>
                     </div>
@@ -181,21 +263,18 @@ export default {
                     <div class="mb-3">
                         <label class="form-label">우선순위</label>
                         <div class="d-flex align-items-start">
-                            <div class="form-check me-4">
-                                <input class="form-check-input" type="radio" v-model="task_priority" id="lv0" value="LV0" />
-                                <label class="form-check-label" for="lv0">긴급</label>
-                            </div>
-                            <div class="form-check me-4">
-                                <input class="form-check-input" type="radio" v-model="task_priority" id="lv1" value="LV1" />
-                                <label class="form-check-label" for="lv1">높음</label>
-                            </div>
-                            <div class="form-check me-4">
-                                <input class="form-check-input" type="radio" v-model="task_priority" id="lv2" value="LV2" checked />
-                                <label class="form-check-label" for="lv2">보통</label>
-                            </div>
-                            <div class="form-check me-4">
-                                <input class="form-check-input" type="radio" v-model="task_priority" id="lv3" value="LV3" />
-                                <label class="form-check-label" for="lv3">낮음</label>
+                            <div
+                                v-for="(priority, index) in [
+                                    { text: '긴급', value: 'LV0' },
+                                    { text: '높음', value: 'LV1' },
+                                    { text: '보통', value: 'LV2' },
+                                    { text: '낮음', value: 'LV3' }
+                                ]"
+                                :key="index"
+                                class="form-check me-4"
+                            >
+                                <input class="form-check-input" type="radio" v-model="task_priority" :id="`lv${index}`" :value="priority.value" :checked="index === 2" />
+                                <label class="form-check-label" :for="`lv${index}`">{{ priority.text }}</label>
                             </div>
                         </div>
                     </div>
