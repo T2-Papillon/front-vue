@@ -25,54 +25,61 @@ export default {
                 const apiUrl = import.meta.env.VITE_API_URL
                 console.log('projectId:', projectId)
 
-                let status = 'TODO' // 기본적으로 '진행예정'으로 설정
+                const status = determineTaskStatus()
 
-                // 진행율에 따라 업무 상태 설정
-                if (task_percent.value > 0 && task_percent.value < 100) {
-                    status = 'DOING' // 진행중
-                } else if (task_percent.value === 100) {
-                    status = 'DONE' // 완료
-                }
-
-                // 사용자에게 업무 상태 변경 사항을 안내
-                if (task_status.value !== status) {
-                    const confirmMsg = `진행율이 ${task_percent.value}%이므로 업무 상태가 자동으로 변경됩니다. 계속하시겠습니까?`
-
-                    if (!confirm(confirmMsg)) {
-                        return // 사용자가 취소한 경우 저장 프로세스 중단
+                if (confirmTaskStatusChange(status)) {
+                    const postData = {
+                        assignee: assignee.value,
+                        proj_no: projectId,
+                        task_title: task_title.value,
+                        task_status: task_status.value,
+                        task_priority: task_priority.value,
+                        start_date: new Date(start_date.value).getTime(),
+                        end_date: new Date(end_date.value).getTime(),
+                        task_percent: task_percent.value,
+                        task_test: false,
+                        create_date: new Date().getTime(),
+                        task_desc: task_desc.value
                     }
+
+                    console.log(postData, '저장할데이터')
+
+                    const response = await axios.post(`${apiUrl}/task/project/${projectId}/task`, postData)
+
+                    if (!response || !response.data) {
+                        throw new Error('응답 객체 또는 응답 데이터가 유효하지 않습니다.')
+                    }
+
+                    console.log('저장되었습니다.', response.data)
+
+                    clearFields()
+
+                    router.push(`/project/detail/${projectId}`)
                 }
-
-                const postData = {
-                    assignee: assignee.value,
-                    proj_no: projectId,
-                    task_title: task_title.value,
-                    task_status: task_status.value,
-                    task_priority: task_priority.value,
-                    start_date: new Date(start_date.value).getTime(),
-                    end_date: new Date(end_date.value).getTime(),
-                    task_percent: task_percent.value,
-                    task_test: false,
-                    create_date: new Date().getTime(),
-                    task_desc: task_desc.value
-                }
-
-                console.log(postData, '저장할데이터')
-
-                const response = await axios.post(`${apiUrl}/task/project/${projectId}/task`, postData)
-
-                if (!response || !response.data) {
-                    throw new Error('응답 객체 또는 응답 데이터가 유효하지 않습니다.')
-                }
-
-                console.log('저장되었습니다.', response.data)
-
-                clearFields()
-
-                router.push(`/project/detail/${projectId}`)
             } catch (error) {
                 console.error('저장에 실패했습니다.', error.response.data)
             }
+        }
+
+        function determineTaskStatus() {
+            let status = 'TODO' // 기본적으로 '진행예정'으로 설정
+
+            if (task_percent.value > 0 && task_percent.value < 100) {
+                status = 'DOING' // 진행중
+            } else if (task_percent.value === 100) {
+                status = 'DONE' // 완료
+            }
+
+            return status
+        }
+
+        function confirmTaskStatusChange(status) {
+            if (task_status.value !== status) {
+                const confirmMsg = `진행율이 ${task_percent.value}%이므로 업무 상태가 자동으로 변경됩니다. 계속하시겠습니까?`
+                return confirm(confirmMsg)
+            }
+
+            return true
         }
 
         // 필드 초기화
