@@ -90,7 +90,7 @@ const handleSelectedItems = (selectedItems) => {
 }
 </script>
 <template>
-    <div class="inner">
+    <div class="container">
         <!-- 통합검색 영역 -->
         <div class="row align-items-center justify-content-center g-3">
             <div class="col d-flex justify-content-center align-items-center">

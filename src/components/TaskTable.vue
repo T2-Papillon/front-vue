@@ -1,5 +1,5 @@
 <script setup>
-import { ref, defineProps, onMounted, watch } from 'vue'
+import { ref, defineProps, onMounted, watch, defineEmits } from 'vue'
 import axios from 'axios'
 import { useRoute } from 'vue-router'
 import { formatDate } from '@/utils/dateUtils.js'
@@ -10,6 +10,7 @@ import StatusBadge from '../components/StatusBadge.vue'
 import PriorityBadge from '../components/PriorityBadge.vue'
 import TaskDetailModal from '../components/TaskDetailModal.vue'
 
+const emits = defineEmits(['closeModal', 'refreshTasks'])
 const props = defineProps({
     initialTasks: Array,
     newTaskData: Object,
@@ -37,6 +38,10 @@ async function fetchProjectTasks() {
         error.value = '프로젝트 태스크 데이터를 가져오는데 실패했습니다.'
         tasks.value = [] // 데이터를 비워 테이블을 숨깁니다.
     }
+}
+
+const handleCloseModal = () => {
+    isModalActive.value = false // 모달을 비활성화합니다.
 }
 
 watch(
@@ -116,7 +121,13 @@ watch(
                 <td><StatusBadge :status="task.task_status" /></td>
                 <td class="text-end"><ProgressBar :progress="task.task_percent" /></td>
                 <td class="text-end"><PriorityBadge :priority="task.task_priority" /></td>
-                <td class="text-end text-secondary">{{ task.task_test }}</td>
+                <td class="text-end text-secondary">
+                    <template v-if="task.task_test">
+                        <a href="#" @click="someAction(task)">{{ task.task_test ? 'T' : '-' }}</a>
+                        <!-- task_test가 true일 때 -->
+                    </template>
+                    <template v-else> - </template>
+                </td>
                 <td class="text-end text-secondary" style="font-size: 12px">{{ formatDate(task.create_date) }}</td>
             </tr>
 
@@ -131,13 +142,19 @@ watch(
                 <td>{{ newTaskData.task_status }}</td>
                 <td>{{ newTaskData.task_percent }}</td>
                 <td>{{ newTaskData.task_priority }}</td>
-                <td>{{ newTaskData.task_test }}</td>
+                <td>
+                    <template v-if="newTaskData.task_test">
+                        <a href="#" @click="someAction(task)">{{ newTaskData.task_test ? 'T' : '-' }}</a>
+                    </template>
+                    <template v-else> - </template>
+                </td>
                 <td>{{ formatDate(newTaskData.create_date) }}</td>
             </tr>
         </tbody>
     </table>
 
-    <TaskDetailModal :is-active="isModalActive" :task="selectedTask" @close-modal="isModalActive = false" @refreshTasks="fetchProjectTasks" />
+    <!-- 모달 : 하위업무 상세내용  -->
+    <TaskDetailModal :is-active="isModalActive" :task="selectedTask" @close-modal="handleCloseModal" @refreshTasks="fetchProjectTasks" />
 </template>
 
 <style scoped>

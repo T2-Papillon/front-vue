@@ -1,5 +1,5 @@
 <script>
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import axios from 'axios'
 import { useRoute, useRouter } from 'vue-router'
 
@@ -7,6 +7,7 @@ export default {
     setup() {
         const route = useRoute()
         const router = useRouter()
+        const username = sessionStorage.getItem('NM')
 
         const isEditing = ref(false)
         const task_title = ref('')
@@ -19,6 +20,16 @@ export default {
         const task_test = ref('')
         const url = ref('')
         const task_desc = ref('')
+
+        // 현재 경로가 'save'인지 확인하는 계산된 속성
+        const isSaveRoute = computed(() => {
+            return route.path.endsWith('/save')
+        })
+
+        // 'save' 경로일 때 username을 사용하고, 그렇지 않으면 assignee를 사용
+        const inputFieldValue = computed(() => {
+            return isSaveRoute.value ? username : assignee.value
+        })
 
         // 데이터를 불러오는 함수 수정
         async function fetchData() {
@@ -74,17 +85,23 @@ export default {
                     assignee: assignee.value,
                     proj_no: projectId,
                     task_title: task_title.value,
-                    task_start_date: start_date.value,
-                    task_end_date: end_date.value,
+                    task_status: task_status.value,
+                    task_priority: task_priority.value,
+                    start_date: new Date(start_date.value).getTime(),
+                    end_date: new Date(end_date.value).getTime(),
                     task_percent: task_percent.value,
                     task_test: task_test.value === 'true',
-                    task_desc: task_desc.value,
-                    task_update_date: new Date().toISOString()
+                    create_date: new Date().getTime(),
+                    update_date: new Date().getTime(),
+                    task_desc: task_desc.value
                 }
 
                 console.log(projectId, taskId, postData)
 
+                console.log(1)
                 const response = await axios.post(`${apiUrl}/task/project/${projectId}/task/${taskId}`, postData)
+                console.log(response)
+
                 handleApiResponse(response, projectId)
             } catch (error) {
                 console.error('데이터를 업데이트하는 데 실패했습니다.', error.response?.data || error)
@@ -196,14 +213,17 @@ export default {
             url,
             toggleUrlInput,
             goBack,
-            isEditing
+            isEditing,
+            username,
+            inputFieldValue,
+            isSaveRoute
         }
     }
 }
 </script>
 
 <template>
-    <div class="inner">
+    <div class="container">
         <div class="row align-items-center justify-content-center text-center g-3">
             <div class="col-auto">
                 <div class="title-area">
@@ -223,7 +243,7 @@ export default {
 
                     <div class="mb-3">
                         <label for="assignee" class="form-label">담당자</label>
-                        <input type="text" v-model="assignee" class="form-control" id="assignee" />
+                        <input type="text" :value="inputFieldValue" class="form-control" id="assignee" disabled />
                     </div>
 
                     <div class="d-flex mb-3">

@@ -104,7 +104,7 @@ export default {
 </script>
 
 <template>
-    <div class="inner">
+    <div class="container">
         <div class="row mb-4">
             <div class="col d-flex align-items-center justify-content-end">
                 <!--  게시글 수정/삭제 버튼 -->
