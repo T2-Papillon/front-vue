@@ -74,14 +74,83 @@ export default {
                 </div>
             </div>
         </div>
+
+        <div class="box">
+            <div class="wave -one"></div>
+            <div class="wave -two"></div>
+            <div class="wave -three"></div>
+        </div>
     </div>
 </template>
 <style scoped>
 .login-page {
-    background-color: #f5f5f5;
+    overflow: hidden;
+    position: relative;
+    min-height: 82.4vh;
+    /* background-color: #f5f5f5; */
+    background-color: #0e6cc4;
 }
 .card {
     width: 850px;
     margin: 0 auto;
+    z-index: 1;
+}
+
+.box {
+    position: absolute;
+    top: 0;
+    transform: rotate(80deg);
+    left: 0;
+}
+
+.wave {
+    position: fixed;
+    top: 0;
+    left: 0;
+    opacity: 0.4;
+    position: absolute;
+    top: 3%;
+    left: 10%;
+    background: #0af;
+    width: 1500px;
+    height: 1300px;
+    margin-left: -150px;
+    margin-top: -250px;
+    transform-origin: 50% 48%;
+    border-radius: 43%;
+    animation: drift 10000ms infinite linear;
+}
+
+.wave.-three {
+    animation: drift 15000ms infinite linear;
+    position: fixed;
+    background-color: #77daff;
+}
+
+.wave.-two {
+    animation: drift 5000ms infinite linear;
+    opacity: 0.1;
+    background: black;
+    position: fixed;
+}
+
+.box:after {
+    content: '';
+    display: block;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 11;
+    transform: translate3d(0, 0, 0);
+}
+
+@keyframes drift {
+    from {
+        transform: rotate(0deg);
+    }
+    from {
+        transform: rotate(360deg);
+    }
 }
 </style>
