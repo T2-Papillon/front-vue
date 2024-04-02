@@ -74,6 +74,7 @@ export default {
             }
         }
 
+        // 필드 초기화
         function clearFields() {
             task_title.value = ''
             assignee.value = ''
@@ -86,12 +87,14 @@ export default {
             task_desc.value = ''
         }
 
+        // test 가 true 이면 url 필드 노출
         function toggleUrlInput() {
             if (task_test.value === 'true') {
                 url.value = ''
             }
         }
 
+        //뒤로가기
         function goBack() {
             router.back()
         }

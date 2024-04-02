@@ -12,8 +12,8 @@ export default {
     },
     emits: ['closeModal'],
     props: {
-        isActive: Boolean, // 모달 활성/비활성 상태
-        task: Object // 선택된 작업 데이터
+        isActive: Boolean,
+        task: Object
     },
     methods: {
         closeModal() {
@@ -21,8 +21,8 @@ export default {
             console.log('close')
         },
         handleTaskDeleted() {
-            this.closeModal() // 모달 창 닫기
-            this.$emit('refreshTasks') // 부모 컴포넌트에 태스크 목록 새로고침 요청
+            this.closeModal()
+            this.$emit('refreshTasks')
         },
         formatDate
     }
