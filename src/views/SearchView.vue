@@ -21,24 +21,15 @@ const { projects, fetchProjects, fetchProjectsByStatus, sortByLatest, sortByPrio
 
 // 페이지 변경 이벤트를 처리하는 메서드를 정의합니다.
 const handlePageChange = (page) => {
-    // 페이지 변경 시 수행할 작업을 정의합니다.
-    console.log('Page changed:', page)
-    // 예시로 currentPage 값을 변경하는 작업을 수행합니다.
+    // currentPage 값을 변경합니다.
     currentPage.value = page
+    // fetchProjects 함수를 호출하여 해당 페이지의 프로젝트를 불러옵니다.
+    fetchProjects()
 }
 
 onMounted(() => {
     fetchProjects()
 })
-
-// currentPage가 변경될 때마다 fetchProjects를 호출합니다.
-watch(
-    currentPage,
-    () => {
-        fetchProjects()
-    },
-    { immediate: true }
-)
 
 // 올바른 검색어 입력까지 프로젝트 데이터가 없다는 문구 출력됨
 watch(
