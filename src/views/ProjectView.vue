@@ -73,7 +73,7 @@ onMounted(async () => {
                 <div class="row align-items-center justify-content-between mb-4 g-3 project-list">
                     <div class="col-auto">
                         <h3 class="h3 fw-light">
-                            🏃‍♂️ 진행중 <span class="h3 fw-bold">{{ doingProjects.length }}</span> 건
+                            🚗 진행중 <span class="h3 fw-bold">{{ doingProjects.length }}</span> 건
                         </h3>
                     </div>
                     <!-- <div class="col-auto"> -->
