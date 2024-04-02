@@ -16,7 +16,6 @@
 
 <script setup>
 import { ref, defineProps, defineEmits } from 'vue'
-import { useRouter } from 'vue-router'
 import { useProjects } from '@/composables/useProjects'
 
 const { fetchProjects, totalPages } = useProjects()
@@ -40,7 +39,13 @@ for (let i = 1; i <= props.totalPages; i++) {
     pages.value.push(i)
 }
 
-const router = useRouter()
+const changePage = (page) => {
+    if (page < 1 || page > props.totalPages) {
+        return
+    }
+
+    emit('update:currentPage', page)
+}
 </script>
 
 <style scoped>
