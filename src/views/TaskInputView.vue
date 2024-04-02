@@ -25,42 +25,32 @@ export default {
                 const apiUrl = import.meta.env.VITE_API_URL
                 console.log('projectId:', projectId)
 
+                const postData = {
+                    assignee: assignee.value,
+                    proj_no: projectId,
+                    task_title: task_title.value,
+                    task_status: task_status.value,
+                    task_priority: task_priority.value,
+                    start_date: new Date(start_date.value).getTime(),
+                    end_date: new Date(end_date.value).getTime(),
+                    task_percent: task_percent.value,
+                    task_test: task_test.value === 'true',
+                    create_date: new Date().getTime(),
+                    task_desc: task_desc.value
+                }
+
+                // 업무 상태 변경 여부 확인
                 const status = determineTaskStatus()
-
                 if (confirmTaskStatusChange(status)) {
-                    const postData = {
-                        assignee: assignee.value,
-                        proj_no: projectId,
-                        task_title: task_title.value,
-                        task_status: task_status.value,
-                        task_priority: task_priority.value,
-                        start_date: new Date(start_date.value).getTime(),
-                        end_date: new Date(end_date.value).getTime(),
-                        task_percent: task_percent.value,
-                        task_test: false,
-                        create_date: new Date().getTime(),
-                        task_desc: task_desc.value
-                    }
-
-                    console.log(postData, '저장할데이터')
-
                     const response = await axios.post(`${apiUrl}/task/project/${projectId}/task`, postData)
-
-                    if (!response || !response.data) {
-                        throw new Error('응답 객체 또는 응답 데이터가 유효하지 않습니다.')
-                    }
-
-                    console.log('저장되었습니다.', response.data)
-
-                    clearFields()
-
-                    router.push(`/project/detail/${projectId}`)
+                    handleApiResponse(response, projectId)
                 }
             } catch (error) {
                 console.error('저장에 실패했습니다.', error.response.data)
             }
         }
 
+        // 업무 상태 결정 함수
         function determineTaskStatus() {
             let status = 'TODO' // 기본적으로 '진행예정'으로 설정
 
@@ -69,17 +59,27 @@ export default {
             } else if (task_percent.value === 100) {
                 status = 'DONE' // 완료
             }
-
             return status
         }
 
+        // 업무 상태 변경 확인 함수
         function confirmTaskStatusChange(status) {
             if (task_status.value !== status) {
                 const confirmMsg = `진행율이 ${task_percent.value}%이므로 업무 상태가 자동으로 변경됩니다. 계속하시겠습니까?`
                 return confirm(confirmMsg)
             }
-
             return true
+        }
+
+        // API 응답 처리 함수
+        function handleApiResponse(response, projectId) {
+            if (!response || !response.data) {
+                throw new Error('응답 객체 또는 응답 데이터가 유효하지 않습니다.')
+            }
+            console.log('저장되었습니다.', response.data)
+
+            clearFields()
+            router.push(`/project/detail/${projectId}`)
         }
 
         // 필드 초기화
@@ -170,21 +170,18 @@ export default {
                     <div class="mb-3">
                         <label class="form-label">진행 상태</label>
                         <div class="d-flex align-items-start">
-                            <div class="form-check me-4">
-                                <input class="form-check-input" type="radio" v-model="task_status" id="todo" value="TODO" checked />
-                                <label class="form-check-label" for="todo">진행예정</label>
-                            </div>
-                            <div class="form-check me-4">
-                                <input class="form-check-input" type="radio" v-model="task_status" id="doing" value="DOING" />
-                                <label class="form-check-label" for="doing">진행중</label>
-                            </div>
-                            <div class="form-check me-4">
-                                <input class="form-check-input" type="radio" v-model="task_status" id="done" value="DONE" />
-                                <label class="form-check-label" for="done">완료</label>
-                            </div>
-                            <div class="form-check me-4">
-                                <input class="form-check-input" type="radio" v-model="task_status" id="hold" value="HOLD" />
-                                <label class="form-check-label" for="hold">보류</label>
+                            <div
+                                v-for="(value, key) in [
+                                    { text: '진행예정', value: 'TODO' },
+                                    { text: '진행중', value: 'DOING' },
+                                    { text: '완료', value: 'DONE' },
+                                    { text: '보류', value: 'HOLD' }
+                                ]"
+                                :key="key"
+                                class="form-check me-4"
+                            >
+                                <input class="form-check-input" type="radio" v-model="task_status" :id="value.value.toLowerCase()" :value="value.value" />
+                                <label class="form-check-label" :for="value.value.toLowerCase()">{{ value.text }}</label>
                             </div>
                         </div>
                     </div>
@@ -192,21 +189,18 @@ export default {
                     <div class="mb-3">
                         <label class="form-label">우선순위</label>
                         <div class="d-flex align-items-start">
-                            <div class="form-check me-4">
-                                <input class="form-check-input" type="radio" v-model="task_priority" id="lv0" value="LV0" />
-                                <label class="form-check-label" for="lv0">긴급</label>
-                            </div>
-                            <div class="form-check me-4">
-                                <input class="form-check-input" type="radio" v-model="task_priority" id="lv1" value="LV1" />
-                                <label class="form-check-label" for="lv1">높음</label>
-                            </div>
-                            <div class="form-check me-4">
-                                <input class="form-check-input" type="radio" v-model="task_priority" id="lv2" value="LV2" checked />
-                                <label class="form-check-label" for="lv2">보통</label>
-                            </div>
-                            <div class="form-check me-4">
-                                <input class="form-check-input" type="radio" v-model="task_priority" id="lv3" value="LV3" />
-                                <label class="form-check-label" for="lv3">낮음</label>
+                            <div
+                                v-for="(priority, index) in [
+                                    { text: '긴급', value: 'LV0' },
+                                    { text: '높음', value: 'LV1' },
+                                    { text: '보통', value: 'LV2' },
+                                    { text: '낮음', value: 'LV3' }
+                                ]"
+                                :key="index"
+                                class="form-check me-4"
+                            >
+                                <input class="form-check-input" type="radio" v-model="task_priority" :id="`lv${index}`" :value="priority.value" :checked="index === 2" />
+                                <label class="form-check-label" :for="`lv${index}`">{{ priority.text }}</label>
                             </div>
                         </div>
                     </div>
