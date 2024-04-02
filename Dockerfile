@@ -11,5 +11,4 @@ COPY . /app
 
 RUN npm run build
 
-# nginx serving
 

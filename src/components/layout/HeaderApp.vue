@@ -1,5 +1,6 @@
 <script>
 import UserProfile from '@/components/UserProfile.vue'
+import globalInfo from '@/utils/globalInfoUtils.js'
 
 export default {
     components: {
@@ -13,11 +14,8 @@ export default {
         }
     },
     mounted() {
-        this.userInfo = this.$cookies.get('user')
-        console.log(this.userInfo)
-        if (this.userInfo) {
-            this.name = this.userInfo.name
-            this.email = this.userInfo.email
+        if (globalInfo.UserInfo.name != null) {
+            this.name = globalInfo.UserInfo.name
         }
     }
 }
