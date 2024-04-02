@@ -36,7 +36,6 @@ export default {
         </div>
         <div class="col-auto">
             <div class="top-btn-area">
-                <button class="btn btn-outline-dark me-4">대시보드 바로가기</button>
                 <button class="btn btn-dark">통계분석 바로가기</button>
             </div>
         </div>
