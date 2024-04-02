@@ -33,7 +33,7 @@ export default {
                 <div class="row align-items-center justify-content-between g-3 pb-4">
                     <div class="col-auto">
                         <div class="title-area">
-                            <h2 class="h2">홍길동 님 업무도표???</h2>
+                            <h2 class="h2">[개인통계]마이페이지 작업</h2>
                             <p class="text-body-tertiary lh-sm mb-3">testesttextext</p>
                         </div>
                         <PolarChart />
