@@ -14,7 +14,8 @@ const props = defineProps({
     initialTasks: Array,
     newTaskData: Object,
     addNewTask: Function,
-    projectId: Number
+    projectId: Number,
+    tasks: Array
 })
 
 const tasks = ref(props.initialTasks)
@@ -43,6 +44,7 @@ watch(
     (newVal) => {
         if (newVal) {
             tasks.value.push(newVal)
+            tasks.value = [...tasks.value]
         }
     }
 )
@@ -57,6 +59,21 @@ const openModal = (task) => {
     selectedTask.value = task
     isModalActive.value = true
 }
+
+// 초기 데이터 또는 태스크 변경 감시
+watch(
+    () => props.initialTasks,
+    () => {
+        fetchProjectTasks()
+    }
+)
+
+watch(
+    () => props.tasks,
+    () => {
+        tasks.value = props.tasks
+    }
+)
 </script>
 
 <template>
