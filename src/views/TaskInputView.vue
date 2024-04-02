@@ -5,6 +5,10 @@ import { useRoute, useRouter } from 'vue-router'
 
 export default {
     setup() {
+        const route = useRoute()
+        const router = useRouter()
+
+        const isEditing = ref(false)
         const task_title = ref('')
         const assignee = ref('')
         const start_date = ref('')
@@ -15,8 +19,81 @@ export default {
         const task_test = ref('')
         const url = ref('')
         const task_desc = ref('')
-        const route = useRoute()
-        const router = useRouter()
+
+        async function fetchData() {
+            try {
+                const projectId = route.params.id
+                const taskId = route.params.taskId
+                const apiUrl = import.meta.env.VITE_API_URL
+
+                if (taskId) {
+                    isEditing.value = true
+                    const response = await axios.get(`${apiUrl}/task/project/${projectId}/task/${taskId}`)
+                    if (response && response.data) {
+                        const taskData = response.data(
+                            // 객체 분해 할당을 사용하여 각 필드에 값을 설정합니다.
+                            ({
+                                task_title: task_title.value,
+                                assignee: assignee.value,
+                                start_date: start_date.value,
+                                end_date: end_date.value,
+                                task_status: task_status.value,
+                                task_priority: task_priority.value,
+                                task_percent: task_percent.value,
+                                task_test: task_test.value,
+                                url: url.value,
+                                task_desc: task_desc.value
+                            } = taskData)
+                        )
+                        // start_date와 end_date를 새로 설정합니다.
+                        start_date.value = new Date(taskData.start_date).toISOString().substr(0, 10)
+                        end_date.value = new Date(taskData.end_date).toISOString().substr(0, 10)
+                        // task_test와 url을 따로 처리합니다.
+                        task_test.value = taskData.task_test ? 'true' : 'false'
+                        url.value = taskData.url || ''
+                    } else {
+                        console.error('응답 객체 또는 응답 데이터가 유효하지 않습니다.')
+                    }
+                }
+            } catch (error) {
+                console.error('데이터를 불러오는 데 실패했습니다.', error.response.data)
+            }
+        }
+
+        async function saveOrUpdateTask() {
+            if (isEditing.value) {
+                await updateTask()
+            } else {
+                await saveTask()
+            }
+        }
+
+        // 수정 기능 구현
+        async function updateTask() {
+            try {
+                const { id: projectId, taskId } = route.params
+                const apiUrl = import.meta.env.VITE_API_URL
+
+                const postData = {
+                    assignee: assignee.value,
+                    proj_no: projectId,
+                    task_title: task_title.value,
+                    task_status: task_status.value,
+                    task_priority: task_priority.value,
+                    start_date: new Date(start_date.value).getTime(),
+                    end_date: new Date(end_date.value).getTime(),
+                    task_percent: task_percent.value,
+                    task_test: task_test.value === 'true',
+                    task_desc: task_desc.value,
+                    url: url.value
+                }
+
+                const response = await axios.put(`${apiUrl}/task/project/${projectId}/task/${taskId}`, postData)
+                handleApiResponse(response, projectId)
+            } catch (error) {
+                console.error('데이터를 업데이트하는 데 실패했습니다.', error.response.data)
+            }
+        }
 
         // 업무 글쓰기
         async function saveTask() {
@@ -52,14 +129,7 @@ export default {
 
         // 업무 상태 결정 함수
         function determineTaskStatus() {
-            let status = 'TODO' // 기본적으로 '진행예정'으로 설정
-
-            if (task_percent.value > 0 && task_percent.value < 100) {
-                status = 'DOING' // 진행중
-            } else if (task_percent.value === 100) {
-                status = 'DONE' // 완료
-            }
-            return status
+            return task_percent.value > 0 && task_percent.value < 100 ? 'DOING' : task_percent.value === 100 ? 'DONE' : 'TODO'
         }
 
         // 업무 상태 변경 확인 함수
@@ -117,18 +187,24 @@ export default {
             task_percent,
             task_test,
             task_desc,
-            saveTask,
+            saveOrUpdateTask,
+            fetchData,
+            updateTask,
             url,
             toggleUrlInput,
-            goBack
+            goBack,
+            isEditing
         }
+    },
+    mounted() {
+        this.fetchData()
     }
 }
 </script>
 
 <template>
     <div class="inner">
-        <div class="row align-items-start justify-content-between g-3">
+        <div class="row align-items-center justify-content-center text-center g-3">
             <div class="col-auto">
                 <div class="title-area">
                     <h2 class="h2">업무 작성글쓰기</h2>
@@ -138,7 +214,7 @@ export default {
         </div>
 
         <div class="row">
-            <form @submit.prevent="saveTask">
+            <form @submit.prevent="saveOrUpdateTask">
                 <div>
                     <div class="mb-3">
                         <label for="title" class="form-label">업무명</label>

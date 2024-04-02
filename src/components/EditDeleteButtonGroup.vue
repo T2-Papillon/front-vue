@@ -9,6 +9,11 @@ export default {
     methods: {
         async handleEdit() {
             try {
+                if (!this.taskId) {
+                    console.error('btn console.log Task ID가 유효하지 않습니다.')
+                    return
+                }
+
                 const apiUrl = import.meta.env.VITE_API_URL
                 const response = await axios.get(`${apiUrl}/task/project/${this.projectId}/task/${this.taskId}`)
                 const taskData = response.data
@@ -18,7 +23,7 @@ export default {
                     params: {
                         projectId: this.projectId,
                         taskId: this.taskId,
-                        taskData: JSON.stringify(taskData)
+                        taskData: taskData
                     }
                 })
             } catch (error) {
