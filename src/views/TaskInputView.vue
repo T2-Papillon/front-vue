@@ -31,6 +31,7 @@ export default {
                 try {
                     const response = await axios.get(`${apiUrl}/task/project/${projectId}/task/${taskId}`)
                     const taskData = response.data
+
                     task_title.value = taskData.task_title
                     assignee.value = taskData.assignee
                     start_date.value = new Date(taskData.start_date).toISOString().substr(0, 10)
@@ -57,37 +58,35 @@ export default {
 
         // 수정 기능 구현
         async function updateTask() {
+            const projectId = route.params.projectId
+            const taskId = route.params.taskId
+            const apiUrl = import.meta.env.VITE_API_URL
+
+            if (!projectId || !taskId) {
+                alert('Project ID or Task ID is missing.')
+                return
+            }
+
             try {
-                const projectId = route.params.projectId
-                const taskId = route.params.taskId
-
-                if (!projectId || !taskId) {
-                    console.error('Project ID or Task ID is missing')
-                    return
-                }
-
-                const apiUrl = import.meta.env.VITE_API_URL
-                const updateUrl = `${apiUrl}/task/project/${projectId}/task/${taskId}`
-
                 const postData = {
-                    assignee: this.assignee,
+                    assignee: assignee.value,
                     proj_no: projectId,
-                    task_title: this.task_title,
-                    task_status: this.task_status,
-                    task_priority: this.task_priority,
-                    start_date: this.start_date,
-                    end_date: this.end_date,
-                    task_percent: this.task_percent,
-                    task_test: this.task_test === 'true',
-                    task_desc: this.task_desc,
-                    url: this.url
+                    task_title: task_title.value,
+                    task_status: task_status.value,
+                    task_priority: task_priority.value,
+                    start_date: start_date.value,
+                    end_date: end_date.value,
+                    task_percent: task_percent.value,
+                    task_test: task_test.value === 'true' ? true : false,
+                    task_desc: task_desc.value,
+                    url: url.value
                 }
 
-                const response = await axios.put(updateUrl, postData)
-                // 응답 처리
-                this.handleApiResponse(response)
+                const response = await axios.put(`${apiUrl}/task/project/${projectId}/task/${taskId}`, postData)
+                handleApiResponse(response, projectId)
             } catch (error) {
-                console.error('데이터를 업데이트하는 데 실패했습니다.', error)
+                console.error('데이터를 업데이트하는 데 실패했습니다.', error.response?.data || error)
+                alert('데이터 업데이트에 실패했습니다. 오류를 확인해주세요.')
             }
         }
 
@@ -142,9 +141,11 @@ export default {
             if (!response || !response.data) {
                 throw new Error('응답 객체 또는 응답 데이터가 유효하지 않습니다.')
             }
-            console.log('저장되었습니다.', response.data)
-
+            // 사용자에게 성공 알림을 표시
+            alert('저장되었습니다.')
+            // 입력 필드를 초기화
             clearFields()
+            // 사용자를 프로젝트 상세 페이지로 리다이렉트
             router.push(`/project/detail/${projectId}`)
         }
 
