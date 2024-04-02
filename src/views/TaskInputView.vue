@@ -56,11 +56,13 @@ export default {
             }
         }
 
-        // 수정 기능 구현
+        //글수정
         async function updateTask() {
             const projectId = route.params.projectId
             const taskId = route.params.taskId
             const apiUrl = import.meta.env.VITE_API_URL
+
+            // console.log('projectId: ', projectId, 'taskId : ', taskId)
 
             if (!projectId || !taskId) {
                 alert('Project ID or Task ID is missing.')
@@ -74,13 +76,16 @@ export default {
                     task_title: task_title.value,
                     task_status: task_status.value,
                     task_priority: task_priority.value,
-                    start_date: start_date.value,
-                    end_date: end_date.value,
+                    start_date: start_date.value, // 변환 불필요
+                    end_date: end_date.value, // 변환 불필요
                     task_percent: task_percent.value,
                     task_test: task_test.value === 'true' ? true : false,
                     task_desc: task_desc.value,
-                    url: url.value
+                    url: url.value,
+                    update_date: new Date().getTime()
                 }
+
+                console.log(projectId, taskId, postData)
 
                 const response = await axios.put(`${apiUrl}/task/project/${projectId}/task/${taskId}`, postData)
                 handleApiResponse(response, projectId)
@@ -90,7 +95,7 @@ export default {
             }
         }
 
-        // 업무 글쓰기
+        // 글작성
         async function saveTask() {
             try {
                 const projectId = route.params.projectId
