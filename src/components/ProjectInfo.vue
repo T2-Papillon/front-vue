@@ -30,7 +30,7 @@ export default {
     <div class="row align-items-center justify-content-between g-3 pb-4">
         <div class="col-auto">
             <div class="title-area">
-                <p class="text-body-tertiary lh-sm mb-3">ProjectNo.00000001</p>
+                <p class="text-body-tertiary lh-sm mb-3">ProjectNo.000{{ project.projNo }}</p>
                 <h2 class="h2">📌 {{ project.projTitle }}</h2>
             </div>
         </div>
