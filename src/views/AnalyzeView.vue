@@ -8,7 +8,6 @@ import BarChartTaskStatus from '../components/BarChartTaskStatus.vue'
 import BarChartTaskAssignee from '../components/BarChartTaskAssignee.vue'
 import BarChartTaskPriority from '../components/BarChartTaskPriority.vue'
 
-
 export default {
     components: {
         AnalyzeProjectDetail,
@@ -24,17 +23,17 @@ export default {
 
         // 프로젝트 상세 정보를 불러오는 함수
         async function fetchProjectDetail() {
-            isLoading.value = true; // 데이터 로딩 시작
+            isLoading.value = true // 데이터 로딩 시작
             const projectId = route.params.id
             try {
                 const apiUrl = import.meta.env.VITE_API_URL
                 const response = await axios.get(`${apiUrl}/project/detail?projNo=4`)
                 project.value = response.data
-                console.log(project);
+                console.log(project)
             } catch (error) {
                 console.error('프로젝트 데이터를 가져오는데 실패했습니다:', error)
             } finally {
-                isLoading.value = false; // 데이터 로딩 완료
+                isLoading.value = false // 데이터 로딩 완료
             }
         }
 
@@ -58,7 +57,7 @@ export default {
 }
 </script>
 <template>
-    <div class="inner">
+    <div class="container">
         <div class="row align-items-start justify-content-between g-3">
             <div class="col-auto">
                 <div class="top-btn-area">
@@ -73,7 +72,8 @@ export default {
         </div>
 
         <div class="row mt-4">
-            <div v-if="!isLoading" class="col"> <!-- 로딩이 완료되었을 때만 내용을 표시 -->
+            <div v-if="!isLoading" class="col">
+                <!-- 로딩이 완료되었을 때만 내용을 표시 -->
                 <AnalyzeProjectDetail :project="project" />
             </div>
         </div>

@@ -203,7 +203,7 @@ export default {
 </script>
 
 <template>
-    <div class="inner">
+    <div class="container">
         <div class="row align-items-center justify-content-center text-center g-3">
             <div class="col-auto">
                 <div class="title-area">

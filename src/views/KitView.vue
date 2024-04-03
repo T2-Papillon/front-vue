@@ -39,7 +39,7 @@ export default {
 }
 </script>
 <template>
-    <div class="inner">
+    <div class="container">
         <div class="row align-items-end justify-content-between pb-5 g-3">
             <div class="col-auto">
                 <h3>Latest reviews</h3>

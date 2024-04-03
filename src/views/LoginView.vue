@@ -54,7 +54,7 @@ export default {
 
 <template>
     <div class="login-page">
-        <div class="inner">
+        <div class="container">
             <div class="card">
                 <div class="card-body">
                     <div class="title-area">
