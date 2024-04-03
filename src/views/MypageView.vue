@@ -2,7 +2,7 @@
 import BarChart from '../components/chart/BarChart.vue'
 import PieChart from '../components/chart/PieChart.vue'
 import TaskTable from '../components/TaskTable.vue'
-import UserProjectTable from '../components/UserProjectTable.vue'
+import ProjectTable from '../components/ProjectTable.vue'
 import { useProjects } from '@/composables/useProjects'
 import { ref, watch, onMounted } from 'vue'
 
@@ -18,7 +18,7 @@ export default {
         BarChart,
         PieChart,
         TaskTable,
-        UserProjectTable
+        ProjectTable
     }
 }
 </script>
@@ -67,7 +67,7 @@ export default {
                 <div class="row mb-5">
                     <div class="col">
                         <h3 class="h3">나의 전체 프로젝트 목록</h3>
-                        <UserProjectTable :projects="projects" />
+                        <ProjectTable :projects="projects" />
                     </div>
                 </div>
 
