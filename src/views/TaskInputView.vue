@@ -1,5 +1,5 @@
 <script>
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import axios from 'axios'
 import { useRoute, useRouter } from 'vue-router'
 
@@ -7,6 +7,7 @@ export default {
     setup() {
         const route = useRoute()
         const router = useRouter()
+        const username = sessionStorage.getItem('NM')
 
         const isEditing = ref(false)
         const task_title = ref('')
@@ -19,6 +20,16 @@ export default {
         const task_test = ref('')
         const url = ref('')
         const task_desc = ref('')
+
+        // 현재 경로가 'save'인지 확인하는 계산된 속성
+        const isSaveRoute = computed(() => {
+            return route.path.endsWith('/save')
+        })
+
+        // 'save' 경로일 때 username을 사용하고, 그렇지 않으면 assignee를 사용
+        const inputFieldValue = computed(() => {
+            return isSaveRoute.value ? username : assignee.value
+        })
 
         // 데이터를 불러오는 함수 수정
         async function fetchData() {
@@ -196,7 +207,10 @@ export default {
             url,
             toggleUrlInput,
             goBack,
-            isEditing
+            isEditing,
+            username,
+            inputFieldValue,
+            isSaveRoute
         }
     }
 }
@@ -223,7 +237,7 @@ export default {
 
                     <div class="mb-3">
                         <label for="assignee" class="form-label">담당자</label>
-                        <input type="text" v-model="assignee" class="form-control" id="assignee" />
+                        <input type="text" :value="inputFieldValue" class="form-control" id="assignee" disabled />
                     </div>
 
                     <div class="d-flex mb-3">

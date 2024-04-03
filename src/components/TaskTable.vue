@@ -116,7 +116,13 @@ watch(
                 <td><StatusBadge :status="task.task_status" /></td>
                 <td class="text-end"><ProgressBar :progress="task.task_percent" /></td>
                 <td class="text-end"><PriorityBadge :priority="task.task_priority" /></td>
-                <td class="text-end text-secondary">{{ task.task_test }}</td>
+                <td class="text-end text-secondary">
+                    <template v-if="task.task_test">
+                        <a href="#" @click="someAction(task)">{{ task.task_test ? 'T' : '-' }}</a>
+                        <!-- task_test가 true일 때 -->
+                    </template>
+                    <template v-else> - </template>
+                </td>
                 <td class="text-end text-secondary" style="font-size: 12px">{{ formatDate(task.create_date) }}</td>
             </tr>
 
@@ -131,7 +137,12 @@ watch(
                 <td>{{ newTaskData.task_status }}</td>
                 <td>{{ newTaskData.task_percent }}</td>
                 <td>{{ newTaskData.task_priority }}</td>
-                <td>{{ newTaskData.task_test }}</td>
+                <td>
+                    <template v-if="newTaskData.task_test">
+                        <a href="#" @click="someAction(task)">{{ newTaskData.task_test ? 'T' : '-' }}</a>
+                    </template>
+                    <template v-else> - </template>
+                </td>
                 <td>{{ formatDate(newTaskData.create_date) }}</td>
             </tr>
         </tbody>
