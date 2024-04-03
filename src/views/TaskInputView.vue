@@ -65,6 +65,10 @@ export default {
             } else {
                 await saveTask()
             }
+
+            if (task_test.value === 'true') {
+                postData.url = url.value
+            }
         }
 
         //글수정
@@ -72,8 +76,6 @@ export default {
             const projectId = route.params.projectId
             const taskId = route.params.taskId
             const apiUrl = import.meta.env.VITE_API_URL
-
-            // console.log('projectId: ', projectId, 'taskId : ', taskId)
 
             if (!projectId || !taskId) {
                 alert('Project ID or Task ID is missing.')
@@ -96,11 +98,7 @@ export default {
                     task_desc: task_desc.value
                 }
 
-                console.log(projectId, taskId, postData)
-
-                console.log(1)
                 const response = await axios.post(`${apiUrl}/task/project/${projectId}/task/${taskId}`, postData)
-                console.log(response)
 
                 handleApiResponse(response, projectId)
             } catch (error) {
@@ -132,7 +130,9 @@ export default {
 
                 // 업무 상태 변경 여부 확인
                 const status = determineTaskStatus()
+
                 if (confirmTaskStatusChange(status)) {
+                    console.log(postData)
                     const response = await axios.post(`${apiUrl}/task/project/${projectId}/task`, postData)
                     handleApiResponse(response, projectId)
                 }
@@ -160,11 +160,8 @@ export default {
             if (!response || !response.data) {
                 throw new Error('응답 객체 또는 응답 데이터가 유효하지 않습니다.')
             }
-            // 사용자에게 성공 알림을 표시
             alert('저장되었습니다.')
-            // 입력 필드를 초기화
             clearFields()
-            // 사용자를 프로젝트 상세 페이지로 리다이렉트
             router.push(`/project/detail/${projectId}`)
         }
 
