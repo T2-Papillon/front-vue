@@ -87,7 +87,6 @@ export default {
     overflow: hidden;
     position: relative;
     min-height: 82.4vh;
-    /* background-color: #f5f5f5; */
     background-color: #dff0d8;
 }
 .card {

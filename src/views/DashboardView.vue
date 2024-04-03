@@ -94,7 +94,9 @@ dashboardData()
                         <div class="card-body">
                             <h3 class="card-title mb-4">프로젝트 목록</h3>
                             <div class="card-text">
-                                <ProjectTable :projects="projects" />
+                                <div class="overflow-auto">
+                                    <ProjectTable :projects="projects" />
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -106,7 +108,9 @@ dashboardData()
                         <div class="card-body">
                             <h3 class="card-title mb-4">담당 업무 목록</h3>
                             <div class="card-text">
-                                <TaskTable :initialTasks="tasks" />
+                                <div class="overflow-auto">
+                                    <TaskTable :initialTasks="tasks" />
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -130,12 +134,83 @@ dashboardData()
                     </div>
                 </div>
             </div>
+            <div class="wave-group">
+                <div class="wave"></div>
+                <div class="wave"></div>
+                <div class="wave"></div>
+            </div>
         </div>
     </div>
 </template>
 
 <style scoped>
 .dashboard-wrap {
+    overflow: hidden;
+    position: relative;
     background-color: #f7fafc;
+}
+.dashboard-wrap::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 390px;
+    background-color: #b7eca2;
+    z-index: 1;
+}
+
+.dashboard-wrap .container {
+    position: relative;
+    z-index: 2;
+}
+
+/* wave */
+
+.wave {
+    background: rgb(255 255 255 / 25%);
+    border-radius: 1000% 1000% 0 0;
+    position: absolute;
+    width: 500%;
+    height: 12em;
+    animation: wave 10s -3s linear infinite;
+    transform: translate3d(0, 0, 0);
+    opacity: 0.8;
+    top: 234px;
+    left: 0;
+    z-index: -1;
+}
+
+.wave:nth-of-type(2) {
+    bottom: -1.25em;
+    animation: wave 18s linear reverse infinite;
+    opacity: 0.8;
+}
+
+.wave:nth-of-type(3) {
+    bottom: -2.5em;
+    animation: wave 20s -1s reverse infinite;
+    opacity: 0.9;
+}
+@keyframes wave {
+    2% {
+        transform: translateX(1);
+    }
+
+    25% {
+        transform: translateX(-25%);
+    }
+
+    50% {
+        transform: translateX(-50%);
+    }
+
+    75% {
+        transform: translateX(-25%);
+    }
+
+    100% {
+        transform: translateX(1);
+    }
 }
 </style>
