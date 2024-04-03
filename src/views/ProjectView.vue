@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import axios from 'axios'
 import ProjectTable from '../components/ProjectTable.vue'
 import { useProjects } from '@/composables/useProjects'
@@ -7,7 +7,7 @@ import SortFilter from '../components/SortFilter.vue'
 import globalInfo from '@/utils/globalInfoUtils.js'
 import PaginationView from '../components/PaginationView.vue'
 
-const { projects, fetchProjectsForUser, sortByLatest, sortByPriority, currentPage, totalPages } = useProjects()
+const { projects, fetchProjectsForUser, sortByLatest, sortByPriority, currentPage, totalPages, searchQuery, changePage, searchProjects } = useProjects()
 
 // 로그인한 사용자의 이름을 저장하기 위한 반응형 참조
 const userName = ref(sessionStorage.getItem('NM') || '사용자')
@@ -26,9 +26,13 @@ function filterProjects() {
     holdProjects.value = projects.value.filter((p) => p.status === 'hold')
 }
 
+watch(projects, () => {
+    filterProjects()
+})
+
 onMounted(async () => {
     await fetchProjectsForUser()
-    filterProjects()
+    // filterProjects()
 })
 </script>
 
@@ -42,8 +46,8 @@ onMounted(async () => {
                 </div>
             </div>
             <div class="col-auto d-flex">
-                <form class="d-flex me-4">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
+                <form class="d-flex me-4" @submit.prevent="searchProjects">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" v-model="searchQuery" />
                     <button class="btn btn-outline-success" type="submit"><i class="bi bi-search"></i></button>
                 </form>
             </div>
