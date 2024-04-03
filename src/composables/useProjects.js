@@ -10,6 +10,7 @@ export function useProjects() {
     const isLoading = ref(false)
     const currentPage = ref(1) // 현재 페이지
     const totalPages = ref(1) // 전체 페이지 수
+    const searchQuery = ref('')
 
     async function fetchProjects(searchTerm = '') {
         isLoading.value = true
@@ -59,7 +60,7 @@ export function useProjects() {
         }
 
         // currentPage 값을 변경한 후에 프로젝트를 다시 불러옵니다.
-        await fetchProjects(searchTerm.value)
+        await fetchProjects()
     }
 
     async function fetchProjectsForUser() {
@@ -72,6 +73,27 @@ export function useProjects() {
             console.log('User-specific projects loaded:', projects.value)
         } catch (error) {
             console.error('Error fetching user-specific projects:', error)
+        } finally {
+            isLoading.value = false
+        }
+    }
+
+    // 프로젝트목록 페이지에서 프로젝트 검색 함수
+    async function searchProjects() {
+        isLoading.value = true
+        try {
+            const response = await axios.get(`${import.meta.env.VITE_API_URL}/project/search`, {
+                params: {
+                    term: searchQuery.value,
+                    page: currentPage.value - 1,
+                    pageSize: PAGE_SIZE
+                }
+            })
+            // 검색 결과를 바로 projects 상태에 할당
+            projects.value = response.data.map((project) => formatProjectData(project))
+            console.log('Search results:', projects.value)
+        } catch (error) {
+            console.error('Error searching projects:', error)
         } finally {
             isLoading.value = false
         }
@@ -130,5 +152,5 @@ export function useProjects() {
         projects.value = [...projects.value]
     }
 
-    return { projects, fetchProjects, fetchProjectsForUser, fetchProjectsByStatus, sortByLatest, sortByPriority, isLoading, currentPage, totalPages }
+    return { projects, fetchProjects, fetchProjectsForUser, fetchProjectsByStatus, sortByLatest, sortByPriority, isLoading, currentPage, totalPages, searchQuery, changePage, searchProjects }
 }
