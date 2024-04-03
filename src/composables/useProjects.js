@@ -8,11 +8,12 @@ const PAGE_SIZE = 10
 export function useProjects() {
     const projects = ref([])
     const isLoading = ref(false)
-    const currentPage = ref(1) // 현재 페이지
-    const totalPages = ref(1) // 전체 페이지 수
+    const currentPage = ref(1)
+    const totalPages = ref(1)
     const searchQuery = ref('')
 
-    async function fetchProjects(searchTerm = '') {
+    // 전체 프로젝트 검색
+    async function fetchProjects(searchTerm = '', selectedCheckboxes = ['all']) {
         isLoading.value = true
         console.log('Fetching projects...')
         try {

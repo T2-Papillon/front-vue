@@ -33,7 +33,7 @@ const changePage = async (page) => {
     }
 
     // currentPage 값을 변경한 후에 프로젝트를 다시 불러옵니다.
-    await fetchProjects(searchTerm.value)
+    await fetchProjects(searchTerm.value, selectedCheckboxes.value)
 }
 
 // 페이지 변경 이벤트를 처리하는 메서드를 정의합니다.
@@ -41,7 +41,7 @@ const handlePageChange = (page) => {
     // currentPage 값을 변경합니다.
     currentPage.value = page
     // fetchProjects 함수를 호출하여 해당 페이지의 프로젝트를 불러옵니다.
-    fetchProjects()
+    fetchProjects(searchTerm.value, selectedCheckboxes.value)
 
     // 페이지 변경 시 다음 버튼의 활성화 여부를 결정합니다.
     const isNextButtonEnabled = currentPage.value < totalPages.value
@@ -50,15 +50,21 @@ const handlePageChange = (page) => {
     }
 }
 
+// 검색 제출 핸들러
+const submitSearch = () => {
+    selectedCheckboxes.value = ['all'] // 검색 전 '전체' 상태로 초기화
+    fetchProjects(searchTerm.value, selectedCheckboxes.value)
+}
+
 onMounted(() => {
-    fetchProjects()
+    fetchProjects(searchTerm.value, selectedCheckboxes.value)
 })
 
 // 올바른 검색어 입력까지 프로젝트 데이터가 없다는 문구 출력됨
 watch(
     searchTerm,
     (newVal) => {
-        fetchProjects(newVal)
+        fetchProjects(newVal, selectedCheckboxes.value)
     },
     { immediate: true }
 )
@@ -66,7 +72,7 @@ watch(
     selectedCheckboxes,
     () => {
         if (selectedCheckboxes.value.includes('all')) {
-            fetchProjects()
+            fetchProjects(searchTerm.value, selectedCheckboxes.value)
         } else {
             // 선택된 진행 상태에 따라 필터링된 프로젝트 목록을 불러오기
             fetchProjectsByStatus(selectedCheckboxes.value)
@@ -83,7 +89,7 @@ const handleSelectedItems = (selectedItems) => {
 
     // 선택된 항목을 기반으로 프로젝트를 필터링합니다.
     if (selectedItems.includes('all')) {
-        fetchProjects()
+        submitSearch()
     } else {
         fetchProjectsByStatus(selectedItems)
     }
@@ -104,7 +110,7 @@ const handleSelectedItems = (selectedItems) => {
         </div>
 
         <div class="row d-flex align-items-center justify-content-center mx-auto w-50">
-            <form @submit.prevent="fetchProjects(searchTerm)" class="d-flex align-items-center">
+            <form @submit.prevent="submitSearch" class="d-flex align-items-center">
                 <input v-model="searchTerm" class="form-control me-2" type="search" placeholder="프로젝트명 또는 이름으로 검색해주세요" aria-label="Search" />
                 <button class="btn btn-outline-success" type="submit"><i class="bi bi-search"></i></button>
             </form>
