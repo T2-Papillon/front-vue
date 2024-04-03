@@ -27,7 +27,7 @@ dashboardData()
 </script>
 <template>
     <div class="dashboard-wrap">
-        <div class="container inner">
+        <div class="container">
             <div class="row align-items-start justify-content-between g-3">
                 <div class="col-auto">
                     <div class="title-area">

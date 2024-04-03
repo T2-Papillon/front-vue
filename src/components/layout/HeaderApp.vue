@@ -24,7 +24,7 @@ export default {
 </script>
 <template>
     <header>
-        <div class="inner">
+        <div class="container container-xxl">
             <div class="d-flex align-items-center justify-content-between">
                 <h1 class="logo">
                     <a href="/dashboard"><img src="/public/images/logo.svg" alt="boogle logo" /></a>

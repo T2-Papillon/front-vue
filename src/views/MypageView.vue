@@ -25,7 +25,7 @@ export default {
 <template>
     <div class="mypage-wrap">
         <div class="top-area">
-            <div class="inner">
+            <div class="container">
                 <div class="profile">
                     <i class=""></i>
                     <div class="info">
@@ -36,7 +36,7 @@ export default {
             </div>
         </div>
         <div class="btm-area">
-            <div class="inner">
+            <div class="container">
                 <div class="row align-items-center justify-content-between g-3 pb-4">
                     <div class="col-auto">
                         <div class="title-area">
