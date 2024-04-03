@@ -10,15 +10,15 @@ export default {
         StatusBadge,
         PriorityBadge
     },
-    emits: ['closeModal'],
+    emits: ['closeModal', 'refreshTasks'],
     props: {
         isActive: Boolean,
         task: Object
     },
     methods: {
         closeModal() {
-            this.$emit('close-modal')
-            console.log('close')
+            this.$emit('closeModal') // 여기서는 camelCase를 사용하여 일치시켜야 합니다.
+            console.log('Modal closed')
         },
         handleTaskDeleted() {
             this.closeModal()

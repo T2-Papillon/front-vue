@@ -1,5 +1,5 @@
 <script setup>
-import { ref, defineProps, onMounted, watch } from 'vue'
+import { ref, defineProps, onMounted, watch, defineEmits } from 'vue'
 import axios from 'axios'
 import { useRoute } from 'vue-router'
 import { formatDate } from '@/utils/dateUtils.js'
@@ -10,6 +10,7 @@ import StatusBadge from '../components/StatusBadge.vue'
 import PriorityBadge from '../components/PriorityBadge.vue'
 import TaskDetailModal from '../components/TaskDetailModal.vue'
 
+const emits = defineEmits(['closeModal', 'refreshTasks'])
 const props = defineProps({
     initialTasks: Array,
     newTaskData: Object,
@@ -37,6 +38,10 @@ async function fetchProjectTasks() {
         error.value = '프로젝트 태스크 데이터를 가져오는데 실패했습니다.'
         tasks.value = [] // 데이터를 비워 테이블을 숨깁니다.
     }
+}
+
+const handleCloseModal = () => {
+    isModalActive.value = false // 모달을 비활성화합니다.
 }
 
 watch(
@@ -148,7 +153,8 @@ watch(
         </tbody>
     </table>
 
-    <TaskDetailModal :is-active="isModalActive" :task="selectedTask" @close-modal="isModalActive = false" @refreshTasks="fetchProjectTasks" />
+    <!-- 모달 : 하위업무 상세내용  -->
+    <TaskDetailModal :is-active="isModalActive" :task="selectedTask" @close-modal="handleCloseModal" @refreshTasks="fetchProjectTasks" />
 </template>
 
 <style scoped>
