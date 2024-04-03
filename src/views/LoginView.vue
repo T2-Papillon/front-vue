@@ -54,7 +54,7 @@ export default {
 
 <template>
     <div class="login-page">
-        <div class="inner">
+        <div class="container">
             <div class="card">
                 <div class="card-body">
                     <div class="title-area">
@@ -87,7 +87,6 @@ export default {
     overflow: hidden;
     position: relative;
     min-height: 82.4vh;
-    /* background-color: #f5f5f5; */
     background-color: #dff0d8;
 }
 .card {

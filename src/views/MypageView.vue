@@ -2,7 +2,7 @@
 import BarChart from '../components/chart/BarChart.vue'
 import PieChart from '../components/chart/PieChart.vue'
 import TaskTable from '../components/TaskTable.vue'
-import UserProjectTable from '../components/UserProjectTable.vue'
+import ProjectTable from '../components/ProjectTable.vue'
 import { useProjects } from '@/composables/useProjects'
 import { ref, watch, onMounted } from 'vue'
 
@@ -18,14 +18,14 @@ export default {
         BarChart,
         PieChart,
         TaskTable,
-        UserProjectTable
+        ProjectTable
     }
 }
 </script>
 <template>
     <div class="mypage-wrap">
         <div class="top-area">
-            <div class="inner">
+            <div class="container">
                 <div class="profile">
                     <i class=""></i>
                     <div class="info">
@@ -36,7 +36,7 @@ export default {
             </div>
         </div>
         <div class="btm-area">
-            <div class="inner">
+            <div class="container">
                 <div class="row align-items-center justify-content-between g-3 pb-4">
                     <div class="col-auto">
                         <div class="title-area">
@@ -67,7 +67,7 @@ export default {
                 <div class="row mb-5">
                     <div class="col">
                         <h3 class="h3">나의 전체 프로젝트 목록</h3>
-                        <UserProjectTable :projects="projects" />
+                        <ProjectTable :projects="projects" />
                     </div>
                 </div>
 

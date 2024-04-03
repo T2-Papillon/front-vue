@@ -33,7 +33,7 @@ onMounted(async () => {
 </script>
 
 <template>
-    <div class="inner">
+    <div class="container">
         <div class="row align-items-start justify-content-between g-3">
             <div class="col-auto">
                 <div class="title-area">
