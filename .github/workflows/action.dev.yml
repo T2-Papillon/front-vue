@@ -17,6 +17,17 @@ jobs:
             - name: Checkout
               uses: actions/checkout@v3
 
+            - name: Set up Node.js
+              uses: actions/setup-node@v2
+              with:
+                  node-version: '20.11.0'
+
+            - name: Install dependencies
+              run: npm install
+
+            - name: Build Vue project
+              run: npm run build
+
             # AWS 인증 (IAM 사용자 Access Key, Secret Key 활용)
             - name: Configure AWS credentials
               uses: aws-actions/configure-aws-credentials@v1
