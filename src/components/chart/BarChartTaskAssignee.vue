@@ -35,7 +35,7 @@ export default {
     methods: {
         async fetchTasks() {
             const route = useRoute();
-            const projectId = route.params.id;        
+            const projectId = route.params.id;
             try {
                 const apiUrl = import.meta.env.VITE_API_URL;
                 const response = await axios.get(`${apiUrl}/task/project/${projectId}/task`); // 수정된 API URL 사용

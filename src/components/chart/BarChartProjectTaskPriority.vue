@@ -9,14 +9,17 @@
 import { Bar } from 'vue-chartjs'
 import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js'
 import axios from 'axios'
+import { onMounted, reactive, toRefs, watch } from 'vue'
+import { useRoute } from 'vue-router'
 
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
 
 export default {
-    name: 'BarChartTaskPriority',
+    name: 'BarChartProjectTaskPriority',
     components: { Bar },
-    data() {
-        return {
+    setup() {
+        const route = useRoute();
+        const state = reactive({
             chartData: null,
             chartOptions: {
                 responsive: true,
@@ -29,45 +32,40 @@ export default {
                     }
                 }
             }
-        }
-    },
-    async mounted() {
-        await this.fetchTasks();
-    },
-    methods: {
-        async fetchTasks() {
-            const apiUrl = import.meta.env.VITE_API_URL;
+        });
+
+        async function fetchTasks() {
+            const route = useRoute();
+            const projectId = route.params.id;
+            console.log("Fetching tasks for project ID:", projectId);
             try {
-                const response = await axios.get(`${apiUrl}/task/project/4/task`); // 프로젝트 ID가 4인 업무 조회
+                const apiUrl = import.meta.env.VITE_API_URL;
+                const response = await axios.get(`${apiUrl}/task/project/${projectId}/task`);
+                console.log("Tasks fetched:", response.data);
                 const tasks = response.data;
-                console.log(tasks); // tasks 배열의 구조와 taskPriority 값 확인
-                this.processChartData(tasks);
+                processChartData(tasks);
             } catch (error) {
                 console.error("Error fetching tasks from:", apiUrl, error);
             }
-        },
-        processChartData(tasks) {
+        }
+
+        function processChartData(tasks) {
+            console.log("Processing chart data for tasks:", tasks);
             const priorityMapping = {
                 'LV0': '긴급',
                 'LV1': '높음',
                 'LV2': '보통',
                 'LV3': '낮음'
-            }
-
+            };
 
             const tasksPerPriority = tasks.reduce((acc, task) => {
-                // task.taskPriority 값에 따라 매핑된 레이블을 사용
                 const priorityLabel = priorityMapping[task.task_priority];
-
-                if (!acc[priorityLabel]) {
-                    acc[priorityLabel] = 0;
-                }
-                acc[priorityLabel]++;
+                acc[priorityLabel] = (acc[priorityLabel] || 0) + 1;
                 return acc;
             }, {});
+            console.log("Tasks per priority:", tasksPerPriority);
 
-            // 매핑된 레이블을 기반으로 차트 데이터 생성
-            this.chartData = {
+            state.chartData = {
                 labels: Object.keys(tasksPerPriority),
                 datasets: [
                     {
@@ -80,6 +78,18 @@ export default {
                 ]
             };
         }
+
+        onMounted(() => {
+            fetchTasks(route.params.id);
+        });
+
+        watch(() => route.params.id, (newId) => {
+            console.log("Route parameter changed. New project ID:", newId);
+            fetchTasks(newId);
+        });
+
+        return { ...toRefs(state) };
     }
 }
 </script>
+
