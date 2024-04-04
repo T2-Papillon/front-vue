@@ -14,7 +14,6 @@ dist-ssr
 coverage
 *.local
 .env.*
-.create_env.sh
 
 /cypress/videos/
 /cypress/screenshots/
