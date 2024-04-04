@@ -2,7 +2,7 @@
 import BarChartUserTaskStatus from '../components/chart/BarChartUserTaskStatus.vue'
 import BarChartUserTaskPriority from '../components/chart/BarChartUserTaskPriority.vue'
 import PieChartUserProjectTask from '../components/chart/PieChartUserProjectTask.vue'
-import PieChart from '../components/chart/PieChart.vue'
+import ChartWeeklyTask from '../components/chart/ChartWeeklyTask.vue'
 import TaskTable from '../components/TaskTable.vue'
 import ProjectTable from '../components/ProjectTable.vue'
 import { useProjects } from '@/composables/useProjects'
@@ -24,7 +24,7 @@ export default {
         BarChartUserTaskStatus,
         BarChartUserTaskPriority,
         PieChartUserProjectTask,
-        PieChart,
+        ChartWeeklyTask,
         TaskTable,
         ProjectTable
     },
@@ -78,8 +78,12 @@ export default {
 
                 <div class="row mb-5">
                     <div class="col">
-                        <h3 class="h3">나의 주간 참여 프로젝트 분포</h3>
+                        <h3 class="h3">나의 참여 프로젝트 분포</h3>
                         <PieChartUserProjectTask />
+                    </div>
+                    <div class="col-xl-6">
+                        <h3 class="h3">나의 주차별 업무 현황</h3>
+                        <ChartWeeklyTask />
                     </div>
                 </div>
 
