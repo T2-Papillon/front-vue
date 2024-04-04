@@ -87,7 +87,7 @@ export default {
                 <th>참여자</th>
                 <td>
                     <div>
-                        <UserProfile v-for="participant in participants" :key="participant.eno" :name="participant.name" />
+                        <UserProfile v-for="participant in participants" :key="participant.eno" :name="participant.name" :dept="participant.dept_no" />
                     </div>
                 </td>
                 <th>프로젝트 상태</th>
