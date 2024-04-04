@@ -19,17 +19,20 @@ export default {
                 password: this.password
             }
             axios
-                .post(url, data, {
+                .post(
+                    url,
+                    data /*, {
                     'Content-Type': 'application/json',
                     'Access-Control-Allow-Credentials': true
-                })
+                }*/
+                )
                 .then((res) => {
                     if (res.status == 200) {
                         const userInfo = {
                             name: res.data.name,
                             email: res.data.email
                         }
-                        //this.$cookies.set('user', userInfo)
+                        this.$cookies.set('user', userInfo)
                         this.setLoginInfo(res.data)
                         this.$router.push('/dashboard').then(() => {
                             location.reload()
