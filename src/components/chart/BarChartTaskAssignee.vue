@@ -9,6 +9,7 @@
 import { Bar } from 'vue-chartjs'
 import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js'
 import axios from 'axios'
+import { useRoute } from 'vue-router'
 
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
 
@@ -33,9 +34,11 @@ export default {
     },
     methods: {
         async fetchTasks() {
-            const apiUrl = import.meta.env.VITE_API_URL; // API URL을 환경변수에서 가져옴
+            const route = useRoute();
+            const projectId = route.params.id;
             try {
-                const response = await axios.get(`${apiUrl}/task/project/4/task`); // 수정된 API URL 사용
+                const apiUrl = import.meta.env.VITE_API_URL;
+                const response = await axios.get(`${apiUrl}/task/project/${projectId}/task`); // 수정된 API URL 사용
                 const tasks = response.data;
                 this.processChartData(tasks);
             } catch (error) {

@@ -9,11 +9,12 @@
 import { Bar } from 'vue-chartjs'
 import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js'
 import axios from 'axios'
+import { useRoute } from 'vue-router' // 라우트 파라미터에 접근하기 위해 useRoute를 사용합니다.
 
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
 
 export default {
-    name: 'BarChartTaskStatus',
+    name: 'BarChartProjectTaskStatus',
     components: { Bar },
     data() {
         return {
@@ -33,9 +34,11 @@ export default {
     },
     methods: {
         async fetchTasks() {
-            const apiUrl = import.meta.env.VITE_API_URL;
+            const route = useRoute(); // 현재 라우트를 가져옵니다.
+            const projectId = route.params.id; // 라우트 파라미터에서 프로젝트 ID를 가져옵니다.
             try {
-                const response = await axios.get(`${apiUrl}/task/project/4/task`);
+                const apiUrl = import.meta.env.VITE_API_URL;
+                const response = await axios.get(`${apiUrl}/task/project/${projectId}/task`);
                 const tasks = response.data;
                 this.processChartData(tasks);
             } catch (error) {
@@ -51,11 +54,8 @@ export default {
             };
 
             const tasksPerStatus = tasks.reduce((acc, task) => {
-                const status = statusMapping[task.task_status];
-                if (!acc[status]) {
-                    acc[status] = 0;
-                }
-                acc[status]++;
+                const status = statusMapping[task.task_status] || task.task_status;
+                acc[status] = (acc[status] || 0) + 1;
                 return acc;
             }, {});
 
@@ -75,3 +75,4 @@ export default {
     }
 }
 </script>
+
