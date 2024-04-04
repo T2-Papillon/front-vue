@@ -17,7 +17,7 @@ export default {
         <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">{{ displayName }}</button>
         <ul class="dropdown-menu">
             <li>
-                <router-link to="/mypage" class="dropdown-item">{{ name }}</router-link>
+                <router-link to="'/mypage/${name}''" class="dropdown-item">{{ name }}</router-link>
             </li>
             <li>
                 <span class="dropdown-item">{{ dept }}</span>
