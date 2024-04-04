@@ -8,17 +8,20 @@ const PAGE_SIZE = 10
 export function useProjects() {
     const projects = ref([])
     const isLoading = ref(false)
-    const currentPage = ref(1) // 현재 페이지
-    const totalPages = ref(1) // 전체 페이지 수
+    const currentPage = ref(1)
+    const totalPages = ref(1)
     const searchQuery = ref('')
+    const filteredProjects = ref([]) // 검색 결과를 저장할 새로운 ref
 
+    // 전체 프로젝트 검색
     async function fetchProjects(searchTerm = '') {
         isLoading.value = true
         console.log('Fetching projects...')
+        searchQuery.value = searchTerm // 현재 검색어 업데이트
         try {
             const apiUrl = import.meta.env.VITE_API_URL
             const searchPath = searchTerm ? `/search/project?term=${searchTerm}` : '/project'
-            const pageSize = 10
+            const pageSize = PAGE_SIZE
 
             const response = await axios.get(`${apiUrl}${searchPath}`, {
                 params: {
@@ -36,6 +39,8 @@ export function useProjects() {
             }
 
             projects.value = response.data.map((project) => formatProjectData(project))
+            // 검색된 프로젝트를 filteredProjects에 저장
+            filteredProjects.value = projects.value
             // 직접 숫자를 사용하여 전체 페이지 수 계산
             totalPages.value = Math.ceil(response.data.totalCount / pageSize)
             console.log('Projects loaded:', projects.value)
@@ -99,30 +104,18 @@ export function useProjects() {
         }
     }
 
-    async function fetchProjectsByStatus(statusList) {
+    async function fetchProjectsByStatus(statusList, searchTerm = '') {
         isLoading.value = true
         try {
-            // 'all'이 선택된 경우 모든 프로젝트를 불러옵니다.
             if (statusList.includes('all')) {
-                const apiUrl = import.meta.env.VITE_API_URL
-                const response = await axios.get(`${apiUrl}/search/project`, {
-                    params: { term: '' } // 'all'이 선택된 경우, 모든 프로젝트를 가져오기 위해 빈 검색어를 전송
-                })
-                projects.value = response.data.map((project) => formatProjectData(project))
-                // 전체 페이지 수 계산
-                totalPages.value = Math.ceil(response.data.length / PAGE_SIZE)
+                // '전체'를 선택한 경우 모든 프로젝트를 다시 불러옴
+                await fetchProjects(searchTerm)
             } else {
-                const apiUrl = import.meta.env.VITE_API_URL
-                const statusId = statusList[0]
-                const response = await axios.get(`${apiUrl}/search`, {
-                    params: {
-                        projectStatusId: statusId,
-                        size: PAGE_SIZE // 여기서 PAGE_SIZE 사용
-                    }
-                })
-                projects.value = response.data.map((project) => formatProjectData(project))
-                // 전체 페이지 수 계산
-                totalPages.value = Math.ceil(response.data.length / PAGE_SIZE)
+                // 전체 프로젝트 목록을 먼저 불러온 후, 필터링을 수행
+                await fetchProjects(searchTerm)
+                const filteredProjectsByStatus = projects.value.filter((project) => statusList.includes(project.status))
+                projects.value = filteredProjectsByStatus // 필터링된 프로젝트를 저장
+                totalPages.value = Math.ceil(filteredProjectsByStatus.length / PAGE_SIZE)
             }
         } catch (error) {
             console.error('Error fetching projects by status:', error)
