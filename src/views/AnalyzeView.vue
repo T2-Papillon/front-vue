@@ -62,15 +62,6 @@ export default {
 
 <template>
     <div class="container">
-        <div class="row align-items-start justify-content-between g-3">
-            <div class="col-auto">
-                <div class="top-btn-area">
-                    <button class="btn btn-outline-dark me-4">대시보드</button>
-                    <button class="btn btn-dark">통계분석</button>
-                </div>
-            </div>
-        </div>
-
         <div class="row mt-4">
             <ProjectInfo :project="project" />
         </div>

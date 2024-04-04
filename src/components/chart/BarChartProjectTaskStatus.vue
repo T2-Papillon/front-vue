@@ -33,10 +33,13 @@ export default {
     },
     methods: {
         async fetchTasks() {
-            const apiUrl = import.meta.env.VITE_API_URL;
+            const projectId = route.params.id
             try {
-                const response = await axios.get(`${apiUrl}/task/project/4/task`);
+                const apiUrl = import.meta.env.VITE_API_URL;
+                const response = await axios.get(`${apiUrl}/task/project/${projectId}/task`);
                 const tasks = response.data;
+                project.value = response.data
+                projectNo.value = projectId
                 this.processChartData(tasks);
             } catch (error) {
                 console.error("Error fetching tasks from:", apiUrl, error);

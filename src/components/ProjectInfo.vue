@@ -36,7 +36,7 @@ export default {
         </div>
         <div class="col-auto">
             <div class="top-btn-area">
-                <button class="btn btn-dark">통계분석 바로가기</button>
+                <router-link :to="{ name: 'Analyze', params: { id: project.projNo }}" class="btn btn-dark">통계분석 바로가기</router-link>
             </div>
         </div>
     </div>
