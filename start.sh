@@ -11,7 +11,7 @@ npm run build
 
 # 생성된 빌드 파일의 소유자 변경
 sudo chown -R ubuntu:ubuntu dist
-# sudo chmod -R o+w  public
+sudo chmod -R o+w  public
 
 # ./gradlew bootJar
 
