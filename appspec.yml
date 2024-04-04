@@ -1,22 +1,25 @@
 version: 0.0
 os: linux
 files:
-  - source: /
-    destination: /home/ubuntu/app/papplan
-    overwrite: yes
+    - source: /
+      destination: /home/ubuntu/app/papplan
+      overwrite: yes
 
 permissions:
-  - object: /
-    pattern: "**"
-    owner: ubuntu
-    group: ubuntu
+    - object: /
+      pattern: '**'
+      owner: ubuntu
+      group: ubuntu
 
 hooks:
-  AfterInstall:
-    - location: stop.sh
-      timeout: 60
-      runas: ubuntu
-  ApplicationStart:
-    - location: start.sh
-      timeout: 60
-      runas: ubuntu
+    AfterInstall:
+        - location: stop.sh
+          timeout: 60
+          runas: ubuntu
+    ApplicationStart:
+        - location: create_env.sh
+          timeout: 60
+          runas: ubuntu
+        - location: start.sh
+          timeout: 60
+          runas: ubuntu
