@@ -5,7 +5,7 @@ cd /home/ubuntu/app/papplan
 # 터미널 로그 확인
 set -x
 
-sudo chmod -R o+w  public/favicon.ico
+sudo chmod -R +w  public/favicon.ico
 
 # vue 프로젝트 빌드
 npm install
