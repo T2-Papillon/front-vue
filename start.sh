@@ -3,6 +3,7 @@
 cd /home/ubuntu/app/papplan
 
 # vue 프로젝트 빌드
+npm install
 npm run build
 
 # 생성된 빌드 파일의 소유자 변경
