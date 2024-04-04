@@ -65,10 +65,6 @@ export default {
             } else {
                 await saveTask()
             }
-
-            if (task_test.value === 'true') {
-                postData.url = url.value
-            }
         }
 
         //글수정
@@ -82,12 +78,14 @@ export default {
                 return
             }
 
+            const currentTaskStatus = determineTaskStatus()
+
             try {
                 const postData = {
                     assignee: assignee.value,
                     proj_no: projectId,
                     task_title: task_title.value,
-                    task_status: task_status.value,
+                    task_status: currentTaskStatus,
                     task_priority: task_priority.value,
                     start_date: new Date(start_date.value).getTime(),
                     end_date: new Date(end_date.value).getTime(),
@@ -98,9 +96,14 @@ export default {
                     task_desc: task_desc.value
                 }
 
-                const response = await axios.post(`${apiUrl}/task/project/${projectId}/task/${taskId}`, postData)
+                // 업무 상태 변경 여부 확인
+                const status = determineTaskStatus()
 
-                handleApiResponse(response, projectId)
+                if (confirmTaskStatusChange(status)) {
+                    console.log(postData)
+                    const response = await axios.post(`${apiUrl}/task/project/${projectId}/task/${taskId}`, postData)
+                    handleApiResponse(response, projectId)
+                }
             } catch (error) {
                 console.error('데이터를 업데이트하는 데 실패했습니다.', error.response?.data || error)
                 alert('데이터 업데이트에 실패했습니다. 오류를 확인해주세요.')
@@ -114,11 +117,13 @@ export default {
                 const apiUrl = import.meta.env.VITE_API_URL
                 console.log('projectId:', projectId)
 
+                const currentTaskStatus = determineTaskStatus()
+
                 const postData = {
                     assignee: assignee.value,
                     proj_no: projectId,
                     task_title: task_title.value,
-                    task_status: task_status.value,
+                    task_status: currentTaskStatus,
                     task_priority: task_priority.value,
                     start_date: new Date(start_date.value).getTime(),
                     end_date: new Date(end_date.value).getTime(),
