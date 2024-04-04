@@ -4,13 +4,12 @@ import PieChart from '../components/chart/PieChart.vue'
 import TaskTable from '../components/TaskTable.vue'
 import ProjectTable from '../components/ProjectTable.vue'
 import { useProjects } from '@/composables/useProjects'
-import { ref, watch, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 
 const { projects, fetchProjects } = useProjects()
 
-onMounted(() => {
-    console.log('Component mounted, fetching projects...')
-    fetchProjects()
+onMounted(async () => {
+    await fetchProjects()
 })
 
 export default {
