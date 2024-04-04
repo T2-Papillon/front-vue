@@ -6,14 +6,14 @@ import ProjectInfo from '../components/ProjectInfo.vue'
 // import TaskTable from '../components/TaskTable.vue' // 추가 예정
 import BarChartProjectTaskStatus from '../components/chart/BarChartProjectTaskStatus.vue'
 import BarChartTaskAssignee from '../components/chart/BarChartTaskAssignee.vue'
-import BarChartTaskPriority from '../components/chart/BarChartTaskPriority.vue'
+import BarChartProjectTaskPriority from '../components/chart/BarChartProjectTaskPriority.vue'
 
 export default {
     components: {
         ProjectInfo,
         BarChartProjectTaskStatus,
         BarChartTaskAssignee,
-        BarChartTaskPriority
+        BarChartProjectTaskPriority
     },
     setup() {
         const project = ref({})
@@ -89,7 +89,7 @@ export default {
             </div>
             <div class="col">
                 <h3 class="h3">우선순위별 업무 분포</h3>
-                <BarChartTaskPriority />
+                <BarChartProjectTaskPriority />
             </div>
         </div>
     </div>
