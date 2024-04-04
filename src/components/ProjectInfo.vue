@@ -1,17 +1,18 @@
 <script>
+import { watch, ref } from 'vue' // watch와 ref를 가져옴
 import UserProfile from '../components/UserProfile.vue'
 import ProgressBar from '../components/ProgressBar.vue'
 import StatusBadge from '../components/StatusBadge.vue'
 import PriorityBadge from '../components/PriorityBadge.vue'
 import { formatDate } from '@/utils/dateUtils.js'
+import { formatProjectData } from '@/utils/projectUtils.js'
 
 export default {
     components: {
         UserProfile,
         ProgressBar,
         StatusBadge,
-        PriorityBadge,
-        formatDate
+        PriorityBadge
     },
     props: {
         project: {
@@ -19,13 +20,33 @@ export default {
             required: true
         }
     },
-    setup() {
+    setup(props) {
+        // 프로젝트 데이터 포맷팅
+        const formattedProject = ref(formatProjectData(props.project))
+        console.log('Formatted Project:', formattedProject.value)
+
+        // 참여자 정보 가져오기
+        const participants = ref(formattedProject.value.participants || [])
+        console.log('Participants:', participants.value)
+
+        // 새로운 프로젝트가 전달되면 다시 참여자 정보 업데이트
+        watch(
+            () => props.project,
+            () => {
+                formattedProject.value = formatProjectData(props.project)
+                participants.value = formattedProject.value.participants || []
+            }
+        )
+
         return {
-            formatDate
+            formatDate,
+            formattedProject,
+            participants
         }
     }
 }
 </script>
+
 <template>
     <div class="row align-items-center justify-content-between g-3 pb-4">
         <div class="col-auto">
@@ -65,11 +86,9 @@ export default {
             <tr>
                 <th>참여자</th>
                 <td>
-                    참여자 수정해야해수정해야해
-                    <!-- <div v-for="(participant, index) in formatParticipants(project.participants).visibleParticipants" :key="index">
-                        <UserProfile :name="participant" />
+                    <div>
+                        <UserProfile v-for="participant in participants" :key="participant.eno" :name="participant.name" />
                     </div>
-                    <span v-if="formatParticipants(project.participants).overflowCount > 0">...</span> -->
                 </td>
                 <th>프로젝트 상태</th>
                 <td><StatusBadge :status="project.projectStatus" /></td>
