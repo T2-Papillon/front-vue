@@ -1,5 +1,7 @@
 <script>
 import BarChartUserTaskStatus from '../components/chart/BarChartUserTaskStatus.vue'
+import BarChartUserTaskPriority from '../components/chart/BarChartUserTaskPriority.vue'
+import PieChartUserWeeklyProject from '../components/chart/PieChartUserWeeklyProject.vue'
 import PieChart from '../components/chart/PieChart.vue'
 import TaskTable from '../components/TaskTable.vue'
 import ProjectTable from '../components/ProjectTable.vue'
@@ -20,6 +22,8 @@ onMounted(() => {
 export default {
     components: {
         BarChartUserTaskStatus,
+        BarChartUserTaskPriority,
+        PieChartUserWeeklyProject,
         PieChart,
         TaskTable,
         ProjectTable
@@ -68,14 +72,14 @@ export default {
                     </div>
                     <div class="col-xl-6">
                         <h3 class="h3">나의 우선순위별 업무 분포</h3>
-                        <BarChart />
+                        <BarChartUserTaskPriority />
                     </div>
                 </div>
 
                 <div class="row mb-5">
                     <div class="col">
                         <h3 class="h3">나의 주간 참여 프로젝트 분포</h3>
-                        <PieChart />
+                        <PieChartUserWeeklyProject />
                     </div>
                 </div>
 
