@@ -73,19 +73,19 @@ export default {
             const taskId = route.params.taskId
             const apiUrl = import.meta.env.VITE_API_URL
 
-            // console.log('projectId: ', projectId, 'taskId : ', taskId)
-
             if (!projectId || !taskId) {
                 alert('Project ID or Task ID is missing.')
                 return
             }
+
+            const currentTaskStatus = determineTaskStatus()
 
             try {
                 const postData = {
                     assignee: assignee.value,
                     proj_no: projectId,
                     task_title: task_title.value,
-                    task_status: task_status.value,
+                    task_status: currentTaskStatus,
                     task_priority: task_priority.value,
                     start_date: new Date(start_date.value).getTime(),
                     end_date: new Date(end_date.value).getTime(),
@@ -96,13 +96,14 @@ export default {
                     task_desc: task_desc.value
                 }
 
-                console.log(projectId, taskId, postData)
+                // 업무 상태 변경 여부 확인
+                const status = determineTaskStatus()
 
-                console.log(1)
-                const response = await axios.post(`${apiUrl}/task/project/${projectId}/task/${taskId}`, postData)
-                console.log(response)
-
-                handleApiResponse(response, projectId)
+                if (confirmTaskStatusChange(status)) {
+                    console.log(postData)
+                    const response = await axios.post(`${apiUrl}/task/project/${projectId}/task/${taskId}`, postData)
+                    handleApiResponse(response, projectId)
+                }
             } catch (error) {
                 console.error('데이터를 업데이트하는 데 실패했습니다.', error.response?.data || error)
                 alert('데이터 업데이트에 실패했습니다. 오류를 확인해주세요.')
@@ -116,11 +117,13 @@ export default {
                 const apiUrl = import.meta.env.VITE_API_URL
                 console.log('projectId:', projectId)
 
+                const currentTaskStatus = determineTaskStatus()
+
                 const postData = {
                     assignee: assignee.value,
                     proj_no: projectId,
                     task_title: task_title.value,
-                    task_status: task_status.value,
+                    task_status: currentTaskStatus,
                     task_priority: task_priority.value,
                     start_date: new Date(start_date.value).getTime(),
                     end_date: new Date(end_date.value).getTime(),
@@ -132,7 +135,9 @@ export default {
 
                 // 업무 상태 변경 여부 확인
                 const status = determineTaskStatus()
+
                 if (confirmTaskStatusChange(status)) {
+                    console.log(postData)
                     const response = await axios.post(`${apiUrl}/task/project/${projectId}/task`, postData)
                     handleApiResponse(response, projectId)
                 }
@@ -160,11 +165,8 @@ export default {
             if (!response || !response.data) {
                 throw new Error('응답 객체 또는 응답 데이터가 유효하지 않습니다.')
             }
-            // 사용자에게 성공 알림을 표시
             alert('저장되었습니다.')
-            // 입력 필드를 초기화
             clearFields()
-            // 사용자를 프로젝트 상세 페이지로 리다이렉트
             router.push(`/project/detail/${projectId}`)
         }
 
