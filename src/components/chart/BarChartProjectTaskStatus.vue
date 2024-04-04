@@ -14,7 +14,7 @@ import { useRoute } from 'vue-router' // 라우트 파라미터에 접근하기 
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
 
 export default {
-    name: 'BarChartTaskStatus',
+    name: 'BarChartProjectTaskStatus',
     components: { Bar },
     data() {
         return {

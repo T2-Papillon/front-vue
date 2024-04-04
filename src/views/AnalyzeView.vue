@@ -71,6 +71,9 @@ export default {
                 <h3 class="h3">업무 진행 상태 분포</h3>
                 <BarChartProjectTaskStatus />
             </div>
+            <div class="col">
+                <h3 class="h3"></h3>
+            </div>
         </div>
 
         <div class="row mt-4">
