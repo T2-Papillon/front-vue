@@ -4,9 +4,13 @@ import PieChart from '../components/chart/PieChart.vue'
 import TaskTable from '../components/TaskTable.vue'
 import ProjectTable from '../components/ProjectTable.vue'
 import { useProjects } from '@/composables/useProjects'
-import { ref, watch, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 
 const { projects, fetchProjects } = useProjects()
+
+// 세션 스토리지에서 사용자 이름과 부서명 가져오기
+const username = sessionStorage.getItem('NM')
+const deptName = sessionStorage.getItem('DP')
 
 onMounted(() => {
     console.log('Component mounted, fetching projects...')
@@ -19,6 +23,17 @@ export default {
         PieChart,
         TaskTable,
         ProjectTable
+    },
+    setup() {
+        // 리액티브 프로퍼티로 선언
+        const usernameRef = ref(username)
+        const deptNameRef = ref(deptName)
+
+        return {
+            username: usernameRef,
+            deptName: deptNameRef,
+            projects
+        }
     }
 }
 </script>
@@ -29,8 +44,8 @@ export default {
                 <div class="profile">
                     <i class=""></i>
                     <div class="info">
-                        <p class="info-text">부서명</p>
-                        <h3 class="info-name">홍길동</h3>
+                        <p class="info-text">{{ deptName }}</p>
+                        <h3 class="info-name">{{ username }}</h3>
                     </div>
                 </div>
             </div>
