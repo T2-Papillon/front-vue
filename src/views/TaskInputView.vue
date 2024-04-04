@@ -60,6 +60,8 @@ export default {
         }
 
         async function saveOrUpdateTask() {
+            assignee.value = inputFieldValue.value
+
             if (isEditing.value) {
                 await updateTask()
             } else {
@@ -82,7 +84,7 @@ export default {
 
             try {
                 const postData = {
-                    assignee: assignee.value,
+                    assignee: inputFieldValue.value,
                     proj_no: projectId,
                     task_title: task_title.value,
                     task_status: currentTaskStatus,
@@ -120,7 +122,7 @@ export default {
                 const currentTaskStatus = determineTaskStatus()
 
                 const postData = {
-                    assignee: assignee.value,
+                    assignee: inputFieldValue.value,
                     proj_no: projectId,
                     task_title: task_title.value,
                     task_status: currentTaskStatus,
@@ -245,7 +247,7 @@ export default {
 
                     <div class="mb-3">
                         <label for="assignee" class="form-label">담당자</label>
-                        <input type="text" :value="inputFieldValue" class="form-control" id="assignee" disabled />
+                        <input type="text" :value="inputFieldValue" class="form-control" id="assignee" readonly />
                     </div>
 
                     <div class="d-flex mb-3">
