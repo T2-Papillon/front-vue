@@ -87,7 +87,7 @@ export default {
     position: relative;
     height: 280px;
     background-color: #dbf6eb;
-    background-image: url('../public/images/img-mypage.svg');
+    background-image: url('/public/images/img-mypage.svg');
     background-position: 100% 140%;
     background-repeat: no-repeat;
     background-size: 800px;
