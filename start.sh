@@ -5,6 +5,9 @@ cd /home/ubuntu/app/papplan
 # vue 프로젝트 빌드
 npm run build
 
+# 생성된 빌드 파일의 소유자 변경
+sudo chown -R ubuntu:ubuntu dist
+
 # ./gradlew bootJar
 
 sudo docker compose -f docker-compose.yml up -d --build --force-recreate
