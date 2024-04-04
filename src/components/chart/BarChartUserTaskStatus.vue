@@ -9,40 +9,37 @@
 import { Bar } from 'vue-chartjs'
 import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js'
 import axios from 'axios'
+import { ref, onMounted } from 'vue'
 
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
 
 export default {
-    name: 'PieChartTaskStatus',
+    name: 'TaskStatusByAssigneeChart',
     components: { Bar },
-    data() {
-        return {
-            chartData: null,
-            chartOptions: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
+    setup() {
+        const chartData = ref(null)
+        const chartOptions = {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
                 }
             }
         }
-    },
-    async mounted() {
-        await this.fetchTasks();
-    },
-    methods: {
-        async fetchTasks() {
+        const assigneeName = ref(sessionStorage.getItem('NM')) // 사용자 이름을 세션에서 가져옴
+
+        const fetchTasks = async () => {
             const apiUrl = import.meta.env.VITE_API_URL;
             try {
-                const response = await axios.get(`${apiUrl}/task/project/4/task`);
+                const response = await axios.get(`${apiUrl}/task/taskAll`);
                 const tasks = response.data;
-                this.processChartData(tasks);
+                processChartData(tasks);
             } catch (error) {
-                console.error("Error fetching tasks from:", apiUrl, error);
+                console.error("Error fetching tasks:", error);
             }
-        },
-        processChartData(tasks) {
+        }
+
+        const processChartData = (tasks) => {
             const statusMapping = {
                 'TODO': '진행예정',
                 'DOING': '진행중',
@@ -50,8 +47,11 @@ export default {
                 'HOLD': '보류'
             };
 
-            const tasksPerStatus = tasks.reduce((acc, task) => {
-                const status = statusMapping[task.task_status];
+            // 특정 assignee의 task만 필터링
+            const filteredTasks = tasks.filter(task => task.assignee === assigneeName.value);
+
+            const tasksPerStatus = filteredTasks.reduce((acc, task) => {
+                const status = statusMapping[task.task_status] || task.task_status; // 매핑된 상태 사용, 또는 기본 값
                 if (!acc[status]) {
                     acc[status] = 0;
                 }
@@ -59,11 +59,11 @@ export default {
                 return acc;
             }, {});
 
-            this.chartData = {
+            chartData.value = {
                 labels: Object.keys(tasksPerStatus),
                 datasets: [
                     {
-                        label: '업무 상태별 개수',
+                        label: `${assigneeName.value}님의 업무 상태별 개수`,
                         data: Object.values(tasksPerStatus),
                         backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)'],
                         borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)'],
@@ -71,6 +71,16 @@ export default {
                     }
                 ]
             };
+        }
+
+        onMounted(() => {
+            fetchTasks()
+        })
+
+        return {
+            chartData,
+            chartOptions,
+            assigneeName
         }
     }
 }

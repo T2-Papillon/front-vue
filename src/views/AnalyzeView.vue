@@ -4,14 +4,14 @@ import { useRoute } from 'vue-router'
 import axios from 'axios'
 import ProjectInfo from '../components/ProjectInfo.vue'
 // import TaskTable from '../components/TaskTable.vue' // 추가 예정
-import BarChartTaskStatus from '../components/BarChartTaskStatus.vue'
-import BarChartTaskAssignee from '../components/BarChartTaskAssignee.vue'
-import BarChartTaskPriority from '../components/BarChartTaskPriority.vue'
+import BarChartProjectTaskStatus from '../components/chart/BarChartProjectTaskStatus.vue'
+import BarChartTaskAssignee from '../components/chart/BarChartTaskAssignee.vue'
+import BarChartTaskPriority from '../components/chart/BarChartTaskPriority.vue'
 
 export default {
     components: {
         ProjectInfo,
-        BarChartTaskStatus,
+        BarChartProjectTaskStatus,
         BarChartTaskAssignee,
         BarChartTaskPriority
     },
@@ -78,7 +78,7 @@ export default {
         <div class="row mt-4">
             <div class="col">
                 <h3 class="h3">업무 진행 상태 분포</h3>
-                <BarChartTaskStatus />
+                <BarChartProjectTaskStatus />
             </div>
         </div>
 

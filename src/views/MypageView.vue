@@ -1,12 +1,18 @@
 <script>
-import BarChart from '../components/chart/BarChart.vue'
-import PieChart from '../components/chart/PieChart.vue'
+import BarChartUserTaskStatus from '../components/chart/BarChartUserTaskStatus.vue'
+import BarChartUserTaskPriority from '../components/chart/BarChartUserTaskPriority.vue'
+import PieChartUserProjectTask from '../components/chart/PieChartUserProjectTask.vue'
+import ChartWeeklyTask from '../components/chart/ChartWeeklyTask.vue'
 import TaskTable from '../components/TaskTable.vue'
 import ProjectTable from '../components/ProjectTable.vue'
 import { useProjects } from '@/composables/useProjects'
-import { ref, watch, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 
 const { projects, fetchProjects } = useProjects()
+
+// 세션 스토리지에서 사용자 이름과 부서명 가져오기
+const username = sessionStorage.getItem('NM')
+const deptName = sessionStorage.getItem('DP')
 
 onMounted(() => {
     console.log('Component mounted, fetching projects...')
@@ -15,10 +21,23 @@ onMounted(() => {
 
 export default {
     components: {
-        BarChart,
-        PieChart,
+        BarChartUserTaskStatus,
+        BarChartUserTaskPriority,
+        PieChartUserProjectTask,
+        ChartWeeklyTask,
         TaskTable,
         ProjectTable
+    },
+    setup() {
+        // 리액티브 프로퍼티로 선언
+        const usernameRef = ref(username)
+        const deptNameRef = ref(deptName)
+
+        return {
+            username: usernameRef,
+            deptName: deptNameRef,
+            projects
+        }
     }
 }
 </script>
@@ -29,8 +48,8 @@ export default {
                 <div class="profile">
                     <i class=""></i>
                     <div class="info">
-                        <p class="info-text">부서명</p>
-                        <h3 class="info-name">홍길동</h3>
+                        <p class="info-text">{{ deptName }}</p>
+                        <h3 class="info-name">{{ username }}</h3>
                     </div>
                 </div>
             </div>
@@ -49,25 +68,29 @@ export default {
                 <div class="row mb-5">
                     <div class="col-xl-6">
                         <h3 class="h3">나의 업무 진행 상태 분포</h3>
-                        <BarChart />
+                        <BarChartUserTaskStatus />
                     </div>
                     <div class="col-xl-6">
                         <h3 class="h3">나의 우선순위별 업무 분포</h3>
-                        <BarChart />
+                        <BarChartUserTaskPriority />
                     </div>
                 </div>
 
                 <div class="row mb-5">
                     <div class="col">
-                        <h3 class="h3">나의 주간 참여 프로젝트 분포</h3>
-                        <PieChart />
+                        <h3 class="h3">나의 참여 프로젝트 분포</h3>
+                        <PieChartUserProjectTask />
+                    </div>
+                    <div class="col-xl-6">
+                        <h3 class="h3">나의 주차별 업무 현황</h3>
+                        <ChartWeeklyTask />
                     </div>
                 </div>
 
                 <div class="row mb-5">
                     <div class="col">
                         <h3 class="h3">나의 전체 프로젝트 목록</h3>
-                        <ProjectTable :projects="projects" />
+                        <!-- <ProjectTable :projects="projects" /> -->
                     </div>
                 </div>
 
