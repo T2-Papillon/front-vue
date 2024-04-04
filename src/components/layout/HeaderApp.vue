@@ -27,7 +27,7 @@ export default {
         <div class="container container-xxl">
             <div class="d-flex align-items-center justify-content-between">
                 <h1 class="logo">
-                    <a href="/dashboard"><img src="/public/images/logo.svg" alt="boogle logo" /></a>
+                    <a href="/"><img src="/public/images/logo.svg" alt="boogle logo" /></a>
                 </h1>
 
                 <!-- 햄버거 메뉴 버튼 추가 -->
@@ -40,10 +40,13 @@ export default {
                         <!-- 로그인한 상태에서 보여줄 탭 -->
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0" v-if="userInfo">
                             <li class="nav-item">
-                                <router-link to="/project" class="nav-link">프로젝트</router-link>
+                                <router-link to="/project" class="nav-link">project</router-link>
                             </li>
                             <li class="nav-item">
                                 <router-link to="/analyze" class="nav-link">analyze</router-link>
+                            </li>
+                            <li class="nav-item">
+                                <router-link to="/mypage" class="nav-link">mypage</router-link>
                             </li>
                             <li>
                                 <div class="vertical-line"></div>
@@ -54,13 +57,7 @@ export default {
                                 </router-link>
                             </li>
                         </ul>
-
-                        <ul>
-                            <li>
-                                <router-link to="/mypage" class="nav-link">mypage 개인분석</router-link>
-                            </li>
-                        </ul>
-
+                        <div class="vertical-line" v-if="userInfo"></div>
                         <!-- 로그인한 상태에서 보여줄 UserProfile 드롭다운 -->
                         <ul class="me-auto mb-2 mb-lg-0" v-if="userInfo">
                             <li class="dropdown">

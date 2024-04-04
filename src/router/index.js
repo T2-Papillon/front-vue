@@ -45,7 +45,7 @@ const router = createRouter({
             props: true
         },
         {
-            path: '/dashboard',
+            path: '/',
             name: 'dashBoard',
             component: () => import('../views/DashboardView.vue'),
             beforeEnter: (to, from, next) => {
@@ -55,6 +55,11 @@ const router = createRouter({
                     next('/login')
                 }
             }
+        },
+        {
+            path: '/:pathMatch(.*)*',
+            name: 'NotFound',
+            component: () => import('../views/NotFound.vue')
         }
     ]
 })

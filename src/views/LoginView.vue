@@ -31,7 +31,7 @@ export default {
                         }
                         this.$cookies.set('user', userInfo)
                         this.setLoginInfo(res.data)
-                        this.$router.push('/dashboard').then(() => {
+                        this.$router.push('/').then(() => {
                             location.reload()
                         })
                     } else {
