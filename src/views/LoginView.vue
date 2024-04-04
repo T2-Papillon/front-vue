@@ -19,10 +19,13 @@ export default {
                 password: this.password
             }
             axios
-                .post(url, data, {
+                .post(
+                    url,
+                    data /*, {
                     'Content-Type': 'application/json',
                     'Access-Control-Allow-Credentials': true
-                })
+                }*/
+                )
                 .then((res) => {
                     if (res.status == 200) {
                         const userInfo = {
