@@ -2,6 +2,9 @@
 
 cd /home/ubuntu/app/papplan
 
+# 터미널 로그 확인
+set -x
+
 # vue 프로젝트 빌드
 npm install
 npm run build
