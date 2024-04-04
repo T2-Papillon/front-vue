@@ -1,14 +1,14 @@
-# vue npm build
-FROM node:20.11.0-alpine as build
+# # vue npm build
+# FROM node:20.11.0-alpine as build
 
-WORKDIR /app
+# WORKDIR /app
 
-COPY package.json /app/package.json
+# COPY package.json /app/package.json
 
-RUN npm install
+# RUN npm install
 
-COPY . /app
+# COPY . /app
 
-RUN npm run build
+# RUN npm run build
 
 
