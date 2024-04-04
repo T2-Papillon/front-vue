@@ -81,17 +81,11 @@ watch(
     { immediate: true }
 )
 const handleSelectedItems = (selectedItems) => {
-    // 중복 선택 방지를 위해 기존 선택된 항목들을 초기화합니다.
-    selectedCheckboxes.value = []
-
-    // 새롭게 선택된 항목만 저장합니다.
-    selectedCheckboxes.value.push(selectedItems[selectedItems.length - 1])
-
     // 선택된 항목을 기반으로 프로젝트를 필터링합니다.
     if (selectedItems.includes('all')) {
-        submitSearch()
+        fetchProjects(searchTerm.value, selectedItems) // '전체'를 선택한 경우 검색어와 함께 모든 프로젝트를 불러옴
     } else {
-        fetchProjectsByStatus(selectedItems)
+        fetchProjectsByStatus(selectedItems, searchTerm.value)
     }
 }
 </script>
