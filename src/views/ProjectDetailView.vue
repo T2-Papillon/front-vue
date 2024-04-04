@@ -21,6 +21,7 @@ export default {
         const tasks = ref([])
         const route = useRoute()
         const projectNo = ref(null)
+        const searchTerm = ref('')
 
         const checkboxItems = ref([
             { id: 'todo', name: '진행예정' },
@@ -90,6 +91,37 @@ export default {
             tasks.value = [...tasks.value]
         }
 
+        // 업무 검색하는 함수
+        // 업무 검색하는 함수
+        async function searchTasks() {
+            const projectId = route.params.id
+            const apiUrl = import.meta.env.VITE_API_URL
+
+            // 검색어가 비어있으면 전체 업무 목록을 가져옵니다.
+            if (!searchTerm.value.trim()) {
+                try {
+                    const response = await axios.get(`${apiUrl}/task/project/${projectId}/task`)
+                    tasks.value = response.data // 전체 업무 목록으로 태스크 리스트 업데이트
+                } catch (error) {
+                    console.error('전체 업무 목록 가져오기 실패:', error)
+                }
+            } else {
+                // 검색어가 있는 경우 검색을 수행합니다.
+                try {
+                    const response = await axios.get(`${apiUrl}/task/project/${projectId}/task/search`, {
+                        params: {
+                            term: searchTerm.value,
+                            page: 0,
+                            pageSize: 10
+                        }
+                    })
+                    tasks.value = response.data // 검색 결과로 태스크 리스트 업데이트
+                } catch (error) {
+                    console.error('업무 검색 실패:', error)
+                }
+            }
+        }
+
         return {
             project,
             tasks,
@@ -97,7 +129,9 @@ export default {
             projectNo,
             addNewTask,
             sortByLatest,
-            sortByPriority
+            sortByPriority,
+            searchTasks,
+            searchTerm
         }
     }
 }
@@ -129,8 +163,8 @@ export default {
                 <!-- <CheckboxSelector :items="checkboxItems" :selected="selectedCheckboxes" @change="handleSelectedItems" /> -->
             </div>
             <div class="col-auto d-flex">
-                <form class="d-flex me-4">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
+                <form class="d-flex me-4" @submit.prevent="searchTasks">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" v-model="searchTerm" />
                     <button class="btn btn-outline-success" type="submit"><i class="bi bi-search"></i></button>
                 </form>
 
@@ -143,7 +177,8 @@ export default {
         <div class="row">
             <div class="col">
                 <!-- <TaskTable :projectId="parseInt(projectNo)" :tasks="tasks" /> -->
-                <TaskTable :projectId="parseInt(projectNo)" :tasks="tasks" :addNewTask="addNewTask" />
+                <TaskTable v-if="tasks.length > 0" :projectId="parseInt(projectNo)" :tasks="tasks" :addNewTask="addNewTask" />
+                <p v-else>업무 데이터가 없습니다.</p>
             </div>
         </div>
     </div>
