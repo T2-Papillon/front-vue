@@ -3,7 +3,7 @@
 cd /home/ubuntu/app/papplan
 
 # 터미널 로그 확인
-set -x
+# set -x
 
 # vue 프로젝트 빌드
 npm install
@@ -17,4 +17,4 @@ npm run build
 
 # ./gradlew bootJar
 
-# sudo docker compose -f docker-compose.yml up -d --build --force-recreate
+sudo docker compose -f docker-compose.yml up -d --build --force-recreate
