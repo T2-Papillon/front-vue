@@ -6,29 +6,56 @@ import ProjectInfo from '../components/ProjectInfo.vue'
 import TaskTable from '../components/TaskTable.vue'
 import EditDeleteButtonGroup from '../components/EditDeleteButtonGroup.vue'
 import SortFilter from '@/components/SortFilter.vue'
-// import CheckboxSelector from '../components/CheckboxSelector.vue'
+import CheckboxSelector from '../components/CheckboxSelector.vue'
+import StatusBadge from '../components/StatusBadge.vue'
 
 export default {
     components: {
         ProjectInfo,
         TaskTable,
         SortFilter,
-        EditDeleteButtonGroup
-        // CheckboxSelector
+        EditDeleteButtonGroup,
+        CheckboxSelector,
+        StatusBadge
     },
     setup() {
         const project = ref({})
+        const allTasks = ref([])
         const tasks = ref([])
         const route = useRoute()
         const projectNo = ref(null)
         const searchTerm = ref('')
+        const selectedCheckboxes = ref(['all'])
 
         const checkboxItems = ref([
+            { id: 'all', name: '전체' },
             { id: 'todo', name: '진행예정' },
             { id: 'doing', name: '진행중' },
             { id: 'done', name: '완료' },
             { id: 'hold', name: '보류' }
         ])
+
+        // 선택된 체크박스에 따라 태스크를 필터링하는 함수
+        function applyFilters() {
+            console.log('현재 선택된 체크박스:', selectedCheckboxes.value)
+            if (selectedCheckboxes.value.includes('all')) {
+                tasks.value = allTasks.value
+            } else {
+                tasks.value = allTasks.value.filter((task) => {
+                    const taskStatusLowercase = task.task_status.toLowerCase() // 상태 값을 소문자로 변환
+                    console.log('태스크 상태:', taskStatusLowercase)
+                    return selectedCheckboxes.value.includes(taskStatusLowercase) // 소문자로 변환된 상태 값을 사용하여 비교
+                })
+            }
+        }
+
+        watch(selectedCheckboxes, applyFilters)
+
+        // 체크박스 선택 핸들러
+        function handleSelectedItems(updatedSelection) {
+            selectedCheckboxes.value = updatedSelection
+            applyFilters()
+        }
 
         // 프로젝트 상세 정보를 불러오는 함수
         async function fetchProjectDetail() {
@@ -50,7 +77,8 @@ export default {
             try {
                 const apiUrl = import.meta.env.VITE_API_URL
                 const response = await axios.get(`${apiUrl}/task/project/${projectId}/task`)
-                tasks.value = response.data
+                allTasks.value = response.data
+                applyFilters()
             } catch (error) {
                 console.error('프로젝트 태스크 데이터를 가져오는데 실패했습니다:', error)
             }
@@ -92,7 +120,6 @@ export default {
         }
 
         // 업무 검색하는 함수
-        // 업무 검색하는 함수
         async function searchTasks() {
             const projectId = route.params.id
             const apiUrl = import.meta.env.VITE_API_URL
@@ -131,7 +158,9 @@ export default {
             sortByLatest,
             sortByPriority,
             searchTasks,
-            searchTerm
+            searchTerm,
+            handleSelectedItems,
+            selectedCheckboxes
         }
     }
 }
@@ -160,7 +189,7 @@ export default {
         <div class="row align-items-start justify-content-between mb-4 g-3">
             <div class="col-auto">
                 <!-- 체크박스 -->
-                <!-- <CheckboxSelector :items="checkboxItems" :selected="selectedCheckboxes" @change="handleSelectedItems" /> -->
+                <CheckboxSelector :items="checkboxItems" :selected="selectedCheckboxes" @change="handleSelectedItems" />
             </div>
             <div class="col-auto d-flex">
                 <form class="d-flex me-4" @submit.prevent="searchTasks">
