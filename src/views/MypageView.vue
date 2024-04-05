@@ -68,7 +68,7 @@ export default {
                 <div class="row mb-5">
                     <div class="col-xl-6">
                         <h3 class="h3">나의 업무 진행 상태 분포</h3>
-                        <BarChartUserTaskStatus />
+                        <BarChartUserTaskStatus :assigneeName="profileName" />
                     </div>
                     <div class="col-xl-6">
                         <h3 class="h3">나의 우선순위별 업무 분포</h3>
