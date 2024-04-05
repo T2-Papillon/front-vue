@@ -45,8 +45,8 @@ export default {
 
                     task_title.value = taskData.task_title
                     assignee.value = taskData.assignee
-                    start_date.value = new Date(taskData.start_date).toISOString().substr(0, 10)
-                    end_date.value = new Date(taskData.end_date).toISOString().substr(0, 10)
+                    start_date.value = convertLocaleTime(taskData.start_date)
+                    end_date.value = convertLocaleTime(taskData.end_date)
                     task_status.value = taskData.task_status
                     task_priority.value = taskData.task_priority
                     task_percent.value = taskData.task_percent
@@ -160,6 +160,30 @@ export default {
                 return confirm(confirmMsg)
             }
             return true
+        }
+
+        // input date 포맷 함수
+        function convertLocaleTime(time) {
+            const newTime = new Date(time).toLocaleDateString('ko-KR', { timeZone: 'Asia/Seoul' })
+            let splitTime = newTime.split('. ')
+            let year = splitTime[0]
+            let month = splitTime[1]
+            let day = splitTime[2]
+
+            if (month.length === 1) {
+                month = '0' + month
+            }
+
+            if (day.length === 1) {
+                day = '0' + day
+            }
+            let formattedDate = year + '-' + month + '-' + day
+            if (formattedDate.endsWith('.')) {
+                formattedDate = formattedDate.slice(0, -1)
+            }
+            return formattedDate
+            //let date = new Date(parseInt(splitTime[0]), parseInt(splitTime[1]) - 1, parseInt(splitTime[2]))
+            //return date.toISOString().substring(0, 10)
         }
 
         // API 응답 처리 함수

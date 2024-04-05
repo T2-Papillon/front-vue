@@ -10,10 +10,10 @@ npm install
 npm run build
 
 # 생성된 빌드 파일의 소유자 변경
-sudo chown -R ubuntu:ubuntu dist
+# sudo chown -R ubuntu:ubuntu dist
 
 # public 디렉토리의 권한 변경
-sudo chmod -R +w public
+# sudo chmod -R +w public
 
 # ./gradlew bootJar
 
