@@ -147,7 +147,7 @@ export default {
         </div>
 
         <!-- 프로젝트 정보 -->
-        <ProjectInfo :project="project" />
+        <ProjectInfo :project="project" fromView="ProjectDetailView" />
 
         <!-- 정렬 -->
         <div class="row align-items-start justify-content-between mb-4 g-3 border-top" style="margin-top: 40px; padding-top: 80px">

@@ -62,6 +62,12 @@ const router = createRouter({
             name: 'Analyze',
             component: () => import('../views/AnalyzeView.vue'),
             props: true // 컴포넌트에 URL 파라미터를 props로 전달하도록 설정
+        },
+        {
+            path: '/project-detail/:id', // 프로젝트 상세 페이지 경로
+            name: 'ProjectDetail',
+            component: () => import('../views/ProjectDetailView.vue'),
+            props: true // URL의 :id 파라미터를 props로 컴포넌트에 전달
         }
     ]
 })

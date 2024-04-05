@@ -63,7 +63,7 @@ export default {
 <template>
     <div class="container">
         <div class="row mt-4">
-            <ProjectInfo :project="project" />
+            <ProjectInfo :project="project" fromView="AnalyzeView" />
         </div>
 
         <div class="row mt-4">
