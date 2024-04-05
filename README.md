@@ -2,7 +2,7 @@
 
 **효율적인 업무 관리를 위한 일정 관리 시스템**
 
--   Frontend URL : https://35.78.127.23:5174
+-   Frontend URL : http://35.78.127.23:5174
 
 ## Recommended IDE Setup
 
@@ -39,4 +39,4 @@ npm run lint
 ## CI/CD
 
 -   Github action + AWS CodeDeploy 이용
--   [URL](https://35.78.127.23:5174)
+-   [URL](http://35.78.127.23:5174)
