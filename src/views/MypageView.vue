@@ -21,7 +21,7 @@ export default {
     setup() {
         const route = useRoute()
         const profileName = ref(route.params.profileName) // URL에서 프로필 이름을 가져옵니다.
-        const profileDept = ref('') // 초기 부서 정보는 비어 있습니다.
+        // const profileDept = ref('') // 초기 부서 정보는 비어 있습니다.
 
         const { projects, fetchProjects } = useProjects()
 
@@ -29,13 +29,13 @@ export default {
             console.log(`Fetching projects and data for ${profileName.value}...`)
             fetchProjects()
             // 여기에서 userProfile 데이터 페치 로직을 추가합니다.
-            const userProfile = await fetchUserProfile(profileName.value)
-            profileDept.value = userProfile.dept // 부서 정보를 설정합니다.
+            // const userProfile = await fetchUserProfile(profileName.value)
+            // profileDept.value = userProfile.dept // 부서 정보를 설정합니다.
         })
 
         return {
             profileName, // userProfile 대신 profileName을 사용
-            profileDept, // 컴포넌트에 profileDept 추가
+            // profileDept, // 컴포넌트에 profileDept 추가
             projects
         }
     }
@@ -48,7 +48,7 @@ export default {
                 <div class="profile">
                     <i class=""></i>
                     <div class="info">
-                        <p class="info-text">{{ profileDept }}</p>
+                        <!-- <p class="info-text">{{ profileDept }}</p> -->
                         <h3 class="info-name">{{ profileName }}</h3>
                     </div>
                 </div>
@@ -59,7 +59,7 @@ export default {
                 <div class="row align-items-center justify-content-between g-3 pb-4">
                     <div class="col-auto">
                         <div class="title-area">
-                            <h2 class="h2">[개인통계]마이페이지 작업</h2>
+                            <h2 class="h2">[개인통계]마이페이지</h2>
                             <p class="text-body-tertiary lh-sm mb-3">testesttextext</p>
                         </div>
                     </div>
@@ -72,7 +72,7 @@ export default {
                     </div>
                     <div class="col-xl-6">
                         <h3 class="h3">나의 우선순위별 업무 분포</h3>
-                        <BarChartUserTaskPriority />
+                        <BarChartUserTaskPriority :assigneeName="profileName" />
                     </div>
                 </div>
 
@@ -97,7 +97,7 @@ export default {
                 <div class="row mb-5">
                     <div class="col-xl-6">
                         <h3 class="h3">나의 전체 업무 목록</h3>
-                        <TaskTable />
+                        <!-- <TaskTable /> -->
                     </div>
                 </div>
             </div>

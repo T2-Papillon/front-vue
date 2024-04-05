@@ -18,18 +18,18 @@ export default {
     name: 'BarChartUserTaskStatus',
     components: { Bar },
     props: {
-        assigneeName: String, // props로 assigneeName을 받습니다.
+        assigneeName: String // props로 assigneeName을 받습니다.
     },
     setup(props) {
         const chartData = ref(null);
         const isLoading = ref(false); // 로딩 상태 관리
         const chartOptions = {
-        responsive: true,
+            responsive: true,
             scales: {
                 y: {
-                    beginAtZero: true,
-                },
-            },
+                    beginAtZero: true
+                }
+            }
         };
 
         const fetchTasks = async () => {
@@ -86,7 +86,7 @@ export default {
         return {
             chartData,
             chartOptions,
-            isLoading,
+            isLoading
         };
     },
 };
