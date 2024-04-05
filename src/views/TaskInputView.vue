@@ -93,6 +93,7 @@ export default {
                     end_date: new Date(end_date.value).getTime(),
                     task_percent: task_percent.value,
                     task_test: task_test.value === 'true',
+                    task_test_url: task_test.value === 'true' ? url.value : null,
                     create_date: new Date().getTime(),
                     update_date: new Date().getTime(),
                     task_desc: task_desc.value
@@ -131,6 +132,7 @@ export default {
                     end_date: new Date(end_date.value).getTime(),
                     task_percent: task_percent.value,
                     task_test: task_test.value === 'true',
+                    task_test_url: task_test.value === 'true' ? url.value : null,
                     create_date: new Date().getTime(),
                     task_desc: task_desc.value
                 }
