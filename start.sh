@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+echo "HI"
+
 cd /home/ubuntu/app/papplan
 
 # 터미널 로그 확인
@@ -8,8 +10,8 @@ cd /home/ubuntu/app/papplan
 #sudo ln -s /root/.nvm/versions/node/v16.15.1/bin/yarn /usr/bin/yarn# 
 
 # vue 프로젝트 빌드
-/home/ubuntu/.nvm/versions/node/v20.11.0/bin/npm install
-/home/ubuntu/.nvm/versions/node/v20.11.0/bin/npm run build
+# /home/ubuntu/.nvm/versions/node/v20.11.0/bin/npm install
+# /home/ubuntu/.nvm/versions/node/v20.11.0/bin/npm run build
 
 # 생성된 빌드 파일의 소유자 변경
 # sudo chown -R ubuntu:ubuntu dist
