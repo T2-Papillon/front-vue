@@ -9,14 +9,17 @@
 import { Bar } from 'vue-chartjs'
 import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js'
 import axios from 'axios'
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
 
 export default {
     name: 'BarChartUserTaskPriority',
     components: { Bar },
-    setup() {
+    props: {
+        assigneeName: String // assigneeName을 prop으로 받습니다.
+    },
+    setup(props) {
         const chartData = ref(null)
         const chartOptions = {
             responsive: true,
@@ -29,20 +32,20 @@ export default {
                 }
             }
         }
-        const assigneeName = ref(sessionStorage.getItem('NM')) // Get logged-in user's name from session
 
+        // assigneeName에 따라 태스크를 가져오는 함수
         const fetchTasks = async () => {
             const apiUrl = import.meta.env.VITE_API_URL;
             try {
                 const response = await axios.get(`${apiUrl}/task/taskAll`);
                 const tasks = response.data;
-                processChartData(tasks);
+                processChartData(tasks, props.assigneeName);
             } catch (error) {
                 console.error("Error fetching tasks:", error);
             }
         }
 
-        const processChartData = (tasks) => {
+        const processChartData = (tasks, assigneeName) => {
             const priorityMapping = {
                 'LV0': '긴급',
                 'LV1': '높음',
@@ -51,7 +54,7 @@ export default {
             }
 
             // Filter tasks for the logged-in assignee and count by priority
-            const filteredTasks = tasks.filter(task => task.assignee === assigneeName.value);
+            const filteredTasks = tasks.filter(task => task.assignee === assigneeName);
 
             const tasksPerPriority = filteredTasks.reduce((acc, task) => {
                 const priority = priorityMapping[task.task_priority] || task.task_priority; // Use mapped priority or raw value
@@ -63,7 +66,7 @@ export default {
                 labels: Object.keys(tasksPerPriority),
                 datasets: [
                     {
-                        label: `${assigneeName.value}님의 우선순위별 업무 분포`,
+                        label: `${assigneeName}님의 우선순위별 업무 분포`,
                         data: Object.values(tasksPerPriority),
                         backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)'],
                         borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)'],
@@ -73,14 +76,12 @@ export default {
             };
         }
 
-        onMounted(() => {
-            fetchTasks()
-        })
+        onMounted(fetchTasks)
+        watch(() => props.assigneeName, fetchTasks) // assigneeName prop이 바뀔 때마다 fetchTasks 함수를 호출합니다.
 
         return {
             chartData,
-            chartOptions,
-            assigneeName
+            chartOptions
         }
     }
 }

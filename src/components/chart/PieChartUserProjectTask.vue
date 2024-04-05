@@ -6,104 +6,91 @@
 </template>
 
 <script>
-import { Pie } from 'vue-chartjs'
-import { Chart as ChartJS, Title, Tooltip, Legend, ArcElement } from 'chart.js'
-import axios from 'axios'
-import { ref, onMounted } from 'vue'
+import { Pie } from 'vue-chartjs';
+import { Chart as ChartJS, Title, Tooltip, Legend, ArcElement } from 'chart.js';
+import axios from 'axios';
+import { ref, onMounted, watch } from 'vue';
 
-ChartJS.register(Title, Tooltip, Legend, ArcElement)
+ChartJS.register(Title, Tooltip, Legend, ArcElement);
 
 export default {
-    name: 'PieChartUserWeeklyProject',
+    name: 'PieChartUserProjectTask',
     components: { Pie },
-    setup() {
-        const chartData = ref(null)
-        const chartOptions = { responsive: true }
-        const assigneeName = ref(sessionStorage.getItem('NM'))
+    props: {
+        assigneeName: String,
+    },
+    setup(props) {
+        const chartData = ref(null);
+        const chartOptions = { responsive: true };
 
         const fetchProjectsAndTasks = async () => {
             const apiUrl = import.meta.env.VITE_API_URL;
+            console.log("Fetching projects and tasks..."); // 디버깅: 데이터를 불러오기 시작
             try {
-                // 동시에 프로젝트와 태스크 데이터를 불러옵니다.
-                const [projectResponse, taskResponse] = await Promise.all([
-                    axios.get(`${apiUrl}/project`),
-                    axios.get(`${apiUrl}/task/taskAll`)
-                ]);
-                
-                // 디버깅
-                console.log('Projects data:', projectResponse.data);
-                console.log('Tasks data:', taskResponse.data);
+                const tasksResponse = await axios.get(`${apiUrl}/task/taskAll`);
+                console.log("Tasks fetched:", tasksResponse.data); // 디버깅: 태스크 데이터 로그
+                const tasks = tasksResponse.data;
 
-                const projects = projectResponse.data;
-                const tasks = taskResponse.data;
+                const projectsResponse = await axios.get(`${apiUrl}/project`);
+                console.log("Projects fetched:", projectsResponse.data); // 디버깅: 프로젝트 데이터 로그
+                const projects = projectsResponse.data;
 
-                // 프로젝트 번호와 이름의 매핑을 생성합니다.
                 const projectMapping = projects.reduce((acc, project) => {
                     acc[project.projNo] = project.projTitle;
                     return acc;
                 }, {});
-
-                // 디버깅
-                console.log('Project mapping:', projectMapping);
-
+                console.log("Project mapping:", projectMapping); // 디버깅: 프로젝트 매핑 로그
+            
                 processChartData(tasks, projectMapping);
+
             } catch (error) {
-                console.error("Error fetching data:", error);
+                console.error("Error fetching data:", error); // 디버깅: 에러 로그
             }
-        }
+        };
 
         const processChartData = (tasks, projectMapping) => {
-            console.log('Processing chart data...');
+            console.log(`Processing chart data for assignee: ${props.assigneeName}`); // 디버깅: 데이터 처리 시작
+            const filteredTasks = tasks.filter(task => task.assignee === props.assigneeName);
+            console.log("Filtered tasks:", filteredTasks); // 디버깅: 필터링된 태스크 로그
 
-            // 로그인한 사용자가 참여하는 태스크만 필터링합니다.
-            const userTasks = tasks.filter(task => task.assignee === assigneeName.value);
-            console.log(`Filtered tasks for assignee ${assigneeName.value}:`, userTasks);
-
-            // 프로젝트별 태스크 개수를 집계합니다.
-            const projectTaskCounts = userTasks.reduce((acc, task) => {
+            const projectTaskCounts = filteredTasks.reduce((acc, task) => {
                 const projectName = projectMapping[task.proj_no];
-                if (projectName) { // projectName이 존재하는 경우에만 집계
-                    acc[projectName] = (acc[projectName] || 0) + 1;
-                }
+                acc[projectName] = (acc[projectName] || 0) + 1;
                 return acc;
             }, {});
-
-            console.log('Project task counts:', projectTaskCounts);
+            console.log("Project task counts:", projectTaskCounts); // 디버깅: 프로젝트별 태스크 개수 로그
 
             chartData.value = {
                 labels: Object.keys(projectTaskCounts),
                 datasets: [{
-                    label: `${assigneeName.value}님의 주간 프로젝트 참여 분포`,
                     data: Object.values(projectTaskCounts),
-                        backgroundColor: [
-                            'rgba(255, 99, 132, 0.2)', 
-                            'rgba(54, 162, 235, 0.2)', 
-                            'rgba(255, 206, 86, 0.2)', 
-                            'rgba(75, 192, 192, 0.2)', 
-                            'rgba(153, 102, 255, 0.2)', 
-                            'rgba(255, 159, 64, 0.2)',
-                        ],
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)'
+                    // label: `${assigneeName}님의 주간 프로젝트 참여 분포`,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)',
                     ],
-                    borderWidth: 1
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)',
+                    ],
+                    borderWidth: 1,
                 }]
             };
-            console.log('Final chart data:', chartData.value);
-        }
+            console.log("Final chart data:", chartData.value); // 디버깅: 최종 차트 데이터 로그
+        };
 
         onMounted(fetchProjectsAndTasks);
+        watch(() => props.assigneeName, () => {
+            console.log(`Assignee name changed to: ${props.assigneeName}`); // 디버깅: assigneeName 변경 로그
+            fetchProjectsAndTasks();
+        });
 
         return {
             chartData,
             chartOptions,
-            assigneeName
-        }
-    }
-}
+        };
+    },
+};
 </script>

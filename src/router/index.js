@@ -9,14 +9,10 @@ const router = createRouter({
             component: () => import('../views/LoginView.vue')
         },
         {
-            path: '/analyze',
-            name: 'analyze',
-            component: () => import('../views/AnalyzeView.vue')
-        },
-        {
-            path: '/mypage',
+            path: '/mypage/:profileName',
             name: 'mypage',
-            component: () => import('../views/MypageView.vue')
+            component: () => import('../views/MypageView.vue'),
+            props: true // 컴포넌트에 URL 파라미터를 props로 전달
         },
         {
             path: '/search',
