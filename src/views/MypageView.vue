@@ -79,7 +79,7 @@ export default {
                 <div class="row mb-5">
                     <div class="col">
                         <h3 class="h3">나의 참여 프로젝트 분포</h3>
-                        <PieChartUserProjectTask />
+                        <PieChartUserProjectTask :assigneeName="profileName" />
                     </div>
                     <div class="col-xl-6">
                         <h3 class="h3">나의 주차별 업무 현황</h3>
