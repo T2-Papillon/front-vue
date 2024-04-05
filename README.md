@@ -37,6 +37,6 @@ npm run lint
 ```
 
 ## CI/CD
-
+![image](https://github.com/T2-Papillon/front-vue/assets/66417882/670ea2af-d070-4e04-9206-491f9998b8a3)
 -   Github action + AWS CodeDeploy 이용
 -   [URL](http://35.78.127.23:5174)
