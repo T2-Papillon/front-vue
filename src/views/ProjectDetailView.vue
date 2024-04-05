@@ -26,6 +26,7 @@ export default {
         const projectNo = ref(null)
         const searchTerm = ref('')
         const selectedCheckboxes = ref(['all'])
+        const isSearchMode = ref(false)
 
         const checkboxItems = ref([
             { id: 'all', name: '전체' },
@@ -37,24 +38,17 @@ export default {
 
         // 선택된 체크박스에 따라 태스크를 필터링하는 함수
         function applyFilters() {
-            console.log('현재 선택된 체크박스:', selectedCheckboxes.value)
-            if (selectedCheckboxes.value.includes('all')) {
-                tasks.value = allTasks.value
-            } else {
-                tasks.value = allTasks.value.filter((task) => {
-                    const taskStatusLowercase = task.task_status.toLowerCase() // 상태 값을 소문자로 변환
-                    console.log('태스크 상태:', taskStatusLowercase)
-                    return selectedCheckboxes.value.includes(taskStatusLowercase) // 소문자로 변환된 상태 값을 사용하여 비교
-                })
+            let filtered = allTasks.value
+            if (!selectedCheckboxes.value.includes('all')) {
+                filtered = filtered.filter((task) => selectedCheckboxes.value.includes(task.task_status.toLowerCase()))
             }
+            tasks.value = filtered
         }
-
-        watch(selectedCheckboxes, applyFilters)
+        watch([selectedCheckboxes, allTasks], applyFilters, { immediate: true })
 
         // 체크박스 선택 핸들러
         function handleSelectedItems(updatedSelection) {
             selectedCheckboxes.value = updatedSelection
-            applyFilters()
         }
 
         // 프로젝트 상세 정보를 불러오는 함수
@@ -98,6 +92,7 @@ export default {
 
         function addNewTask(newTask) {
             tasks.value.push(newTask)
+            applyFilters()
         }
 
         // 최신순으로 정렬하는 함수
@@ -121,31 +116,25 @@ export default {
 
         // 업무 검색하는 함수
         async function searchTasks() {
+            selectedCheckboxes.value = ['all']
+            isSearchMode.value = true // 검색 모드 활성화
+
             const projectId = route.params.id
             const apiUrl = import.meta.env.VITE_API_URL
 
             // 검색어가 비어있으면 전체 업무 목록을 가져옵니다.
-            if (!searchTerm.value.trim()) {
-                try {
-                    const response = await axios.get(`${apiUrl}/task/project/${projectId}/task`)
-                    tasks.value = response.data // 전체 업무 목록으로 태스크 리스트 업데이트
-                } catch (error) {
-                    console.error('전체 업무 목록 가져오기 실패:', error)
-                }
-            } else {
-                // 검색어가 있는 경우 검색을 수행합니다.
-                try {
-                    const response = await axios.get(`${apiUrl}/task/project/${projectId}/task/search`, {
-                        params: {
-                            term: searchTerm.value,
-                            page: 0,
-                            pageSize: 10
-                        }
-                    })
-                    tasks.value = response.data // 검색 결과로 태스크 리스트 업데이트
-                } catch (error) {
-                    console.error('업무 검색 실패:', error)
-                }
+            try {
+                const response = await axios.get(`${apiUrl}/task/project/${projectId}/task/search`, {
+                    params: {
+                        term: searchTerm.value,
+                        page: 0,
+                        pageSize: 10
+                    }
+                })
+                allTasks.value = response.data // 검색 결과 저장
+                applyFilters() // 필터링 적용
+            } catch (error) {
+                console.error('업무 검색 실패:', error)
             }
         }
 
@@ -160,7 +149,8 @@ export default {
             searchTasks,
             searchTerm,
             handleSelectedItems,
-            selectedCheckboxes
+            selectedCheckboxes,
+            isSearchMode
         }
     }
 }
