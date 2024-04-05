@@ -16,7 +16,11 @@ const props = defineProps({
     newTaskData: Object,
     addNewTask: Function,
     projectId: Number,
-    tasks: Array
+    tasks: Array,
+    isDashBoard: {
+        type: Boolean,
+        default: false // 기본값으로 false 설정
+    }
 })
 
 const tasks = ref(props.initialTasks)
@@ -55,7 +59,7 @@ watch(
 )
 
 onMounted(() => {
-    if (!props.initialTasks || props.initialTasks.length === 0) {
+    if (!props.isDashBoard) {
         fetchProjectTasks()
     }
 })
@@ -69,7 +73,7 @@ const openModal = (task) => {
 watch(
     () => props.initialTasks,
     () => {
-        fetchProjectTasks()
+        tasks.value = props.initialTasks
     }
 )
 
