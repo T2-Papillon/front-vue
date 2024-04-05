@@ -6,8 +6,8 @@ cd /home/ubuntu/app/papplan
 # set -x
 
 # vue 프로젝트 빌드
-npm install
-npm run build
+/home/ubuntu/.nvm/versions/node/v20.11.0/bin/npm install
+/home/ubuntu/.nvm/versions/node/v20.11.0/bin/npm run build
 
 # 생성된 빌드 파일의 소유자 변경
 # sudo chown -R ubuntu:ubuntu dist
