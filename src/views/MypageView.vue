@@ -7,17 +7,7 @@ import TaskTable from '../components/TaskTable.vue'
 import ProjectTable from '../components/ProjectTable.vue'
 import { useProjects } from '@/composables/useProjects'
 import { ref, onMounted } from 'vue'
-
-const { projects, fetchProjects } = useProjects()
-
-// 세션 스토리지에서 사용자 이름과 부서명 가져오기
-const username = sessionStorage.getItem('NM')
-const deptName = sessionStorage.getItem('DP')
-
-onMounted(() => {
-    console.log('Component mounted, fetching projects...')
-    fetchProjects()
-})
+import { useRoute } from 'vue-router'
 
 export default {
     components: {
@@ -29,13 +19,23 @@ export default {
         ProjectTable
     },
     setup() {
-        // 리액티브 프로퍼티로 선언
-        const usernameRef = ref(username)
-        const deptNameRef = ref(deptName)
+        const route = useRoute()
+        const profileName = ref(route.params.profileName) // URL에서 프로필 이름을 가져옵니다.
+        const profileDept = ref('') // 초기 부서 정보는 비어 있습니다.
+
+        const { projects, fetchProjects } = useProjects()
+
+        onMounted(async () => {
+            console.log(`Fetching projects and data for ${profileName.value}...`)
+            fetchProjects()
+            // 여기에서 userProfile 데이터 페치 로직을 추가합니다.
+            const userProfile = await fetchUserProfile(profileName.value)
+            profileDept.value = userProfile.dept // 부서 정보를 설정합니다.
+        })
 
         return {
-            username: usernameRef,
-            deptName: deptNameRef,
+            profileName, // userProfile 대신 profileName을 사용
+            profileDept, // 컴포넌트에 profileDept 추가
             projects
         }
     }
@@ -48,8 +48,8 @@ export default {
                 <div class="profile">
                     <i class=""></i>
                     <div class="info">
-                        <p class="info-text">{{ deptName }}</p>
-                        <h3 class="info-name">{{ username }}</h3>
+                        <p class="info-text">{{ profileDept }}</p>
+                        <h3 class="info-name">{{ profileName }}</h3>
                     </div>
                 </div>
             </div>

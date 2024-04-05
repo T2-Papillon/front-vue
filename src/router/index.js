@@ -10,7 +10,7 @@ const router = createRouter({
         },
         {
             path: '/mypage/:profileName',
-            name: 'Mypage',
+            name: 'mypage',
             component: () => import('../views/MypageView.vue'),
             props: true // 컴포넌트에 URL 파라미터를 props로 전달
         },
