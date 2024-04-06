@@ -57,7 +57,7 @@ export default {
         </div>
         <div class="col-auto">
             <div class="top-btn-area">
-                <router-link :to="{ name: 'Analyze', params: { id: project.projNo }}" class="btn btn-dark">통계분석 바로가기</router-link>
+                <router-link :to="{ name: 'Analyze', params: { id: project.projNo } }" class="btn btn-dark">통계분석 바로가기</router-link>
             </div>
         </div>
     </div>
@@ -145,5 +145,9 @@ export default {
     font-size: 14px;
     color: #333;
     line-height: 1.8;
+}
+.btn {
+    display: flex;
+    align-items: center;
 }
 </style>
