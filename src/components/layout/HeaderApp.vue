@@ -14,8 +14,20 @@ export default {
         }
     },
     mounted() {
-        if (globalInfo.UserInfo.name != null) {
-            this.name = globalInfo.UserInfo.name
+        this.fetchUserInfo()
+    },
+    methods: {
+        fetchUserInfo() {
+            const userInfo = globalInfo.UserInfo
+
+            if (userInfo && userInfo.name) {
+                this.userInfo = {
+                    name: userInfo.name,
+                    dept: userInfo.dept
+                }
+            } else {
+                this.userInfo = null
+            }
         }
     }
 }
@@ -40,11 +52,11 @@ export default {
                             <li class="nav-item">
                                 <router-link to="/project" class="nav-link">project</router-link>
                             </li>
-                            <li class="nav-item">
+                            <!-- <li class="nav-item">
                                 <router-link to="/analyze" class="nav-link">analyze</router-link>
-                            </li>
+                            </li> -->
                             <li class="nav-item">
-                                <router-link to="/mypage" class="nav-link">mypage</router-link>
+                                <router-link :to="`/mypage/${userInfo.name}`" class="nav-link">mypage</router-link>
                             </li>
                             <li>
                                 <div class="vertical-line"></div>
