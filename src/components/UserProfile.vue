@@ -1,4 +1,7 @@
 <script scoped>
+import router from '@/router'
+import { nextTick } from 'vue'
+
 export default {
     props: ['name', 'dept'],
     computed: {
@@ -7,6 +10,17 @@ export default {
                 return this.name[0]
             } else {
                 return this.name
+            }
+        },
+        checkSession() {
+            return sessionStorage.getItem('NM') === this.name
+        }
+    },
+    methods: {
+        logout() {
+            if (confirm('로그아웃 하시겠습니까?')) {
+                sessionStorage.clear()
+                router.push('/login')
             }
         }
     }
@@ -19,7 +33,7 @@ export default {
             <li>
                 <router-link :to="`/mypage/${name}`" class="dropdown-item">{{ dept }} / {{ name }}</router-link>
             </li>
-            <li><a class="dropdown-item" href="#">로그아웃</a></li>
+            <li class="dropdown-item" style="cursor: pointer" v-show="checkSession" v-on:click="logout">로그아웃</li>
         </ul>
     </div>
 </template>
