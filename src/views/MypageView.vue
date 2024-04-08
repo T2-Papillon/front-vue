@@ -26,8 +26,6 @@ export default {
         const { projects, fetchProjects } = useProjects()
         const filteredProjects = ref([]) // 필터링된 프로젝트를 저장할 새로운 반응형 참조
 
-        const tasks = ref([])
-
         onMounted(async () => {
             console.log(`Fetching projects and data for ${profileName.value}...`)
             await fetchProjects()
