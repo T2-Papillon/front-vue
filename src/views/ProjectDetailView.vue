@@ -1,20 +1,20 @@
 <script>
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted, watch, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import axios from 'axios'
 import ProjectInfo from '../components/ProjectInfo.vue'
 import TaskTable from '../components/TaskTable.vue'
 import EditDeleteButtonGroup from '../components/EditDeleteButtonGroup.vue'
 import SortFilter from '@/components/SortFilter.vue'
-// import CheckboxSelector from '../components/CheckboxSelector.vue'
+import CheckboxSelector from '../components/CheckboxSelector.vue'
 
 export default {
     components: {
         ProjectInfo,
         TaskTable,
         SortFilter,
-        EditDeleteButtonGroup
-        // CheckboxSelector
+        EditDeleteButtonGroup,
+        CheckboxSelector
     },
     setup() {
         const project = ref({})
@@ -22,13 +22,38 @@ export default {
         const route = useRoute()
         const projectNo = ref(null)
         const searchTerm = ref('')
+        const selectedCheckboxes = ref(['all'])
 
         const checkboxItems = ref([
+            { id: 'all', name: '전체' },
             { id: 'todo', name: '진행예정' },
             { id: 'doing', name: '진행중' },
             { id: 'done', name: '완료' },
             { id: 'hold', name: '보류' }
         ])
+
+        watch(selectedCheckboxes, () => {
+            filterTasks()
+        })
+
+        const filteredTasks = computed(() => {
+            // 'all'이 선택된 경우 모든 업무 반환
+            if (selectedCheckboxes.value.includes('all')) {
+                return tasks.value
+            } else {
+                // 선택된 체크박스에 따라 업무 필터링
+                return tasks.value.filter((task) => task.task_status && selectedCheckboxes.value.includes(task.task_status.toLowerCase()))
+            }
+        })
+
+        function filterTasks() {
+            console.log('Filtering tasks based on: ', selectedCheckboxes.value)
+            // 여기에 필터링 로직을 구현하거나, 필요에 따라 API 호출을 통해 서버에서 필터링을 수행할 수 있습니다.
+        }
+
+        function handleSelectedItems(newSelection) {
+            selectedCheckboxes.value = newSelection
+        }
 
         // 프로젝트 상세 정보를 불러오는 함수
         async function fetchProjectDetail() {
@@ -92,7 +117,6 @@ export default {
         }
 
         // 업무 검색하는 함수
-        // 업무 검색하는 함수
         async function searchTasks() {
             const projectId = route.params.id
             const apiUrl = import.meta.env.VITE_API_URL
@@ -120,6 +144,7 @@ export default {
                     console.error('업무 검색 실패:', error)
                 }
             }
+            selectedCheckboxes.value = ['all']
         }
 
         return {
@@ -131,7 +156,10 @@ export default {
             sortByLatest,
             sortByPriority,
             searchTasks,
-            searchTerm
+            searchTerm,
+            selectedCheckboxes,
+            handleSelectedItems,
+            filteredTasks
         }
     }
 }
@@ -160,7 +188,7 @@ export default {
         <div class="row align-items-start justify-content-between mb-4 g-3">
             <div class="col-auto">
                 <!-- 체크박스 -->
-                <!-- <CheckboxSelector :items="checkboxItems" :selected="selectedCheckboxes" @change="handleSelectedItems" /> -->
+                <CheckboxSelector :items="checkboxItems" :selected="selectedCheckboxes" @change="handleSelectedItems" />
             </div>
             <div class="col-auto d-flex">
                 <form class="d-flex me-4" @submit.prevent="searchTasks">
@@ -177,7 +205,7 @@ export default {
         <div class="row">
             <div class="col">
                 <!-- <TaskTable :projectId="parseInt(projectNo)" :tasks="tasks" /> -->
-                <TaskTable v-if="tasks.length > 0" :projectId="parseInt(projectNo)" :tasks="tasks" :addNewTask="addNewTask" />
+                <TaskTable v-if="tasks.length > 0" :projectId="parseInt(projectNo)" :tasks="filteredTasks" :addNewTask="addNewTask" />
                 <p v-else>업무 데이터가 없습니다.</p>
             </div>
         </div>

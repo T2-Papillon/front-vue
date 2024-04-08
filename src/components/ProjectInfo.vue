@@ -154,4 +154,8 @@ export default {
     color: #333;
     line-height: 1.8;
 }
+.btn {
+    display: flex;
+    align-items: center;
+}
 </style>
