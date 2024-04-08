@@ -3,7 +3,7 @@ name: Deploy2aws 🚀
 on:
     push:
         branches:
-            - task_edit_date_v1.0.1/choi
+            - dev
     pull_request:
         types:
             - closed
@@ -17,16 +17,21 @@ jobs:
             - name: Checkout
               uses: actions/checkout@v3
 
-            # - name: Set up Node.js
-            #   uses: actions/setup-node@v2
-            #   with:
-            #       node-version: '20.11.0'
+            - name: Set up Node.js
+              uses: actions/setup-node@v3
+              with:
+                  node-version: '20.11.0'
 
-            # - name: Install dependencies
-            #   run: npm install
+            - name: Create .env.production file
+              run: |
+                  echo "VITE_APP_TITLE=production" > .env.production && \
+                  echo "VITE_API_URL=${{ secrets.VITE_API_URL }}" >> .env.production
 
-            # - name: Build Vue project
-            #   run: npm run build
+            - name: Install dependencies
+              run: npm install
+
+            - name: Build Vue project
+              run: npm run build
 
             # AWS 인증 (IAM 사용자 Access Key, Secret Key 활용)
             - name: Configure AWS credentials
