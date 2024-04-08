@@ -24,10 +24,15 @@ export default {
         // const profileDept = ref('') // 초기 부서 정보는 비어 있습니다.
 
         const { projects, fetchProjects } = useProjects()
+        const filteredProjects = ref([]) // 필터링된 프로젝트를 저장할 새로운 반응형 참조
+
+        const tasks = ref([])
 
         onMounted(async () => {
             console.log(`Fetching projects and data for ${profileName.value}...`)
-            fetchProjects()
+            await fetchProjects()
+            filteredProjects.value = projects.value.filter(project =>
+                project.participants.some(participant => participant.name === profileName.value))
             // 여기에서 userProfile 데이터 페치 로직을 추가합니다.
             // const userProfile = await fetchUserProfile(profileName.value)
             // profileDept.value = userProfile.dept // 부서 정보를 설정합니다.
@@ -36,7 +41,7 @@ export default {
         return {
             profileName, // userProfile 대신 profileName을 사용
             // profileDept, // 컴포넌트에 profileDept 추가
-            projects
+            projects: filteredProjects // 수정된 부분: 필터링된 프로젝트 데이터를 전달
         }
     }
 }
@@ -60,7 +65,7 @@ export default {
                     <div class="col-auto">
                         <div class="title-area">
                             <h2 class="h2">[개인통계]마이페이지</h2>
-                            <p class="text-body-tertiary lh-sm mb-3">testesttextext</p>
+                            <p class="text-body-tertiary lh-sm mb-3">{{ profileName }}님의 마이페이지 입니다.</p>
                         </div>
                     </div>
                 </div>
@@ -90,14 +95,14 @@ export default {
                 <div class="row mb-5">
                     <div class="col">
                         <h3 class="h3">나의 전체 프로젝트 목록</h3>
-                        <!-- <ProjectTable :projects="projects" /> -->
+                        <ProjectTable :projects="filteredprojects" />
                     </div>
                 </div>
 
                 <div class="row mb-5">
                     <div class="col-xl-6">
                         <h3 class="h3">나의 전체 업무 목록</h3>
-                        <!-- <TaskTable /> -->
+                        <TaskTable :tasks="tasks" :isDashBoard="false" />
                     </div>
                 </div>
             </div>
