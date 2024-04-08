@@ -3,7 +3,7 @@ name: Deploy2aws 🚀
 on:
     push:
         branches:
-            - dev
+            - task_edit_date_v1.0.1/choi
     pull_request:
         types:
             - closed

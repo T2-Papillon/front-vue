@@ -109,7 +109,7 @@ dashboardData()
                             <h3 class="card-title mb-4">담당 업무 목록</h3>
                             <div class="card-text">
                                 <div class="overflow-auto">
-                                    <TaskTable :initialTasks="tasks" />
+                                    <TaskTable :initialTasks="tasks" :isDashBoard="true" />
                                 </div>
                             </div>
                         </div>
