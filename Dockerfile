@@ -1,16 +1,14 @@
 # # vue npm build
 # FROM node:20.11.0-alpine as build
 
-# build stage
-FROM node:20.11.0-alpine as build-stage
-COPY package*.json ./
-RUN npm install 
-COPY . .
-RUN npm run build
+# WORKDIR /app
 
-# production stage
-FROM nginx:stable-alpine as production-stage
-COPY --from=build-stage /app/dist /usr/share/nginx/html
+# COPY package.json /app/package.json
 
-# CMD ["nginx", "-g", "daemon off;"]
+# RUN npm install
+
+# COPY . /app
+
+# RUN npm run build
+
 
