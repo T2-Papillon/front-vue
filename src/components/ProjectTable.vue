@@ -16,6 +16,11 @@ const formatParticipants = (participants) => {
 
     return { visibleParticipants, overflowCount }
 }
+
+const findPMDepartment = (pmName, participants) => {
+    const pm = participants.find((participant) => participant.name === pmName)
+    return pm ? pm.dept_no : null
+}
 </script>
 
 <template>
@@ -50,7 +55,7 @@ const formatParticipants = (participants) => {
                     <router-link :to="`/project/detail/${project.id}`" class="tb-project-title">{{ project.title }}</router-link>
                 </td>
                 <td>
-                    <UserProfile v-for="pm in project.pm" :key="pm" :name="pm" />
+                    <UserProfile v-for="pmName in project.pm" :key="pmName" :name="pmName" :dept="findPMDepartment(pmName, project.participants)" />
                 </td>
                 <td>{{ project.startDate }}</td>
                 <td>{{ project.endDate }}</td>
