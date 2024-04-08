@@ -26,6 +26,8 @@ export default {
         const { projects, fetchProjects } = useProjects()
         const filteredProjects = ref([]) // 필터링된 프로젝트를 저장할 새로운 반응형 참조
 
+        const tasks = ref([])
+
         onMounted(async () => {
             console.log(`Fetching projects and data for ${profileName.value}...`)
             await fetchProjects()
@@ -85,7 +87,7 @@ export default {
                         <PieChartUserProjectTask :assigneeName="profileName" />
                     </div>
                     <div class="col-xl-6">
-                        <h3 class="h3">나의 주차별 업무 현황</h3>
+                        <!-- <h3 class="h3">나의 주차별 업무 현황</h3> -->
                         <ChartWeeklyTask />
                     </div>
                 </div>
@@ -93,14 +95,14 @@ export default {
                 <div class="row mb-5">
                     <div class="col">
                         <h3 class="h3">나의 전체 프로젝트 목록</h3>
-                        <ProjectTable :projects="filteredprojects" />
+                        <ProjectTable :projects="projects" />
                     </div>
                 </div>
 
                 <div class="row mb-5">
                     <div class="col-xl-6">
-                        <h3 class="h3">나의 전체 업무 목록</h3>
-                        <TaskTable :tasks="tasks" :isDashBoard="false" />
+                        <!-- <h3 class="h3">나의 전체 업무 목록</h3>
+                        <TaskTable :tasks="tasks" :isDashBoard="false" /> -->
                     </div>
                 </div>
             </div>
