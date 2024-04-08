@@ -11,7 +11,7 @@ on:
 jobs:
     deploy:
         #    if: github.event.pull_request.merged == true
-        environment: deploy_fix_v1.0.1/choi
+        environment: dev
         runs-on: ubuntu-latest
         steps:
             - name: Checkout
