@@ -43,14 +43,7 @@ const router = createRouter({
         {
             path: '/',
             name: 'dashBoard',
-            component: () => import('../views/DashboardView.vue'),
-            beforeEnter: (to, from, next) => {
-                if (sessionStorage.getItem('NM') != null) {
-                    next()
-                } else {
-                    next('/login')
-                }
-            }
+            component: () => import('../views/DashboardView.vue')
         },
         {
             path: '/:pathMatch(.*)*',
@@ -71,5 +64,14 @@ const router = createRouter({
         }
     ]
 })
+
+router.beforeEnter(to, from, next) {
+    if (sessionStorage.getItem('NM') != null) {
+        next()
+    } else {
+        alert("로그인 정보가 없습니다.")
+        next('/login')
+    }
+}
 
 export default router
