@@ -1,5 +1,5 @@
 <script>
-import { watch, ref } from 'vue' // watch와 ref를 가져옴
+import { watch, ref } from 'vue'
 import UserProfile from '../components/UserProfile.vue'
 import ProgressBar from '../components/ProgressBar.vue'
 import StatusBadge from '../components/StatusBadge.vue'
@@ -19,7 +19,6 @@ export default {
             type: Object,
             required: true
         },
-        // 새로운 prop 추가(ProjectDetailView.vue에서 보여줄 때와 AnalyzeView.vue에서 보여줄 때 버튼의 텍스트와 기능이 다르도록 설정)
         fromView: {
             type: String,
             required: false,
@@ -35,7 +34,6 @@ export default {
         const participants = ref(formattedProject.value.participants || [])
         console.log('Participants:', participants.value)
 
-        // 새로운 프로젝트가 전달되면 다시 참여자 정보 업데이트
         watch(
             () => props.project,
             () => {
@@ -64,8 +62,8 @@ export default {
         <div class="col-auto">
             <div class="top-btn-area">
                 <!-- 조건부 렌더링을 사용하여 다른 버튼 표시 -->
-                <router-link v-if="fromView === 'ProjectDetailView'" :to="{ name: 'Analyze', params: { id: project.projNo }}" class="btn btn-dark">통계분석 바로가기</router-link>
-                <router-link v-else-if="fromView === 'AnalyzeView'" :to="{ name: 'ProjectDetail', params: { id: project.projNo }}" class="btn btn-dark">프로젝트 상세보기</router-link>
+                <router-link v-if="fromView === 'ProjectDetailView'" :to="{ name: 'Analyze', params: { id: project.projNo } }" class="btn btn-dark">통계분석 바로가기</router-link>
+                <router-link v-else-if="fromView === 'AnalyzeView'" :to="{ name: 'ProjectDetail', params: { id: project.projNo } }" class="btn btn-dark">프로젝트 상세보기</router-link>
             </div>
         </div>
     </div>

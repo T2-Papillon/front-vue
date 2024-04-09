@@ -11,7 +11,8 @@ export function useProjects() {
     const currentPage = ref(1)
     const totalPages = ref(1)
     const searchQuery = ref('')
-    const filteredProjects = ref([]) // 검색 결과를 저장할 새로운 ref
+    const filteredProjects = ref([])
+    const apiUrl = import.meta.env.VITE_API_URL
 
     // 전체 프로젝트 검색
     async function fetchProjects(searchTerm = '') {
@@ -19,7 +20,6 @@ export function useProjects() {
         console.log('Fetching projects...')
         searchQuery.value = searchTerm // 현재 검색어 업데이트
         try {
-            const apiUrl = import.meta.env.VITE_API_URL
             const searchPath = searchTerm ? `/search/project?term=${searchTerm}` : '/project'
             const pageSize = PAGE_SIZE
 
@@ -58,22 +58,21 @@ export function useProjects() {
 
         currentPage.value = page
 
-        // 페이지가 마지막 페이지인 경우 다음 버튼 비활성화
         const isNextButtonEnabled = currentPage.value < totalPages.value
         if (!isNextButtonEnabled) {
             console.log('마지막 페이지입니다. 다음 버튼이 비활성화됩니다.')
         }
 
-        // currentPage 값을 변경한 후에 프로젝트를 다시 불러옵니다.
         await fetchProjects()
     }
 
     async function fetchProjectsForUser() {
         isLoading.value = true
-        const eno = sessionStorage.getItem('EN') // 로그인한 사용자의 사번 불러오기
+        const eno = sessionStorage.getItem('EN')
         try {
-            const apiUrl = `${import.meta.env.VITE_API_URL}/dashboard/emp/${eno}/projects`
-            const response = await axios.get(apiUrl)
+            const userProjectsUrl = `${apiUrl}/dashboard/emp/${eno}/projects`
+            const response = await axios.get(userProjectsUrl)
+
             projects.value = response.data.map((project) => formatProjectData(project))
             console.log('User-specific projects loaded:', projects.value)
         } catch (error) {
@@ -108,10 +107,8 @@ export function useProjects() {
         isLoading.value = true
         try {
             if (statusList.includes('all')) {
-                // '전체'를 선택한 경우 모든 프로젝트를 다시 불러옴
                 await fetchProjects(searchTerm)
             } else {
-                // 전체 프로젝트 목록을 먼저 불러온 후, 필터링을 수행
                 await fetchProjects(searchTerm)
                 const filteredProjectsByStatus = projects.value.filter((project) => statusList.includes(project.status))
                 projects.value = filteredProjectsByStatus // 필터링된 프로젝트를 저장
@@ -124,6 +121,7 @@ export function useProjects() {
         }
     }
 
+    // 최신순
     function sortByLatest() {
         console.log('Sorting by latest')
         projects.value.sort((a, b) => {
@@ -133,9 +131,10 @@ export function useProjects() {
         projects.value = [...projects.value]
     }
 
+    //우선순위순
     function sortByPriority() {
         console.log('Sorting by priority')
-        const priorityOrder = { LV0: 0, LV1: 1, LV2: 2, LV3: 3 } // 우선순위 숫자로 매핑
+        const priorityOrder = { LV0: 0, LV1: 1, LV2: 2, LV3: 3 }
         projects.value.sort((a, b) => {
             const priorityA = priorityOrder[a.priority] ?? Number.MAX_SAFE_INTEGER
             const priorityB = priorityOrder[b.priority] ?? Number.MAX_SAFE_INTEGER
@@ -145,5 +144,21 @@ export function useProjects() {
         projects.value = [...projects.value]
     }
 
-    return { projects, fetchProjects, fetchProjectsForUser, fetchProjectsByStatus, sortByLatest, sortByPriority, isLoading, currentPage, totalPages, searchQuery, changePage, searchProjects }
+    async function updateProjectProgress(projectId, newProgress) {
+        try {
+            const updateUrl = `${apiUrl}/project/${projectId}/updateProgress`
+            await axios.post(updateUrl, { progress: newProgress })
+            console.log('프로젝트 진도율이 성공적으로 업데이트되었습니다.')
+
+            const projectIndex = projects.value.findIndex((project) => project.id === projectId)
+            if (projectIndex !== -1) {
+                projects.value[projectIndex].progress = newProgress
+            }
+            console.log('프로젝트 진도율이 성공적으로 업데이트되었습니다.')
+        } catch (error) {
+            console.error('프로젝트 진도율 업데이트 중 오류가 발생했습니다:', error)
+        }
+    }
+
+    return { projects, fetchProjects, fetchProjectsForUser, fetchProjectsByStatus, sortByLatest, sortByPriority, updateProjectProgress, isLoading, currentPage, totalPages, searchQuery, changePage, searchProjects }
 }

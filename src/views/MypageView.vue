@@ -53,7 +53,6 @@ export default {
                 <div class="profile">
                     <i class=""></i>
                     <div class="info">
-                        <!-- <p class="info-text">{{ profileDept }}</p> -->
                         <h3 class="info-name">{{ profileName }}</h3>
                     </div>
                 </div>
@@ -115,8 +114,8 @@ export default {
     position: relative;
     height: 280px;
     background-color: #dbf6eb;
-    background-image: url('/public/images/img-mypage.svg');
-    background-position: 100% 140%;
+    background-image: url('../../public/images/img-mypage.png');
+    background-position: 100% 185%;
     background-repeat: no-repeat;
     background-size: 800px;
 }
@@ -132,7 +131,7 @@ export default {
     margin-top: 160px;
     margin-left: 60px;
     border-radius: 100%;
-    border: 3px solid #fff;
+    border: 4px solid #fff;
     background-color: #d9d9d9;
 }
 
