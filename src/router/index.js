@@ -72,4 +72,21 @@ const router = createRouter({
     ]
 })
 
+router.beforeEach((to, from, next) => {
+    if (to.name === 'login') {
+        if (sessionStorage.getItem('NM') != null) {
+            next('/')
+        } else {
+            next()
+        }
+    } else {
+        if (sessionStorage.getItem('NM') != null) {
+            next()
+        } else {
+            alert('로그인이 필요한 페이지입니다.')
+            next('/login')
+        }
+    }
+})
+
 export default router
