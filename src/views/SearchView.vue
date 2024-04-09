@@ -137,7 +137,9 @@ const handleSelectedItems = (selectedItems) => {
         </div>
 
         <!-- 페이지네이션 -->
-        <PaginationView :currentPage="currentPage" :totalPages="totalPages" @update:currentPage="handlePageChange" />
+        <div v-if="projects.length >= 10 || totalPages.value > 1">
+            <PaginationView :currentPage="currentPage" :totalPages="totalPages" @update:currentPage="handlePageChange" />
+        </div>
     </div>
 </template>
 
