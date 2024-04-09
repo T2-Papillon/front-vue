@@ -166,7 +166,7 @@ export default {
         <div class="row mb-4">
             <div class="col d-flex align-items-center justify-content-end">
                 <!--  게시글 수정/삭제 버튼 -->
-                <EditDeleteButtonGroup />
+                <!-- <EditDeleteButtonGroup /> -->
             </div>
         </div>
 

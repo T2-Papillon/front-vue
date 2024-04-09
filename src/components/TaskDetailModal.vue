@@ -78,6 +78,12 @@ export default {
                                 <span class="value">{{ task.task_test }}</span>
                             </li>
                             <li>
+                                <span class="title">url</span>
+                                <span class="value">
+                                    <a :href="task.task_test_url" target="_blank">{{ task.task_test_url }}</a>
+                                </span>
+                            </li>
+                            <li>
                                 <span class="title">내용</span>
                                 <span class="value">{{ task.task_desc }}</span>
                             </li>
@@ -88,7 +94,6 @@ export default {
         </div>
     </div>
 
-    <!-- 배경 모달 -->
     <div v-if="isActive" class="modal-backdrop fade show" @click="closeModal"></div>
 </template>
 
@@ -147,7 +152,6 @@ export default {
     width: 110px;
     font-weight: bold;
 }
-
 .value {
     margin-left: 10px;
 }

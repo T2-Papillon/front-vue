@@ -50,10 +50,6 @@ export default {
                             <li class="nav-item">
                                 <router-link to="/project" class="nav-link">프로젝트</router-link>
                             </li>
-                            <!--
-                            <li class="nav-item">
-                                <router-link :to="`/mypage/${userInfo.name}`" class="nav-link">mypage</router-link>
-                            </li> -->
                             <li>
                                 <div class="vertical-line"></div>
                             </li>
