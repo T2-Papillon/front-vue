@@ -7,7 +7,7 @@ import ChartWeeklyTask from '../components/chart/ChartWeeklyTask.vue'
 import TaskTable from '../components/TaskTable.vue'
 import ProjectTable from '../components/ProjectTable.vue'
 import { useProjects } from '@/composables/useProjects'
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useRoute } from 'vue-router'
 
 export default {
@@ -28,6 +28,12 @@ export default {
         const filteredProjects = ref([]) // 필터링된 프로젝트를 저장할 새로운 반응형 참조
 
         const tasks = ref([])
+
+        // "진행예정(TODO)" 상태의 업무만 필터링하여 저장하는 computed 속성
+        const todoTasks = computed(() => {
+            return tasks.value.filter(task => task.task_status === 'TODO')
+        })
+
 
         // 모든 업무 데이터를 가져와서 현재 사용자에게 할당된 업무로 필터링하는 함수
         async function fetchTasks() {
@@ -57,7 +63,8 @@ export default {
             profileName,
             // profileDept, // 컴포넌트에 profileDept 추가
             projects: filteredProjects, // 수정된 부분: 필터링된 프로젝트 데이터를 전달
-            tasks // TaskTable 컴포넌트로 전달되는 업무 데이터
+            tasks, // TaskTable 컴포넌트로 전달되는 업무 데이터
+            todoTasks
         }
     }
 }
@@ -102,10 +109,17 @@ export default {
                         <PieChartUserProjectTask :assigneeName="profileName" />
                     </div>
                     <div class="col-xl-6">
-                        <!-- <h3 class="h3">나의 주차별 업무 현황</h3> -->
-                        <ChartWeeklyTask />
+                        <h3 class="h3">나의 진행예정 업무 목록</h3>
+                        <TaskTable :tasks="todoTasks" :showAssignee="false" :showStatus="false" :showProgress="false" :showWriteDate="false" />
                     </div>
                 </div>
+
+                <!-- <div class="row mb-5">
+                    <div class="col">
+                        <h3 class="h3">나의 진행예정 업무 목록</h3>
+                        <TaskTable :tasks="todoTasks" :showAssignee="false" :showStatus="false" :showProgress="false" />
+                    </div>
+                </div> -->
 
                 <div class="row mb-5">
                     <div class="col">
@@ -117,7 +131,7 @@ export default {
                 <div class="row mb-5">
                     <div class="col">
                         <h3 class="h3">나의 전체 업무 목록</h3>
-                        <TaskTable :tasks="tasks" />
+                        <TaskTable :tasks="tasks" :showAssignee="true" :showStatus="true" :showProgress="true" :showWriteDate="true" />
                     </div>
                 </div>
             </div>
