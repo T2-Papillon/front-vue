@@ -54,18 +54,18 @@ const router = createRouter({
         },
         {
             path: '/:pathMatch(.*)*',
-            name: 'NotFound',
+            name: 'notFound',
             component: () => import('../views/404.vue')
         },
         {
             path: '/analyze/:id', // `:id`는 프로젝트 번호가 될 동적 세그먼트입니다.
-            name: 'Analyze',
+            name: 'analyze',
             component: () => import('../views/AnalyzeView.vue'),
             props: true // 컴포넌트에 URL 파라미터를 props로 전달하도록 설정
         },
         {
             path: '/project/detail/:id', // 프로젝트 상세 페이지 경로
-            name: 'ProjectDetail',
+            name: 'projectDetail',
             component: () => import('../views/ProjectDetailView.vue'),
             props: true // URL의 :id 파라미터를 props로 컴포넌트에 전달
         }
