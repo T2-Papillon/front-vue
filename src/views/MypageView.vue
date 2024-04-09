@@ -1,4 +1,5 @@
 <script>
+import axios from 'axios'
 import BarChartUserTaskStatus from '../components/chart/BarChartUserTaskStatus.vue'
 import BarChartUserTaskPriority from '../components/chart/BarChartUserTaskPriority.vue'
 import PieChartUserProjectTask from '../components/chart/PieChartUserProjectTask.vue'
@@ -28,20 +29,35 @@ export default {
 
         const tasks = ref([])
 
+        // 모든 업무 데이터를 가져와서 현재 사용자에게 할당된 업무로 필터링하는 함수
+        async function fetchTasks() {
+            try {
+                const apiUrl = import.meta.env.VITE_API_URL
+                const response = await axios.get(`${apiUrl}/task/taskAll`)
+                // 현재 사용자에게 할당된 업무만 필터링
+                const userTasks = response.data.filter(task => task.assignee === profileName.value)
+                tasks.value = userTasks
+            } catch (error) {
+                console.error('Error fetching tasks:', error)
+            }
+        }
+
         onMounted(async () => {
             console.log(`Fetching projects and data for ${profileName.value}...`)
             await fetchProjects()
             filteredProjects.value = projects.value.filter(project =>
                 project.participants.some(participant => participant.name === profileName.value))
+            await fetchTasks() // 사용자에게 할당된 업무 데이터를 가져옵니다
             // 여기에서 userProfile 데이터 페치 로직을 추가합니다.
             // const userProfile = await fetchUserProfile(profileName.value)
             // profileDept.value = userProfile.dept // 부서 정보를 설정합니다.
         })
 
         return {
-            profileName, // userProfile 대신 profileName을 사용
+            profileName,
             // profileDept, // 컴포넌트에 profileDept 추가
-            projects: filteredProjects // 수정된 부분: 필터링된 프로젝트 데이터를 전달
+            projects: filteredProjects, // 수정된 부분: 필터링된 프로젝트 데이터를 전달
+            tasks // TaskTable 컴포넌트로 전달되는 업무 데이터
         }
     }
 }
@@ -100,9 +116,9 @@ export default {
                 </div>
 
                 <div class="row mb-5">
-                    <div class="col-xl-6">
-                        <!-- <h3 class="h3">나의 전체 업무 목록</h3>
-                        <TaskTable :tasks="tasks" :isDashBoard="false" /> -->
+                    <div class="col">
+                        <h3 class="h3">나의 전체 업무 목록</h3>
+                        <TaskTable :tasks="tasks" />
                     </div>
                 </div>
             </div>
