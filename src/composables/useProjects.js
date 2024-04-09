@@ -84,6 +84,12 @@ export function useProjects() {
 
     // 프로젝트목록 페이지에서 프로젝트 검색 함수
     async function searchProjects() {
+        // 검색어가 비어 있는지 확인
+        if (!searchQuery.value.trim()) {
+            alert('검색어를 입력하세요')
+            return
+        }
+
         isLoading.value = true
         try {
             const response = await axios.get(`${import.meta.env.VITE_API_URL}/project/search`, {

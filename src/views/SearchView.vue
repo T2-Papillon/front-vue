@@ -52,7 +52,12 @@ const handlePageChange = (page) => {
 
 // 검색 제출 핸들러
 const submitSearch = () => {
-    selectedCheckboxes.value = ['all'] // 검색 전 '전체' 상태로 초기화
+    if (!searchTerm.value.trim()) {
+        // 검색어가 비어있거나 공백만 있는 경우 알림 표시
+        alert('검색어를 입력하세요')
+        return
+    }
+    selectedCheckboxes.value = ['all']
     fetchProjects(searchTerm.value, selectedCheckboxes.value)
 }
 
@@ -97,7 +102,7 @@ const handleSelectedItems = (selectedItems) => {
                 <div class="search-area">
                     <div class="title-area">
                         <h2 class="h2 text-center">통합 검색 🔍</h2>
-                        <p class="text-body-tertiary lh-sm mb-0"><br />키워드를 입력하면 모든 프로젝트를 손쉽게 검색할 수 있습니다!</p>
+                        <p class="text-body-tertiary lh-sm mb-0"><br />프로젝트명 또는 이름을 입력하면 모든 프로젝트를 손쉽게 검색할 수 있습니다!</p>
                     </div>
                 </div>
             </div>
