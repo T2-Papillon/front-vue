@@ -67,8 +67,8 @@ export default {
         <div class="col-auto">
             <div class="top-btn-area">
                 <!-- 조건부 렌더링을 사용하여 다른 버튼 표시 -->
-                <router-link v-if="fromView === 'ProjectDetailView'" :to="{ name: 'Analyze', params: { id: project.projNo } }" class="btn btn-dark">통계분석 바로가기</router-link>
-                <router-link v-else-if="fromView === 'AnalyzeView'" :to="{ name: 'ProjectDetail', params: { id: project.projNo } }" class="btn btn-dark">프로젝트 상세보기</router-link>
+                <router-link v-if="fromView === 'ProjectDetailView'" :to="{ name: 'analyze', params: { id: project.projNo } }" class="btn btn-dark">통계분석 바로가기</router-link>
+                <router-link v-else-if="fromView === 'AnalyzeView'" :to="{ name: 'projectDetail', params: { id: project.projNo } }" class="btn btn-dark">프로젝트 상세보기</router-link>
             </div>
         </div>
     </div>
