@@ -13,18 +13,23 @@ export default {
     emits: ['closeModal', 'refreshTasks'],
     props: {
         isActive: Boolean,
-        task: Object
+        task: Object,
+        currentUserEno: String
     },
     methods: {
         closeModal() {
-            this.$emit('closeModal') // 여기서는 camelCase를 사용하여 일치시켜야 합니다.
-            console.log('Modal closed')
+            this.$emit('closeModal')
         },
         handleTaskDeleted() {
             this.closeModal()
             this.$emit('refreshTasks')
         },
         formatDate
+    },
+    computed: {
+        isCurrentUser() {
+            return this.task.createdBy === this.currentUserEno
+        }
     }
 }
 </script>
@@ -42,7 +47,7 @@ export default {
                 <div class="modal-body">
                     <div class="modal-body">
                         <!-- 수정/삭제 버튼 -->
-                        <EditDeleteButtonGroup :projectId="task.proj_no" :taskId="task.task_no" @taskDeleted="handleTaskDeleted" />
+                        <EditDeleteButtonGroup v-if="isCurrentUser" :projectId="task.proj_no" :taskId="task.task_no" @taskDeleted="handleTaskDeleted" />
                         <!-- list -->
                         <ul class="list">
                             <li>

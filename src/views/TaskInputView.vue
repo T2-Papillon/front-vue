@@ -118,8 +118,6 @@ export default {
             try {
                 const projectId = route.params.projectId
                 const apiUrl = import.meta.env.VITE_API_URL
-                console.log('projectId:', projectId)
-
                 const currentTaskStatus = determineTaskStatus()
 
                 const postData = {

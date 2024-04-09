@@ -28,11 +28,9 @@ export default {
     setup(props) {
         // 프로젝트 데이터 포맷팅
         const formattedProject = ref(formatProjectData(props.project))
-        console.log('Formatted Project:', formattedProject.value)
 
         // 참여자 정보 가져오기
         const participants = ref(formattedProject.value.participants || [])
-        console.log('Participants:', participants.value)
 
         // PM 정보 가져오기
         const findPMDepartment = (pmName) => {
