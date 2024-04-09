@@ -201,7 +201,7 @@ export default {
         <div class="row">
             <div class="col">
                 <!-- <TaskTable :projectId="parseInt(projectNo)" :tasks="tasks" /> -->
-                <TaskTable v-if="tasks.length > 0" :projectId="parseInt(projectNo)" :tasks="filteredTasks" :addNewTask="addNewTask" />
+                <TaskTable v-if="tasks.length > 0" :projectId="parseInt(projectNo)" :tasks="filteredTasks" :addNewTask="addNewTask" showAssignee="true" :showStatus="true" :showProgress="true" :showWriteDate="true"/>
                 <p v-else>업무 데이터가 없습니다.</p>
             </div>
         </div>
