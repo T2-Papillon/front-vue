@@ -2,7 +2,7 @@
     <div class="not-found-container">
         <div class="not-found-content">
             <h1>404!</h1>
-            <p>우리는 당신이 찾고 있는 페이지를 찾을 수 없습니다.</p>
+            <p>페이지를 찾을 수 없어요.</p>
             <router-link to="/" class="home-link">홈으로 돌아가기</router-link>
         </div>
     </div>
@@ -25,7 +25,8 @@ export default {
 
 .not-found-content {
     text-align: center;
-    max-width: 600px;
+    width: 70%;
+    max-width: 400px;
     padding: 20px;
     background-color: white;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
