@@ -163,8 +163,10 @@ export default {
 
 <template>
     <div class="container">
-        <!-- 프로젝트 정보 -->
-        <ProjectInfo :project="project" fromView="ProjectDetailView" />
+        <div class="row mt-4">
+            <!-- 프로젝트 정보 -->
+            <ProjectInfo :project="project" fromView="ProjectDetailView" />
+        </div>
 
         <!-- 정렬 -->
         <div class="row align-items-start justify-content-between mb-4 g-3 border-top" style="margin-top: 40px; padding-top: 80px">
