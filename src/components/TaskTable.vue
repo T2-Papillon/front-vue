@@ -127,7 +127,7 @@ watch(
                 <td class="text-end"><PriorityBadge :priority="task.task_priority" /></td>
                 <td class="text-end text-secondary">
                     <template v-if="task.task_test">
-                        <a href="#" @click="someAction(task)">{{ task.task_test ? 'T' : '-' }}</a>
+                        <a :href="task.task_test_url" target="_blank">{{ task.task_test ? 'T' : '-' }}</a>
                         <!-- task_test가 true일 때 -->
                     </template>
                     <template v-else> - </template>
@@ -148,7 +148,7 @@ watch(
                 <td>{{ newTaskData.task_priority }}</td>
                 <td>
                     <template v-if="newTaskData.task_test">
-                        <a href="#" @click="someAction(task)">{{ newTaskData.task_test ? 'T' : '-' }}</a>
+                        <a :href="newTaskData.task_test_url" target="_blank">{{ newTaskData.task_test ? 'T' : '-' }}</a>
                     </template>
                     <template v-else> - </template>
                 </td>
