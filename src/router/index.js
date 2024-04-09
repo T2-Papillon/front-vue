@@ -55,7 +55,7 @@ const router = createRouter({
         {
             path: '/:pathMatch(.*)*',
             name: 'NotFound',
-            component: () => import('../views/NotFound.vue')
+            component: () => import('../views/404.vue')
         },
         {
             path: '/analyze/:id', // `:id`는 프로젝트 번호가 될 동적 세그먼트입니다.
