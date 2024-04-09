@@ -67,8 +67,8 @@ onMounted(async () => {
                     </div> -->
                 </div>
                 <ProjectTable v-if="todoProjects.length > 0" :projects="todoProjects" />
-                <PaginationView v-if="todoProjects.length > 0" :currentPage="currentPage" :totalPages="totalPages" />
-                <p v-else>프로젝트가 없습니다.</p>
+                <PaginationView v-if="todoProjects.length > 10" :currentPage="currentPage" :totalPages="totalPages" />
+                <p v-else-if="todoProjects.length === 0">프로젝트가 없습니다.</p>
             </div>
         </section>
 
@@ -86,8 +86,8 @@ onMounted(async () => {
                     </div> -->
                 </div>
                 <ProjectTable v-if="doingProjects.length > 0" :projects="doingProjects" />
-                <PaginationView v-if="doingProjects.length > 0" :currentPage="currentPage" :totalPages="totalPages" />
-                <p v-else>프로젝트가 없습니다.</p>
+                <PaginationView v-if="doingProjects.length > 10" :currentPage="currentPage" :totalPages="totalPages" />
+                <p v-else-if="doingProjects.length === 0">프로젝트가 없습니다.</p>
             </div>
         </section>
 
@@ -105,8 +105,8 @@ onMounted(async () => {
                     </div> -->
                 </div>
                 <ProjectTable v-if="doneProjects.length > 0" :projects="doneProjects" />
-                <PaginationView v-if="doneProjects.length > 0" :currentPage="currentPage" :totalPages="totalPages" />
-                <p v-else>프로젝트가 없습니다.</p>
+                <PaginationView v-if="doneProjects.length > 10" :currentPage="currentPage" :totalPages="totalPages" />
+                <p v-else-if="doneProjects.length === 0">프로젝트가 없습니다.</p>
             </div>
         </section>
 
@@ -124,8 +124,8 @@ onMounted(async () => {
                     </div> -->
                 </div>
                 <ProjectTable v-if="holdProjects.length > 0" :projects="holdProjects" />
-                <PaginationView v-if="holdProjects.length > 0" :currentPage="currentPage" :totalPages="totalPages" />
-                <p v-else>프로젝트가 없습니다.</p>
+                <PaginationView v-if="holdProjects.length > 10" :currentPage="currentPage" :totalPages="totalPages" />
+                <p v-else-if="holdProjects.length === 0">프로젝트가 없습니다.</p>
             </div>
         </section>
     </div>
