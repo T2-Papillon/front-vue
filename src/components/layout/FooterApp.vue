@@ -1,8 +1,7 @@
-<!-- eslint-disable vue/multi-word-component-names -->
 <template>
     <footer>
         <div class="inner">
-            <p>This is the footer</p>
+            <p class="mb-0 text-secondary">Copyright 2024. papplan. All rights reserved.</p>
         </div>
     </footer>
 </template>
@@ -13,9 +12,12 @@ export default {}
 
 <style scoped>
 footer {
-    background-color: #333;
-    color: #fff;
+    background-color: #fff;
     padding: 20px;
     text-align: center;
+}
+footer p {
+    opacity: 0.6;
+    font-weight: 200;
 }
 </style>

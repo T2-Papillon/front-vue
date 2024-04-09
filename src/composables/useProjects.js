@@ -154,7 +154,6 @@ export function useProjects() {
             if (projectIndex !== -1) {
                 projects.value[projectIndex].progress = newProgress
             }
-
             console.log('프로젝트 진도율이 성공적으로 업데이트되었습니다.')
         } catch (error) {
             console.error('프로젝트 진도율 업데이트 중 오류가 발생했습니다:', error)
