@@ -83,7 +83,7 @@ export default {
         </div>
         <div class="btm-area">
             <div class="container">
-                <div class="row align-items-center justify-content-between g-3 pb-4">
+                <div class="row align-items-center justify-content-between g-3 pb-5">
                     <div class="col-auto">
                         <div class="title-area">
                             <h2 class="h2">[개인통계]마이페이지</h2>
@@ -93,33 +93,26 @@ export default {
                 </div>
 
                 <div class="row mb-5">
-                    <div class="col-xl-6">
+                    <div class="col-xl-5">
                         <h3 class="h3">나의 업무 진행 상태 분포</h3>
                         <BarChartUserTaskStatus :assigneeName="profileName" />
                     </div>
-                    <div class="col-xl-6">
+                    <div class="col-xl-5">
                         <h3 class="h3">나의 우선순위별 업무 분포</h3>
                         <BarChartUserTaskPriority :assigneeName="profileName" />
                     </div>
                 </div>
 
                 <div class="row mb-5">
-                    <div class="col">
+                    <div class="col-xl-5">
                         <h3 class="h3">나의 참여 프로젝트 분포</h3>
                         <PieChartUserProjectTask :assigneeName="profileName" />
                     </div>
-                    <div class="col-xl-6">
+                    <div class="col-xl-5">
                         <h3 class="h3">나의 진행예정 업무 목록</h3>
                         <TaskTable :tasks="todoTasks" :showAssignee="false" :showStatus="false" :showProgress="false" :showWriteDate="false" />
                     </div>
                 </div>
-
-                <!-- <div class="row mb-5">
-                    <div class="col">
-                        <h3 class="h3">나의 진행예정 업무 목록</h3>
-                        <TaskTable :tasks="todoTasks" :showAssignee="false" :showStatus="false" :showProgress="false" />
-                    </div>
-                </div> -->
 
                 <div class="row mb-5">
                     <div class="col">
@@ -140,6 +133,15 @@ export default {
 </template>
 
 <style scoped>
+/* 기존 스타일 유지하면서 추가된 클래스를 정의 */
+.btm-area .row.pb-5 {
+    padding-bottom: 6rem; /* 여백을 3rem으로 늘림 */
+}
+
+.col-xl-5 {
+    padding: 0 15px; /* 좌우 패딩 조정 */
+}
+
 .top-area {
     position: relative;
     height: 280px;
