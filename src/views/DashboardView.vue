@@ -9,14 +9,28 @@ const username = sessionStorage.getItem('NM')
 const projects = ref([])
 const tasks = ref([])
 
+const prjToday = ref(0)
+const prjYesterday = ref(0)
+const prjWeek = ref(0)
+const taskToday = ref(0)
+const taskYesterday = ref(0)
+const taskWeek = ref(0)
+
 async function dashboardData() {
     try {
         const eno = sessionStorage.getItem('EN')
         const url = import.meta.env.VITE_API_URL + `/dashboard/emp/${eno}`
         const res = await axios.get(url)
         projects.value = res.data.projects.map((project) => formatProjectData(project))
+
         tasks.value = res.data.tasks
-        console.log(tasks.value)
+
+        prjToday.value = res.data.prj_today
+        prjYesterday.value = res.data.prj_yesterday
+        prjWeek.value = res.data.prj_week
+        taskToday.value = res.data.task_today
+        taskYesterday.value = res.data.task_yesterday
+        taskWeek.value = res.data.task_week
     } catch (e) {
         //this.$router.replace('/')
         console.log(e)
@@ -40,24 +54,24 @@ dashboardData()
                 <div class="col-xl-4">
                     <div class="card">
                         <div class="card-body">
-                            <p class="card-title">오늘 프로젝트 건수</p>
-                            <h3 class="card-text">1 건</h3>
+                            <p class="card-title">오늘 완료 프로젝트 건수</p>
+                            <h3 class="card-text">{{ prjToday }} 건</h3>
                         </div>
                     </div>
                 </div>
                 <div class="col-xl-4">
                     <div class="card">
                         <div class="card-body">
-                            <p class="card-title">전일 프로젝트 건수</p>
-                            <h3 class="card-text">1 건</h3>
+                            <p class="card-title">전일 완료 프로젝트 건수</p>
+                            <h3 class="card-text">{{ prjYesterday }} 건</h3>
                         </div>
                     </div>
                 </div>
                 <div class="col-xl-4">
                     <div class="card">
                         <div class="card-body">
-                            <p class="card-title">전주 프로젝트 건수</p>
-                            <h3 class="card-text">1 건</h3>
+                            <p class="card-title">전주 완료 프로젝트 건수</p>
+                            <h3 class="card-text">{{ prjWeek }} 건</h3>
                         </div>
                     </div>
                 </div>
@@ -66,24 +80,24 @@ dashboardData()
                 <div class="col-xl-4">
                     <div class="card">
                         <div class="card-body">
-                            <p class="card-title">오늘 프로젝트 건수</p>
-                            <h3 class="card-text">1 건</h3>
+                            <p class="card-title">오늘 완료 업무 건수</p>
+                            <h3 class="card-text">{{ taskToday }} 건</h3>
                         </div>
                     </div>
                 </div>
                 <div class="col-xl-4">
                     <div class="card">
                         <div class="card-body">
-                            <p class="card-title">전일 프로젝트 건수</p>
-                            <h3 class="card-text">1 건</h3>
+                            <p class="card-title">전일 완료 업무 건수</p>
+                            <h3 class="card-text">{{ taskYesterday }} 건</h3>
                         </div>
                     </div>
                 </div>
                 <div class="col-xl-4">
                     <div class="card">
                         <div class="card-body">
-                            <p class="card-title">전주 프로젝트 건수</p>
-                            <h3 class="card-text">1 건</h3>
+                            <p class="card-title">전주 완료 업무 건수</p>
+                            <h3 class="card-text">{{ taskWeek }} 건</h3>
                         </div>
                     </div>
                 </div>
@@ -116,7 +130,7 @@ dashboardData()
                     </div>
                 </div>
             </div>
-            <div class="row g-5 g-xl-10 mb-5 mb-xl-10">
+            <!-- <div class="row g-5 g-xl-10 mb-5 mb-xl-10">
                 <div class="col-xl-6">
                     <div class="card">
                         <div class="card-body">
@@ -133,7 +147,7 @@ dashboardData()
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
             <div class="wave-group">
                 <div class="wave"></div>
                 <div class="wave"></div>
