@@ -40,24 +40,20 @@ export default {
                     <a href="/"><img src="/public/images/logo.svg" alt="boogle logo" /></a>
                 </h1>
 
-                <!-- 햄버거 메뉴 버튼 추가 -->
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
                 <nav class="navbar navbar-expand-lg">
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <!-- 로그인한 상태에서 보여줄 탭 -->
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0" v-if="userInfo">
                             <li class="nav-item">
-                                <router-link to="/project" class="nav-link">project</router-link>
+                                <router-link to="/project" class="nav-link">프로젝트</router-link>
                             </li>
-                            <!-- <li class="nav-item">
-                                <router-link to="/analyze" class="nav-link">analyze</router-link>
-                            </li> -->
+                            <!--
                             <li class="nav-item">
                                 <router-link :to="`/mypage/${userInfo.name}`" class="nav-link">mypage</router-link>
-                            </li>
+                            </li> -->
                             <li>
                                 <div class="vertical-line"></div>
                             </li>
@@ -68,7 +64,6 @@ export default {
                             </li>
                         </ul>
                         <div class="vertical-line" v-if="userInfo"></div>
-                        <!-- 로그인한 상태에서 보여줄 UserProfile 드롭다운 -->
                         <ul class="me-auto mb-2 mb-lg-0" v-if="userInfo">
                             <li class="dropdown">
                                 <UserProfile :name="userInfo.name" :dept="userInfo.dept" />
