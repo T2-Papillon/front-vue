@@ -67,5 +67,5 @@ const formatParticipants = (participants) => {
             </tr>
         </tbody>
     </table>
-    <p v-else>프로젝트 데이터가 없습니다.</p>
+    <p v-else class="empty">아직 비어있어요.</p>
 </template>

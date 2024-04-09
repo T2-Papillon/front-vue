@@ -60,7 +60,6 @@ main .container {
     align-items: center;
     justify-content: space-between;
     padding: 12px 10px;
-    /* border-bottom: 1px solid var(--bs-border-color); */
 }
 .board-view-title {
     font-size: 14px;
@@ -95,8 +94,8 @@ main .container {
 table tbody td {
     vertical-align: middle;
 }
-/* .table.border-translucent th {
-    padding-top: 12px;
-    padding-bottom: 12px;
-    background-color: #f6f9fb;
-} */
+
+.empty {
+    text-align: center;
+    font-size: 14px;
+}
