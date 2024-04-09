@@ -47,7 +47,7 @@ onMounted(async () => {
             </div>
             <div class="col-auto d-flex">
                 <form class="d-flex me-4" @submit.prevent="searchProjects">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" v-model="searchQuery" />
+                    <input class="form-control me-2" type="search" placeholder="프로젝트명, 이름으로 검색" aria-label="Search" v-model="searchQuery" />
                     <button class="btn btn-outline-success" type="submit"><i class="bi bi-search"></i></button>
                 </form>
             </div>
