@@ -121,14 +121,10 @@ export default {
             const projectId = route.params.id
             const apiUrl = import.meta.env.VITE_API_URL
 
-            // 검색어가 비어있으면 전체 업무 목록을 가져옵니다.
+            // 검색어가 비어 있는지 확인
             if (!searchTerm.value.trim()) {
-                try {
-                    const response = await axios.get(`${apiUrl}/task/project/${projectId}/task`)
-                    tasks.value = response.data // 전체 업무 목록으로 태스크 리스트 업데이트
-                } catch (error) {
-                    console.error('전체 업무 목록 가져오기 실패:', error)
-                }
+                alert('검색어를 입력하세요') // 경고 메시지 표시
+                return
             } else {
                 // 검색어가 있는 경우 검색을 수행합니다.
                 try {
