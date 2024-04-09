@@ -97,7 +97,7 @@ const handleSelectedItems = (selectedItems) => {
                 <div class="search-area">
                     <div class="title-area">
                         <h2 class="h2 text-center">통합 검색 🔍</h2>
-                        <p class="text-body-tertiary lh-sm mb-0">자유롭게 검색을 시작하세요! 알맞는 검색어를 입력해보세요. >> 멘트아무거나아무거나</p>
+                        <p class="text-body-tertiary lh-sm mb-0"><br />키워드를 입력하면 모든 프로젝트를 손쉽게 검색할 수 있습니다!</p>
                     </div>
                 </div>
             </div>

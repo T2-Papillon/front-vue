@@ -42,12 +42,12 @@ onMounted(async () => {
             <div class="col-auto">
                 <div class="title-area">
                     <h2 class="h2">{{ userName }} 님의 프로젝트 목록 👋</h2>
-                    <p class="text-body-tertiary lh-sm mb-0">텍스트텍스트텍스트텍스트</p>
+                    <p class="text-body-tertiary lh-sm mb-0"><br />{{ userName }} 님이 참여한 프로젝트를 진행 상태별로 손쉽게 관리하고 파악하세요!</p>
                 </div>
             </div>
             <div class="col-auto d-flex">
                 <form class="d-flex me-4" @submit.prevent="searchProjects">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" v-model="searchQuery" />
+                    <input class="form-control me-2" type="search" placeholder="프로젝트명, 이름으로 검색" aria-label="Search" v-model="searchQuery" />
                     <button class="btn btn-outline-success" type="submit"><i class="bi bi-search"></i></button>
                 </form>
             </div>
