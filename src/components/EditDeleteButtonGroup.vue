@@ -1,10 +1,13 @@
 <script>
 import axios from 'axios'
+import globalInfo from '@/utils/globalInfoUtils.js'
 
 export default {
     props: {
         projectId: Number,
-        taskId: Number
+        taskId: Number,
+        createdBy: String,
+        currentUserEno: String
     },
     methods: {
         async handleEdit() {
@@ -49,12 +52,17 @@ export default {
                 }
             }
         }
+    },
+    computed: {
+        isCurrentUser() {
+            return globalInfo.eno === this.createdBy
+        }
     }
 }
 </script>
 
 <template>
-    <div class="btn-group">
+    <div class="btn-group" v-if="isCurrentUser">
         <button class="btn btn-outline-secondary" @click="handleEdit"><i class="bi bi-pencil"></i> 수정</button>
         <button class="btn btn-outline-secondary" @click="handleDelete"><i class="bi bi-trash"></i> 삭제</button>
     </div>

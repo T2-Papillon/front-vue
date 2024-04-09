@@ -17,6 +17,8 @@ const props = defineProps({
     addNewTask: Function,
     projectId: Number,
     tasks: Array,
+    createdBy: String,
+    currentUserEno: String,
     isDashBoard: {
         type: Boolean,
         default: false // 기본값으로 false 설정
@@ -158,7 +160,7 @@ watch(
     </table>
 
     <!-- 모달 : 하위업무 상세내용  -->
-    <TaskDetailModal :is-active="isModalActive" :task="selectedTask" @close-modal="handleCloseModal" @refreshTasks="fetchProjectTasks" />
+    <TaskDetailModal v-if="selectedTask" :is-active="isModalActive" :task="selectedTask" :currentUserEno="currentUserEno" @close-modal="handleCloseModal" @refreshTasks="fetchProjectTasks" />
 </template>
 
 <style scoped>

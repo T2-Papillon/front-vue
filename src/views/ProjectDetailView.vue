@@ -165,7 +165,6 @@ export default {
     <div class="container">
         <div class="row mb-4">
             <div class="col d-flex align-items-center justify-content-end">
-                <!--  게시글 수정/삭제 버튼 -->
                 <!-- <EditDeleteButtonGroup /> -->
             </div>
         </div>
@@ -183,7 +182,6 @@ export default {
 
         <div class="row align-items-start justify-content-between mb-4 g-3">
             <div class="col-auto">
-                <!-- 체크박스 -->
                 <CheckboxSelector :items="checkboxItems" :selected="selectedCheckboxes" @change="handleSelectedItems" />
             </div>
             <div class="col-auto d-flex">
@@ -200,9 +198,8 @@ export default {
         <!-- 하위업무 -->
         <div class="row">
             <div class="col">
-                <!-- <TaskTable :projectId="parseInt(projectNo)" :tasks="tasks" /> -->
                 <TaskTable v-if="tasks.length > 0" :projectId="parseInt(projectNo)" :tasks="filteredTasks" :addNewTask="addNewTask" />
-                <p v-else>업무 데이터가 없습니다.</p>
+                <p v-else class="empty">업무 데이터가 없습니다.</p>
             </div>
         </div>
     </div>
