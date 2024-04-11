@@ -5,7 +5,7 @@ import axios from 'axios'
 import ProjectInfo from '../components/ProjectInfo.vue'
 // import TaskTable from '../components/TaskTable.vue' // 추가 예정
 import BarChartProjectTaskStatus from '../components/chart/BarChartProjectTaskStatus.vue'
-import BarChartTaskAssignee from '../components/chart/BarChartTaskAssignee.vue'
+import LineChartTaskAssignee from '../components/chart/LineChartTaskAssignee.vue'
 import BarChartProjectTaskPriority from '../components/chart/BarChartProjectTaskPriority.vue'
 import LineChartProjectTaskTime from '../components/chart/LineChartProjectTaskTime.vue'
 
@@ -13,7 +13,7 @@ export default {
     components: {
         ProjectInfo,
         BarChartProjectTaskStatus,
-        BarChartTaskAssignee,
+        LineChartTaskAssignee,
         BarChartProjectTaskPriority,
         LineChartProjectTaskTime
     },
@@ -74,19 +74,19 @@ export default {
                 <BarChartProjectTaskStatus />
             </div>
             <div class="col">
-                <h3 class="h3 chart-title">기간별 업무 분포</h3>
-                <LineChartProjectTaskTime />
+                <h3 class="h3 chart-title">우선순위별 업무 분포</h3>
+                <BarChartProjectTaskPriority />
             </div>
         </div>
 
         <div class="row mt-4">
             <div class="col">
                 <h3 class="h3 chart-title">담당자별 업무 분포</h3>
-                <BarChartTaskAssignee />
+                <LineChartTaskAssignee />
             </div>
             <div class="col">
-                <h3 class="h3 chart-title">우선순위별 업무 분포</h3>
-                <BarChartProjectTaskPriority />
+                <h3 class="h3 chart-title">기간별 업무 분포</h3>
+                <LineChartProjectTaskTime />
             </div>
         </div>
     </div>
