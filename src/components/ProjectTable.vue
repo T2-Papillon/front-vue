@@ -30,7 +30,7 @@ const filteredProjects = computed(() => {
         return props.projects.filter(project => {
             const endDate = new Date(project.endDate);
             const dayDifference = differenceInCalendarDays(endDate, today);
-            return dayDifference >= 0 && dayDifference <= 3;
+            return dayDifference >= 0 && dayDifference <= 7; // 7일 내에 마감될 프로젝트만 보여준다
         });
     } else {
         return props.projects; // showUpcomingDeadlines가 false이면 모든 프로젝트 반환
