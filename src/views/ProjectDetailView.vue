@@ -172,7 +172,7 @@ export default {
             <div class="col-auto d-flex">
                 <form class="d-flex me-4" @submit.prevent="searchTasks">
                     <input class="form-control me-2" type="search" placeholder="프로젝트명, 이름으로 검색" aria-label="Search" v-model="searchTerm" />
-                    <button class="btn btn-outline-success" type="submit"><i class="bi bi-search"></i></button>
+                    <button class="btn btn-outline-success" type="submit" aria-label="검색"><i class="bi bi-search"></i></button>
                 </form>
 
                 <!-- 최신순/우선순위 -->

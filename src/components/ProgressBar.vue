@@ -1,7 +1,7 @@
 <template>
     <div class="progress-wrap">
         <div class="progress">
-            <div class="progress-bar" :style="{ width: progress + '%' }" aria-valuenow="progress" aria-valuemin="0" aria-valuemax="100">{{ progress }}%</div>
+            <div class="progress-bar" :style="{ width: progress + '%' }" role="progressbar" :aria-valuenow="progress" aria-valuemin="0" aria-valuemax="100">{{ progress }}%</div>
         </div>
     </div>
 </template>
