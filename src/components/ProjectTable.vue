@@ -4,7 +4,6 @@ import UserProfile from '../components/UserProfile.vue'
 import ProgressBar from '../components/ProgressBar.vue'
 import StatusBadge from '../components/StatusBadge.vue'
 import PriorityBadge from '../components/PriorityBadge.vue'
-import { differenceInCalendarDays } from 'date-fns'
 
 const props = defineProps({
     projects: Array,
@@ -33,9 +32,9 @@ const filteredProjects = computed(() => {
             return dayDifference >= 0 && dayDifference <= 7; // 7일 내에 마감될 프로젝트만 보여준다
         });
     } else {
-        return props.projects; // showUpcomingDeadlines가 false이면 모든 프로젝트 반환
+        return props.projects // showUpcomingDeadlines가 false이면 모든 프로젝트 반환
     }
-});
+})
 </script>
 
 <template>
@@ -87,5 +86,5 @@ const filteredProjects = computed(() => {
             </tr>
         </tbody>
     </table>
-    <p v-else class="empty">아직 비어있어요.</p>
+    <p v-else class="empty">아직 비어있어요.👻</p>
 </template>

@@ -31,10 +31,7 @@ async function dashboardData() {
         taskToday.value = res.data.task_today
         taskYesterday.value = res.data.task_yesterday
         taskWeek.value = res.data.task_week
-    } catch (e) {
-        //this.$router.replace('/')
-        console.log(e)
-    }
+    } catch (e) {}
 }
 
 dashboardData()
@@ -46,7 +43,7 @@ dashboardData()
                 <div class="col-auto">
                     <div class="title-area">
                         <h2 class="h2">환영합니다! {{ username }}님💡</h2>
-                        <p class="text-body-tertiary lh-sm mb-3">어쩌구저쩌구저쩌구어쩌구</p>
+                        <p class="text-body-tertiary lh-sm mb-3"></p>
                     </div>
                 </div>
             </div>
@@ -106,7 +103,7 @@ dashboardData()
                 <div class="col">
                     <div class="card">
                         <div class="card-body">
-                            <h3 class="card-title mb-4">프로젝트 목록</h3>
+                            <h3 class="card-title mb-4">현재 진행중인 프로젝트</h3>
                             <div class="card-text">
                                 <div class="overflow-auto">
                                     <ProjectTable :projects="projects" />
@@ -120,7 +117,7 @@ dashboardData()
                 <div class="col">
                     <div class="card">
                         <div class="card-body">
-                            <h3 class="card-title mb-4">담당 업무 목록</h3>
+                            <h3 class="card-title mb-4">현재 진행중인 담당 업무</h3>
                             <div class="card-text">
                                 <div class="overflow-auto">
                                     <TaskTable :initialTasks="tasks" :isDashBoard="true" showAssignee="true" :showStatus="true" :showProgress="true" :showWriteDate="true" />
@@ -130,24 +127,6 @@ dashboardData()
                     </div>
                 </div>
             </div>
-            <!-- <div class="row g-5 g-xl-10 mb-5 mb-xl-10">
-                <div class="col-xl-6">
-                    <div class="card">
-                        <div class="card-body">
-                            <p class="card-title">data</p>
-                            <h3 class="card-text">1 건</h3>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-6">
-                    <div class="card">
-                        <div class="card-body">
-                            <p class="card-title">data</p>
-                            <h3 class="card-text">1 건</h3>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
             <div class="wave-group">
                 <div class="wave"></div>
                 <div class="wave"></div>

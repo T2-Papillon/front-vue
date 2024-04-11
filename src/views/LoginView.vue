@@ -13,7 +13,7 @@ export default {
     methods: {
         login() {
             let url = import.meta.env.VITE_API_URL + '/signin'
-            console.log(this.username + ' / ' + this.password)
+
             let data = {
                 email: this.username,
                 password: this.password
@@ -38,11 +38,11 @@ export default {
                             location.reload()
                         })
                     } else {
-                        console.log(res.status)
+                        alert('로그인 실패')
                     }
                 })
                 .catch((error) => {
-                    console.log(error)
+                    alert('로그인 실패')
                 })
         },
         setLoginInfo(user) {

@@ -41,9 +41,8 @@ export default {
 
         // "진행예정(TODO)" 상태의 업무만 필터링하여 저장하는 computed 속성
         const todoTasks = computed(() => {
-            return tasks.value.filter(task => task.task_status === 'TODO')
+            return tasks.value.filter((task) => task.task_status === 'TODO')
         })
-
 
         // 모든 업무 데이터를 가져와서 현재 사용자에게 할당된 업무로 필터링하는 함수
         async function fetchTasks() {
@@ -51,18 +50,14 @@ export default {
                 const apiUrl = import.meta.env.VITE_API_URL
                 const response = await axios.get(`${apiUrl}/task/taskAll`)
                 // 현재 사용자에게 할당된 업무만 필터링
-                const userTasks = response.data.filter(task => task.assignee === profileName.value)
+                const userTasks = response.data.filter((task) => task.assignee === profileName.value)
                 tasks.value = userTasks
-            } catch (error) {
-                console.error('Error fetching tasks:', error)
-            }
+            } catch (error) {}
         }
 
         onMounted(async () => {
-            console.log(`Fetching projects and data for ${profileName.value}...`)
             await fetchProjects()
-            filteredProjects.value = projects.value.filter(project =>
-                project.participants.some(participant => participant.name === profileName.value))
+            filteredProjects.value = projects.value.filter((project) => project.participants.some((participant) => participant.name === profileName.value))
             await fetchTasks() // 사용자에게 할당된 업무 데이터를 가져옵니다
             // 여기에서 userProfile 데이터 페치 로직을 추가합니다.
             // const userProfile = await fetchUserProfile(profileName.value)

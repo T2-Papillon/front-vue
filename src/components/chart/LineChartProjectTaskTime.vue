@@ -18,7 +18,7 @@ export default {
     name: 'LineChartProjectTaskTime',
     components: { Line },
     setup() {
-        const route = useRoute();
+        const route = useRoute()
         const state = reactive({
             chartData: null,
             chartOptions: {
@@ -35,41 +35,37 @@ export default {
                     }
                 }
             }
-        });
+        })
 
         async function fetchTasks() {
-            const projectId = route.params.id;
-            console.log("Fetching tasks for project ID:", projectId);
+            const projectId = route.params.id
             try {
-                const apiUrl = import.meta.env.VITE_API_URL;
-                const response = await axios.get(`${apiUrl}/task/project/${projectId}/task`);
-                console.log("Tasks fetched:", response.data);
-                const tasks = response.data;
-                processChartData(tasks);
+                const apiUrl = import.meta.env.VITE_API_URL
+                const response = await axios.get(`${apiUrl}/task/project/${projectId}/task`)
+                const tasks = response.data
+                processChartData(tasks)
             } catch (error) {
-                console.error("Error fetching tasks:", error);
+                console.error('Error fetching tasks:', error)
             }
         }
 
         function processChartData(tasks) {
-            console.log("Processing chart data for tasks:", tasks);
-
             // 날짜별 업무 카운트
-            const taskCountsByDate = {};
-            tasks.forEach(task => {
-                let currentDate = new Date(task.start_date);
-                const endDate = new Date(task.end_date);
+            const taskCountsByDate = {}
+            tasks.forEach((task) => {
+                let currentDate = new Date(task.start_date)
+                const endDate = new Date(task.end_date)
 
                 while (currentDate <= endDate) {
-                    const dateString = currentDate.toISOString().split('T')[0];
-                    taskCountsByDate[dateString] = (taskCountsByDate[dateString] || 0) + 1;
-                    currentDate.setDate(currentDate.getDate() + 1);
+                    const dateString = currentDate.toISOString().split('T')[0]
+                    taskCountsByDate[dateString] = (taskCountsByDate[dateString] || 0) + 1
+                    currentDate.setDate(currentDate.getDate() + 1)
                 }
-            });
+            })
 
             // 정렬된 날짜와 카운트
-            const sortedDates = Object.keys(taskCountsByDate).sort();
-            const sortedCounts = sortedDates.map(date => taskCountsByDate[date]);
+            const sortedDates = Object.keys(taskCountsByDate).sort()
+            const sortedCounts = sortedDates.map((date) => taskCountsByDate[date])
 
             state.chartData = {
                 labels: sortedDates,
@@ -82,19 +78,21 @@ export default {
                         tension: 0.1
                     }
                 ]
-            };
+            }
         }
 
         onMounted(() => {
-            fetchTasks(route.params.id);
-        });
+            fetchTasks(route.params.id)
+        })
 
-        watch(() => route.params.id, (newId) => {
+        watch(
+            () => route.params.id,
+            (newId) => {
                 fetchTasks(newId)
             }
         )
 
-        return { ...toRefs(state) };
+        return { ...toRefs(state) }
     }
 }
 </script>
