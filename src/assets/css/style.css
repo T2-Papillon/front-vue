@@ -99,3 +99,11 @@ table tbody td {
     text-align: center;
     font-size: 14px;
 }
+
+a.link-underline {
+    color: #0d6efd;
+    text-decoration: underline;
+    --bs-link-underline-opacity: 1;
+    -webkit-text-decoration-color: rgba(var(--bs-link-color-rgb), var(--bs-link-underline-opacity, 1)) !important;
+    text-decoration-color: rgba(var(--bs-link-color-rgb), var(--bs-link-underline-opacity, 1)) !important;
+}

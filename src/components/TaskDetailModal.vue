@@ -85,7 +85,7 @@ export default {
                             <li>
                                 <span class="title">url</span>
                                 <span class="value">
-                                    <a :href="task.task_test_url" target="_blank">{{ task.task_test_url }}</a>
+                                    <a :href="task.task_test_url" class="link-underline" target="_blank">{{ task.task_test_url }}</a>
                                 </span>
                             </li>
                             <li>

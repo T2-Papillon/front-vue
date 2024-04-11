@@ -21,8 +21,8 @@ const props = defineProps({
     showWriteDate: Boolean,
     projectId: Number,
     tasks: Array,
-    createdBy: String,
-    currentUserEno: String,
+    // createdBy: String,
+    // currentUserEno: String,
     isDashBoard: {
         type: Boolean,
         default: false // 기본값으로 false 설정
@@ -46,12 +46,12 @@ async function fetchProjectTasks() {
     } catch (error) {
         console.error('프로젝트 태스크 데이터를 가져오는데 실패했습니다:', error)
         error.value = '프로젝트 태스크 데이터를 가져오는데 실패했습니다.'
-        tasks.value = [] // 데이터를 비워 테이블을 숨깁니다.
+        tasks.value = []
     }
 }
 
 const handleCloseModal = () => {
-    isModalActive.value = false // 모달을 비활성화합니다.
+    isModalActive.value = false
 }
 
 watch(
@@ -133,7 +133,7 @@ watch(
                 <td class="text-end"><PriorityBadge :priority="task.task_priority" /></td>
                 <td class="text-end text-secondary">
                     <template v-if="task.task_test">
-                        <a :href="task.task_test_url" target="_blank">{{ task.task_test ? 'T' : '-' }}</a>
+                        <a :href="task.task_test_url" class="link-underline" target="_blank">{{ task.task_test ? 'T' : '-' }}</a>
                         <!-- task_test가 true일 때 -->
                     </template>
                     <template v-else> - </template>
@@ -154,7 +154,7 @@ watch(
                 <td>{{ newTaskData.task_priority }}</td>
                 <td>
                     <template v-if="newTaskData.task_test">
-                        <a :href="newTaskData.task_test_url" target="_blank">{{ newTaskData.task_test ? 'T' : '-' }}</a>
+                        <a :href="newTaskData.task_test_url" class="link-underline" target="_blank">{{ newTaskData.task_test ? 'T' : '-' }}</a>
                     </template>
                     <template v-else> - </template>
                 </td>
@@ -164,7 +164,7 @@ watch(
     </table>
 
     <!-- 모달 : 하위업무 상세내용  -->
-    <TaskDetailModal v-if="selectedTask" :is-active="isModalActive" :task="selectedTask" :currentUserEno="currentUserEno" @close-modal="handleCloseModal" @refreshTasks="fetchProjectTasks" />
+    <TaskDetailModal v-if="selectedTask" :is-active="isModalActive" :task="selectedTask" @close-modal="handleCloseModal" @refreshTasks="fetchProjectTasks" />
 </template>
 
 <style scoped>
@@ -185,7 +185,7 @@ watch(
 
 /* 테이블 헤더 셀에만 하단 테두리를 적용 */
 .thead th {
-  border-bottom: 1px solid #dee2e6; /* 부트스트랩 색상을 사용한 예시 */
+    border-bottom: 1px solid #dee2e6; /* 부트스트랩 색상을 사용한 예시 */
 }
 
 /* 상단 테두리를 제거하여 길이 문제 해결 */

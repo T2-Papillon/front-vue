@@ -113,7 +113,7 @@ export default {
             <tr>
                 <th>내용</th>
                 <td colspan="3">
-                    <div class="text-area">{{ project.projDesc }}</div>
+                    <div class="text-area" style="white-space: pre-wrap">{{ project.projDesc }}</div>
                 </td>
             </tr>
         </tbody>
