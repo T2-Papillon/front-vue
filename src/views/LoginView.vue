@@ -61,8 +61,8 @@ export default {
             <div class="card">
                 <div class="card-body">
                     <div class="title-area">
-                        <h2 class="h3">로그인</h2>
-                        <p class="h5">로그인을 해주세요.</p>
+                        <h2 class="h2">로그인🔑</h2>
+                        <p class="text-body-tertiary lh-sm mb-3">로그인 정보를 입력해주세요.</p>
                     </div>
                     <form @submit.prevent="login" class="mt-3">
                         <div class="mb-3">
@@ -71,7 +71,10 @@ export default {
                         <div class="mb-3">
                             <input type="password" id="password" v-model="password" placeholder="비밀번호를 입력해주세요" class="form-control" />
                         </div>
-                        <button type="submit" class="btn btn-primary">Login</button>
+
+                        <div class="btn-area">
+                            <button type="submit" class="btn btn-success w-100">로그인</button>
+                        </div>
                     </form>
                     <p v-if="errorMessage" class="mt-3 text-danger">{{ errorMessage }}</p>
                 </div>
@@ -93,7 +96,7 @@ export default {
     background-color: #dff0d8;
 }
 .card {
-    width: 850px;
+    width: 550px;
     margin: 0 auto;
     z-index: 1;
 }
@@ -103,6 +106,18 @@ export default {
     top: 0;
     transform: rotate(80deg);
     left: 0;
+}
+
+.form-control {
+    height: 40px;
+}
+
+.btn-area {
+    margin-top: 20px;
+}
+
+.btn-area .btn {
+    padding: 10px;
 }
 
 .wave {
