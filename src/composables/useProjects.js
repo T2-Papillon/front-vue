@@ -1,6 +1,5 @@
 // src/composables/useProjects.js
 import { ref, computed } from 'vue'
-import { useStore } from 'vuex'
 import axios from 'axios'
 import { formatProjectData } from '@/utils/projectUtils'
 import store from '@/store'
@@ -16,13 +15,8 @@ export function useProjects() {
     const filteredProjects = ref([])
     const apiUrl = import.meta.env.VITE_API_URL
 
-    const setIsLoading = (loading) => {
-        store.commit('setLoading', loading)
-    }
-
     // 전체 프로젝트 검색
     async function fetchProjects(searchTerm = '') {
-        setIsLoading(true)
         isLoading.value = true
         searchQuery.value = searchTerm // 현재 검색어 업데이트
         try {
@@ -50,7 +44,6 @@ export function useProjects() {
             console.error('Error fetching projects:', error)
         } finally {
             isLoading.value = false
-            setIsLoading(false)
         }
     }
 

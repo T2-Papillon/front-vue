@@ -76,17 +76,12 @@ router.beforeEach((to, from, next) => {
         }
     } else {
         if (sessionStorage.getItem('NM') != null) {
-            store.commit('setLoading', true)
             next()
         } else {
             alert('로그인이 필요한 페이지입니다.')
             next('/login')
         }
     }
-})
-
-router.afterEach(() => {
-    store.commit('setLoading', false)
 })
 
 export default router
