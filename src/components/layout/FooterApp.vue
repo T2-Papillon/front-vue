@@ -17,7 +17,5 @@ footer {
     text-align: center;
 }
 footer p {
-    opacity: 0.6;
-    font-weight: 200;
 }
 </style>
