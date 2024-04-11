@@ -120,7 +120,7 @@ dashboardData()
                             <h3 class="card-title mb-4">현재 진행중인 담당 업무</h3>
                             <div class="card-text">
                                 <div class="overflow-auto">
-                                    <TaskTable :initialTasks="tasks" :isDashBoard="true" showAssignee="true" :showStatus="true" :showProgress="true" :showWriteDate="true" />
+                                    <TaskTable :initialTasks="tasks" :isDashBoard="true" :showAssignee="true" :showStatus="true" :showProgress="true" :showWriteDate="true" />
                                 </div>
                             </div>
                         </div>
