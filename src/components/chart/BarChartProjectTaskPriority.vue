@@ -18,7 +18,7 @@ export default {
     name: 'BarChartProjectTaskPriority',
     components: { Bar },
     setup() {
-        const route = useRoute();
+        const route = useRoute()
         const state = reactive({
             chartData: null,
             chartOptions: {
@@ -32,38 +32,32 @@ export default {
                     }
                 }
             }
-        });
+        })
 
         async function fetchTasks() {
-            const route = useRoute();
-            const projectId = route.params.id;
-            console.log("Fetching tasks for project ID:", projectId);
+            const route = useRoute()
+            const projectId = route.params.id
             try {
-                const apiUrl = import.meta.env.VITE_API_URL;
-                const response = await axios.get(`${apiUrl}/task/project/${projectId}/task`);
-                console.log("Tasks fetched:", response.data);
-                const tasks = response.data;
-                processChartData(tasks);
-            } catch (error) {
-                console.error("Error fetching tasks from:", apiUrl, error);
-            }
+                const apiUrl = import.meta.env.VITE_API_URL
+                const response = await axios.get(`${apiUrl}/task/project/${projectId}/task`)
+                const tasks = response.data
+                processChartData(tasks)
+            } catch (error) {}
         }
 
         function processChartData(tasks) {
-            console.log("Processing chart data for tasks:", tasks);
             const priorityMapping = {
-                'LV0': '긴급',
-                'LV1': '높음',
-                'LV2': '보통',
-                'LV3': '낮음'
-            };
+                LV0: '긴급',
+                LV1: '높음',
+                LV2: '보통',
+                LV3: '낮음'
+            }
 
             const tasksPerPriority = tasks.reduce((acc, task) => {
-                const priorityLabel = priorityMapping[task.task_priority];
-                acc[priorityLabel] = (acc[priorityLabel] || 0) + 1;
-                return acc;
-            }, {});
-            console.log("Tasks per priority:", tasksPerPriority);
+                const priorityLabel = priorityMapping[task.task_priority]
+                acc[priorityLabel] = (acc[priorityLabel] || 0) + 1
+                return acc
+            }, {})
 
             state.chartData = {
                 labels: Object.keys(tasksPerPriority),
@@ -76,20 +70,21 @@ export default {
                         borderWidth: 1
                     }
                 ]
-            };
+            }
         }
 
         onMounted(() => {
-            fetchTasks(route.params.id);
-        });
+            fetchTasks(route.params.id)
+        })
 
-        watch(() => route.params.id, (newId) => {
-            console.log("Route parameter changed. New project ID:", newId);
-            fetchTasks(newId);
-        });
+        watch(
+            () => route.params.id,
+            (newId) => {
+                fetchTasks(newId)
+            }
+        )
 
-        return { ...toRefs(state) };
+        return { ...toRefs(state) }
     }
 }
 </script>
-

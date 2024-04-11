@@ -29,7 +29,6 @@ const changePage = async (page) => {
     // 현재 진행 상태와 검색어를 고려하여 다음 버튼의 활성화 여부를 결정합니다.
     const isNextButtonEnabled = currentPage.value < totalPages.value
     if (!isNextButtonEnabled) {
-        console.log('마지막 페이지입니다. 다음 버튼이 비활성화됩니다.')
     }
 
     // currentPage 값을 변경한 후에 프로젝트를 다시 불러옵니다.
@@ -46,7 +45,6 @@ const handlePageChange = (page) => {
     // 페이지 변경 시 다음 버튼의 활성화 여부를 결정합니다.
     const isNextButtonEnabled = currentPage.value < totalPages.value
     if (!isNextButtonEnabled) {
-        console.log('마지막 페이지입니다. 다음 버튼이 비활성화됩니다.')
     }
 }
 

@@ -17,7 +17,6 @@ export function useProjects() {
     // 전체 프로젝트 검색
     async function fetchProjects(searchTerm = '') {
         isLoading.value = true
-        console.log('Fetching projects...')
         searchQuery.value = searchTerm // 현재 검색어 업데이트
         try {
             const searchPath = searchTerm ? `/search/project?term=${searchTerm}` : '/project'
@@ -34,7 +33,6 @@ export function useProjects() {
                 // 데이터가 없는 경우 메시지 출력
                 projects.value = []
                 totalPages.value = 0
-                console.log('No projects found.')
                 return
             }
 
@@ -43,7 +41,6 @@ export function useProjects() {
             filteredProjects.value = projects.value
             // 직접 숫자를 사용하여 전체 페이지 수 계산
             totalPages.value = Math.ceil(response.data.totalCount / pageSize)
-            console.log('Projects loaded:', projects.value)
         } catch (error) {
             console.error('Error fetching projects:', error)
         } finally {
@@ -60,7 +57,6 @@ export function useProjects() {
 
         const isNextButtonEnabled = currentPage.value < totalPages.value
         if (!isNextButtonEnabled) {
-            console.log('마지막 페이지입니다. 다음 버튼이 비활성화됩니다.')
         }
 
         await fetchProjects()
@@ -74,9 +70,7 @@ export function useProjects() {
             const response = await axios.get(userProjectsUrl)
 
             projects.value = response.data.map((project) => formatProjectData(project))
-            console.log('User-specific projects loaded:', projects.value)
         } catch (error) {
-            console.error('Error fetching user-specific projects:', error)
         } finally {
             isLoading.value = false
         }
@@ -101,9 +95,7 @@ export function useProjects() {
             })
             // 검색 결과를 바로 projects 상태에 할당
             projects.value = response.data.map((project) => formatProjectData(project))
-            console.log('Search results:', projects.value)
         } catch (error) {
-            console.error('Error searching projects:', error)
         } finally {
             isLoading.value = false
         }
@@ -129,7 +121,6 @@ export function useProjects() {
 
     // 최신순
     function sortByLatest() {
-        console.log('Sorting by latest')
         projects.value.sort((a, b) => {
             return new Date(b.writeDate) - new Date(a.writeDate)
         })
@@ -139,7 +130,6 @@ export function useProjects() {
 
     //우선순위순
     function sortByPriority() {
-        console.log('Sorting by priority')
         const priorityOrder = { LV0: 0, LV1: 1, LV2: 2, LV3: 3 }
         projects.value.sort((a, b) => {
             const priorityA = priorityOrder[a.priority] ?? Number.MAX_SAFE_INTEGER
@@ -154,13 +144,11 @@ export function useProjects() {
         try {
             const updateUrl = `${apiUrl}/project/${projectId}/updateProgress`
             await axios.post(updateUrl, { progress: newProgress })
-            console.log('프로젝트 진도율이 성공적으로 업데이트되었습니다.')
 
             const projectIndex = projects.value.findIndex((project) => project.id === projectId)
             if (projectIndex !== -1) {
                 projects.value[projectIndex].progress = newProgress
             }
-            console.log('프로젝트 진도율이 성공적으로 업데이트되었습니다.')
         } catch (error) {
             console.error('프로젝트 진도율 업데이트 중 오류가 발생했습니다:', error)
         }

@@ -103,7 +103,6 @@ export default {
                 const status = determineTaskStatus()
 
                 if (confirmTaskStatusChange(status)) {
-                    console.log(postData)
                     const response = await axios.post(`${apiUrl}/task/project/${projectId}/task/${taskId}`, postData)
                     handleApiResponse(response, projectId)
                 }
@@ -139,7 +138,6 @@ export default {
                 const status = determineTaskStatus()
 
                 if (confirmTaskStatusChange(status)) {
-                    console.log(postData)
                     const response = await axios.post(`${apiUrl}/task/project/${projectId}/task`, postData)
                     handleApiResponse(response, projectId)
                 }
