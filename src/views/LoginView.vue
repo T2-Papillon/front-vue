@@ -66,7 +66,7 @@ export default {
                     </div>
                     <form @submit.prevent="login" class="mt-3">
                         <div class="mb-3">
-                            <input type="email" id="username" v-model="username" placeholder="example@boogle.com" class="form-control" />
+                            <input type="email" id="username" v-model="username" placeholder="example@boogle.com" class="form-control" autocomplete="off" />
                         </div>
                         <div class="mb-3">
                             <input type="password" id="password" v-model="password" placeholder="비밀번호를 입력해주세요" class="form-control" />
