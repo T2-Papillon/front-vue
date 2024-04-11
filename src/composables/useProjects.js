@@ -24,7 +24,6 @@ export function useProjects() {
     async function fetchProjects(searchTerm = '') {
         setIsLoading(true)
         isLoading.value = true
-        console.log('Fetching projects...')
         searchQuery.value = searchTerm // 현재 검색어 업데이트
         try {
             const searchPath = searchTerm ? `/search/project?term=${searchTerm}` : '/project'
@@ -41,7 +40,6 @@ export function useProjects() {
             if (response.data.length === 0) {
                 projects.value = []
                 totalPages.value = 0
-                console.log('No projects found.')
                 return
             }
 
@@ -80,7 +78,6 @@ export function useProjects() {
 
             projects.value = response.data.map((project) => formatProjectData(project))
         } catch (error) {
-            console.error('Error fetching user-specific projects:', error)
         } finally {
             isLoading.value = false
         }
@@ -105,7 +102,6 @@ export function useProjects() {
             // 검색 결과를 바로 projects 상태에 할당
             projects.value = response.data.map((project) => formatProjectData(project))
         } catch (error) {
-            console.error('Error searching projects:', error)
         } finally {
             isLoading.value = false
         }
@@ -131,7 +127,6 @@ export function useProjects() {
 
     // 최신순
     function sortByLatest() {
-        console.log('Sorting by latest')
         projects.value.sort((a, b) => {
             return new Date(b.writeDate) - new Date(a.writeDate)
         })
@@ -141,7 +136,6 @@ export function useProjects() {
 
     //우선순위순
     function sortByPriority() {
-        console.log('Sorting by priority')
         const priorityOrder = { LV0: 0, LV1: 1, LV2: 2, LV3: 3 }
         projects.value.sort((a, b) => {
             const priorityA = priorityOrder[a.priority] ?? Number.MAX_SAFE_INTEGER
