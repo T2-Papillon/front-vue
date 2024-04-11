@@ -2,7 +2,6 @@
 import { ref, computed } from 'vue'
 import axios from 'axios'
 import { formatProjectData } from '@/utils/projectUtils'
-import store from '@/store'
 
 const PAGE_SIZE = 10
 
