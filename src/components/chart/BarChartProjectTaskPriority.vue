@@ -23,6 +23,11 @@ export default {
             chartData: null,
             chartOptions: {
                 responsive: true,
+                plugins: {
+                    legend: {
+                        display: false // 범례가 표시되지 않도록
+                    }
+                },
                 scales: {
                     y: {
                         beginAtZero: true,

@@ -21,6 +21,11 @@ export default {
             chartData: null, // 차트 데이터를 null로 초기화
             chartOptions: {
                 responsive: true,
+                plugins: {
+                    legend: {
+                        display: false // 범례가 표시되지 않도록
+                    }
+                },
                 scales: {
                     y: {
                         beginAtZero: true

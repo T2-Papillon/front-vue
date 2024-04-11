@@ -70,26 +70,31 @@ export default {
 
         <div class="row mt-4">
             <div class="col">
-                <h3 class="h3">업무 진행 상태 분포</h3>
+                <h3 class="h3 chart-title">업무 진행 상태 분포</h3>
                 <BarChartProjectTaskStatus />
             </div>
             <div class="col">
-                <h3 class="h3">기간별 업무 분포</h3>
+                <h3 class="h3 chart-title">기간별 업무 분포</h3>
                 <LineChartProjectTaskTime />
             </div>
         </div>
 
         <div class="row mt-4">
             <div class="col">
-                <h3 class="h3">담당자별 업무 분포</h3>
+                <h3 class="h3 chart-title">담당자별 업무 분포</h3>
                 <BarChartTaskAssignee />
             </div>
             <div class="col">
-                <h3 class="h3">우선순위별 업무 분포</h3>
+                <h3 class="h3 chart-title">우선순위별 업무 분포</h3>
                 <BarChartProjectTaskPriority />
             </div>
         </div>
     </div>
 </template>
 
-<style></style>
+<style>
+/* 추가할 CSS */
+.chart-title {
+    margin-bottom: 30px; /* 원하는 여백 크기로 조절하세요 */
+}
+</style>
