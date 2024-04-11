@@ -124,7 +124,7 @@ watch(
                     <a class="tb-project-title" @click="openModal(task)">{{ task.task_title }}</a>
                 </td>
                 <td class="text-start" v-if="showAssignee">
-                    <UserProfile :name="task.assignee_name" />
+                    <UserProfile :name="task.assignee_name" :dept="task.assignee_dept" />
                 </td>
                 <td>{{ formatDate(task.start_date) }}</td>
                 <td>{{ formatDate(task.end_date) }}</td>
