@@ -1,7 +1,9 @@
 // src/composables/useProjects.js
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
+import { useStore } from 'vuex'
 import axios from 'axios'
 import { formatProjectData } from '@/utils/projectUtils'
+import store from '@/store'
 
 const PAGE_SIZE = 10
 
@@ -14,8 +16,13 @@ export function useProjects() {
     const filteredProjects = ref([])
     const apiUrl = import.meta.env.VITE_API_URL
 
+    const setIsLoading = (loading) => {
+        store.commit('setLoading', loading)
+    }
+
     // 전체 프로젝트 검색
     async function fetchProjects(searchTerm = '') {
+        setIsLoading(true)
         isLoading.value = true
         searchQuery.value = searchTerm // 현재 검색어 업데이트
         try {
@@ -29,22 +36,21 @@ export function useProjects() {
                 }
             })
 
+            // 데이터가 없는 경우 메시지 출력
             if (response.data.length === 0) {
-                // 데이터가 없는 경우 메시지 출력
                 projects.value = []
                 totalPages.value = 0
                 return
             }
 
             projects.value = response.data.map((project) => formatProjectData(project))
-            // 검색된 프로젝트를 filteredProjects에 저장
             filteredProjects.value = projects.value
-            // 직접 숫자를 사용하여 전체 페이지 수 계산
             totalPages.value = Math.ceil(response.data.totalCount / pageSize)
         } catch (error) {
             console.error('Error fetching projects:', error)
         } finally {
             isLoading.value = false
+            setIsLoading(false)
         }
     }
 
@@ -57,6 +63,7 @@ export function useProjects() {
 
         const isNextButtonEnabled = currentPage.value < totalPages.value
         if (!isNextButtonEnabled) {
+            alert('마지막 페이지입니다.')
         }
 
         await fetchProjects()
@@ -78,7 +85,6 @@ export function useProjects() {
 
     // 프로젝트목록 페이지에서 프로젝트 검색 함수
     async function searchProjects() {
-        // 검색어가 비어 있는지 확인
         if (!searchQuery.value.trim()) {
             alert('검색어를 입력하세요')
             return
@@ -154,5 +160,19 @@ export function useProjects() {
         }
     }
 
-    return { projects, fetchProjects, fetchProjectsForUser, fetchProjectsByStatus, sortByLatest, sortByPriority, updateProjectProgress, isLoading, currentPage, totalPages, searchQuery, changePage, searchProjects }
+    return {
+        projects,
+        fetchProjects,
+        fetchProjectsForUser,
+        fetchProjectsByStatus,
+        sortByLatest,
+        sortByPriority,
+        updateProjectProgress,
+        isLoading: computed(() => store.state.isLoading),
+        currentPage,
+        totalPages,
+        searchQuery,
+        changePage,
+        searchProjects
+    }
 }

@@ -42,7 +42,7 @@ onMounted(async () => {
             <div class="col-auto">
                 <div class="title-area">
                     <h2 class="h2">{{ userName }} 님의 프로젝트 목록 👋</h2>
-                    <p class="text-body-tertiary lh-sm mb-0"><br />{{ userName }} 님이 참여한 프로젝트를 진행 상태별로 손쉽게 관리하고 파악하세요!</p>
+                    <p class="text-body-tertiary lh-sm mb-0">참여하신 프로젝트를 진행 상태별로 손쉽게 관리하고 파악하세요!</p>
                 </div>
             </div>
             <div class="col-auto d-flex">
@@ -61,14 +61,10 @@ onMounted(async () => {
                             📬 진행예정 <span class="h3 fw-bold">{{ todoProjects.length }}</span> 건
                         </h3>
                     </div>
-                    <!-- <div class="col-auto"> -->
-                    <!-- 정렬기준 필터 -->
-                    <!-- <SortFilter :sortByLatest="() => sortByLatest(todoProjects)" :sortByPriority="() => sortByPriority(todoProjects)" />
-                    </div> -->
                 </div>
                 <ProjectTable v-if="todoProjects.length > 0" :projects="todoProjects" />
                 <PaginationView v-if="todoProjects.length > 10" :currentPage="currentPage" :totalPages="totalPages" />
-                <p v-else-if="todoProjects.length === 0">프로젝트가 없습니다.</p>
+                <p v-else-if="todoProjects.length === 0" class="empty">아직 비어있어요 👻</p>
             </div>
         </section>
 
@@ -80,14 +76,10 @@ onMounted(async () => {
                             🚗 진행중 <span class="h3 fw-bold">{{ doingProjects.length }}</span> 건
                         </h3>
                     </div>
-                    <!-- <div class="col-auto"> -->
-                    <!-- 정렬기준 필터 -->
-                    <!-- <SortFilter :sortByLatest="() => sortByLatest(doingProjects)" :sortByPriority="() => sortByPriority(doingProjects)" />
-                    </div> -->
                 </div>
                 <ProjectTable v-if="doingProjects.length > 0" :projects="doingProjects" />
                 <PaginationView v-if="doingProjects.length > 10" :currentPage="currentPage" :totalPages="totalPages" />
-                <p v-else-if="doingProjects.length === 0">프로젝트가 없습니다.</p>
+                <p v-else-if="doingProjects.length === 0" class="empty">아직 비어있어요 👻</p>
             </div>
         </section>
 
@@ -99,14 +91,10 @@ onMounted(async () => {
                             🎉 완료 <span class="h3 fw-bold">{{ doneProjects.length }}</span> 건
                         </h3>
                     </div>
-                    <!-- <div class="col-auto"> -->
-                    <!-- 정렬기준 필터 -->
-                    <!-- <SortFilter :sortByLatest="() => sortByLatest(doneProjects)" :sortByPriority="() => sortByPriority(doneProjects)" />
-                    </div> -->
                 </div>
                 <ProjectTable v-if="doneProjects.length > 0" :projects="doneProjects" />
                 <PaginationView v-if="doneProjects.length > 10" :currentPage="currentPage" :totalPages="totalPages" />
-                <p v-else-if="doneProjects.length === 0">프로젝트가 없습니다.</p>
+                <p v-else-if="doneProjects.length === 0" class="empty">아직 비어있어요 👻</p>
             </div>
         </section>
 
@@ -118,14 +106,10 @@ onMounted(async () => {
                             🧩 보류 <span class="h3 fw-bold">{{ holdProjects.length }}</span> 건
                         </h3>
                     </div>
-                    <!-- <div class="col-auto"> -->
-                    <!-- 정렬기준 필터 -->
-                    <!-- <SortFilter :sortByLatest="() => sortByLatest(holdProjects)" :sortByPriority="() => sortByPriority(holdProjects)" />
-                    </div> -->
                 </div>
                 <ProjectTable v-if="holdProjects.length > 0" :projects="holdProjects" />
                 <PaginationView v-if="holdProjects.length > 10" :currentPage="currentPage" :totalPages="totalPages" />
-                <p v-else-if="holdProjects.length === 0">프로젝트가 없습니다.</p>
+                <p v-else-if="holdProjects.length === 0" class="empty">아직 비어있어요 👻</p>
             </div>
         </section>
     </div>
