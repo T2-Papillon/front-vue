@@ -55,7 +55,7 @@ export default {
                             </li>
                             <li class="nav-item">
                                 <router-link to="/search" class="nav-link">
-                                    <button class="btn" type="submit"><i class="bi bi-search"></i></button>
+                                    <button class="btn" type="submit" aria-label="검색"><i class="bi bi-search"></i></button>
                                 </router-link>
                             </li>
                         </ul>

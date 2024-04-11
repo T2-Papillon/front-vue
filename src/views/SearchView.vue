@@ -104,7 +104,7 @@ const handleSelectedItems = (selectedItems) => {
         <div class="row d-flex align-items-center justify-content-center mx-auto w-50">
             <form @submit.prevent="submitSearch" class="d-flex align-items-center position-relative">
                 <input v-model="searchTerm" class="form-control input-search" type="search" placeholder="프로젝트명 또는 이름으로 검색해주세요" aria-label="Search" />
-                <button class="btn btn-search" type="submit"><i class="bi bi-search"></i></button>
+                <button class="btn btn-search" type="submit" aria-label="검색"><i class="bi bi-search"></i></button>
             </form>
         </div>
 

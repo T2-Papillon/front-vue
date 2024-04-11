@@ -28,7 +28,7 @@ export default {
 </script>
 <template>
     <div class="profile">
-        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">{{ displayName }}</button>
+        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="프로필">{{ displayName }}</button>
         <ul class="dropdown-menu">
             <li>
                 <router-link :to="`/mypage/${name}`" class="dropdown-item">{{ dept }} / {{ name }}</router-link>

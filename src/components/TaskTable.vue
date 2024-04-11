@@ -70,7 +70,8 @@ onMounted(() => {
     }
 })
 
-const openModal = (task) => {
+const openModal = (event, task) => {
+    event.preventDefault()
     selectedTask.value = task
     isModalActive.value = true
 }
@@ -121,7 +122,7 @@ watch(
         <tbody>
             <tr v-for="(task, index) in tasks" :key="index">
                 <td>
-                    <a class="tb-project-title" @click="openModal(task)">{{ task.task_title }}</a>
+                    <a href="#" class="tb-project-title" @click="openModal($event, task)">{{ task.task_title }}</a>
                 </td>
                 <td class="text-start" v-if="showAssignee">
                     <UserProfile :name="task.assignee" />
@@ -144,7 +145,7 @@ watch(
             <!-- 새로운 업무 표시 -->
             <tr v-if="newTaskData" :key="newTaskData.id">
                 <td>
-                    <a class="tb-project-title" @click="openModal(newTaskData)">{{ newTaskData.task_title }}</a>
+                    <a href="#" class="tb-project-title" @click="openModal($event, newTaskData)">{{ newTaskData.task_title }}</a>
                 </td>
                 <td>{{ newTaskData.assignee }}</td>
                 <td>{{ formatDate(newTaskData.start_date) }}</td>
