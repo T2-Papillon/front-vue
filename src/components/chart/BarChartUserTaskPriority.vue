@@ -54,7 +54,7 @@ export default {
             }
 
             // Filter tasks for the logged-in assignee and count by priority
-            const filteredTasks = tasks.filter(task => task.assignee === assigneeName);
+            const filteredTasks = tasks.filter(task => task.assignee_name === assigneeName);
 
             const tasksPerPriority = filteredTasks.reduce((acc, task) => {
                 const priority = priorityMapping[task.task_priority] || task.task_priority; // Use mapped priority or raw value

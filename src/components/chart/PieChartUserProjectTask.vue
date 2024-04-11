@@ -45,7 +45,7 @@ export default {
         }
 
         const processChartData = (tasks, projectMapping) => {
-            const filteredTasks = tasks.filter((task) => task.assignee === props.assigneeName)
+            const filteredTasks = tasks.filter((task) => task.assignee_name === props.assigneeName)
 
             const projectTaskCounts = filteredTasks.reduce((acc, task) => {
                 const projectName = projectMapping[task.proj_no]

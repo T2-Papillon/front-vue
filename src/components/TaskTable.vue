@@ -147,7 +147,7 @@ watch(
                 <td>
                     <a href="#" class="tb-project-title" @click="openModal($event, newTaskData)">{{ newTaskData.task_title }}</a>
                 </td>
-                <td>{{ newTaskData.assignee }}</td>
+                <td>{{ newTaskData.assignee_name }}</td>
                 <td>{{ formatDate(newTaskData.start_date) }}</td>
                 <td>{{ formatDate(newTaskData.end_date) }}</td>
                 <td>{{ newTaskData.task_status }}</td>
