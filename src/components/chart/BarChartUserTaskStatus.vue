@@ -54,7 +54,7 @@ export default {
             }
 
             // 특정 assignee의 task만 필터링
-            const filteredTasks = tasks.filter((task) => task.assignee === assigneeName)
+            const filteredTasks = tasks.filter((task) => task.assignee_name === assigneeName)
 
             const tasksPerStatus = filteredTasks.reduce((acc, task) => {
                 const status = statusMapping[task.task_status] || task.task_status // 매핑된 상태 사용, 또는 기본 값
