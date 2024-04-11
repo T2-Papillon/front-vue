@@ -1,10 +1,12 @@
 <script setup>
+import { ref, watch, onMounted } from 'vue'
+import { useProjects } from '@/composables/useProjects'
+
 import CheckboxSelector from '../components/CheckboxSelector.vue'
 import ProjectTable from '../components/ProjectTable.vue'
 import SortFilter from '../components/SortFilter.vue'
-import { ref, watch, onMounted } from 'vue'
-import { useProjects } from '@/composables/useProjects'
 import PaginationView from '../components/PaginationView.vue'
+import LoadingSpinner from '../components/LoadingSpinner.vue'
 
 const searchTerm = ref('')
 const checkboxItems = ref([
@@ -14,7 +16,9 @@ const checkboxItems = ref([
     { id: 'done', name: '완료' },
     { id: 'hold', name: '보류' }
 ])
+
 const selectedCheckboxes = ref(['all'])
+const isLoading = ref(false)
 const { projects, fetchProjects, fetchProjectsByStatus, sortByLatest, sortByPriority, currentPage, totalPages, changePage: changePageMethod } = useProjects()
 
 const changePage = async (page) => {
@@ -85,8 +89,7 @@ const handleSelectedItems = (selectedItems) => {
 }
 </script>
 <template>
-    <div class="container">
-        <!-- 통합검색 영역 -->
+    <div class="inner">
         <div class="row align-items-center justify-content-center g-3">
             <div class="col d-flex justify-content-center align-items-center">
                 <div class="search-area">
@@ -100,8 +103,8 @@ const handleSelectedItems = (selectedItems) => {
 
         <div class="row d-flex align-items-center justify-content-center mx-auto w-50">
             <form @submit.prevent="submitSearch" class="d-flex align-items-center">
-                <input v-model="searchTerm" class="form-control me-2" type="search" placeholder="프로젝트명 또는 이름으로 검색해주세요" aria-label="Search" />
-                <button class="btn btn-outline-success" type="submit"><i class="bi bi-search"></i></button>
+                <input v-model="searchTerm" class="form-control me-2 input-search" type="search" placeholder="프로젝트명 또는 이름으로 검색해주세요" aria-label="Search" />
+                <button class="btn btn-outline-success btn-search" type="submit"><i class="bi bi-search"></i></button>
             </form>
         </div>
 
@@ -128,6 +131,8 @@ const handleSelectedItems = (selectedItems) => {
         <div v-if="projects.length >= 10 || totalPages.value > 1">
             <PaginationView :currentPage="currentPage" :totalPages="totalPages" @update:currentPage="handlePageChange" />
         </div>
+
+        <LoadingSpinner :isLoading="isLoading" />
     </div>
 </template>
 
@@ -137,5 +142,13 @@ const handleSelectedItems = (selectedItems) => {
 }
 .sort-area {
     padding: 0;
+}
+
+.input-search {
+    border-radius: 30px;
+    padding: 10px 20px;
+    background-color: #ececec;
+}
+.btn-search {
 }
 </style>
