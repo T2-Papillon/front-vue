@@ -1,4 +1,7 @@
 <script>
+import { useProjects } from '@/composables/useProjects'
+import { ref, onMounted, computed, watch } from 'vue'
+import { useRoute } from 'vue-router'
 import axios from 'axios'
 import BarChartUserTaskStatus from '../components/chart/BarChartUserTaskStatus.vue'
 import BarChartUserTaskPriority from '../components/chart/BarChartUserTaskPriority.vue'
@@ -6,9 +9,11 @@ import PieChartUserProjectTask from '../components/chart/PieChartUserProjectTask
 import TaskTable from '../components/TaskTable.vue'
 import ProjectTable from '../components/ProjectTable.vue'
 import PaginationView from '../components/PaginationView.vue'
-import { useProjects } from '@/composables/useProjects'
-import { ref, onMounted, computed, watch } from 'vue'
-import { useRoute } from 'vue-router'
+
+import profileImg1 from '@/assets/images/profile-img01.png'
+import profileImg2 from '@/assets/images/profile-img02.png'
+import profileImg3 from '@/assets/images/profile-img03.png'
+import profileImg4 from '@/assets/images/profile-img04.png'
 
 export default {
     components: {
@@ -21,30 +26,27 @@ export default {
     },
     setup() {
         const route = useRoute()
-        const profileName = ref(route.params.profileName) // URL에서 프로필 이름을 가져옵니다.
-        // const profileDept = ref('') // 초기 부서 정보는 비어 있습니다.
+        const profileName = ref(route.params.profileName)
 
         const { projects, fetchProjects } = useProjects()
-        const filteredProjects = ref([]) // 필터링된 프로젝트를 저장할 새로운 반응형 참조
+        const filteredProjects = ref([])
 
         const tasks = ref([])
 
-        const currentPage = ref(1) // 현재 페이지 번호를 설정합니다.
-        const pageSize = ref(10) // 페이지당 업무 수를 10으로 설정합니다.
-        const totalPages = computed(() => Math.ceil(todoTasks.value.length / pageSize.value)) // 전체 페이지 수를 계산합니다.
+        const currentPage = ref(1)
+        const pageSize = ref(10)
+        const totalPages = computed(() => Math.ceil(todoTasks.value.length / pageSize.value))
 
-        const paginatedTodoTasks = computed(() => { // paginatedTodoTasks 계산된 속성을 추가합니다.
+        const paginatedTodoTasks = computed(() => {
             const start = (currentPage.value - 1) * pageSize.value
             const end = currentPage.value * pageSize.value
             return todoTasks.value.slice(start, end)
         })
 
-        // "진행예정(TODO)" 상태의 업무만 필터링하여 저장하는 computed 속성
         const todoTasks = computed(() => {
             return tasks.value.filter((task) => task.task_status === 'TODO')
         })
 
-        // 모든 업무 데이터를 가져와서 현재 사용자에게 할당된 업무로 필터링하는 함수
         async function fetchTasks() {
             try {
                 const apiUrl = import.meta.env.VITE_API_URL
@@ -59,26 +61,32 @@ export default {
             await fetchProjects()
             filteredProjects.value = projects.value.filter((project) => project.participants.some((participant) => participant.name === profileName.value))
             await fetchTasks() // 사용자에게 할당된 업무 데이터를 가져옵니다
-            // 여기에서 userProfile 데이터 페치 로직을 추가합니다.
-            // const userProfile = await fetchUserProfile(profileName.value)
-            // profileDept.value = userProfile.dept // 부서 정보를 설정합니다.
         })
 
-        // 현재 페이지가 변경될 때마다 호출됩니다.
         const changePage = (newPage) => {
             currentPage.value = newPage
         }
 
-        // currentPage가 변경될 때마다 todoTasks의 데이터를 재계산합니다.
         watch(currentPage, () => {
             // 여기에 필요한 로직을 추가합니다. 예를 들어, 서버로부터 새로운 데이터를 불러오는 등의 작업을 수행할 수 있습니다.
         })
 
+        const imageList = [profileImg1, profileImg2, profileImg3, profileImg4]
+
+        // 랜덤 이미지 선택
+        const getRandomImage = () => {
+            const randomIndex = Math.floor(Math.random() * imageList.length)
+            return imageList[randomIndex]
+        }
+
+        // 프로필 이미지 설정
+        const profileImage = ref(getRandomImage())
+
         return {
             profileName,
-            // profileDept, // 컴포넌트에 profileDept 추가
-            projects: filteredProjects, // 수정된 부분: 필터링된 프로젝트 데이터를 전달
-            tasks, // TaskTable 컴포넌트로 전달되는 업무 데이터
+            profileImage,
+            projects: filteredProjects,
+            tasks,
             todoTasks,
             currentPage,
             totalPages,
@@ -91,9 +99,10 @@ export default {
 <template>
     <div class="mypage-wrap">
         <div class="top-area">
-            <div class="container">
+            <div class="inner">
                 <div class="profile">
-                    <i class=""></i>
+                    <i :style="{ backgroundImage: `url(${profileImage})` }"></i>
+
                     <div class="info">
                         <h3 class="info-name">{{ profileName }}</h3>
                     </div>
@@ -101,7 +110,7 @@ export default {
             </div>
         </div>
         <div class="btm-area">
-            <div class="container">
+            <div class="inner">
                 <div class="row align-items-center justify-content-between g-3 pb-5">
                     <div class="col-auto">
                         <div class="title-area">
@@ -160,13 +169,12 @@ export default {
 </template>
 
 <style scoped>
-/* 기존 스타일 유지하면서 추가된 클래스를 정의 */
 .btm-area .row.pb-5 {
-    padding-bottom: 6rem; /* 여백을 3rem으로 늘림 */
+    padding-bottom: 6rem;
 }
 
 .col-xl-5 {
-    padding: 0 15px; /* 좌우 패딩 조정 */
+    padding: 0 15px;
 }
 
 .top-area {
@@ -192,6 +200,7 @@ export default {
     border-radius: 100%;
     border: 4px solid #fff;
     background-color: #d9d9d9;
+    background-size: cover;
 }
 
 .profile .info {
