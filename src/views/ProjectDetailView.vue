@@ -32,10 +32,6 @@ export default {
             { id: 'hold', name: '보류' }
         ])
 
-        watch(selectedCheckboxes, () => {
-            filterTasks()
-        })
-
         const filteredTasks = computed(() => {
             // 'all'이 선택된 경우 모든 업무 반환
             if (selectedCheckboxes.value.includes('all')) {
@@ -45,11 +41,6 @@ export default {
                 return tasks.value.filter((task) => task.task_status && selectedCheckboxes.value.includes(task.task_status.toLowerCase()))
             }
         })
-
-        function filterTasks() {
-            console.log('Filtering tasks based on: ', selectedCheckboxes.value)
-            // 여기에 필터링 로직을 구현하거나, 필요에 따라 API 호출을 통해 서버에서 필터링을 수행할 수 있습니다.
-        }
 
         function handleSelectedItems(newSelection) {
             selectedCheckboxes.value = newSelection
@@ -99,14 +90,12 @@ export default {
 
         // 최신순으로 정렬하는 함수
         function sortByLatest() {
-            console.log('Sorting by latest')
             tasks.value.sort((a, b) => new Date(b.create_date) - new Date(a.create_date))
             tasks.value = [...tasks.value]
         }
 
         // 우선순위순으로 정렬하는 함수
         function sortByPriority() {
-            console.log('Sorting by priority')
             const priorityOrder = { LV0: 0, LV1: 1, LV2: 2, LV3: 3 } // 우선순위 숫자로 매핑
             tasks.value.sort((a, b) => {
                 const priorityA = priorityOrder[a.task_priority] ?? Number.MAX_SAFE_INTEGER
