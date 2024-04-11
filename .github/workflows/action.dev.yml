@@ -3,7 +3,7 @@ name: Deploy2aws 🚀
 on:
     push:
         branches:
-            - dev
+            - req_domain_v2.0.0/choi
     pull_request:
         types:
             - closed

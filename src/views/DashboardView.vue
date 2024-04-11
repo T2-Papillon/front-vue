@@ -31,10 +31,7 @@ async function dashboardData() {
         taskToday.value = res.data.task_today
         taskYesterday.value = res.data.task_yesterday
         taskWeek.value = res.data.task_week
-    } catch (e) {
-        //this.$router.replace('/')
-        console.log(e)
-    }
+    } catch (e) {}
 }
 
 dashboardData()

@@ -1,12 +1,14 @@
 <script setup>
-import { defineProps } from 'vue'
+import { defineProps, computed } from 'vue'
 import UserProfile from '../components/UserProfile.vue'
 import ProgressBar from '../components/ProgressBar.vue'
 import StatusBadge from '../components/StatusBadge.vue'
 import PriorityBadge from '../components/PriorityBadge.vue'
+import { differenceInCalendarDays } from 'date-fns'
 
 const props = defineProps({
-    projects: Array
+    projects: Array,
+    showUpcomingDeadlines: Boolean // 새로운 prop 추가
 })
 
 const formatParticipants = (participants) => {
@@ -21,6 +23,19 @@ const findPMDepartment = (pmName, participants) => {
     const pm = participants.find((participant) => participant.name === pmName)
     return pm ? pm.dept_no : null
 }
+
+const filteredProjects = computed(() => {
+    if (props.showUpcomingDeadlines) {
+        const today = new Date();
+        return props.projects.filter(project => {
+            const endDate = new Date(project.endDate);
+            const dayDifference = differenceInCalendarDays(endDate, today);
+            return dayDifference >= 0 && dayDifference <= 3;
+        });
+    } else {
+        return props.projects; // showUpcomingDeadlines가 false이면 모든 프로젝트 반환
+    }
+});
 </script>
 
 <template>
@@ -50,7 +65,7 @@ const findPMDepartment = (pmName, participants) => {
             </tr>
         </thead>
         <tbody>
-            <tr v-for="project in projects" :key="project.id">
+            <tr v-for="project in filteredProjects" :key="project.id">
                 <td>
                     <router-link :to="`/project/detail/${project.id}`" class="tb-project-title">{{ project.title }}</router-link>
                 </td>

@@ -5,7 +5,7 @@ import axios from 'axios'
 import ProjectInfo from '../components/ProjectInfo.vue'
 // import TaskTable from '../components/TaskTable.vue' // 추가 예정
 import BarChartProjectTaskStatus from '../components/chart/BarChartProjectTaskStatus.vue'
-import BarChartTaskAssignee from '../components/chart/BarChartTaskAssignee.vue'
+import LineChartTaskAssignee from '../components/chart/LineChartTaskAssignee.vue'
 import BarChartProjectTaskPriority from '../components/chart/BarChartProjectTaskPriority.vue'
 import LineChartProjectTaskTime from '../components/chart/LineChartProjectTaskTime.vue'
 
@@ -13,7 +13,7 @@ export default {
     components: {
         ProjectInfo,
         BarChartProjectTaskStatus,
-        BarChartTaskAssignee,
+        LineChartTaskAssignee,
         BarChartProjectTaskPriority,
         LineChartProjectTaskTime
     },
@@ -70,26 +70,31 @@ export default {
 
         <div class="row mt-4">
             <div class="col">
-                <h3 class="h3">업무 진행 상태 분포</h3>
+                <h3 class="h3 chart-title">업무 진행 상태 분포</h3>
                 <BarChartProjectTaskStatus />
             </div>
             <div class="col">
-                <h3 class="h3">기간별 업무 분포</h3>
-                <LineChartProjectTaskTime />
+                <h3 class="h3 chart-title">우선순위별 업무 분포</h3>
+                <BarChartProjectTaskPriority />
             </div>
         </div>
 
         <div class="row mt-4">
             <div class="col">
-                <h3 class="h3">담당자별 업무 분포</h3>
-                <BarChartTaskAssignee />
+                <h3 class="h3 chart-title">담당자별 업무 분포</h3>
+                <LineChartTaskAssignee />
             </div>
             <div class="col">
-                <h3 class="h3">우선순위별 업무 분포</h3>
-                <BarChartProjectTaskPriority />
+                <h3 class="h3 chart-title">기간별 업무 분포</h3>
+                <LineChartProjectTaskTime />
             </div>
         </div>
     </div>
 </template>
 
-<style></style>
+<style>
+/* 추가할 CSS */
+.chart-title {
+    margin-bottom: 30px; /* 원하는 여백 크기로 조절하세요 */
+}
+</style>

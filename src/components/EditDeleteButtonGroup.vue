@@ -20,7 +20,6 @@ export default {
                 const apiUrl = import.meta.env.VITE_API_URL
                 const response = await axios.get(`${apiUrl}/task/project/${this.projectId}/task/${this.taskId}`)
                 const taskData = response.data
-                console.log(taskData, 'taskData')
                 this.$router.push({
                     name: 'taskedit',
                     params: {
