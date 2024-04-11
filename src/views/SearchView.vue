@@ -95,16 +95,16 @@ const handleSelectedItems = (selectedItems) => {
                 <div class="search-area">
                     <div class="title-area">
                         <h2 class="h2 text-center">통합 검색 🔍</h2>
-                        <p class="text-body-tertiary lh-sm mb-0"><br />프로젝트명 또는 이름을 입력하면 모든 프로젝트를 손쉽게 검색할 수 있습니다!</p>
+                        <p class="text-body-tertiary lh-sm mb-0"></p>
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="row d-flex align-items-center justify-content-center mx-auto w-50">
-            <form @submit.prevent="submitSearch" class="d-flex align-items-center">
-                <input v-model="searchTerm" class="form-control me-2 input-search" type="search" placeholder="프로젝트명 또는 이름으로 검색해주세요" aria-label="Search" />
-                <button class="btn btn-outline-success btn-search" type="submit"><i class="bi bi-search"></i></button>
+            <form @submit.prevent="submitSearch" class="d-flex align-items-center position-relative">
+                <input v-model="searchTerm" class="form-control input-search" type="search" placeholder="프로젝트명 또는 이름으로 검색해주세요" aria-label="Search" />
+                <button class="btn btn-search" type="submit"><i class="bi bi-search"></i></button>
             </form>
         </div>
 
@@ -145,10 +145,15 @@ const handleSelectedItems = (selectedItems) => {
 }
 
 .input-search {
+    height: 40px;
     border-radius: 30px;
-    padding: 10px 20px;
-    background-color: #ececec;
+    padding: 10px 60px 10px 20px;
+    background-color: #f3f2f2;
 }
 .btn-search {
+    position: absolute;
+    right: 21px;
+    border-radius: 100%;
+    background-color: #f3f2f2;
 }
 </style>
