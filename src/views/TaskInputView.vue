@@ -163,10 +163,12 @@ export default {
         // input date 포맷 함수
         function convertLocaleTime(time) {
             const newTime = new Date(time).toLocaleDateString('ko-KR', { timeZone: 'Asia/Seoul' })
-            let splitTime = newTime.split('. ')
-            let year = splitTime[0]
-            let month = splitTime[1]
-            let day = splitTime[2]
+
+            let splitTime = newTime.split('.')
+
+            let year = splitTime[0].trim()
+            let month = splitTime[1].trim()
+            let day = splitTime[2].trim()
 
             if (month.length === 1) {
                 month = '0' + month
