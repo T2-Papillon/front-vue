@@ -1,26 +1,32 @@
 <template>
     <div v-if="chartData">
-        <Bar id="my-chart-id" :options="chartOptions" :data="chartData" />
+        <Line id="my-chart-id" :options="chartOptions" :data="chartData" />
     </div>
     <div v-else>데이터를 불러오는 중입니다...</div>
 </template>
 
 <script>
-import { Bar } from 'vue-chartjs'
-import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js'
+import { Line } from 'vue-chartjs'
+import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js'
 import axios from 'axios'
 import { useRoute } from 'vue-router'
 
-ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend)
 
 export default {
-    name: 'BarChartTaskAssignee',
-    components: { Bar },
+    name: 'LineChartTaskAssignee',
+    components: { Line },
     data() {
         return {
             chartData: null, // 차트 데이터를 null로 초기화
             chartOptions: {
                 responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false // 범례가 표시되지 않도록
+                    }
+                },
                 scales: {
                     y: {
                         beginAtZero: true
@@ -59,11 +65,11 @@ export default {
                 labels: Object.keys(tasksPerAssignee),
                 datasets: [
                     {
-                        label: '업무 개수',
+                        // label: '업무 개수',
                         data: Object.values(tasksPerAssignee),
-                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        fill: false,
                         borderColor: 'rgba(54, 162, 235, 1)',
-                        borderWidth: 1
+                        tension: 0.1
                     }
                 ]
             };

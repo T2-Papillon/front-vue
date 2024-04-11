@@ -116,8 +116,15 @@ export default {
 
                 <div class="row mb-5">
                     <div class="col">
+                        <h3 class="h3">곧 마감할 프로젝트 목록</h3>
+                        <ProjectTable :projects="projects" :show-upcoming-deadlines="true" />
+                    </div>
+                </div>
+
+                <div class="row mb-5">
+                    <div class="col">
                         <h3 class="h3">나의 전체 프로젝트 목록</h3>
-                        <ProjectTable :projects="projects" />
+                        <ProjectTable :projects="projects" :show-upcoming-deadlines="false" />
                     </div>
                 </div>
 
