@@ -1,9 +1,7 @@
 <script setup>
-import axios from 'axios'
 import CheckboxSelector from '../components/CheckboxSelector.vue'
 import ProjectTable from '../components/ProjectTable.vue'
 import SortFilter from '../components/SortFilter.vue'
-import { formatProjectData } from '@/utils/projectUtils'
 import { ref, watch, onMounted } from 'vue'
 import { useProjects } from '@/composables/useProjects'
 import PaginationView from '../components/PaginationView.vue'
@@ -16,7 +14,7 @@ const checkboxItems = ref([
     { id: 'done', name: '완료' },
     { id: 'hold', name: '보류' }
 ])
-const selectedCheckboxes = ref(['all']) // '전체'가 기본값
+const selectedCheckboxes = ref(['all'])
 const { projects, fetchProjects, fetchProjectsByStatus, sortByLatest, sortByPriority, currentPage, totalPages, changePage: changePageMethod } = useProjects()
 
 const changePage = async (page) => {
@@ -38,12 +36,9 @@ const changePage = async (page) => {
 
 // 페이지 변경 이벤트를 처리하는 메서드를 정의합니다.
 const handlePageChange = (page) => {
-    // currentPage 값을 변경합니다.
     currentPage.value = page
-    // fetchProjects 함수를 호출하여 해당 페이지의 프로젝트를 불러옵니다.
     fetchProjects(searchTerm.value, selectedCheckboxes.value)
 
-    // 페이지 변경 시 다음 버튼의 활성화 여부를 결정합니다.
     const isNextButtonEnabled = currentPage.value < totalPages.value
     if (!isNextButtonEnabled) {
         console.log('마지막 페이지입니다. 다음 버튼이 비활성화됩니다.')
@@ -53,7 +48,6 @@ const handlePageChange = (page) => {
 // 검색 제출 핸들러
 const submitSearch = () => {
     if (!searchTerm.value.trim()) {
-        // 검색어가 비어있거나 공백만 있는 경우 알림 표시
         alert('검색어를 입력하세요')
         return
     }
@@ -79,16 +73,14 @@ watch(
         if (selectedCheckboxes.value.includes('all')) {
             fetchProjects(searchTerm.value, selectedCheckboxes.value)
         } else {
-            // 선택된 진행 상태에 따라 필터링된 프로젝트 목록을 불러오기
             fetchProjectsByStatus(selectedCheckboxes.value)
         }
     },
     { immediate: true }
 )
 const handleSelectedItems = (selectedItems) => {
-    // 선택된 항목을 기반으로 프로젝트를 필터링합니다.
     if (selectedItems.includes('all')) {
-        fetchProjects(searchTerm.value, selectedItems) // '전체'를 선택한 경우 검색어와 함께 모든 프로젝트를 불러옴
+        fetchProjects(searchTerm.value, selectedItems)
     } else {
         fetchProjectsByStatus(selectedItems, searchTerm.value)
     }
@@ -119,12 +111,10 @@ const handleSelectedItems = (selectedItems) => {
         <div class="row align-items-center justify-content-between mb-4 g-3 project-list">
             <div class="col-auto">
                 <div>
-                    <!-- 체크박스 -->
                     <CheckboxSelector :items="checkboxItems" :selected="selectedCheckboxes" @change="handleSelectedItems" />
                 </div>
             </div>
             <div class="col-auto d-flex">
-                <!-- 정렬기준 필터 -->
                 <SortFilter :sortByLatest="sortByLatest" :sortByPriority="sortByPriority" />
             </div>
         </div>

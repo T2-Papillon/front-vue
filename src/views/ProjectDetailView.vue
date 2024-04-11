@@ -195,7 +195,7 @@ export default {
         <div class="row">
             <div class="col">
                 <TaskTable v-if="tasks.length > 0" :projectId="parseInt(projectNo)" :tasks="filteredTasks" :addNewTask="addNewTask" :showStatus="true" :showProgress="true" :showWriteDate="true" />
-                <p v-else class="empty">업무 데이터가 없습니다.</p>
+                <p v-else class="empty">아직 비어있어요.👻</p>
             </div>
         </div>
     </div>
