@@ -24,6 +24,11 @@ export default {
             chartOptions: {
                 responsive: true,
                 maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false // 범례가 표시되지 않도록
+                    }
+                },
                 scales: {
                     y: {
                         beginAtZero: true
@@ -70,7 +75,7 @@ export default {
                 labels: sortedDates,
                 datasets: [
                     {
-                        label: '업무 분포',
+                        // label: '',
                         data: sortedCounts,
                         fill: false,
                         borderColor: 'rgba(54, 162, 235, 1)',

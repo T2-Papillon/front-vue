@@ -180,8 +180,6 @@ export default {
                 formattedDate = formattedDate.slice(0, -1)
             }
             return formattedDate
-            //let date = new Date(parseInt(splitTime[0]), parseInt(splitTime[1]) - 1, parseInt(splitTime[2]))
-            //return date.toISOString().substring(0, 10)
         }
 
         // API 응답 처리 함수
@@ -344,10 +342,11 @@ export default {
                         <label for="url" class="form-label">URL 입력</label>
                         <input type="text" v-model="url" class="form-control" id="url" required />
                     </div>
-
                     <div class="mb-3">
                         <label for="description" class="form-label">설명</label>
-                        <textarea v-model="task_desc" class="form-control textarea" id="description" rows="3" placeholder="업무내용을 입력하세요"></textarea>
+                        <textarea v-model="task_desc" class="form-control textarea" id="description" rows="3" placeholder="업무내용을 입력하세요. (300자 이내)"></textarea>
+                        <div>{{ task_desc.length }}/300</div>
+                        <div v-if="task_desc.length > 300" class="text-danger">입력 가능한 글자 수를 초과했습니다.</div>
                     </div>
                 </div>
 

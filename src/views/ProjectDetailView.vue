@@ -152,14 +152,10 @@ export default {
 
 <template>
     <div class="container">
-        <div class="row mb-4">
-            <div class="col d-flex align-items-center justify-content-end">
-                <!-- <EditDeleteButtonGroup /> -->
-            </div>
+        <div class="row mt-4">
+            <!-- 프로젝트 정보 -->
+            <ProjectInfo :project="project" fromView="ProjectDetailView" />
         </div>
-
-        <!-- 프로젝트 정보 -->
-        <ProjectInfo :project="project" fromView="ProjectDetailView" />
 
         <!-- 정렬 -->
         <div class="row align-items-start justify-content-between mb-4 g-3 border-top" style="margin-top: 40px; padding-top: 80px">
@@ -187,8 +183,7 @@ export default {
         <!-- 하위업무 -->
         <div class="row">
             <div class="col">
-                <!-- <TaskTable :projectId="parseInt(projectNo)" :tasks="tasks" /> -->
-                <TaskTable v-if="tasks.length > 0" :projectId="parseInt(projectNo)" :tasks="filteredTasks" :addNewTask="addNewTask" showAssignee="true" :showStatus="true" :showProgress="true" :showWriteDate="true" />
+                <TaskTable v-if="tasks.length > 0" :projectId="parseInt(projectNo)" :tasks="filteredTasks" :addNewTask="addNewTask" :showStatus="true" :showProgress="true" :showWriteDate="true" />
                 <p v-else class="empty">업무 데이터가 없습니다.</p>
             </div>
         </div>
