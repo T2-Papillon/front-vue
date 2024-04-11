@@ -5,7 +5,8 @@ export function formatProjectData(project) {
     return {
         id: project.projNo,
         title: project.projTitle,
-        pm: [project.projPm],
+        pm: project.projPm,
+        pmDept: project.projPmDept,
         participants: project.contributors ? project.contributors : [],
         startDate: formatDate(project.projStartDate),
         endDate: formatDate(project.projEndDate),
