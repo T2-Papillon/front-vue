@@ -21,7 +21,7 @@ export default {
     },
     setup() {
         const route = useRoute()
-        const profileName = ref(route.params.profileName) // URL에서 프로필 이름을 가져옵니다.
+        const profileEno = ref(route.params.profileEno) // URL에서 프로필 사번을 가져옵니다.
         // const profileDept = ref('') // 초기 부서 정보는 비어 있습니다.
 
         const { projects, fetchProjects } = useProjects()
@@ -50,14 +50,14 @@ export default {
                 const apiUrl = import.meta.env.VITE_API_URL
                 const response = await axios.get(`${apiUrl}/task/taskAll`)
                 // 현재 사용자에게 할당된 업무만 필터링
-                const userTasks = response.data.filter((task) => task.assignee === profileName.value)
+                const userTasks = response.data.filter((task) => task.assignee_eno === profileEno.value)
                 tasks.value = userTasks
             } catch (error) {}
         }
 
         onMounted(async () => {
             await fetchProjects()
-            filteredProjects.value = projects.value.filter((project) => project.participants.some((participant) => participant.name === profileName.value))
+            filteredProjects.value = projects.value.filter((project) => project.participants.some((participant) => participant.eno === profileEno.value))
             await fetchTasks() // 사용자에게 할당된 업무 데이터를 가져옵니다
             // 여기에서 userProfile 데이터 페치 로직을 추가합니다.
             // const userProfile = await fetchUserProfile(profileName.value)
@@ -75,7 +75,7 @@ export default {
         })
 
         return {
-            profileName,
+            profileEno,
             // profileDept, // 컴포넌트에 profileDept 추가
             projects: filteredProjects, // 수정된 부분: 필터링된 프로젝트 데이터를 전달
             tasks, // TaskTable 컴포넌트로 전달되는 업무 데이터
@@ -95,7 +95,7 @@ export default {
                 <div class="profile">
                     <i class=""></i>
                     <div class="info">
-                        <h3 class="info-name">{{ profileName }}</h3>
+                        <h3 class="info-name">{{ profileEno }}</h3>
                     </div>
                 </div>
             </div>
@@ -106,7 +106,7 @@ export default {
                     <div class="col-auto">
                         <div class="title-area">
                             <h2 class="h2">[개인통계]마이페이지</h2>
-                            <p class="text-body-tertiary lh-sm mb-3">{{ profileName }}님의 마이페이지 입니다.</p>
+                            <p class="text-body-tertiary lh-sm mb-3">{{ profileEno }}님의 마이페이지 입니다.</p>
                         </div>
                     </div>
                 </div>
