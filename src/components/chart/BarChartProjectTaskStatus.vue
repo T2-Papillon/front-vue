@@ -8,14 +8,15 @@
 <script>
 import { Bar } from 'vue-chartjs'
 import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js'
-import axios from 'axios'
-import { useRoute } from 'vue-router' // 라우트 파라미터에 접근하기 위해 useRoute를 사용합니다.
 
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
 
 export default {
     name: 'BarChartProjectTaskStatus',
     components: { Bar },
+    props: {
+        tasks: Array // 상위 컴포넌트로부터 받은 태스크 데이터
+    },
     data() {
         return {
             chartData: null,
@@ -23,34 +24,34 @@ export default {
                 responsive: true,
                 plugins: {
                     legend: {
-                        display: false // 범례가 표시되지 않도록
+                        display: false
                     }
                 },
                 scales: {
                     y: {
-                        beginAtZero: true
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1
+                        }
                     }
                 }
             }
         }
     },
-    async mounted() {
-        await this.fetchTasks();
+    mounted() {
+        this.processChartData()
+    },
+    watch: {
+        tasks: {
+            immediate: true,
+            handler(newVal) {
+                this.processChartData(); // tasks 데이터가 변경될 때마다 차트 데이터를 다시 가공
+            }
+        }
     },
     methods: {
-        async fetchTasks() {
-            const route = useRoute(); // 현재 라우트를 가져옵니다.
-            const projectId = route.params.id; // 라우트 파라미터에서 프로젝트 ID를 가져옵니다.
-            try {
-                const apiUrl = import.meta.env.VITE_API_URL;
-                const response = await axios.get(`${apiUrl}/task/project/${projectId}/task`);
-                const tasks = response.data;
-                this.processChartData(tasks);
-            } catch (error) {
-                console.error("Error fetching tasks from:", apiUrl, error);
-            }
-        },
-        processChartData(tasks) {
+        processChartData() {
+            if (!this.tasks) return;
             const statusMapping = {
                 'TODO': '진행예정',
                 'DOING': '진행중',
@@ -58,7 +59,7 @@ export default {
                 'HOLD': '보류'
             };
 
-            const tasksPerStatus = tasks.reduce((acc, task) => {
+            const tasksPerStatus = this.tasks.reduce((acc, task) => {
                 const status = statusMapping[task.task_status] || task.task_status;
                 acc[status] = (acc[status] || 0) + 1;
                 return acc;

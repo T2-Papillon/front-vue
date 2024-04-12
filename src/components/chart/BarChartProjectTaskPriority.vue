@@ -8,66 +8,67 @@
 <script>
 import { Bar } from 'vue-chartjs'
 import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js'
-import axios from 'axios'
-import { onMounted, reactive, toRefs, watch } from 'vue'
-import { useRoute } from 'vue-router'
 
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
 
 export default {
     name: 'BarChartProjectTaskPriority',
     components: { Bar },
-    setup() {
-        const route = useRoute()
-        const state = reactive({
+    props: {
+        tasks: Array // 부모 컴포넌트로부터 받은 tasks 데이터
+    },
+    data() {
+        return {
             chartData: null,
             chartOptions: {
                 responsive: true,
                 plugins: {
                     legend: {
-                        display: false // 범례가 표시되지 않도록
+                        display: false
                     }
                 },
                 scales: {
                     y: {
                         beginAtZero: true,
                         ticks: {
-                            stepSize: 1 // y축의 값이 1 단위로 나오도록 설정
+                            stepSize: 1
                         }
                     }
                 }
             }
-        })
-
-        async function fetchTasks() {
-            const route = useRoute()
-            const projectId = route.params.id
-            try {
-                const apiUrl = import.meta.env.VITE_API_URL
-                const response = await axios.get(`${apiUrl}/task/project/${projectId}/task`)
-                const tasks = response.data
-                processChartData(tasks)
-            } catch (error) {}
         }
+    },
+    mounted() {
+        this.processChartData(); // 차트 데이터 가공
+    },
+    watch: {
+        tasks: {
+            immediate: true,
+            handler(newVal) {
+                this.processChartData(); // tasks 데이터가 변경될 때마다 차트 데이터를 다시 가공
+            }
+        }
+    },
+    methods: {
+        processChartData() {
+            if (!this.tasks) return; // tasks 데이터가 없으면 처리 중단
 
-        function processChartData(tasks) {
             const priorityMapping = {
                 LV0: '긴급',
                 LV1: '높음',
                 LV2: '보통',
                 LV3: '낮음'
-            }
+            };
 
-            const tasksPerPriority = tasks.reduce((acc, task) => {
-                const priorityLabel = priorityMapping[task.task_priority]
-                acc[priorityLabel] = (acc[priorityLabel] || 0) + 1
-                return acc
-            }, {})
+            const tasksPerPriority = this.tasks.reduce((acc, task) => {
+                const priorityLabel = priorityMapping[task.task_priority] || '기타';
+                acc[priorityLabel] = (acc[priorityLabel] || 0) + 1;
+                return acc;
+            }, {});
 
-            state.chartData = {
+            this.chartData = {
                 labels: Object.keys(tasksPerPriority),
-                datasets: [
-                    {
+                datasets: [{
                         label: '우선순위별 업무 분포',
                         data: Object.values(tasksPerPriority),
                         backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)'],
@@ -75,21 +76,8 @@ export default {
                         borderWidth: 1
                     }
                 ]
-            }
+            };
         }
-
-        onMounted(() => {
-            fetchTasks(route.params.id)
-        })
-
-        watch(
-            () => route.params.id,
-            (newId) => {
-                fetchTasks(newId)
-            }
-        )
-
-        return { ...toRefs(state) }
     }
 }
 </script>
