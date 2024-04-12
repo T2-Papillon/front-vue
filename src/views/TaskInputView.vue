@@ -8,10 +8,11 @@ export default {
         const route = useRoute()
         const router = useRouter()
         const username = sessionStorage.getItem('NM')
+        const usereno = sessionStorage.getItem('EN')
 
         const isEditing = ref(false)
         const task_title = ref('')
-        const assignee = ref('')
+        const assignee_eno = ref('')
         const start_date = ref('')
         const end_date = ref('')
         const task_status = ref('TODO')
@@ -28,7 +29,7 @@ export default {
 
         // 'save' 경로일 때 username을 사용하고, 그렇지 않으면 assignee를 사용
         const inputFieldValue = computed(() => {
-            return isSaveRoute.value ? username : assignee.value
+            return isSaveRoute.value ? usereno : assignee_eno.value
         })
 
         // 데이터를 불러오는 함수 수정
@@ -44,7 +45,7 @@ export default {
                     const taskData = response.data
 
                     task_title.value = taskData.task_title
-                    assignee.value = taskData.assignee
+                    assignee_eno.value = taskData.assignee_eno
                     start_date.value = convertLocaleTime(taskData.start_date)
                     end_date.value = convertLocaleTime(taskData.end_date)
                     task_status.value = taskData.task_status
@@ -60,7 +61,7 @@ export default {
         }
 
         async function saveOrUpdateTask() {
-            assignee.value = inputFieldValue.value
+            assignee_eno.value = inputFieldValue.value
 
             if (isEditing.value) {
                 await updateTask()
@@ -84,7 +85,7 @@ export default {
 
             try {
                 const postData = {
-                    assignee: inputFieldValue.value,
+                    assignee_eno: inputFieldValue.value,
                     proj_no: projectId,
                     task_title: task_title.value,
                     task_status: currentTaskStatus,
@@ -120,7 +121,7 @@ export default {
                 const currentTaskStatus = determineTaskStatus()
 
                 const postData = {
-                    assignee: inputFieldValue.value,
+                    assignee_eno: inputFieldValue.value,
                     proj_no: projectId,
                     task_title: task_title.value,
                     task_status: currentTaskStatus,
@@ -133,7 +134,6 @@ export default {
                     create_date: new Date().getTime(),
                     task_desc: task_desc.value
                 }
-
                 // 업무 상태 변경 여부 확인
                 const status = determineTaskStatus()
 
@@ -197,7 +197,7 @@ export default {
         // 필드 초기화
         function clearFields() {
             task_title.value = ''
-            assignee.value = ''
+            assignee_eno.value = ''
             start_date.value = ''
             end_date.value = ''
             task_status.value = 'TODO'
@@ -225,7 +225,7 @@ export default {
 
         return {
             task_title,
-            assignee,
+            assignee_eno,
             start_date,
             end_date,
             task_status,
@@ -268,8 +268,13 @@ export default {
                     </div>
 
                     <div class="mb-3">
-                        <label for="assignee" class="form-label">담당자</label>
-                        <input type="text" :value="inputFieldValue" class="form-control" id="assignee" readonly />
+                        <label for="assignee_eno" class="form-label">담당자 사번</label>
+                        <input type="text" :value="inputFieldValue" class="form-control" id="assignee_eno" readonly />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="assignee_name" class="form-label">담당자</label>
+                        <input type="text" :value="username" class="form-control" id="assignee_name" readonly />
                     </div>
 
                     <div class="d-flex mb-3">
