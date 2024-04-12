@@ -9,7 +9,7 @@ const router = createRouter({
             component: () => import('../views/LoginView.vue')
         },
         {
-            path: '/mypage/:profileName',
+            path: '/mypage/:profileEno',
             name: 'mypage',
             component: () => import('../views/MypageView.vue'),
             props: true
