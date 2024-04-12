@@ -3,7 +3,7 @@ import router from '@/router'
 import { nextTick } from 'vue'
 
 export default {
-    props: ['name', 'dept'],
+    props: ['name', 'dept', 'eno'],
     computed: {
         displayName() {
             if (this.name && this.name.length === 3) {
@@ -31,7 +31,7 @@ export default {
         <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="프로필">{{ displayName }}</button>
         <ul class="dropdown-menu">
             <li>
-                <router-link :to="`/mypage/${name}`" class="dropdown-item">{{ dept }} / {{ name }}</router-link>
+                <router-link :to="`/mypage/${eno}`" class="dropdown-item">{{ dept }} / {{ name }}</router-link>
             </li>
             <li class="dropdown-item" style="cursor: pointer" v-show="checkSession" v-on:click="logout">로그아웃</li>
         </ul>
