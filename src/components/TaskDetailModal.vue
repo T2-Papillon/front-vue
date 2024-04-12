@@ -56,7 +56,7 @@ export default {
                             </li>
                             <li>
                                 <span class="title">담당자</span>
-                                <span class="value">{{ task.assignee }}</span>
+                                <span class="value">{{ task.assignee_name }}</span>
                             </li>
                             <li>
                                 <span class="title">작성일</span>
