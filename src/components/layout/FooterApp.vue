@@ -1,6 +1,6 @@
 <template>
     <footer>
-        <div class="inner">
+        <div class="container">
             <p class="mb-0 text-secondary">Copyright 2024. papplan. All rights reserved.</p>
         </div>
     </footer>
