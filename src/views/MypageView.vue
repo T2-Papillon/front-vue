@@ -1,15 +1,31 @@
 <script>
-import axios from 'axios'
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
+
+// 랜덤 이미지 선택하는 함수
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min
+}
 
 export default {
     setup() {
         const route = useRoute()
         const profileEno = ref(route.params.profileEno)
 
+        // 랜덤 이미지 경로 계산
+        const randomProfileImagePath = computed(() => {
+            let randomNumber = getRandomInt(1, 20) // 1부터 20까지의 숫자 중 랜덤 선택
+
+            if (randomNumber < 10) {
+                randomNumber = '0' + randomNumber
+            }
+
+            return `/images/profile-img${randomNumber}.png`
+        })
+
         return {
-            profileEno
+            profileEno,
+            randomProfileImagePath
         }
     }
 }
@@ -19,7 +35,7 @@ export default {
         <div class="top-area">
             <div class="container">
                 <div class="profile">
-                    <i class=""></i>
+                    <img :src="randomProfileImagePath" alt="프로필 이미지" />
                     <div class="info">
                         <h3 class="info-name">{{ profileName }}</h3>
                     </div>
@@ -42,13 +58,12 @@ export default {
 </template>
 
 <style scoped>
-/* 기존 스타일 유지하면서 추가된 클래스를 정의 */
 .btm-area .row.pb-5 {
-    padding-bottom: 6rem; /* 여백을 3rem으로 늘림 */
+    padding-bottom: 6rem;
 }
 
 .col-xl-5 {
-    padding: 0 15px; /* 좌우 패딩 조정 */
+    padding: 0 15px;
 }
 
 .top-area {
@@ -95,6 +110,6 @@ export default {
 }
 
 .chart-title {
-    margin-bottom: 30px; /* 원하는 여백 크기로 조절하세요 */
+    margin-bottom: 30px;
 }
 </style>
