@@ -4,6 +4,7 @@ import { ref } from 'vue'
 import ProjectTable from '../components/ProjectTable.vue'
 import TaskTable from '../components/TaskTable.vue'
 import { formatProjectData } from '@/utils/projectUtils'
+import { formatDate } from '@/utils/dateUtils'
 
 const username = sessionStorage.getItem('NM')
 const projects = ref([])
@@ -15,6 +16,7 @@ const prjWeek = ref(0)
 const taskToday = ref(0)
 const taskYesterday = ref(0)
 const taskWeek = ref(0)
+const todayDate = ref(formatDate(new Date()))
 
 async function dashboardData() {
     try {
@@ -49,7 +51,17 @@ dashboardData()
                 </div>
             </div>
             <div class="row g-5 g-xl-10 mb-5 mb-xl-10">
-                <div class="col-xl-4">
+                <div class="col-xl-6">
+                    <div class="card">
+                        <div class="card-body d-flex align-items-center justify-content-between">
+                            <p class="card-title mb-0">오늘 날짜</p>
+                            <h3 class="card-text fw-bold">{{ todayDate }}</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row g-5 g-xl-10 mb-5 mb-xl-10">
+                <div class="col-xl-6">
                     <div class="card">
                         <div class="card-body">
                             <p class="card-title">오늘 완료 프로젝트 건수</p>
@@ -57,7 +69,7 @@ dashboardData()
                         </div>
                     </div>
                 </div>
-                <div class="col-xl-4">
+                <div class="col-xl-6">
                     <div class="card">
                         <div class="card-body">
                             <p class="card-title">전일 완료 프로젝트 건수</p>
@@ -65,41 +77,8 @@ dashboardData()
                         </div>
                     </div>
                 </div>
-                <div class="col-xl-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <p class="card-title">전주 완료 프로젝트 건수</p>
-                            <h3 class="card-text">{{ prjWeek }} 건</h3>
-                        </div>
-                    </div>
-                </div>
             </div>
-            <div class="row g-5 g-xl-10 mb-5 mb-xl-10">
-                <div class="col-xl-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <p class="card-title">오늘 완료 업무 건수</p>
-                            <h3 class="card-text">{{ taskToday }} 건</h3>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <p class="card-title">전일 완료 업무 건수</p>
-                            <h3 class="card-text">{{ taskYesterday }} 건</h3>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <p class="card-title">전주 완료 업무 건수</p>
-                            <h3 class="card-text">{{ taskWeek }} 건</h3>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
             <div class="row g-5 g-xl-10 mb-5 mb-xl-10">
                 <div class="col">
                     <div class="card">
