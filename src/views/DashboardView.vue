@@ -3,6 +3,7 @@ import axios from 'axios'
 import { ref } from 'vue'
 import ProjectTable from '../components/ProjectTable.vue'
 import TaskTable from '../components/TaskTable.vue'
+import TodoList from '../components/TodoList.vue'
 import { formatProjectData } from '@/utils/projectUtils'
 import { formatDate } from '@/utils/dateUtils'
 
@@ -52,28 +53,37 @@ dashboardData()
             </div>
             <div class="row g-5 g-xl-10 mb-5 mb-xl-10">
                 <div class="col-xl-6">
-                    <div class="card">
-                        <div class="card-body d-flex align-items-center justify-content-between">
-                            <p class="card-title mb-0">오늘 날짜</p>
+                    <div class="card today">
+                        <div class="card-body">
+                            <p class="card-title">오늘 날짜</p>
                             <h3 class="card-text fw-bold">{{ todayDate }}</h3>
                         </div>
                     </div>
                 </div>
+                <div class="col-xl-6"><TodoList /></div>
             </div>
             <div class="row g-5 g-xl-10 mb-5 mb-xl-10">
-                <div class="col-xl-6">
+                <div class="col-xl-4">
                     <div class="card">
                         <div class="card-body">
                             <p class="card-title">오늘 완료 프로젝트 건수</p>
-                            <h3 class="card-text">{{ prjToday }} 건</h3>
+                            <h3 class="card-text fw-bold">{{ prjToday }} 건</h3>
                         </div>
                     </div>
                 </div>
-                <div class="col-xl-6">
+                <div class="col-xl-4">
                     <div class="card">
                         <div class="card-body">
                             <p class="card-title">전일 완료 프로젝트 건수</p>
-                            <h3 class="card-text">{{ prjYesterday }} 건</h3>
+                            <h3 class="card-text fw-bold">{{ prjYesterday }} 건</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="card-title">전일 완료 프로젝트 건수</p>
+                            <h3 class="card-text fw-bold">{{ prjYesterday }} 건</h3>
                         </div>
                     </div>
                 </div>
@@ -83,7 +93,7 @@ dashboardData()
                 <div class="col">
                     <div class="card">
                         <div class="card-body">
-                            <h3 class="card-title mb-4">현재 진행중인 프로젝트</h3>
+                            <h3 class="card-title h3 mb-4">진행중인 프로젝트</h3>
                             <div class="card-text">
                                 <div class="overflow-auto">
                                     <ProjectTable :projects="projects" />
@@ -97,7 +107,7 @@ dashboardData()
                 <div class="col">
                     <div class="card">
                         <div class="card-body">
-                            <h3 class="card-title mb-4">현재 진행중인 담당 업무</h3>
+                            <h3 class="card-title h3 mb-4">진행중인 담당 업무</h3>
                             <div class="card-text">
                                 <div class="overflow-auto">
                                     <TaskTable :initialTasks="tasks" :isDashBoard="true" :showAssignee="true" :showStatus="true" :showProgress="true" :showWriteDate="true" />
@@ -138,6 +148,14 @@ dashboardData()
     z-index: 2;
 }
 
+.card-title {
+    font-size: 15px;
+    margin-bottom: revert-layer;
+}
+
+.card.today {
+    text-align: center;
+}
 /* wave */
 
 .wave {
