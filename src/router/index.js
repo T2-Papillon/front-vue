@@ -25,6 +25,11 @@ const router = createRouter({
             component: () => import('../views/ProjectView.vue')
         },
         {
+            path: '/project/save',
+            name: 'projectInput',
+            component: () => import('../views/ProjectInputView.vue')
+        },
+        {
             path: '/project/detail/:id',
             name: 'projectdetail',
             component: () => import('../views/ProjectDetailView.vue')

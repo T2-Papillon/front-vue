@@ -89,7 +89,7 @@ const handleSelectedItems = (selectedItems) => {
 }
 </script>
 <template>
-    <div class="inner">
+    <div class="container">
         <div class="row align-items-center justify-content-center g-3">
             <div class="col d-flex justify-content-center align-items-center">
                 <div class="search-area">

@@ -107,3 +107,7 @@ a.link-underline {
     -webkit-text-decoration-color: rgba(var(--bs-link-color-rgb), var(--bs-link-underline-opacity, 1)) !important;
     text-decoration-color: rgba(var(--bs-link-color-rgb), var(--bs-link-underline-opacity, 1)) !important;
 }
+input[readonly] {
+    border-color: #fff;
+    pointer-events: none;
+}
