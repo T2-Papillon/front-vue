@@ -50,7 +50,7 @@ function clearAllTodos() {
         </div>
         <input v-model="newTodo" class="form-control" @keyup.enter="addTodo" placeholder="리스트를 추가해주세요" />
         <div class="overflow-auto">
-            <ul>
+            <ul class="mt-2">
                 <li v-for="(todo, index) in todos" :key="index">
                     <input type="checkbox" class="form-check-input me-2" v-model="todo.completed" />
                     <span :class="{ completed: todo.completed }">{{ todo.text }}</span>
@@ -75,7 +75,7 @@ function clearAllTodos() {
 .form-control {
     padding: 10px 20px;
     border: 0;
-    border-bottom: 1px solid var(--bs-border-color);
+    border-bottom: 2px solid var(--bs-border-color);
     border-radius: 0;
     background-color: transparent;
     font-size: 14px;
@@ -84,6 +84,8 @@ function clearAllTodos() {
 .form-control:focus {
     outline: none;
     box-shadow: none;
+    border-color: #54c9c2;
+    transition: 0.3s all;
 }
 .form-control::placeholder {
     /* color: #fff; */
