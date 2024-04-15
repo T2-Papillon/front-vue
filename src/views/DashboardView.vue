@@ -51,17 +51,19 @@ dashboardData()
                     </div>
                 </div>
             </div>
-            <div class="row g-5 g-xl-10 mb-5 mb-xl-10">
+            <div class="row today-area g-5 g-xl-10 mb-5 mb-xl-10">
                 <div class="col-xl-6">
-                    <div class="card today">
-                        <div class="card-body">
-                            <p class="card-title">오늘 날짜</p>
-                            <h3 class="card-text fw-bold">{{ todayDate }}</h3>
-                        </div>
+                    <div class="today-box">
+                        <h3 class="text">Today</h3>
+                        <p class="fw-bold">{{ todayDate }}</p>
                     </div>
                 </div>
-                <div class="col-xl-6"><TodoList /></div>
+                <div class="col-xl-6 mt-0">
+                    <div class="today-box"><TodoList /></div>
+                </div>
+                <div class="blur-box"></div>
             </div>
+
             <div class="row g-5 g-xl-10 mb-5 mb-xl-10">
                 <div class="col-xl-4">
                     <div class="card">
@@ -117,6 +119,8 @@ dashboardData()
                     </div>
                 </div>
             </div>
+
+            <!-- deco -->
             <div class="wave-group">
                 <div class="wave"></div>
                 <div class="wave"></div>
@@ -139,7 +143,7 @@ dashboardData()
     left: 0;
     width: 100%;
     height: 390px;
-    background-color: #b7eca2;
+    background: linear-gradient(90deg, #54c9c2, #b0dea6);
     z-index: 1;
 }
 
@@ -156,8 +160,54 @@ dashboardData()
 .card.today {
     text-align: center;
 }
-/* wave */
+.today-area {
+    position: relative;
+    max-width: 1180px;
+    margin: 30px auto 0;
+    border-radius: 12px;
+    border: solid 1px #e6eef4;
+    box-shadow: 0px 6px 20px 0 rgba(193, 207, 217, 0.14);
+    background-color: rgba(255, 255, 255, 0.1);
+    /* background-image: url('https://images.unsplash.com/photo-1558258695-39d4595e049c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwyODI5NDF8MHwxfHJhbmRvbXx8fHx8fHx8fDE2NDEzMjYxNjM&ixlib=rb-1.2.1&q=80&w=1200'); */
+    background-color: #fff;
+}
+.today-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    position: relative;
+    z-index: 1;
+    /* color: #fff; */
+    text-align: center;
+    border: 0;
+    height: 100%;
+    margin-bottom: var(--bs-gutter-y);
+}
 
+.today-box h3 {
+    margin-bottom: 6px;
+    font-weight: 300;
+    font-size: 20px;
+}
+.today-box p {
+    font-size: 24px;
+    /* color: #fff; */
+}
+.today-area .blur-box {
+    position: absolute;
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+    width: 95%;
+    height: 90%;
+    top: 5%;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: 0 auto;
+    /* border: 1px solid var(--bs-border-color); */
+}
+/* wave */
 .wave {
     background: rgb(255 255 255 / 25%);
     border-radius: 1000% 1000% 0 0;

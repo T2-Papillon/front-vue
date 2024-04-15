@@ -1,17 +1,3 @@
-<template>
-    <div class="todo-app">
-        <h2>Todo List</h2>
-        <input v-model="newTodo" @keyup.enter="addTodo" placeholder="Add new todo..." />
-        <ul>
-            <li v-for="(todo, index) in todos" :key="index">
-                <input type="checkbox" v-model="todo.completed" />
-                <span :class="{ completed: todo.completed }">{{ todo.text }}</span>
-                <button @click="removeTodo(index)">Remove</button>
-            </li>
-        </ul>
-    </div>
-</template>
-
 <script setup>
 import { ref, onMounted } from 'vue'
 
@@ -49,10 +35,65 @@ function removeTodo(index) {
     todos.value.splice(index, 1)
     saveTodosToStorage()
 }
+
+// 모든 todo 항목 초기화
+function clearAllTodos() {
+    todos.value = []
+    localStorage.removeItem('todos')
+}
 </script>
 
-<style>
+<template>
+    <div class="todo-app">
+        <div class="d-flex align-items-center justify-content-end">
+            <button class="btn" @click="clearAllTodos"><i class="bi bi-arrow-clockwise"></i></button>
+        </div>
+        <input v-model="newTodo" class="form-control" @keyup.enter="addTodo" placeholder="리스트를 추가해주세요" />
+        <div class="overflow-auto">
+            <ul>
+                <li v-for="(todo, index) in todos" :key="index">
+                    <input type="checkbox" class="form-check-input me-2" v-model="todo.completed" />
+                    <span :class="{ completed: todo.completed }">{{ todo.text }}</span>
+                    <button class="btn" @click="removeTodo(index)"><i class="bi bi-x-lg"></i></button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</template>
+
+<style scoped>
+.todo-app {
+    width: 90%;
+}
+
+.overflow-auto {
+    height: 130px;
+}
 .completed {
     text-decoration: line-through;
+}
+.form-control {
+    padding: 10px 20px;
+    border: 0;
+    border-bottom: 1px solid var(--bs-border-color);
+    border-radius: 0;
+    background-color: transparent;
+    font-size: 14px;
+    /* color: #fff; */
+}
+.form-control:focus {
+    outline: none;
+    box-shadow: none;
+}
+.form-control::placeholder {
+    /* color: #fff; */
+    /* font-weight: 300; */
+}
+li {
+    display: flex;
+    align-items: center;
+}
+li span {
+    /* color: #fff; */
 }
 </style>
