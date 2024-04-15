@@ -70,6 +70,7 @@ export function useProjects() {
 
             projects.value = response.data.map((project) => formatProjectData(project))
         } catch (error) {
+            console.log('error')
         } finally {
             isLoading.value = false
         }
