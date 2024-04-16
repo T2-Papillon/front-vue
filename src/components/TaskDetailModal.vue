@@ -47,7 +47,7 @@ export default {
                 <div class="modal-body">
                     <!-- 수정 삭제 버튼 -->
                     <div v-if="isCurrentUser" class="d-flex align-items-center justify-content-end">
-                        <EditDeleteButtonGroup :projectId="task.proj_no" :createdBy="task.assigneeEno" :taskId="task.task_no" @taskDeleted="handleTaskDeleted" />
+                        <EditDeleteButtonGroup :projectId="task.proj_no" :taskId="task.task_no" @taskDeleted="handleTaskDeleted" />
                     </div>
 
                     <!-- list -->
