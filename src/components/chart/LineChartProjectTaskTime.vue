@@ -8,9 +8,7 @@
 <script>
 import { Line } from 'vue-chartjs'
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js'
-import axios from 'axios'
-import { onMounted, reactive, toRefs, watch } from 'vue'
-import { useRoute } from 'vue-router'
+import { ref, onMounted, watch } from 'vue'
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend)
 
@@ -18,32 +16,31 @@ export default {
     name: 'LineChartProjectTaskTime',
     components: { Line },
     props: {
-        tasks: Array
+        tasks: Array // 부모 컴포넌트로부터 받은 tasks 데이터
     },
     setup(props) {
-        const route = useRoute()
-        const state = reactive({
-            chartData: null,
-            chartOptions: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: false // 범례가 표시되지 않도록
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
+        const chartData = ref(null)
+        const chartOptions = ref({
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true
                 }
             }
         })
 
-        function processChartData(tasks) {
-            // 날짜별 업무 카운트
+        // 데이터 처리 메소드
+        const processChartData = () => {
+            if (!props.tasks || props.tasks.length === 0) return
+
             const taskCountsByDate = {}
-            tasks.forEach((task) => {
+            props.tasks.forEach((task) => {
                 let currentDate = new Date(task.start_date)
                 const endDate = new Date(task.end_date)
 
@@ -54,15 +51,14 @@ export default {
                 }
             })
 
-            // 정렬된 날짜와 카운트
             const sortedDates = Object.keys(taskCountsByDate).sort()
             const sortedCounts = sortedDates.map((date) => taskCountsByDate[date])
 
-            state.chartData = {
+            chartData.value = {
                 labels: sortedDates,
                 datasets: [
                     {
-                        // label: '',
+                        label: 'Daily Task Counts',
                         data: sortedCounts,
                         fill: false,
                         borderColor: 'rgba(54, 162, 235, 1)',
@@ -72,19 +68,22 @@ export default {
             }
         }
 
+        onMounted(() => {
+            processChartData()
+        })
+
         watch(
             () => props.tasks,
-            (newVal) => {
-                processChartData(newVal)
+            (newVal, oldVal) => {
+                processChartData()
             },
             { immediate: true }
         )
 
-        onMounted(() => {
-            processChartData(props.tasks)
-        })
-
-        return toRefs(state)
+        return {
+            chartData,
+            chartOptions
+        }
     }
 }
 </script>

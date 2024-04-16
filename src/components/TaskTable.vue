@@ -1,5 +1,5 @@
 <script setup>
-import { ref, defineProps, onMounted, watch, computed, defineEmits } from 'vue'
+import { ref, defineProps, onMounted, watch, defineEmits } from 'vue'
 import axios from 'axios'
 import { useRoute } from 'vue-router'
 import { formatDate } from '@/utils/dateUtils.js'
@@ -91,9 +91,9 @@ watch(
     }
 )
 
-const isCurrentUser = (assignee_eno) => {
-    return currentUserEno.value === assignee_eno
-}
+// const isCurrentUser = (assignee_eno) => {
+//     return currentUserEno.value === assignee_eno
+// }
 </script>
 
 <template>
@@ -124,7 +124,7 @@ const isCurrentUser = (assignee_eno) => {
             </tr>
         </thead>
         <tbody>
-            <tr v-for="(task, index) in tasks" :key="index">
+            <tr v-for="(task, index) in tasks" :key="index" :class="{ 'owner-row': currentUserEno === task.assignee_eno }">
                 <td>
                     <a href="#" class="tb-project-title" @click="openModal($event, task)">{{ task.task_title }}</a>
                 </td>
@@ -146,7 +146,7 @@ const isCurrentUser = (assignee_eno) => {
             </tr>
 
             <!-- 새로운 업무 표시 -->
-            <tr v-if="newTaskData" :key="newTaskData.id">
+            <tr v-if="newTaskData" :key="newTaskData.id" :class="{ 'owner-row': currentUserEno === task.assignee_eno }">
                 <td>
                     <a href="#" class="tb-project-title" @click="openModal($event, newTaskData)">{{ newTaskData.task_title }}</a>
                 </td>
@@ -167,10 +167,8 @@ const isCurrentUser = (assignee_eno) => {
         </tbody>
     </table>
 
-    <TaskDetailModal v-if="selectedTask" :is-active="isModalActive" :task="selectedTask" :current-user-eno="currentUserEno" @close-modal="handleCloseModal" @refresh-tasks="fetchProjectTasks" />
-
     <!-- 모달 : 하위업무 상세내용  -->
-    <!-- <TaskDetailModal v-if="selectedTask" :is-active="isModalActive" :task="selectedTask" @close-modal="handleCloseModal" @refreshTasks="fetchProjectTasks" /> -->
+    <TaskDetailModal v-if="selectedTask" :is-active="isModalActive" :task="selectedTask" :current-user-eno="currentUserEno" @close-modal="handleCloseModal" @refresh-tasks="fetchProjectTasks" />
 </template>
 
 <style scoped>
@@ -187,5 +185,8 @@ const isCurrentUser = (assignee_eno) => {
     left: 0;
     opacity: 0.7;
     font-weight: 300;
+}
+.owner-row td {
+    background-color: rgba(223, 240, 216, 0.3);
 }
 </style>
