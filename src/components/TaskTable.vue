@@ -78,6 +78,7 @@ const openModal = (event, task) => {
     console.log('Assignee eno:', task.assignee_eno)
     console.log('Is current user:', isCurrentUser(task.assignee_eno))
 }
+
 // 초기 데이터 또는 태스크 변경 감시
 watch(
     () => props.initialTasks,
@@ -169,15 +170,7 @@ const isCurrentUser = (assigneeEno) => {
         </tbody>
     </table>
 
-    <TaskDetailModal
-        v-if="selectedTask"
-        :is-active="isModalActive"
-        :task="selectedTask"
-        :is-current-user="selectedTask ? isCurrentUser(selectedTask.assignee_eno) : false"
-        :current-user-eno="currentUserEno"
-        @close-modal="handleCloseModal"
-        @refresh-tasks="fetchProjectTasks"
-    />
+    <TaskDetailModal v-if="selectedTask" :is-active="isModalActive" :task="selectedTask" :current-user-eno="currentUserEno" @close-modal="handleCloseModal" @refresh-tasks="fetchProjectTasks" />
 
     <!-- 모달 : 하위업무 상세내용  -->
     <!-- <TaskDetailModal v-if="selectedTask" :is-active="isModalActive" :task="selectedTask" @close-modal="handleCloseModal" @refreshTasks="fetchProjectTasks" /> -->

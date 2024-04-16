@@ -14,7 +14,6 @@ export default {
     props: {
         isActive: Boolean,
         task: Object,
-        isCurrentUser: Boolean,
         currentUserEno: Number
     },
     methods: {
@@ -28,9 +27,8 @@ export default {
         formatDate
     },
     computed: {
-        // eslint-disable-next-line vue/no-dupe-keys
         isCurrentUser() {
-            return this.currentUserEno === this.task.createdBy
+            return this.currentUserEno === this.task.assigneeEno
         }
     }
 }
@@ -49,7 +47,7 @@ export default {
                 <div class="modal-body">
                     <!-- 수정 삭제 버튼 -->
                     <div v-if="isCurrentUser" class="d-flex align-items-center justify-content-end">
-                        <EditDeleteButtonGroup v-if="isCurrentUser || currentUserEno === task.createdBy" :projectId="task.proj_no" :createdBy="task.createdBy" :taskId="task.task_no" @taskDeleted="handleTaskDeleted" />
+                        <EditDeleteButtonGroup :projectId="task.proj_no" :createdBy="task.assigneeEno" :taskId="task.task_no" @taskDeleted="handleTaskDeleted" />
                     </div>
 
                     <!-- list -->

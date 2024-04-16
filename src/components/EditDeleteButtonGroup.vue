@@ -6,8 +6,9 @@ export default {
     props: {
         projectId: Number,
         taskId: Number,
-        createdBy: String,
-        currentUserEno: String
+        assigneeEno: String,
+        currentUserEno: String,
+        isCurrentUser: Boolean
     },
     methods: {
         async handleEdit() {
@@ -54,7 +55,7 @@ export default {
     },
     computed: {
         isCurrentUser() {
-            return this.currentUserEno === this.createdBy
+            return this.currentUserEno === this.assigneeEno
         }
     }
 }
