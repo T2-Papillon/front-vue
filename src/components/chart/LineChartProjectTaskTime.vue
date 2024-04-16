@@ -8,91 +8,76 @@
 <script>
 import { Line } from 'vue-chartjs'
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js'
-import axios from 'axios'
-import { onMounted, reactive, toRefs, watch } from 'vue'
-import { useRoute } from 'vue-router'
+import { ref, onMounted, watch } from 'vue'
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend)
 
 export default {
     name: 'LineChartProjectTaskTime',
     components: { Line },
-    setup() {
-        const route = useRoute()
-        const state = reactive({
-            chartData: null,
-            chartOptions: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: false // 범례가 표시되지 않도록
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
+    props: {
+        tasks: Array // 부모 컴포넌트로부터 받은 tasks 데이터
+    },
+    setup(props) {
+        const chartData = ref(null);
+        const chartOptions = ref({
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true
                 }
             }
-        })
+        });
 
-        async function fetchTasks() {
-            const projectId = route.params.id
-            try {
-                const apiUrl = import.meta.env.VITE_API_URL
-                const response = await axios.get(`${apiUrl}/task/project/${projectId}/task`)
-                const tasks = response.data
-                processChartData(tasks)
-            } catch (error) {
-                console.error('Error fetching tasks:', error)
-            }
-        }
+        // 데이터 처리 메소드
+        const processChartData = () => {
+            if (!props.tasks || props.tasks.length === 0) return;
 
-        function processChartData(tasks) {
-            // 날짜별 업무 카운트
-            const taskCountsByDate = {}
-            tasks.forEach((task) => {
-                let currentDate = new Date(task.start_date)
-                const endDate = new Date(task.end_date)
+            const taskCountsByDate = {};
+            props.tasks.forEach((task) => {
+                let currentDate = new Date(task.start_date);
+                const endDate = new Date(task.end_date);
 
                 while (currentDate <= endDate) {
-                    const dateString = currentDate.toISOString().split('T')[0]
-                    taskCountsByDate[dateString] = (taskCountsByDate[dateString] || 0) + 1
-                    currentDate.setDate(currentDate.getDate() + 1)
+                    const dateString = currentDate.toISOString().split('T')[0];
+                    taskCountsByDate[dateString] = (taskCountsByDate[dateString] || 0) + 1;
+                    currentDate.setDate(currentDate.getDate() + 1);
                 }
-            })
+            });
 
-            // 정렬된 날짜와 카운트
-            const sortedDates = Object.keys(taskCountsByDate).sort()
-            const sortedCounts = sortedDates.map((date) => taskCountsByDate[date])
+            const sortedDates = Object.keys(taskCountsByDate).sort();
+            const sortedCounts = sortedDates.map(date => taskCountsByDate[date]);
 
-            state.chartData = {
+            chartData.value = {
                 labels: sortedDates,
-                datasets: [
-                    {
-                        // label: '',
-                        data: sortedCounts,
-                        fill: false,
-                        borderColor: 'rgba(54, 162, 235, 1)',
-                        tension: 0.1
-                    }
-                ]
-            }
-        }
+                datasets: [{
+                    label: 'Daily Task Counts',
+                    data: sortedCounts,
+                    fill: false,
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    tension: 0.1
+                }]
+            };
+        };
 
         onMounted(() => {
-            fetchTasks(route.params.id)
-        })
+            processChartData();
+        });
 
-        watch(
-            () => route.params.id,
-            (newId) => {
-                fetchTasks(newId)
-            }
-        )
+        watch(() => props.tasks, (newVal, oldVal) => {
+            processChartData();
+        }, { immediate: true });
 
-        return { ...toRefs(state) }
+        return {
+            chartData,
+            chartOptions
+        };
     }
 }
 </script>

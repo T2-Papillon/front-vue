@@ -125,7 +125,7 @@ export default {
                     <div class="col-auto">
                         <div class="title-area">
                             <h2 class="h2">[개인통계]마이페이지</h2>
-                            <p class="text-body-tertiary lh-sm mb-3">{{ profileEno }}님의 마이페이지 입니다.</p>
+                            <p class="text-body-tertiary lh-sm mb-3">{{ profileName }}님의 마이페이지 입니다.</p>
                         </div>
                     </div>
                 </div>
