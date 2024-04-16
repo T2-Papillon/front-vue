@@ -51,7 +51,7 @@ export default {
         processChartData(tasks) {
             if (!this.tasks) return;
 
-            const tasksPerAssignee = tasks.reduce((acc, task) => {
+            const tasksPerAssignee = this.tasks.reduce((acc, task) => {
                 const assigneeName = task.assignee_name;
                 if (!acc[assigneeName]) {
                     acc[assigneeName] = 0;

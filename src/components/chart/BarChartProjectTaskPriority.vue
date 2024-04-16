@@ -77,8 +77,6 @@ export default {
                     }
                 ]
             };
-
-            console.log("차트 데이터", this.chartData);
         }
     }
 }
