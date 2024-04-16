@@ -46,7 +46,7 @@ function clearAllTodos() {
 <template>
     <div class="todo-app">
         <div class="d-flex align-items-center justify-content-end">
-            <button class="btn" @click="clearAllTodos"><i class="bi bi-arrow-clockwise"></i></button>
+            <button class="btn" @click="clearAllTodos"><i class="bi bi-arrow-clockwise"></i> 초기화</button>
         </div>
         <input v-model="newTodo" class="form-control" @keyup.enter="addTodo" placeholder="리스트를 추가해주세요" />
         <div class="overflow-auto">
@@ -79,7 +79,6 @@ function clearAllTodos() {
     border-radius: 0;
     background-color: transparent;
     font-size: 14px;
-    /* color: #fff; */
 }
 .form-control:focus {
     outline: none;
@@ -87,15 +86,9 @@ function clearAllTodos() {
     border-color: #54c9c2;
     transition: 0.3s all;
 }
-.form-control::placeholder {
-    /* color: #fff; */
-    /* font-weight: 300; */
-}
+
 li {
     display: flex;
     align-items: center;
-}
-li span {
-    /* color: #fff; */
 }
 </style>
