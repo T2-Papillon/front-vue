@@ -8,23 +8,24 @@
 <script>
 import { Line } from 'vue-chartjs'
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js'
-import axios from 'axios'
-import { useRoute } from 'vue-router'
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend)
 
 export default {
     name: 'LineChartTaskAssignee',
     components: { Line },
+    props: {
+        tasks: Array // 부모 컴포넌트로부터 받은 tasks 데이터
+    },
     data() {
         return {
-            chartData: null, // 차트 데이터를 null로 초기화
+            chartData: null,
             chartOptions: {
                 responsive: true,
                 maintainAspectRatio: false,
                 plugins: {
                     legend: {
-                        display: false // 범례가 표시되지 않도록
+                        display: false
                     }
                 },
                 scales: {
@@ -35,25 +36,23 @@ export default {
             }
         }
     },
-    async mounted() {
-        await this.fetchTasks();
+    mounted() {
+        this.processChartData(); // 차트 데이터 가공
+    },
+    watch: {
+        tasks: {
+            immediate: true,
+            handler(newVal) {
+                this.processChartData(); // tasks 데이터가 변경될 때마다 차트 데이터를 다시 가공
+            }
+        }
     },
     methods: {
-        async fetchTasks() {
-            const route = useRoute();
-            const projectId = route.params.id;
-            try {
-                const apiUrl = import.meta.env.VITE_API_URL;
-                const response = await axios.get(`${apiUrl}/task/project/${projectId}/task`); // 수정된 API URL 사용
-                const tasks = response.data;
-                this.processChartData(tasks);
-            } catch (error) {
-                console.error("Error fetching tasks from:", apiUrl, error);
-            }
-        },
         processChartData(tasks) {
+            if (!this.tasks) return;
+
             const tasksPerAssignee = tasks.reduce((acc, task) => {
-                const assigneeName = task.assignee;
+                const assigneeName = task.assignee_name;
                 if (!acc[assigneeName]) {
                     acc[assigneeName] = 0;
                 }
