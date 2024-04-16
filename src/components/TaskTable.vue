@@ -24,9 +24,10 @@ const props = defineProps({
     isDashBoard: {
         type: Boolean,
         default: false
-    },
-    currentUserEno: Number
+    }
 })
+
+const currentUserEno = ref(Number(sessionStorage.getItem('EN')))
 
 const tasks = ref(props.initialTasks)
 const route = useRoute()
@@ -73,10 +74,6 @@ const openModal = (event, task) => {
     event.preventDefault()
     selectedTask.value = task
     isModalActive.value = true
-
-    // 해당 작업의 담당자 eno 값을 콘솔에 출력
-    console.log('Assignee eno:', task.assignee_eno)
-    console.log('Is current user:', isCurrentUser(task.assignee_eno))
 }
 
 // 초기 데이터 또는 태스크 변경 감시
@@ -94,8 +91,8 @@ watch(
     }
 )
 
-const isCurrentUser = (assigneeEno) => {
-    return props.currentUserEno === assigneeEno
+const isCurrentUser = (assignee_eno) => {
+    return currentUserEno.value === assignee_eno
 }
 </script>
 

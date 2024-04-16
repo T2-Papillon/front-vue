@@ -10,8 +10,6 @@ export default {
         const username = sessionStorage.getItem('NM')
         const usereno = sessionStorage.getItem('EN')
 
-        console.log('사번 정보:', usereno)
-
         const isEditing = ref(false)
         const task_title = ref('')
         const assignee_eno = ref('')
