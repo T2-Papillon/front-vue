@@ -23,7 +23,8 @@ export default {
             if (userInfo && userInfo.name) {
                 this.userInfo = {
                     name: userInfo.name,
-                    dept: userInfo.dept
+                    dept: userInfo.dept,
+                    eno: userInfo.eno
                 }
             } else {
                 this.userInfo = null
