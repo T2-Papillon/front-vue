@@ -20,7 +20,7 @@ export default {
     setup() {
         const tasks = ref([])
         const project = ref({})
-        const isLoading = ref(true) // 데이터 로딩 상태 추적
+        const isLoading = ref(true)
         const route = useRoute()
         const projectNo = ref(null)
 
@@ -30,6 +30,23 @@ export default {
             { id: 'done', name: '완료' },
             { id: 'hold', name: '보류' }
         ])
+
+        // 프로젝트 상세 정보를 불러오는 함수
+        async function fetchProjectDetail() {
+            isLoading.value = true
+            const projectId = route.params.id
+            try {
+                const apiUrl = import.meta.env.VITE_API_URL
+                const response = await axios.get(`${apiUrl}/project/detail?projNo=${projectId}`)
+                project.value = response.data
+                projectNo.value = projectId
+                console.log(project)
+            } catch (error) {
+                console.error('프로젝트 데이터를 가져오는데 실패했습니다:', error)
+            } finally {
+                isLoading.value = false
+            }
+        }
 
         async function fetchTasks() {
             isLoading.value = true
@@ -46,13 +63,13 @@ export default {
         }
 
         onMounted(() => {
-            fetchTasks()
+            fetchTasks(), fetchProjectDetail()
         })
 
         return {
             tasks,
             project,
-            isLoading, // 로딩 상태를 반환하여 템플릿에서 접근 가능하게 함
+            isLoading,
             checkboxItems,
             projectNo
         }
