@@ -4,8 +4,9 @@ import { useRoute } from 'vue-router'
 import axios from 'axios'
 import ProjectInfo from '../components/ProjectInfo.vue'
 import TaskTable from '../components/TaskTable.vue'
-import SortFilter from '@/components/SortFilter.vue'
+import SortFilter from '../components/SortFilter.vue'
 import CheckboxSelector from '../components/CheckboxSelector.vue'
+import useProjectTasks from '@/composables/useProjectTasks'
 
 export default {
     components: {
@@ -16,11 +17,11 @@ export default {
     },
     setup() {
         const project = ref({})
-        const tasks = ref([])
         const route = useRoute()
         const projectNo = ref(null)
         const searchTerm = ref('')
         const selectedCheckboxes = ref(['all'])
+        const { tasks, error, fetchProjectTasks } = useProjectTasks(import.meta.env.VITE_API_URL, route.params.id)
 
         const checkboxItems = ref([
             { id: 'all', name: '전체' },
@@ -31,11 +32,9 @@ export default {
         ])
 
         const filteredTasks = computed(() => {
-            // 'all'이 선택된 경우 모든 업무 반환
             if (selectedCheckboxes.value.includes('all')) {
                 return tasks.value
             } else {
-                // 선택된 체크박스에 따라 업무 필터링
                 return tasks.value.filter((task) => task.task_status && selectedCheckboxes.value.includes(task.task_status.toLowerCase()))
             }
         })
@@ -58,27 +57,17 @@ export default {
             }
         }
 
-        // 프로젝트 태스크 정보를 불러오는 함수
-        async function fetchProjectTasks() {
-            const projectId = route.params.id
-            try {
-                const apiUrl = import.meta.env.VITE_API_URL
-                const response = await axios.get(`${apiUrl}/task/project/${projectId}/task`)
-                tasks.value = response.data
-            } catch (error) {
-                console.error('프로젝트 태스크 데이터를 가져오는데 실패했습니다:', error)
-            }
-        }
-
         onMounted(() => {
             fetchProjectDetail()
-            fetchProjectTasks()
+            fetchProjectTasks(route.params.id)
         })
 
         watch(
             () => route.params.id,
-            () => {
-                fetchProjectTasks()
+            (newVal, oldVal) => {
+                if (newVal !== oldVal) {
+                    fetchProjectTasks()
+                }
             }
         )
 
