@@ -137,18 +137,18 @@ export default {
                     </div>
                     <div class="col-xl-5">
                         <h3 class="h3 chart-title">나의 우선순위별 업무 분포</h3>
-                        <BarChartUserTaskPriority :assigneeName="profileName.value" />
+                        <!-- <BarChartUserTaskPriority :assigneeName="profileName.value" /> -->
                     </div>
                 </div>
 
                 <div class="row mb-5">
                     <div class="col-xl-5">
                         <h3 class="h3 chart-title">나의 참여 프로젝트 분포</h3>
-                        <PieChartUserProjectTask :assigneeName="profileName.value" />
+                        <!-- <PieChartUserProjectTask :assigneeName="profileName.value" /> -->
                     </div>
                     <div class="col-xl-5">
                         <h3 class="h3 chart-title">나의 진행예정 업무 목록</h3>
-                        <TaskTable :tasks="paginatedTodoTasks" :isDashBoard="true" :showAssignee="false" :showStatus="false" :showProgress="false" :showWriteDate="false" />
+                        <!-- <TaskTable :tasks="paginatedTodoTasks" :isDashBoard="true" :showAssignee="false" :showStatus="false" :showProgress="false" :showWriteDate="false" /> -->
                         <PaginationView :currentPage="currentPage" :totalPages="totalPages" @update:currentPage="changePage" />
                     </div>
                 </div>
@@ -156,21 +156,21 @@ export default {
                 <div class="row mb-5">
                     <div class="col">
                         <h3 class="h3 chart-title">일주일 내로 마감될 프로젝트 목록</h3>
-                        <ProjectTable :projects="projects" :show-upcoming-deadlines="true" />
+                        <!-- <ProjectTable :projects="projects" :show-upcoming-deadlines="true" /> -->
                     </div>
                 </div>
 
                 <div class="row mb-5">
                     <div class="col">
                         <h3 class="h3 chart-title">나의 전체 프로젝트 목록</h3>
-                        <ProjectTable :projects="projects" :show-upcoming-deadlines="false" />
+                        <!-- <ProjectTable :projects="projects" :show-upcoming-deadlines="false" /> -->
                     </div>
                 </div>
 
                 <div class="row mb-5">
                     <div class="col">
                         <h3 class="h3 chart-title">나의 전체 업무 목록</h3>
-                        <TaskTable :tasks="tasks" :isDashBoard="true" :showAssignee="true" :showStatus="true" :showProgress="true" :showWriteDate="true" />
+                        <!-- <TaskTable :tasks="tasks" :isDashBoard="true" :showAssignee="true" :showStatus="true" :showProgress="true" :showWriteDate="true" /> -->
                     </div>
                 </div>
             </div>
