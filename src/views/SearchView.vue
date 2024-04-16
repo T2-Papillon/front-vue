@@ -19,9 +19,6 @@ const checkboxItems = ref([
 const selectedCheckboxes = ref(['all'])
 const isLoading = ref(false)
 const { projects, fetchProjects, fetchProjectsByStatus, sortByLatest, sortByPriority } = useProjects()
-//     // currentPage 값을 변경한 후에 프로젝트를 다시 불러옵니다.
-//     await fetchProjects(searchTerm.value, selectedCheckboxes.value)
-// }
 
 // 검색 제출 핸들러
 const submitSearch = () => {
@@ -38,24 +35,20 @@ onMounted(() => {
 })
 
 // 올바른 검색어 입력까지 프로젝트 데이터가 없다는 문구 출력됨
-watch(
-    searchTerm,
-    (newVal) => {
+watch(searchTerm, (newVal, oldVal) => {
+    if (newVal !== oldVal) {
         fetchProjects(newVal, selectedCheckboxes.value)
-    },
-    { immediate: true }
-)
-watch(
-    selectedCheckboxes,
-    () => {
-        if (selectedCheckboxes.value.includes('all')) {
-            fetchProjects(searchTerm.value, selectedCheckboxes.value)
+    }
+})
+watch(selectedCheckboxes, (newVal, oldVal) => {
+    if (newVal !== oldVal) {
+        if (newVal.includes('all')) {
+            fetchProjects(searchTerm.value, newVal)
         } else {
-            fetchProjectsByStatus(selectedCheckboxes.value)
+            fetchProjectsByStatus(newVal)
         }
-    },
-    { immediate: true }
-)
+    }
+})
 const handleSelectedItems = (selectedItems) => {
     if (selectedItems.includes('all')) {
         fetchProjects(searchTerm.value, selectedItems)
