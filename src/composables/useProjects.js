@@ -17,7 +17,7 @@ export function useProjects() {
     // 전체 프로젝트 검색
     async function fetchProjects(searchTerm = '') {
         isLoading.value = true
-        searchQuery.value = searchTerm // 현재 검색어 업데이트
+        searchQuery.value = searchTerm
         try {
             const searchPath = searchTerm ? `/search/project?term=${searchTerm}` : '/project'
             const pageSize = PAGE_SIZE
@@ -75,7 +75,6 @@ export function useProjects() {
         }
     }
 
-    // 프로젝트목록 페이지에서 프로젝트 검색 함수
     async function searchProjects() {
         if (!searchQuery.value.trim()) {
             alert('검색어를 입력하세요')
@@ -91,7 +90,6 @@ export function useProjects() {
                     pageSize: PAGE_SIZE
                 }
             })
-            // 검색 결과를 바로 projects 상태에 할당
             projects.value = response.data.map((project) => formatProjectData(project))
         } catch (error) {
         } finally {
@@ -107,7 +105,7 @@ export function useProjects() {
             } else {
                 await fetchProjects(searchTerm)
                 const filteredProjectsByStatus = projects.value.filter((project) => statusList.includes(project.status))
-                projects.value = filteredProjectsByStatus // 필터링된 프로젝트를 저장
+                projects.value = filteredProjectsByStatus
                 totalPages.value = Math.ceil(filteredProjectsByStatus.length / PAGE_SIZE)
             }
         } catch (error) {
@@ -117,7 +115,6 @@ export function useProjects() {
         }
     }
 
-    // 최신순
     function sortByLatest() {
         projects.value.sort((a, b) => {
             return new Date(b.writeDate) - new Date(a.writeDate)
@@ -126,7 +123,6 @@ export function useProjects() {
         projects.value = [...projects.value]
     }
 
-    //우선순위순
     function sortByPriority() {
         const priorityOrder = { LV0: 0, LV1: 1, LV2: 2, LV3: 3 }
         projects.value.sort((a, b) => {

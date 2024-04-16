@@ -7,9 +7,8 @@ import SortFilter from '../components/SortFilter.vue'
 import globalInfo from '@/utils/globalInfoUtils.js'
 import PaginationView from '../components/PaginationView.vue'
 
-const { projects, fetchProjectsForUser, sortByLatest, sortByPriority, currentPage, totalPages, searchQuery, changePage, searchProjects } = useProjects()
+const { projects, fetchProjectsForUser, currentPage, totalPages, searchQuery, changePage, searchProjects } = useProjects()
 
-// 로그인한 사용자의 이름을 저장하기 위한 반응형 참조
 const userName = ref(sessionStorage.getItem('NM') || '사용자')
 
 // 프로젝트 상태별로 필터링된 목록을 저장하기 위한 반응형 참조
@@ -18,7 +17,6 @@ const doingProjects = ref([])
 const doneProjects = ref([])
 const holdProjects = ref([])
 
-// 프로젝트 상태별로 필터링하는 함수, projects를 사용하여 필터링합니다.
 function filterProjects() {
     todoProjects.value = projects.value.filter((p) => p.status === 'todo')
     doingProjects.value = projects.value.filter((p) => p.status === 'doing')
@@ -61,9 +59,9 @@ onMounted(async () => {
                             📬 진행예정 <span class="h3 fw-bold">{{ todoProjects.length }}</span> 건
                         </h3>
                     </div>
-                    <div class="col-auto">
+                    <!-- <div class="col-auto">
                         <SortFilter :sortByLatest="() => sortByLatest(todoProjects)" :sortByPriority="() => sortByPriority(todoProjects)" />
-                    </div>
+                    </div> -->
                 </div>
                 <ProjectTable v-if="todoProjects.length > 0" :projects="todoProjects" />
                 <PaginationView v-if="todoProjects.length > 10" :currentPage="currentPage" :totalPages="totalPages" />
@@ -79,9 +77,9 @@ onMounted(async () => {
                             🚗 진행중 <span class="h3 fw-bold">{{ doingProjects.length }}</span> 건
                         </h3>
                     </div>
-                    <div class="col-auto">
+                    <!-- <div class="col-auto">
                         <SortFilter :sortByLatest="() => sortByLatest(doingProjects)" :sortByPriority="() => sortByPriority(doingProjects)" />
-                    </div>
+                    </div> -->
                 </div>
                 <ProjectTable v-if="doingProjects.length > 0" :projects="doingProjects" />
                 <PaginationView v-if="doingProjects.length > 10" :currentPage="currentPage" :totalPages="totalPages" />
@@ -97,9 +95,9 @@ onMounted(async () => {
                             🎉 완료 <span class="h3 fw-bold">{{ doneProjects.length }}</span> 건
                         </h3>
                     </div>
-                    <div class="col-auto">
+                    <!-- <div class="col-auto">
                         <SortFilter :sortByLatest="() => sortByLatest(doneProjects)" :sortByPriority="() => sortByPriority(doneProjects)" />
-                    </div>
+                    </div> -->
                 </div>
                 <ProjectTable v-if="doneProjects.length > 0" :projects="doneProjects" />
                 <PaginationView v-if="doneProjects.length > 10" :currentPage="currentPage" :totalPages="totalPages" />
@@ -115,9 +113,9 @@ onMounted(async () => {
                             🧩 보류 <span class="h3 fw-bold">{{ holdProjects.length }}</span> 건
                         </h3>
                     </div>
-                    <div class="col-auto">
+                    <!-- <div class="col-auto">
                         <SortFilter :sortByLatest="() => sortByLatest(holdProjects)" :sortByPriority="() => sortByPriority(holdProjects)" />
-                    </div>
+                    </div> -->
                 </div>
                 <ProjectTable v-if="holdProjects.length > 0" :projects="holdProjects" />
                 <PaginationView v-if="holdProjects.length > 10" :currentPage="currentPage" :totalPages="totalPages" />
