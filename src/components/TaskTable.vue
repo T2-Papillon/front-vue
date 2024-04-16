@@ -1,5 +1,5 @@
 <script setup>
-import { ref, defineProps, onMounted, watch, defineEmits } from 'vue'
+import { ref, defineProps, onMounted, watch, computed, defineEmits } from 'vue'
 import axios from 'axios'
 import { useRoute } from 'vue-router'
 import { formatDate } from '@/utils/dateUtils.js'
@@ -21,12 +21,11 @@ const props = defineProps({
     showWriteDate: Boolean,
     projectId: Number,
     tasks: Array,
-    // createdBy: String,
-    // currentUserEno: String,
     isDashBoard: {
         type: Boolean,
-        default: false // 기본값으로 false 설정
-    }
+        default: false
+    },
+    currentUserEno: Number
 })
 
 const tasks = ref(props.initialTasks)
@@ -74,8 +73,11 @@ const openModal = (event, task) => {
     event.preventDefault()
     selectedTask.value = task
     isModalActive.value = true
-}
 
+    // 해당 작업의 담당자 eno 값을 콘솔에 출력
+    console.log('Assignee eno:', task.assignee_eno)
+    console.log('Is current user:', isCurrentUser(task.assignee_eno))
+}
 // 초기 데이터 또는 태스크 변경 감시
 watch(
     () => props.initialTasks,
@@ -90,6 +92,10 @@ watch(
         tasks.value = props.tasks
     }
 )
+
+const isCurrentUser = (assigneeEno) => {
+    return props.currentUserEno === assigneeEno
+}
 </script>
 
 <template>
@@ -135,7 +141,6 @@ watch(
                 <td class="text-end text-secondary">
                     <template v-if="task.task_test">
                         <a :href="task.task_test_url" class="link-underline" target="_blank">{{ task.task_test ? 'T' : '-' }}</a>
-                        <!-- task_test가 true일 때 -->
                     </template>
                     <template v-else> - </template>
                 </td>
@@ -164,8 +169,18 @@ watch(
         </tbody>
     </table>
 
+    <TaskDetailModal
+        v-if="selectedTask"
+        :is-active="isModalActive"
+        :task="selectedTask"
+        :is-current-user="selectedTask ? isCurrentUser(selectedTask.assignee_eno) : false"
+        :current-user-eno="currentUserEno"
+        @close-modal="handleCloseModal"
+        @refresh-tasks="fetchProjectTasks"
+    />
+
     <!-- 모달 : 하위업무 상세내용  -->
-    <TaskDetailModal v-if="selectedTask" :is-active="isModalActive" :task="selectedTask" @close-modal="handleCloseModal" @refreshTasks="fetchProjectTasks" />
+    <!-- <TaskDetailModal v-if="selectedTask" :is-active="isModalActive" :task="selectedTask" @close-modal="handleCloseModal" @refreshTasks="fetchProjectTasks" /> -->
 </template>
 
 <style scoped>
@@ -182,16 +197,5 @@ watch(
     left: 0;
     opacity: 0.7;
     font-weight: 300;
-}
-
-/* 테이블 헤더 셀에만 하단 테두리를 적용 */
-.thead th {
-    border-bottom: 1px solid #dee2e6; /* 부트스트랩 색상을 사용한 예시 */
-}
-
-/* 상단 테두리를 제거하여 길이 문제 해결 */
-.table {
-    border-collapse: collapse; /* 테두리 중복 제거 */
-    width: 100%; /* 테이블 너비를 100%로 설정 */
 }
 </style>

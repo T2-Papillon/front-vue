@@ -54,7 +54,7 @@ export default {
     },
     computed: {
         isCurrentUser() {
-            return globalInfo.eno === this.createdBy
+            return this.currentUserEno === this.createdBy
         }
     }
 }
