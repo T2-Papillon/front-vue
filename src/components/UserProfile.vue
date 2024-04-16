@@ -22,6 +22,9 @@ export default {
                 sessionStorage.clear()
                 router.push('/login')
             }
+        },
+        goMyPage() {
+            this.$router.push({ name: 'mypage', state: { eno: this.eno, name: this.name } })
         }
     }
 }
@@ -31,7 +34,7 @@ export default {
         <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="프로필">{{ displayName }}</button>
         <ul class="dropdown-menu">
             <li>
-                <router-link :to="`/mypage/${eno}`" class="dropdown-item">{{ dept }} / {{ name }}</router-link>
+                <button @click="goMyPage" class="dropdown-item">{{ dept }} / {{ name }}</button>
             </li>
             <li class="dropdown-item" style="cursor: pointer" v-show="checkSession" v-on:click="logout">로그아웃</li>
         </ul>

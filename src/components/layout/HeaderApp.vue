@@ -23,7 +23,8 @@ export default {
             if (userInfo && userInfo.name) {
                 this.userInfo = {
                     name: userInfo.name,
-                    dept: userInfo.dept
+                    dept: userInfo.dept,
+                    eno: userInfo.eno
                 }
             } else {
                 this.userInfo = null
@@ -57,7 +58,7 @@ export default {
                         <div class="vertical-line" v-if="userInfo"></div>
                         <ul class="me-auto mb-2 mb-lg-0" v-if="userInfo">
                             <li class="dropdown">
-                                <UserProfile :name="userInfo.name" :dept="userInfo.dept" />
+                                <UserProfile :name="userInfo.name" :dept="userInfo.dept" :eno="userInfo.eno" />
                             </li>
                         </ul>
                     </div>
