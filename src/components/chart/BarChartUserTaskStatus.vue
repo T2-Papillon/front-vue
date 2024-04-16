@@ -18,7 +18,8 @@ export default {
     name: 'BarChartUserTaskStatus',
     components: { Bar },
     props: {
-        assigneeName: String // props로 assigneeName을 받습니다.
+        assigneeName: String,
+        tasks: Array
     },
     setup(props) {
         const chartData = ref(null)
@@ -32,26 +33,8 @@ export default {
             }
         }
 
-        const fetchTasks = async () => {
-            console.log('데이터 로딩 시작')
-            console.log("받은 assigneeName:", props.assigneeName)
-            isLoading.value = true
-            const apiUrl = import.meta.env.VITE_API_URL
-            try {
-                const response = await axios.get(`${apiUrl}/task/taskAll`)
-                const tasks = response.data
-                console.log('API로부터 받은 tasks:', tasks);
-                processChartData(tasks, props.assigneeName) // assigneeName을 인자로 넘깁니다.
-            } catch (error) {
-                console.error('업무 데이터를 불러오는 중 에러 발생:', error)
-            } finally {
-                isLoading.value = false
-                console.log('데이터 로딩 완료')
-            }
-        }
-
         const processChartData = (tasks, assigneeName) => {
-            console.log(`차트 데이터 생성 시작: ${assigneeName}`)
+            if (!tasks || tasks.length === 0) return
             const statusMapping = {
                 TODO: '진행예정',
                 DOING: '진행중',
@@ -59,10 +42,7 @@ export default {
                 HOLD: '보류'
             }
 
-            // 특정 assignee의 task만 필터링
-            const filteredTasks = tasks.filter((task) => task.assignee_name === assigneeName)
-
-            const tasksPerStatus = filteredTasks.reduce((acc, task) => {
+            const tasksPerStatus = tasks.reduce((acc, task) => {
                 const status = statusMapping[task.task_status] || task.task_status // 매핑된 상태 사용, 또는 기본 값
                 if (!acc[status]) {
                     acc[status] = 0
@@ -83,11 +63,20 @@ export default {
                     }
                 ]
             }
+            isLoading.value = false
         }
 
-        onMounted(fetchTasks) // 컴포넌트 마운트 시 데이터 가져오기
+        onMounted(() => {
+            processChartData(props.tasks, props.assigneeName)
+        })
 
-        watch(() => props.assigneeName, fetchTasks) // assigneeName이 변경될 때마다 데이터 가져오기
+        watch(
+            () => props.tasks,
+            (newVal, oldVal) => {
+                processChartData(props.tasks, props.assigneeName)
+            },
+            { immediate: true }
+        )
 
         return {
             chartData,

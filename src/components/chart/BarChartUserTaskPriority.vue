@@ -17,7 +17,8 @@ export default {
     name: 'BarChartUserTaskPriority',
     components: { Bar },
     props: {
-        assigneeName: String // assigneeName을 prop으로 받습니다.
+        assigneeName: String,
+        tasks: Array
     },
     setup(props) {
         const chartData = ref(null)
@@ -33,34 +34,20 @@ export default {
             }
         }
 
-        // assigneeName에 따라 태스크를 가져오는 함수
-        const fetchTasks = async () => {
-            const apiUrl = import.meta.env.VITE_API_URL;
-            try {
-                const response = await axios.get(`${apiUrl}/task/taskAll`);
-                const tasks = response.data;
-                processChartData(tasks, props.assigneeName);
-            } catch (error) {
-                console.error("Error fetching tasks:", error);
-            }
-        }
-
         const processChartData = (tasks, assigneeName) => {
+            if (!tasks || tasks.length === 0) return
             const priorityMapping = {
-                'LV0': '긴급',
-                'LV1': '높음',
-                'LV2': '보통',
-                'LV3': '낮음'
+                LV0: '긴급',
+                LV1: '높음',
+                LV2: '보통',
+                LV3: '낮음'
             }
 
-            // Filter tasks for the logged-in assignee and count by priority
-            const filteredTasks = tasks.filter(task => task.assignee_name === assigneeName);
-
-            const tasksPerPriority = filteredTasks.reduce((acc, task) => {
-                const priority = priorityMapping[task.task_priority] || task.task_priority; // Use mapped priority or raw value
-                acc[priority] = (acc[priority] || 0) + 1;
-                return acc;
-            }, {});
+            const tasksPerPriority = tasks.reduce((acc, task) => {
+                const priority = priorityMapping[task.task_priority] || task.task_priority // Use mapped priority or raw value
+                acc[priority] = (acc[priority] || 0) + 1
+                return acc
+            }, {})
 
             chartData.value = {
                 labels: Object.keys(tasksPerPriority),
@@ -73,11 +60,22 @@ export default {
                         borderWidth: 1
                     }
                 ]
-            };
+            }
         }
 
-        onMounted(fetchTasks)
-        watch(() => props.assigneeName, fetchTasks) // assigneeName prop이 바뀔 때마다 fetchTasks 함수를 호출합니다.
+        onMounted(() => {
+            processChartData(props.tasks, props.assigneeName)
+        })
+
+        watch(
+            () => props.tasks,
+            (newVal, oldVal) => {
+                console.log('watch')
+                console.log(props.tasks)
+                processChartData(props.tasks, props.assigneeName)
+            },
+            { immediate: true }
+        )
 
         return {
             chartData,

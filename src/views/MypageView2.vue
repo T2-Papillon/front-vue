@@ -51,10 +51,11 @@ export default {
         async function fetchTasks() {
             try {
                 const apiUrl = import.meta.env.VITE_API_URL
-                const response = await axios.get(`${apiUrl}/task/taskAll`)
+                const response = await axios.get(`${apiUrl}/task/emp/${profileEno.value}`)
                 // 현재 사용자에게 할당된 업무만 필터링
-                const userTasks = response.data.filter((task) => task.assignee_eno === profileEno.value)
-                tasks.value = userTasks
+                // const userTasks = response.data.filter((task) => task.assignee_eno === profileEno.value)
+                tasks.value = response.data
+                console.log(tasks.value)
             } catch (error) {}
         }
 
@@ -133,18 +134,18 @@ export default {
                 <div class="row mb-5">
                     <div class="col-xl-5">
                         <h3 class="h3 chart-title">나의 업무 진행 상태 분포</h3>
-                        <BarChartUserTaskStatus :assigneeName="profileName.value" />
+                        <BarChartUserTaskStatus :assigneeName="profileName" :tasks="tasks" />
                     </div>
                     <div class="col-xl-5">
                         <h3 class="h3 chart-title">나의 우선순위별 업무 분포</h3>
-                        <BarChartUserTaskPriority :assigneeName="profileName.value" />
+                        <BarChartUserTaskPriority :assigneeName="profileName.value" :tasks="tasks" />
                     </div>
                 </div>
 
                 <div class="row mb-5">
                     <div class="col-xl-5">
                         <h3 class="h3 chart-title">나의 참여 프로젝트 분포</h3>
-                        <PieChartUserProjectTask :assigneeName="profileName.value" />
+                        <!-- <PieChartUserProjectTask :assigneeName="profileName.value" :tasks="tasks" /> -->
                     </div>
                     <div class="col-xl-5">
                         <h3 class="h3 chart-title">나의 진행예정 업무 목록</h3>
