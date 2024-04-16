@@ -39,6 +39,7 @@ export default {
         }
     },
     mounted() {
+        console.log('BarChartProjectTaskStatus - Received tasks:', this.tasks)
         this.processChartData()
     },
     watch: {
