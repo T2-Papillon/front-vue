@@ -6,7 +6,7 @@ import PieChartUserProjectTask from '../components/chart/PieChartUserProjectTask
 import TaskTable from '../components/TaskTable.vue'
 import ProjectTable from '../components/ProjectTable.vue'
 import PaginationView from '../components/PaginationView.vue'
-import { useProjects } from '@/composables/useProjects'
+import { formatProjectData } from '@/utils/projectUtils'
 import { ref, onMounted, computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
 
@@ -26,17 +26,17 @@ export default {
         const profileName = ref(history.state.name)
         // const profileDept = ref('') // 초기 부서 정보는 비어 있습니다.
 
-        const { projects, fetchProjects } = useProjects()
+        // const { projects, fetchProjects } = useProjects()
         const filteredProjects = ref([]) // 필터링된 프로젝트를 저장할 새로운 반응형 참조
 
         const tasks = ref([])
+        const projects = ref([])
 
         const currentPage = ref(1) // 현재 페이지 번호를 설정합니다.
         const pageSize = ref(10) // 페이지당 업무 수를 10으로 설정합니다.
         const totalPages = computed(() => Math.ceil(todoTasks.value.length / pageSize.value)) // 전체 페이지 수를 계산합니다.
 
         const paginatedTodoTasks = computed(() => {
-            // paginatedTodoTasks 계산된 속성을 추가합니다.
             const start = (currentPage.value - 1) * pageSize.value
             const end = currentPage.value * pageSize.value
             return todoTasks.value.slice(start, end)
@@ -47,15 +47,13 @@ export default {
             return tasks.value.filter((task) => task.task_status === 'TODO')
         })
 
-        // 모든 업무 데이터를 가져와서 현재 사용자에게 할당된 업무로 필터링하는 함수
         async function fetchTasks() {
             try {
                 const apiUrl = import.meta.env.VITE_API_URL
-                const response = await axios.get(`${apiUrl}/task/emp/${profileEno.value}`)
-                // 현재 사용자에게 할당된 업무만 필터링
-                // const userTasks = response.data.filter((task) => task.assignee_eno === profileEno.value)
-                tasks.value = response.data
-                console.log(tasks.value)
+                //const response = await axios.get(`${apiUrl}/task/emp/${profileEno.value}`)
+                const response = await axios.get(`${apiUrl}/mypage/emp/${profileEno.value}`)
+                tasks.value = response.data.tasks
+                projects.value = response.data.projects.map((project) => formatProjectData(project))
             } catch (error) {}
         }
 
@@ -76,12 +74,9 @@ export default {
         }
 
         onMounted(async () => {
-            await fetchProjects()
-            filteredProjects.value = projects.value.filter((project) => project.participants.some((participant) => participant.eno === profileEno.value))
+            // await fetchProjects()
+            // filteredProjects.value = projects.value.filter((project) => project.participants.some((participant) => participant.eno === profileEno.value))
             await fetchTasks() // 사용자에게 할당된 업무 데이터를 가져옵니다
-            // 여기에서 userProfile 데이터 페치 로직을 추가합니다.
-            // const userProfile = await fetchUserProfile(profileName.value)
-            // profileDept.value = userProfile.dept // 부서 정보를 설정합니다.
         })
 
         // 현재 페이지가 변경될 때마다 호출됩니다.
@@ -96,7 +91,7 @@ export default {
             profileEno,
             profileName,
             // profileDept, // 컴포넌트에 profileDept 추가
-            projects: filteredProjects, // 수정된 부분: 필터링된 프로젝트 데이터를 전달
+            projects, // 수정된 부분: 필터링된 프로젝트 데이터를 전달
             tasks, // TaskTable 컴포넌트로 전달되는 업무 데이터
             todoTasks,
             currentPage,
@@ -138,14 +133,14 @@ export default {
                     </div>
                     <div class="col-xl-5">
                         <h3 class="h3 chart-title">나의 우선순위별 업무 분포</h3>
-                        <BarChartUserTaskPriority :assigneeName="profileName.value" :tasks="tasks" />
+                        <BarChartUserTaskPriority :assigneeName="profileName" :tasks="tasks" />
                     </div>
                 </div>
 
                 <div class="row mb-5">
                     <div class="col-xl-5">
                         <h3 class="h3 chart-title">나의 참여 프로젝트 분포</h3>
-                        <!-- <PieChartUserProjectTask :assigneeName="profileName.value" :tasks="tasks" /> -->
+                        <PieChartUserProjectTask :assigneeName="profileName" :tasks="tasks" :projects="projects" />
                     </div>
                     <div class="col-xl-5">
                         <h3 class="h3 chart-title">나의 진행예정 업무 목록</h3>

@@ -22,13 +22,19 @@ export default {
     },
     setup(props) {
         const chartData = ref(null)
+        const isLoading = ref(false)
         const chartOptions = {
             responsive: true,
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
             scales: {
                 y: {
                     beginAtZero: true,
                     ticks: {
-                        stepSize: 1 // Ensure y-axis values are whole numbers
+                        stepSize: 1
                     }
                 }
             }
@@ -53,7 +59,7 @@ export default {
                 labels: Object.keys(tasksPerPriority),
                 datasets: [
                     {
-                        label: `${assigneeName}님의 우선순위별 업무 분포`,
+                        label: false,
                         data: Object.values(tasksPerPriority),
                         backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)'],
                         borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)'],
@@ -61,6 +67,7 @@ export default {
                     }
                 ]
             }
+            isLoading.value = false
         }
 
         onMounted(() => {
@@ -70,8 +77,6 @@ export default {
         watch(
             () => props.tasks,
             (newVal, oldVal) => {
-                console.log('watch')
-                console.log(props.tasks)
                 processChartData(props.tasks, props.assigneeName)
             },
             { immediate: true }
@@ -79,7 +84,8 @@ export default {
 
         return {
             chartData,
-            chartOptions
+            chartOptions,
+            isLoading
         }
     }
 }
