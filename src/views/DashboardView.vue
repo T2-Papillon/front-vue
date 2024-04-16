@@ -280,4 +280,7 @@ dashboardData()
         transform: translateX(1);
     }
 }
+::v-deep .owner-row td {
+    background-color: #fff; /* 흰색 배경으로 설정 */
+}
 </style>
