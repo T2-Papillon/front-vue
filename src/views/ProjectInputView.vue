@@ -226,7 +226,7 @@ const goBack = () => {
                 </table>
 
                 <!-- 버튼영역 -->
-                <div class="btn-area">
+                <div class="btn-area text-center">
                     <button type="button" class="btn btn-secondary me-2" @click="goBack">취소</button>
                     <button type="submit" class="btn btn-primary">저장</button>
                 </div>

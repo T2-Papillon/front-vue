@@ -129,9 +129,9 @@ const handleSelectedItems = (selectedItems) => {
         </div>
 
         <!-- 페이지네이션 -->
-        <div v-if="!isLoading && (projects.length > 10 || totalPages.value > 1)">
+        <!-- <div v-if="!isLoading && (projects.length > 10 || totalPages.value > 1)">
             <PaginationView :currentPage="currentPage" :totalPages="totalPages" @update:currentPage="handlePageChange" />
-        </div>
+        </div> -->
 
         <LoadingSpinner :isLoading="isLoading" />
     </div>
