@@ -258,7 +258,7 @@ export default {
         <div class="row align-items-center justify-content-center text-center g-3">
             <div class="col-auto">
                 <div class="title-area">
-                    <h2 class="h2">{{ isEditing ? '업무 수정하기' : '업무 작성하기' }}</h2>
+                    <h2 class="h2">{{ isEditing ? '업무 수정' : '업무 작성' }}</h2>
                     <p class="text-body-tertiary lh-sm mb-0">{{ isEditing ? '업무를 수정해주세요.' : '예정된 업무를 적어주세요.' }}</p>
                 </div>
             </div>
@@ -266,7 +266,7 @@ export default {
 
         <div class="row">
             <form @submit.prevent="saveOrUpdateTask">
-                <div>
+                <div class="col-xl">
                     <div class="mb-3">
                         <label for="title" class="form-label">업무명</label>
                         <input type="text" v-model="task_title" class="form-control" id="title" placeholder="제목을 입력해주세요." required />
@@ -359,7 +359,7 @@ export default {
                 </div>
 
                 <!-- 버튼영역 -->
-                <div class="btn-area">
+                <div class="btn-area text-center">
                     <button type="button" class="btn btn-secondary me-2" @click="goBack">취소</button>
                     <button type="submit" class="btn btn-primary">저장</button>
                 </div>
