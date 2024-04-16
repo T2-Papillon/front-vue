@@ -19,7 +19,7 @@ export default {
         tasks: Array // 부모 컴포넌트로부터 받은 tasks 데이터
     },
     setup(props) {
-        const chartData = ref(null);
+        const chartData = ref(null)
         const chartOptions = ref({
             responsive: true,
             maintainAspectRatio: false,
@@ -33,51 +33,57 @@ export default {
                     beginAtZero: true
                 }
             }
-        });
+        })
 
         // 데이터 처리 메소드
         const processChartData = () => {
-            if (!props.tasks || props.tasks.length === 0) return;
+            if (!props.tasks || props.tasks.length === 0) return
 
-            const taskCountsByDate = {};
+            const taskCountsByDate = {}
             props.tasks.forEach((task) => {
-                let currentDate = new Date(task.start_date);
-                const endDate = new Date(task.end_date);
+                let currentDate = new Date(task.start_date)
+                const endDate = new Date(task.end_date)
 
                 while (currentDate <= endDate) {
-                    const dateString = currentDate.toISOString().split('T')[0];
-                    taskCountsByDate[dateString] = (taskCountsByDate[dateString] || 0) + 1;
-                    currentDate.setDate(currentDate.getDate() + 1);
+                    const dateString = currentDate.toISOString().split('T')[0]
+                    taskCountsByDate[dateString] = (taskCountsByDate[dateString] || 0) + 1
+                    currentDate.setDate(currentDate.getDate() + 1)
                 }
-            });
+            })
 
-            const sortedDates = Object.keys(taskCountsByDate).sort();
-            const sortedCounts = sortedDates.map(date => taskCountsByDate[date]);
+            const sortedDates = Object.keys(taskCountsByDate).sort()
+            const sortedCounts = sortedDates.map((date) => taskCountsByDate[date])
 
             chartData.value = {
                 labels: sortedDates,
-                datasets: [{
-                    label: 'Daily Task Counts',
-                    data: sortedCounts,
-                    fill: false,
-                    borderColor: 'rgba(54, 162, 235, 1)',
-                    tension: 0.1
-                }]
-            };
-        };
+                datasets: [
+                    {
+                        label: 'Daily Task Counts',
+                        data: sortedCounts,
+                        fill: false,
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        tension: 0.1
+                    }
+                ]
+            }
+        }
 
         onMounted(() => {
-            processChartData();
-        });
+            processChartData()
+        })
 
-        watch(() => props.tasks, (newVal, oldVal) => {
-            processChartData();
-        }, { immediate: true });
+        watch(
+            () => props.tasks,
+            (newVal, oldVal) => {
+                processChartData()
+            },
+            { immediate: true }
+        )
 
         return {
             chartData,
             chartOptions
-        };
+        }
     }
 }
 </script>

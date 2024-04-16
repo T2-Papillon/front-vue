@@ -31,24 +31,6 @@ export default {
             { id: 'hold', name: '보류' }
         ])
 
-
-        // 프로젝트 상세 정보를 불러오는 함수
-        async function fetchProjectDetail() {
-            isLoading.value = true // 데이터 로딩 시작
-            const projectId = route.params.id
-            try {
-                const apiUrl = import.meta.env.VITE_API_URL
-                const response = await axios.get(`${apiUrl}/project/detail?projNo=${projectId}`)
-                project.value = response.data
-                projectNo.value = projectId
-                console.log(project) // 디버깅
-            } catch (error) {
-                console.error('프로젝트 데이터를 가져오는데 실패했습니다:', error)
-            } finally {
-                isLoading.value = false // 데이터 로딩 완료
-            }
-        }
-
         async function fetchTasks() {
             isLoading.value = true
             const projectId = route.params.id
@@ -61,12 +43,10 @@ export default {
             } finally {
                 isLoading.value = false
             }
-            console.log('fetchTasks()', tasks.value)
         }
 
         onMounted(() => {
-            fetchTasks(),
-            fetchProjectDetail()
+            fetchTasks()
         })
 
         return {
