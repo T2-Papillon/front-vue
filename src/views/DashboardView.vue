@@ -106,6 +106,32 @@ dashboardData()
                 </div>
             </div>
             <div class="row g-5 g-xl-10 mb-5 mb-xl-10">
+                <div class="col-xl-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="card-title">오늘 완료 업무 건수</p>
+                            <h3 class="card-text fw-bold">{{ taskToday }} 건</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="card-title">전일 완료 업무 건수</p>
+                            <h3 class="card-text fw-bold">{{ taskYesterday }} 건</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="card-title">전주 완료 업무 건수</p>
+                            <h3 class="card-text fw-bold">{{ taskWeek }} 건</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row g-5 g-xl-10 mb-5 mb-xl-10">
                 <div class="col">
                     <div class="card">
                         <div class="card-body">
