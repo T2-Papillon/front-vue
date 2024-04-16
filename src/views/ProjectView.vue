@@ -7,9 +7,8 @@ import SortFilter from '../components/SortFilter.vue'
 import globalInfo from '@/utils/globalInfoUtils.js'
 import PaginationView from '../components/PaginationView.vue'
 
-const { projects, fetchProjectsForUser, sortByLatest, sortByPriority, currentPage, totalPages, searchQuery, changePage, searchProjects } = useProjects()
+const { projects, fetchProjectsForUser, currentPage, totalPages, searchQuery, changePage, searchProjects } = useProjects()
 
-// 로그인한 사용자의 이름을 저장하기 위한 반응형 참조
 const userName = ref(sessionStorage.getItem('NM') || '사용자')
 
 // 프로젝트 상태별로 필터링된 목록을 저장하기 위한 반응형 참조
@@ -18,7 +17,6 @@ const doingProjects = ref([])
 const doneProjects = ref([])
 const holdProjects = ref([])
 
-// 프로젝트 상태별로 필터링하는 함수, projects를 사용하여 필터링합니다.
 function filterProjects() {
     todoProjects.value = projects.value.filter((p) => p.status === 'todo')
     doingProjects.value = projects.value.filter((p) => p.status === 'doing')
