@@ -108,12 +108,10 @@ export default {
             const projectId = route.params.id
             const apiUrl = import.meta.env.VITE_API_URL
 
-            // 검색어가 비어 있는지 확인
             if (!searchTerm.value.trim()) {
-                alert('검색어를 입력하세요') // 경고 메시지 표시
+                alert('검색어를 입력하세요')
                 return
             } else {
-                // 검색어가 있는 경우 검색을 수행합니다.
                 try {
                     const response = await axios.get(`${apiUrl}/task/project/${projectId}/task/search`, {
                         params: {
@@ -122,7 +120,7 @@ export default {
                             pageSize: 10
                         }
                     })
-                    tasks.value = response.data // 검색 결과로 태스크 리스트 업데이트
+                    tasks.value = response.data
                 } catch (error) {
                     console.error('업무 검색 실패:', error)
                 }
