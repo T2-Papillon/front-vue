@@ -17,37 +17,17 @@ export default {
     name: 'PieChartUserProjectTask',
     components: { Pie },
     props: {
-        assigneeName: String
+        assigneeName: String,
+        tasks: Array
     },
     setup(props) {
         const chartData = ref(null)
         const chartOptions = { responsive: true }
 
-        const fetchProjectsAndTasks = async () => {
-            const apiUrl = import.meta.env.VITE_API_URL
-
-            try {
-                const tasksResponse = await axios.get(`${apiUrl}/task/taskAll`)
-
-                const tasks = tasksResponse.data
-
-                const projectsResponse = await axios.get(`${apiUrl}/project`)
-
-                const projects = projectsResponse.data
-
-                const projectMapping = projects.reduce((acc, project) => {
-                    acc[project.projNo] = project.projTitle
-                    return acc
-                }, {})
-
-                processChartData(tasks, projectMapping)
-            } catch (error) {}
-        }
-
         const processChartData = (tasks, projectMapping) => {
-            const filteredTasks = tasks.filter((task) => task.assignee_name === props.assigneeName)
+            if (!tasks || tasks.length === 0) return
 
-            const projectTaskCounts = filteredTasks.reduce((acc, task) => {
+            const projectTaskCounts = tasks.reduce((acc, task) => {
                 const projectName = projectMapping[task.proj_no]
                 acc[projectName] = (acc[projectName] || 0) + 1
                 return acc
@@ -67,12 +47,16 @@ export default {
             }
         }
 
-        onMounted(fetchProjectsAndTasks)
+        onMounted(() => {
+            processChartData(props.tasks, props.assigneeName)
+        })
+
         watch(
-            () => props.assigneeName,
-            () => {
-                fetchProjectsAndTasks()
-            }
+            () => props.tasks,
+            (newVal, oldVal) => {
+                processChartData(props.tasks, props.assigneeName)
+            },
+            { immediate: true }
         )
 
         return {
