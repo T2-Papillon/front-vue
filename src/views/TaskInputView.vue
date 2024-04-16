@@ -10,6 +10,8 @@ export default {
         const username = sessionStorage.getItem('NM')
         const usereno = sessionStorage.getItem('EN')
 
+        console.log('사번 정보:', usereno)
+
         const isEditing = ref(false)
         const task_title = ref('')
         const assignee_eno = ref('')
@@ -59,6 +61,11 @@ export default {
                 }
             }
         }
+
+        // 사용자의 사번 정보와 글 작성자의 사번 정보 비교를 위한 계산된 속성
+        const isCurrentUser = computed(() => {
+            return assignee_eno.value === usereno
+        })
 
         async function saveOrUpdateTask() {
             assignee_eno.value = inputFieldValue.value
@@ -265,11 +272,7 @@ export default {
                     <div class="mb-3">
                         <label for="title" class="form-label">업무명</label>
                         <input type="text" v-model="task_title" class="form-control" id="title" placeholder="제목을 입력해주세요." required />
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="assignee_eno" class="form-label">담당자 사번</label>
-                        <input type="text" :value="inputFieldValue" class="form-control" id="assignee_eno" readonly />
+                        <input type="hidden" :value="inputFieldValue" class="form-control" id="assignee_eno" readonly />
                     </div>
 
                     <div class="mb-3">

@@ -14,7 +14,7 @@ export default {
     props: {
         isActive: Boolean,
         task: Object,
-        currentUserEno: String
+        currentUserEno: Number
     },
     methods: {
         closeModal() {
@@ -28,7 +28,7 @@ export default {
     },
     computed: {
         isCurrentUser() {
-            return this.task.createdBy === this.currentUserEno
+            return this.currentUserEno === this.task.assigneeEno
         }
     }
 }
@@ -40,60 +40,61 @@ export default {
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">담당업무 상세보기</h5>
-                    <button class="btn"><i class="bi bi-copy"></i></button>
+                    <!-- <button class="btn"><i class="bi bi-copy"></i></button> -->
                     <button type="button" class="btn-close" aria-label="Close" @click="closeModal"></button>
                 </div>
 
                 <div class="modal-body">
-                    <div class="modal-body">
-                        <!-- 수정/삭제 버튼 -->
-                        <EditDeleteButtonGroup v-if="isCurrentUser" :projectId="task.proj_no" :taskId="task.task_no" @taskDeleted="handleTaskDeleted" />
-                        <!-- list -->
-                        <ul class="list">
-                            <li>
-                                <span class="title">업무명</span>
-                                <span class="value">{{ task.task_title }}</span>
-                            </li>
-                            <li>
-                                <span class="title">담당자</span>
-                                <span class="value">{{ task.assignee_name }}</span>
-                            </li>
-                            <li>
-                                <span class="title">작성일</span>
-                                <span class="value">{{ formatDate(task.create_date) }}</span>
-                            </li>
-                            <li>
-                                <span class="title">업무 기간</span>
-                                <span class="value">{{ formatDate(task.start_date) }} ~ {{ formatDate(task.end_date) }}</span>
-                            </li>
-                            <li>
-                                <span class="title">진행상태</span>
-                                <span class="value"><StatusBadge :status="task.task_status" /></span>
-                            </li>
-                            <li>
-                                <span class="title">진행률</span>
-                                <span class="value">{{ task.task_percent }} %</span>
-                            </li>
-                            <li>
-                                <span class="title">우선순위</span>
-                                <span class="value"> <PriorityBadge :priority="task.task_priority" /></span>
-                            </li>
-                            <li>
-                                <span class="title">테스트</span>
-                                <span class="value">{{ task.task_test }}</span>
-                            </li>
-                            <li>
-                                <span class="title">url</span>
-                                <span class="value">
-                                    <a :href="task.task_test_url" class="link-underline" target="_blank">{{ task.task_test_url }}</a>
-                                </span>
-                            </li>
-                            <li>
-                                <span class="title">내용</span>
-                                <span class="value">{{ task.task_desc }}</span>
-                            </li>
-                        </ul>
+                    <!-- 수정 삭제 버튼 -->
+                    <div v-if="isCurrentUser" class="d-flex align-items-center justify-content-end">
+                        <EditDeleteButtonGroup :projectId="task.proj_no" :taskId="task.task_no" @taskDeleted="handleTaskDeleted" />
                     </div>
+
+                    <!-- list -->
+                    <ul class="list">
+                        <li>
+                            <span class="title">업무명</span>
+                            <span class="value">{{ task.task_title }}</span>
+                        </li>
+                        <li>
+                            <span class="title">담당자</span>
+                            <span class="value">{{ task.assignee_name }}</span>
+                        </li>
+                        <li>
+                            <span class="title">작성일</span>
+                            <span class="value">{{ formatDate(task.create_date) }}</span>
+                        </li>
+                        <li>
+                            <span class="title">업무 기간</span>
+                            <span class="value">{{ formatDate(task.start_date) }} ~ {{ formatDate(task.end_date) }}</span>
+                        </li>
+                        <li>
+                            <span class="title">진행상태</span>
+                            <span class="value"><StatusBadge :status="task.task_status" /></span>
+                        </li>
+                        <li>
+                            <span class="title">진행률</span>
+                            <span class="value">{{ task.task_percent }} %</span>
+                        </li>
+                        <li>
+                            <span class="title">우선순위</span>
+                            <span class="value"> <PriorityBadge :priority="task.task_priority" /></span>
+                        </li>
+                        <li>
+                            <span class="title">테스트</span>
+                            <span class="value">{{ task.task_test }}</span>
+                        </li>
+                        <li>
+                            <span class="title">url</span>
+                            <span class="value">
+                                <a :href="task.task_test_url" class="link-underline" target="_blank">{{ task.task_test_url }}</a>
+                            </span>
+                        </li>
+                        <li>
+                            <span class="title">내용</span>
+                            <span class="value">{{ task.task_desc }}</span>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>

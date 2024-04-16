@@ -4,7 +4,6 @@ import { useRoute } from 'vue-router'
 import axios from 'axios'
 import ProjectInfo from '../components/ProjectInfo.vue'
 import TaskTable from '../components/TaskTable.vue'
-import EditDeleteButtonGroup from '../components/EditDeleteButtonGroup.vue'
 import SortFilter from '@/components/SortFilter.vue'
 import CheckboxSelector from '../components/CheckboxSelector.vue'
 
@@ -13,7 +12,6 @@ export default {
         ProjectInfo,
         TaskTable,
         SortFilter,
-        EditDeleteButtonGroup,
         CheckboxSelector
     },
     setup() {
