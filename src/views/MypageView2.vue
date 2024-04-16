@@ -19,9 +19,11 @@ export default {
         ProjectTable,
         PaginationView
     },
+
     setup() {
         const route = useRoute()
-        const profileEno = ref(route.params.profileEno) // URL에서 프로필 사번을 가져옵니다.
+        const profileEno = ref(history.state.eno) // URL에서 프로필 사번을 가져옵니다.
+        const profileName = ref(history.state.name)
         // const profileDept = ref('') // 초기 부서 정보는 비어 있습니다.
 
         const { projects, fetchProjects } = useProjects()
@@ -33,7 +35,8 @@ export default {
         const pageSize = ref(10) // 페이지당 업무 수를 10으로 설정합니다.
         const totalPages = computed(() => Math.ceil(todoTasks.value.length / pageSize.value)) // 전체 페이지 수를 계산합니다.
 
-        const paginatedTodoTasks = computed(() => { // paginatedTodoTasks 계산된 속성을 추가합니다.
+        const paginatedTodoTasks = computed(() => {
+            // paginatedTodoTasks 계산된 속성을 추가합니다.
             const start = (currentPage.value - 1) * pageSize.value
             const end = currentPage.value * pageSize.value
             return todoTasks.value.slice(start, end)
@@ -55,6 +58,22 @@ export default {
             } catch (error) {}
         }
 
+        // 랜덤 이미지 경로 계산
+        const randomProfileImagePath = computed(() => {
+            let randomNumber = getRandomInt(1, 20) // 1부터 20까지의 숫자 중 랜덤 선택
+
+            if (randomNumber < 10) {
+                randomNumber = '0' + randomNumber
+            }
+
+            return `/images/profile-img${randomNumber}.png`
+        })
+
+        // 랜덤 이미지 선택하는 함수
+        function getRandomInt(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min
+        }
+
         onMounted(async () => {
             await fetchProjects()
             filteredProjects.value = projects.value.filter((project) => project.participants.some((participant) => participant.eno === profileEno.value))
@@ -70,12 +89,11 @@ export default {
         }
 
         // currentPage가 변경될 때마다 todoTasks의 데이터를 재계산합니다.
-        watch(currentPage, () => {
-            // 여기에 필요한 로직을 추가합니다. 예를 들어, 서버로부터 새로운 데이터를 불러오는 등의 작업을 수행할 수 있습니다.
-        })
+        watch(currentPage, () => {})
 
         return {
             profileEno,
+            profileName,
             // profileDept, // 컴포넌트에 profileDept 추가
             projects: filteredProjects, // 수정된 부분: 필터링된 프로젝트 데이터를 전달
             tasks, // TaskTable 컴포넌트로 전달되는 업무 데이터
@@ -83,7 +101,8 @@ export default {
             currentPage,
             totalPages,
             paginatedTodoTasks,
-            changePage
+            changePage,
+            randomProfileImagePath
         }
     }
 }
@@ -93,9 +112,9 @@ export default {
         <div class="top-area">
             <div class="container">
                 <div class="profile">
-                    <i class=""></i>
+                    <img :src="randomProfileImagePath" alt="프로필 이미지" />
                     <div class="info">
-                        <h3 class="info-name">{{ profileEno }}</h3>
+                        <h3 class="info-name">{{ profileName }}</h3>
                     </div>
                 </div>
             </div>
@@ -114,22 +133,22 @@ export default {
                 <div class="row mb-5">
                     <div class="col-xl-5">
                         <h3 class="h3 chart-title">나의 업무 진행 상태 분포</h3>
-                        <BarChartUserTaskStatus :assigneeName="profileName" />
+                        <BarChartUserTaskStatus :assigneeName="profileName.value" />
                     </div>
                     <div class="col-xl-5">
                         <h3 class="h3 chart-title">나의 우선순위별 업무 분포</h3>
-                        <BarChartUserTaskPriority :assigneeName="profileName" />
+                        <BarChartUserTaskPriority :assigneeName="profileName.value" />
                     </div>
                 </div>
 
                 <div class="row mb-5">
                     <div class="col-xl-5">
                         <h3 class="h3 chart-title">나의 참여 프로젝트 분포</h3>
-                        <PieChartUserProjectTask :assigneeName="profileName" />
+                        <PieChartUserProjectTask :assigneeName="profileName.value" />
                     </div>
                     <div class="col-xl-5">
                         <h3 class="h3 chart-title">나의 진행예정 업무 목록</h3>
-                        <TaskTable :tasks="paginatedTodoTasks" :showAssignee="false" :showStatus="false" :showProgress="false" :showWriteDate="false" />
+                        <TaskTable :tasks="paginatedTodoTasks" :isDashBoard="true" :showAssignee="false" :showStatus="false" :showProgress="false" :showWriteDate="false" />
                         <PaginationView :currentPage="currentPage" :totalPages="totalPages" @update:currentPage="changePage" />
                     </div>
                 </div>
@@ -151,7 +170,7 @@ export default {
                 <div class="row mb-5">
                     <div class="col">
                         <h3 class="h3 chart-title">나의 전체 업무 목록</h3>
-                        <TaskTable :tasks="tasks" :showAssignee="true" :showStatus="true" :showProgress="true" :showWriteDate="true" />
+                        <TaskTable :tasks="tasks" :isDashBoard="true" :showAssignee="true" :showStatus="true" :showProgress="true" :showWriteDate="true" />
                     </div>
                 </div>
             </div>
