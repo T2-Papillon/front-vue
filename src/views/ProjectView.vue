@@ -43,7 +43,7 @@ onMounted(async () => {
     <div class="container">
         <div class="row align-items-start justify-content-between g-3">
             <div class="col-auto">
-                <div class="title-area">
+                <div class="title-area mb-3">
                     <h2 class="h2">
                         {{ userName }} 님의<br class="only-mobile" />
                         프로젝트 목록 👋
@@ -57,7 +57,7 @@ onMounted(async () => {
                     <button class="btn btn-outline-success" type="submit" aria-label="검색"><i class="bi bi-search"></i></button>
                 </form>
             </div>
-            <div class="btn-area mt-3">
+            <div class="btn-area mt-3 mb-5">
                 <button type="button" class="btn btn-primary" @click="goToProjectCreatePage">프로젝트 생성</button>
             </div>
         </div>
