@@ -6,6 +6,7 @@ import { useProjects } from '@/composables/useProjects'
 import SortFilter from '../components/SortFilter.vue'
 import globalInfo from '@/utils/globalInfoUtils.js'
 import PaginationView from '../components/PaginationView.vue'
+import { useRouter } from 'vue-router'
 
 const { projects, fetchProjectsForUser, currentPage, totalPages, searchQuery, changePage, searchProjects } = useProjects()
 
@@ -32,6 +33,12 @@ onMounted(async () => {
     await fetchProjectsForUser()
     // filterProjects()
 })
+
+const router = useRouter()
+
+const goToProjectCreatePage = () => {
+    router.push({ name: 'projectCreate' })
+}
 </script>
 
 <template>
@@ -48,6 +55,9 @@ onMounted(async () => {
                     <input class="form-control me-2" type="search" placeholder="프로젝트명, 이름으로 검색" aria-label="Search" v-model="searchQuery" />
                     <button class="btn btn-outline-success" type="submit" aria-label="검색"><i class="bi bi-search"></i></button>
                 </form>
+            </div>
+            <div class="btn-area mt-3">
+                <button type="button" class="btn btn-primary" @click="goToProjectCreatePage">프로젝트 생성</button>
             </div>
         </div>
 

@@ -1,11 +1,11 @@
 <script setup>
-// import { ref } from 'vue'
-// import { useRoute, useRouter } from 'vue-router'
+import { ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 
-// // 이전 페이지로 돌아가는 함수
-// const goBack = () => {
-//     router.back()
-// }
+// 이전 페이지로 돌아가는 함수
+const goBack = () => {
+    router.back()
+}
 </script>
 
 <template>
