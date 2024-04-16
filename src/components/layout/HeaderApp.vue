@@ -26,6 +26,7 @@ export default {
                     dept: userInfo.dept,
                     eno: userInfo.eno
                 }
+                // console.log(this.userInfo.eno)
             } else {
                 this.userInfo = null
             }

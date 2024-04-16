@@ -30,6 +30,15 @@ export default {
         isCurrentUser() {
             return this.currentUserEno === this.task.assigneeEno
         }
+    },
+    mounted() {
+        console.log('Mounted:', this)
+        if (this.task) {
+            console.log('Task Data:', this.task)
+        }
+        if (this.currentUserEno) {
+            console.log('Current User Eno:', this.currentUserEno)
+        }
     }
 }
 </script>
