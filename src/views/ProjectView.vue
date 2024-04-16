@@ -3,12 +3,10 @@ import { ref, onMounted, watch } from 'vue'
 import axios from 'axios'
 import ProjectTable from '../components/ProjectTable.vue'
 import { useProjects } from '@/composables/useProjects'
-import SortFilter from '../components/SortFilter.vue'
 import globalInfo from '@/utils/globalInfoUtils.js'
-import PaginationView from '../components/PaginationView.vue'
 import { useRouter } from 'vue-router'
 
-const { projects, fetchProjectsForUser, currentPage, totalPages, searchQuery, changePage, searchProjects } = useProjects()
+const { projects, fetchProjectsForUser, searchQuery, searchProjects } = useProjects()
 
 const userName = ref(sessionStorage.getItem('NM') || '사용자')
 
