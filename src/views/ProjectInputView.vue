@@ -1,8 +1,7 @@
 <script setup>
 import { ref } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { useRouter } from 'vue-router'
 import axios from 'axios'
-import { formatProjectData } from '@/utils/projectUtils'
 
 const router = useRouter()
 const username = sessionStorage.getItem('NM')
@@ -17,7 +16,7 @@ const project_priority = ref('LV2')
 const project_percent = ref(0)
 const proj_desc = ref('')
 const participants = ref([])
-const newParticipantName = ref('')
+// const newParticipantName = ref('')
 
 const pmInfo = {
     name: username,
@@ -25,37 +24,45 @@ const pmInfo = {
 }
 participants.value.push(pmInfo)
 
-const addParticipant = () => {
-    const newParticipant = {
-        name: newParticipantName.value,
-        eno: generateEno()
-    }
-    participants.value.push(newParticipant)
-    newParticipantName.value = ''
-}
+// const addParticipant = () => {
+//     const newParticipant = {
+//         name: newParticipantName.value,
+//         eno: usereno
+//     }
+//     participants.value.push(newParticipant)
+//     newParticipantName.value = ''
+// }
 
-const generateEno = () => {
-    return Math.floor(Math.random() * 1000)
+const validateInput = () => {
+    if (!project_title.value || !start_date.value || !end_date.value) {
+        alert('모든 필드를 채워주세요.')
+        return false
+    }
+    return true
 }
 
 const submitForm = async () => {
+    if (!validateDates() || !validateInput()) return
+    const projectData = {
+        projTitle: project_title.value,
+        projStartDate: convertLocaleTime(start_date.value),
+        projEndDate: convertLocaleTime(end_date.value),
+        projPercent: project_percent.value,
+        projDesc: proj_desc.value,
+        projectStatus: project_status.value,
+        projectPriority: project_priority.value,
+        projPm: username,
+        contributors: participants.value.map((participant) => ({ eno: participant.eno }))
+    }
+    console.log('Sending data:', projectData)
     try {
-        const projectData = {
-            title: project_title.value,
-            start_date: new Date(start_date.value).getTime(),
-            end_date: new Date(end_date.value).getTime(),
-            description: proj_desc.value,
-            status: project_status.value,
-            priority: project_priority.value,
-            participants: participants.value
-        }
-        const formattedProjectData = formatProjectData(projectData)
-        await axios.post('${apiUrl}/project/create', formattedProjectData)
-        handleApiResponse(response)
+        const response = await axios.post(`${apiUrl}/project/create`, projectData)
+        console.log('API Response:', response.data)
+        alert('프로젝트가 성공적으로 생성되었습니다.')
         router.push(`/project`)
-        router.back()
     } catch (error) {
-        console.error('저장에 실패했습니다.', error)
+        console.error('저장에 실패했습니다.', error.response?.data || error.message)
+        alert(`저장 실패: ${error.response?.data || error.message}`)
     }
 }
 
@@ -67,6 +74,16 @@ function confirmProjectStatusChange(status) {
     if (project_status.value !== status) {
         const confirmMsg = `진행율이 ${project_percent.value}%이므로 프로젝트 상태가 자동으로 변경됩니다. 계속하시겠습니까?`
         return confirm(confirmMsg)
+    }
+    return true
+}
+
+function validateDates() {
+    const startDate = new Date(start_date.value)
+    const endDate = new Date(end_date.value)
+    if (endDate < startDate) {
+        alert('종료 날짜는 시작 날짜보다 늦어야 합니다.')
+        return false
     }
     return true
 }
@@ -102,7 +119,18 @@ function handleApiResponse(response) {
     alert('저장되었습니다.')
     clearFields()
 }
-console.log('라우터 객체:', router)
+
+function clearFields() {
+    project_title.value = ''
+    start_date.value = ''
+    end_date.value = ''
+    project_status.value = 'TODO'
+    project_priority.value = 'LV2'
+    project_percent.value = 0
+    proj_desc.value = ''
+    participants.value = []
+    // newParticipantName.value = ''
+}
 
 // 이전 페이지로 돌아가는 함수
 const goBack = () => {
@@ -179,8 +207,8 @@ const goBack = () => {
                         <tr>
                             <th>참여자</th>
                             <td>
-                                <input type="text" class="form-control" v-model="newParticipantName" placeholder="참여자 이름을 기입해주세요." />
-                                <button type="button" class="btn btn-secondary mt-2" @click="addParticipant">추가</button>
+                                <!-- <input type="text" class="form-control" v-model="newParticipantName" placeholder="참여자 이름을 기입해주세요." /> -->
+                                <!-- <button type="button" class="btn btn-secondary mt-2" @click="addParticipant">추가</button> -->
                                 <ul v-if="participants.length > 0" class="list-unstyled mt-2">
                                     <li v-for="(participant, index) in participants" :key="index">{{ participant.name }}</li>
                                 </ul>
