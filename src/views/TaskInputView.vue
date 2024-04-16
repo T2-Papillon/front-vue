@@ -266,7 +266,7 @@ export default {
 
         <div class="row">
             <form @submit.prevent="saveOrUpdateTask">
-                <div>
+                <div class="col-xl">
                     <div class="mb-3">
                         <label for="title" class="form-label">업무명</label>
                         <input type="text" v-model="task_title" class="form-control" id="title" placeholder="제목을 입력해주세요." required />
