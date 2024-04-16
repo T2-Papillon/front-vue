@@ -17,7 +17,10 @@ ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, T
 export default {
     name: 'LineChartProjectTaskTime',
     components: { Line },
-    setup() {
+    props: {
+        tasks: Array
+    },
+    setup(props) {
         const route = useRoute()
         const state = reactive({
             chartData: null,
@@ -36,18 +39,6 @@ export default {
                 }
             }
         })
-
-        async function fetchTasks() {
-            const projectId = route.params.id
-            try {
-                const apiUrl = import.meta.env.VITE_API_URL
-                const response = await axios.get(`${apiUrl}/task/project/${projectId}/task`)
-                const tasks = response.data
-                processChartData(tasks)
-            } catch (error) {
-                console.error('Error fetching tasks:', error)
-            }
-        }
 
         function processChartData(tasks) {
             // 날짜별 업무 카운트
@@ -81,18 +72,19 @@ export default {
             }
         }
 
-        onMounted(() => {
-            fetchTasks(route.params.id)
-        })
-
         watch(
-            () => route.params.id,
-            (newId) => {
-                fetchTasks(newId)
-            }
+            () => props.tasks,
+            (newVal) => {
+                processChartData(newVal)
+            },
+            { immediate: true }
         )
 
-        return { ...toRefs(state) }
+        onMounted(() => {
+            processChartData(props.tasks)
+        })
+
+        return toRefs(state)
     }
 }
 </script>

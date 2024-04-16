@@ -37,28 +37,29 @@ export default {
         }
     },
     mounted() {
-        this.processChartData(); // 차트 데이터 가공
+        this.processChartData() // 차트 데이터 가공
     },
     watch: {
         tasks: {
             immediate: true,
             handler(newVal) {
-                this.processChartData(); // tasks 데이터가 변경될 때마다 차트 데이터를 다시 가공
+                this.processChartData() // tasks 데이터가 변경될 때마다 차트 데이터를 다시 가공
             }
         }
     },
     methods: {
-        processChartData(tasks) {
-            if (!this.tasks) return;
+        processChartData() {
+            console.log(this.tasks)
+            if (!this.tasks) return
 
-            const tasksPerAssignee = tasks.reduce((acc, task) => {
-                const assigneeName = task.assignee_name;
+            const tasksPerAssignee = this.tasks.reduce((acc, task) => {
+                const assigneeName = task.assignee_name
                 if (!acc[assigneeName]) {
-                    acc[assigneeName] = 0;
+                    acc[assigneeName] = 0
                 }
-                acc[assigneeName]++;
-                return acc;
-            }, {});
+                acc[assigneeName]++
+                return acc
+            }, {})
 
             this.chartData = {
                 labels: Object.keys(tasksPerAssignee),
@@ -71,7 +72,7 @@ export default {
                         tension: 0.1
                     }
                 ]
-            };
+            }
         }
     }
 }
