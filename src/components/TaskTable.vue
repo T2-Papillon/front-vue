@@ -9,6 +9,7 @@ import ProgressBar from '../components/ProgressBar.vue'
 import StatusBadge from '../components/StatusBadge.vue'
 import PriorityBadge from '../components/PriorityBadge.vue'
 import TaskDetailModal from '../components/TaskDetailModal.vue'
+import useProjectTasks from '@/composables/useProjectTasks.js'
 
 const emits = defineEmits(['closeModal', 'refreshTasks'])
 const props = defineProps({
@@ -29,26 +30,12 @@ const props = defineProps({
 
 const currentUserEno = ref(Number(sessionStorage.getItem('EN')))
 
-const tasks = ref(props.initialTasks)
+// const tasks = ref(props.initialTasks)
 const route = useRoute()
 const isModalActive = ref(false)
 const selectedTask = ref(null)
 const error = ref(null)
-
-async function fetchProjectTasks() {
-    const projectId = route.params.id || props.projectId
-
-    try {
-        const apiUrl = import.meta.env.VITE_API_URL
-        const response = await axios.get(`${apiUrl}/task/project/${projectId}/task`)
-        tasks.value = response.data
-        error.value = null
-    } catch (error) {
-        console.error('프로젝트 태스크 데이터를 가져오는데 실패했습니다:', error)
-        error.value = '프로젝트 태스크 데이터를 가져오는데 실패했습니다.'
-        tasks.value = []
-    }
-}
+const { tasks, fetchProjectTasks } = useProjectTasks(import.meta.env.VITE_API_URL, props.projectId)
 
 const handleCloseModal = () => {
     isModalActive.value = false
@@ -66,7 +53,7 @@ watch(
 
 onMounted(() => {
     if (!props.isDashBoard) {
-        fetchProjectTasks()
+        fetchProjectTasks(route.params.id || props.projectId)
     }
 })
 
@@ -76,7 +63,6 @@ const openModal = (event, task) => {
     isModalActive.value = true
 }
 
-// 초기 데이터 또는 태스크 변경 감시
 watch(
     () => props.initialTasks,
     () => {
