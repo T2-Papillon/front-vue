@@ -33,6 +33,7 @@ export function useProjects() {
         }
     }
 
+    // 대시보드 사용자 정보 가져오기
     async function fetchProjectsForUser() {
         isLoading.value = true
         const eno = sessionStorage.getItem('EN')
@@ -47,6 +48,7 @@ export function useProjects() {
         }
     }
 
+    // 통합검색
     async function searchProjects() {
         if (!searchQuery.value.trim()) {
             alert('검색어를 입력하세요')
@@ -55,18 +57,20 @@ export function useProjects() {
 
         isLoading.value = true
         try {
-            const response = await axios.get(`${import.meta.env.VITE_API_URL}/project/search`, {
+            const response = await axios.get(`${apiUrl}/project/search`, {
                 params: {
                     term: searchQuery.value
                 }
             })
             projects.value = response.data.map((project) => formatProjectData(project))
         } catch (error) {
+            console.log('error')
         } finally {
             isLoading.value = false
         }
     }
 
+    // 프로젝트 상태값
     async function fetchProjectsByStatus(statusList, searchTerm = '') {
         isLoading.value = true
         try {
@@ -84,6 +88,7 @@ export function useProjects() {
         }
     }
 
+    // 최신순
     function sortByLatest() {
         projects.value.sort((a, b) => {
             return new Date(b.writeDate) - new Date(a.writeDate)
@@ -92,6 +97,7 @@ export function useProjects() {
         projects.value = [...projects.value]
     }
 
+    //우선순위순
     function sortByPriority() {
         const priorityOrder = { LV0: 0, LV1: 1, LV2: 2, LV3: 3 }
         projects.value.sort((a, b) => {

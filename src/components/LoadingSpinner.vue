@@ -1,32 +1,29 @@
 <template>
-    <div v-if="isLoading" class="loading-spinner">
-        <div class="spinner-border text-primary" role="status">
-            <span class="visually-hidden">Loading...</span>
+    <div>
+        <loading-spinner v-if="isLoading" />
+        <div v-else>
+            <!-- 데이터가 로드되면 보여질 내용 -->
+            Content goes here...
         </div>
     </div>
 </template>
 
 <script>
+import LoadingSpinner from './components/LoadingSpinner.vue'
+
 export default {
-    props: {
-        isLoading: {
-            type: Boolean,
-            required: true
+    components: {
+        LoadingSpinner
+    },
+    data() {
+        return {
+            isLoading: true
         }
+    },
+    mounted() {
+        setTimeout(() => {
+            this.isLoading = false
+        }, 3000) // 예시로 3초 후 로딩 상태 변경
     }
 }
 </script>
-
-<style scoped>
-.loading-spinner {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(255, 255, 255, 0.8); /* 반투명한 흰색 배경 */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-</style>
