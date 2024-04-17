@@ -1,5 +1,5 @@
 <template>
-    <div v-if="chartData">
+    <div class="d-flex align-items-center justify-content-center" v-if="chartData">
         <Pie id="my-chart-id" :options="chartOptions" :data="chartData" />
     </div>
     <div v-else>데이터를 불러오는 중입니다...</div>
@@ -26,19 +26,19 @@ export default {
 
         const processChartData = (tasks, projects, assigneeName) => {
             const projectMapping = projects.reduce((acc, project) => {
-                acc[project.id] = project.title;
-                return acc;
-            }, {});
+                acc[project.id] = project.title
+                return acc
+            }, {})
 
-            const userTasks = tasks.filter(task => task.assignee_name === props.assigneeName);
+            const userTasks = tasks.filter((task) => task.assignee_name === props.assigneeName)
 
             const projectTaskCounts = userTasks.reduce((acc, task) => {
-                const projectName = projectMapping[task.proj_no];
+                const projectName = projectMapping[task.proj_no]
                 if (projectName) {
-                    acc[projectName] = (acc[projectName] || 0) + 1;
+                    acc[projectName] = (acc[projectName] || 0) + 1
                 }
-                return acc;
-            }, {});
+                return acc
+            }, {})
 
             chartData.value = {
                 labels: Object.keys(projectTaskCounts),
@@ -73,3 +73,9 @@ export default {
     }
 }
 </script>
+<style scoped>
+/* #my-chart-id {
+    width: 90% !important;
+    height: auto !important;
+} */
+</style>
