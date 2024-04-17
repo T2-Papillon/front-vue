@@ -6,7 +6,7 @@ import PieChartUserProjectTask from '../components/chart/PieChartUserProjectTask
 import TaskTable from '../components/TaskTable.vue'
 import ProjectTable from '../components/ProjectTable.vue'
 import { formatProjectData } from '@/utils/projectUtils'
-import { ref, onMounted, computed, watch } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useRoute } from 'vue-router'
 
 export default {
@@ -83,65 +83,62 @@ export default {
                 <div class="profile">
                     <img :src="randomProfileImagePath" alt="프로필 이미지" />
                     <div class="info">
-                        <h3 class="info-name">{{ profileDept }} /</h3>
-                    </div>
-                    <div class="info">
-                        <h3 class="info-name">{{ profileName }}</h3>
+                        <h3 class="info-name">{{ profileDept }} / {{ profileName }}</h3>
                     </div>
                 </div>
             </div>
         </div>
+
         <div class="btm-area">
             <div class="container">
-                <div class="row align-items-center justify-content-between g-3 pb-5">
-                    <div class="col-auto">
-                        <div class="title-area">
-                            <h2 class="h2">[개인통계] {{ profileName }}님</h2>
-                            <p class="text-body-tertiary lh-sm mb-3">{{ profileName }}님의 마이페이지 입니다.</p>
+                <div class="row">
+                    <div class="col-4">
+                        <h3 class="h3">참여 프로젝트 분포</h3>
+                        <PieChartUserProjectTask :assigneeName="profileName" :tasks="tasks" :projects="projects" />
+                    </div>
+                    <div class="col-8"></div>
+                </div>
+
+                <div class="row mt-80">
+                    <div class="col-xl-6 px-5">
+                        <h3 class="h3">우선순위별 업무 분포</h3>
+                        <BarChartUserTaskPriority :assigneeName="profileName" :tasks="tasks" />
+                    </div>
+                    <div class="col-xl-6 px-5">
+                        <h3 class="h3">업무 진행 상태 분포</h3>
+                        <BarChartUserTaskStatus :assigneeName="profileName" :tasks="tasks" />
+                    </div>
+                </div>
+                <div class="row mt-80">
+                    <div class="col-xl-12">
+                        <div class="overflow-auto">
+                            <TaskTable :tasks="tasks" :isDashBoard="true" :showAssignee="true" :showStatus="true" :showProgress="true" :showWriteDate="true" />
                         </div>
                     </div>
                 </div>
 
-                <div class="row mb-5">
-                    <div class="col-xl-5">
-                        <h3 class="h3 chart-title">{{ profileName }}님의 업무 진행 상태 분포</h3>
-                        <BarChartUserTaskStatus :assigneeName="profileName" :tasks="tasks" />
-                    </div>
-                    <div class="col-xl-5">
-                        <h3 class="h3 chart-title">{{ profileName }}님의 우선순위별 업무 분포</h3>
-                        <BarChartUserTaskPriority :assigneeName="profileName" :tasks="tasks" />
-                    </div>
-                </div>
-
-                <div class="row mb-5">
-                    <div class="col-xl-5">
-                        <h3 class="h3 chart-title">{{ profileName }}님의 참여 프로젝트 분포</h3>
-                        <PieChartUserProjectTask :assigneeName="profileName" :tasks="tasks" :projects="projects" />
-                    </div>
-                    <div class="col-xl-5">
-                        <h3 class="h3 chart-title">{{ profileName }}님의 진행예정 업무 목록</h3>
+                <div class="row mt-80">
+                    <div class="col-xl-7 px-3">
+                        <h3 class="h3">진행예정 업무 목록</h3>
                         <TaskTable :tasks="todoTasks" :isDashBoard="true" :showAssignee="false" :showStatus="false" :showProgress="false" :showWriteDate="false" />
                     </div>
                 </div>
 
-                <div class="row mb-5">
+                <div class="row mt-80">
                     <div class="col">
-                        <h3 class="h3 chart-title">일주일 내로 마감될 프로젝트 목록</h3>
-                        <ProjectTable :projects="projects" :show-upcoming-deadlines="true" />
+                        <h3 class="h3">이번주 마감예정 프로젝트</h3>
+                        <div class="overflow-auto">
+                            <ProjectTable :projects="projects" :show-upcoming-deadlines="true" />
+                        </div>
                     </div>
                 </div>
 
-                <div class="row mb-5">
+                <div class="row mt-80">
                     <div class="col">
-                        <h3 class="h3 chart-title">{{ profileName }}님의 전체 프로젝트 목록</h3>
-                        <ProjectTable :projects="projects" :show-upcoming-deadlines="false" />
-                    </div>
-                </div>
-
-                <div class="row mb-5">
-                    <div class="col">
-                        <h3 class="h3 chart-title">{{ profileName }}님의 전체 업무 목록</h3>
-                        <TaskTable :tasks="tasks" :isDashBoard="true" :showAssignee="true" :showStatus="true" :showProgress="true" :showWriteDate="true" />
+                        <h3 class="h3">전체 프로젝트 목록</h3>
+                        <div class="overflow-auto">
+                            <ProjectTable :projects="projects" :show-upcoming-deadlines="false" />
+                        </div>
                     </div>
                 </div>
             </div>
@@ -150,14 +147,9 @@ export default {
 </template>
 
 <style scoped>
-.btm-area .row.pb-5 {
-    padding-bottom: 6rem;
+.h3 {
+    margin-bottom: 30px;
 }
-
-.col-xl-5 {
-    padding: 0 15px;
-}
-
 .top-area {
     position: relative;
     height: 280px;
@@ -201,8 +193,8 @@ export default {
     padding-top: 120px;
 }
 
-.chart-title {
-    margin-bottom: 30px;
+.mt-80 {
+    margin-top: 80px;
 }
 @media (max-width: 768px) {
     .profile {
@@ -213,5 +205,8 @@ export default {
     .info-name {
         margin-top: 1.2rem;
     }
+}
+::v-deep .owner-row td {
+    background-color: #fff;
 }
 </style>
