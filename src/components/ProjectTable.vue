@@ -7,7 +7,7 @@ import PriorityBadge from '../components/PriorityBadge.vue'
 
 const props = defineProps({
     projects: Array,
-    showUpcomingDeadlines: Boolean // 새로운 prop 추가
+    showUpcomingDeadlines: Boolean
 })
 
 const formatParticipants = (participants) => {
@@ -25,10 +25,10 @@ const filteredProjects = computed(() => {
         return props.projects.filter((project) => {
             const endDate = new Date(project.endDate)
             const dayDifference = today - endDate
-            return dayDifference >= 0 && dayDifference <= oneWeekInMilliseconds // 7일 내에 마감될 프로젝트만 보여준다
+            return dayDifference >= 0 && dayDifference <= oneWeekInMilliseconds
         })
     } else {
-        return props.projects // showUpcomingDeadlines가 false이면 모든 프로젝트 반환
+        return props.projects
     }
 })
 </script>
@@ -36,7 +36,7 @@ const filteredProjects = computed(() => {
 <template>
     <table v-if="projects.length > 0" class="table fs-9 mb-5 border-top border-translucent">
         <colgroup>
-            <col style="min-width: 300px" />
+            <col style="min-width: 280px" />
             <col style="width: 65px" />
             <col style="width: 126px" />
             <col style="width: 126px" />

@@ -112,3 +112,20 @@ input[readonly] {
     border-color: #fff;
     pointer-events: none;
 }
+
+.only-mobile {
+    display: none;
+}
+@media (max-width: 768px) {
+    .only-pc {
+        display: none;
+    }
+    .only-mobile {
+        display: block;
+    }
+
+    .title-area .h2 {
+        font-size: 30px;
+        line-height: 1.3;
+    }
+}

@@ -18,6 +18,7 @@ import Footer from './components/layout/FooterApp.vue'
 <style scoped>
 #wrap {
     display: flex;
+    overflow: hidden;
     flex-direction: column;
     min-height: 100vh;
 }

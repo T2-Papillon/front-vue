@@ -26,7 +26,6 @@ export default {
                     dept: userInfo.dept,
                     eno: userInfo.eno
                 }
-                // console.log(this.userInfo.eno)
             } else {
                 this.userInfo = null
             }
@@ -42,12 +41,12 @@ export default {
                     <a href="/"><img src="/public/images/logo.svg" alt="boogle logo" /></a>
                 </h1>
                 <nav class="navbar navbar-expand-lg">
-                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <div class="navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0" v-if="userInfo">
                             <li class="nav-item">
                                 <router-link to="/project" class="nav-link">프로젝트</router-link>
                             </li>
-                            <li>
+                            <li class="only-pc">
                                 <div class="vertical-line"></div>
                             </li>
                             <li class="nav-item">
@@ -55,14 +54,16 @@ export default {
                                     <button class="btn" type="submit" aria-label="검색"><i class="bi bi-search"></i></button>
                                 </router-link>
                             </li>
-                        </ul>
-                        <div class="vertical-line" v-if="userInfo"></div>
-                        <ul class="me-auto mb-2 mb-lg-0" v-if="userInfo">
-                            <li class="dropdown">
-                                <UserProfile :name="userInfo.name" :dept="userInfo.dept" :eno="userInfo.eno" />
+                            <li class="only-pc">
+                                <div class="vertical-line"></div>
                             </li>
                         </ul>
                     </div>
+                    <ul class="me-auto mb-2 mb-lg-0" v-if="userInfo">
+                        <li class="dropdown">
+                            <UserProfile :name="userInfo.name" :dept="userInfo.dept" :eno="userInfo.eno" />
+                        </li>
+                    </ul>
                 </nav>
             </div>
         </div>
@@ -70,6 +71,12 @@ export default {
 </template>
 
 <style>
+.logo {
+    width: 120px;
+}
+.logo img {
+    width: 100%;
+}
 .vertical-line {
     border-left: 1px solid #eaeaea;
     height: 40px;
@@ -80,5 +87,12 @@ export default {
 .navbar-nav.me-auto.mb-2.mb-lg-0 .nav-item:not(:last-child) {
     margin-right: 20px;
     align-self: center;
+}
+
+.navbar {
+    flex-wrap: nowrap !important;
+}
+.navbar-nav {
+    flex-direction: row !important;
 }
 </style>

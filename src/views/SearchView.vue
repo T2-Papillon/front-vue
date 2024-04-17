@@ -108,7 +108,6 @@ const handleSelectedItems = (selectedItems) => {
             </form>
         </div>
 
-        <!-- 진행상태별 필터링, 정렬기준 필터 기능 -->
         <div class="row align-items-center justify-content-between mb-4 g-3 project-list">
             <div class="col-auto">
                 <div>
@@ -123,7 +122,9 @@ const handleSelectedItems = (selectedItems) => {
         <!-- 프로젝트 목록 -->
         <div class="row pb-4">
             <div class="col">
-                <ProjectTable :projects="projects" />
+                <div class="overflow-auto">
+                    <ProjectTable :projects="projects" />
+                </div>
             </div>
         </div>
 
