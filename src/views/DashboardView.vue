@@ -53,11 +53,15 @@ async function UserWithContributorData() {
         }
 
         const contributorsSet = new Set()
+        const departmentCounts = {}
+
         response.data.forEach((project) => {
             project.contributors.forEach((contributor) => {
                 const contributorEno = parseInt(contributor.eno)
+                const department = contributor.dept_no
                 if (contributorEno !== eno) {
                     contributorsSet.add(contributorEno)
+                    departmentCounts[department] = (departmentCounts[department] || 0) + 1
                 }
             })
         })
@@ -215,7 +219,7 @@ UserWithContributorData()
                                 및 부서별 현황
                             </p>
                             <h3 class="card-text fw-bold">{{ totalContributors }} 명</h3>
-                            <DeptChart />
+                            <DeptChart :projects="projects" />
                         </div>
                     </div>
                 </div>
