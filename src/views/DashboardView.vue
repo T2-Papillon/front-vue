@@ -6,6 +6,7 @@ import TaskTable from '../components/TaskTable.vue'
 import TodoList from '../components/TodoList.vue'
 import { formatProjectData } from '@/utils/projectUtils'
 import { formatDate } from '@/utils/dateUtils'
+import DeptChart from '../components/chart/DoughnutDept.vue'
 
 const username = sessionStorage.getItem('NM')
 const projects = ref([])
@@ -18,6 +19,7 @@ const taskToday = ref(0)
 const taskYesterday = ref(0)
 const taskWeek = ref(0)
 const todayDate = ref(formatDate(new Date()))
+const totalContributors = ref(0)
 
 async function dashboardData() {
     try {
@@ -101,7 +103,7 @@ dashboardData()
                 <div class="col-xl-4">
                     <div class="card">
                         <div class="card-body">
-                            <p class="card-title">전일 완료 프로젝트 건수</p>
+                            <p class="card-title">전주 완료 프로젝트 건수</p>
                             <h3 class="card-text fw-bold">{{ prjYesterday }} 건</h3>
                         </div>
                     </div>
@@ -160,6 +162,38 @@ dashboardData()
                                     <TaskTable :initialTasks="tasks" :isDashBoard="true" :showAssignee="true" :showStatus="true" :showProgress="true" :showWriteDate="true" />
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 통계 -->
+            <div class="row g-5 g-xl-10 mb-5 mb-xl-10" style="margin-top: 60px">
+                <div class="col-xl-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="card-title">일일 평균 프로젝트별 업무시간</p>
+                            <h3 class="card-text fw-bold">{{ taskToday }} 건</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="card-title">
+                                {{ username }}님과 프로젝트를 협업하는 직원 수 <br />
+                                및 부서별 현황
+                            </p>
+                            <h3 class="card-text fw-bold">{{ totalContributors }} 명</h3>
+                            <DeptChart />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="card-title">이주의 프로젝트 완료 건수</p>
+                            <h3 class="card-text fw-bold">{{ taskWeek }} 건</h3>
                         </div>
                     </div>
                 </div>
