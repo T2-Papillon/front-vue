@@ -18,7 +18,12 @@ export default {
         const chartData = ref(null)
         const chartOptions = {
             responsive: true,
-            maintainAspectRatio: false
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                }
+            }
         }
 
         const processChartData = (departmentCounts) => {
