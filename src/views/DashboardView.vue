@@ -53,15 +53,12 @@ async function UserWithContributorData() {
         }
 
         const contributorsSet = new Set()
-        const departmentCounts = {}
 
         response.data.forEach((project) => {
             project.contributors.forEach((contributor) => {
                 const contributorEno = parseInt(contributor.eno)
-                const department = contributor.dept_no
                 if (contributorEno !== eno) {
                     contributorsSet.add(contributorEno)
-                    departmentCounts[department] = (departmentCounts[department] || 0) + 1
                 }
             })
         })
