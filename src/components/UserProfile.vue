@@ -24,7 +24,7 @@ export default {
             }
         },
         goMyPage() {
-            this.$router.push({ name: 'mypage', state: { eno: this.eno, name: this.name } })
+            this.$router.push({ name: 'mypage', state: { eno: this.eno, name: this.name, dept: this.dept } })
         }
     }
 }

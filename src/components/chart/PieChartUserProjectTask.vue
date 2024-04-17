@@ -25,22 +25,13 @@ export default {
         const chartOptions = { responsive: true }
 
         const processChartData = (tasks, projects, assigneeName) => {
-            console.log('Processing chart data...');
-            console.log('Received projects:', props.projects); // 프로젝트 데이터 확인
-            console.log('Received tasks:', props.tasks); // 태스크 데이터 확인
-
-            // 프로젝트 번호와 이름의 매핑을 생성합니다.
             const projectMapping = projects.reduce((acc, project) => {
                 acc[project.id] = project.title;
                 return acc;
             }, {});
-            console.log('Project mapping completed:', projectMapping);
 
-            // 특정 사용자가 참여하는 태스크만 필터링합니다.
             const userTasks = tasks.filter(task => task.assignee_name === props.assigneeName);
-            console.log('Filtered tasks:', userTasks);
 
-            // 프로젝트별 태스크 개수를 집계합니다.
             const projectTaskCounts = userTasks.reduce((acc, task) => {
                 const projectName = projectMapping[task.proj_no];
                 if (projectName) {
@@ -48,8 +39,6 @@ export default {
                 }
                 return acc;
             }, {});
-
-            console.log('Project task counts:', projectTaskCounts);
 
             chartData.value = {
                 labels: Object.keys(projectTaskCounts),
@@ -63,7 +52,6 @@ export default {
                     }
                 ]
             }
-            console.log('차트 데이터:', chartData.value);
         }
 
         onMounted(() => {

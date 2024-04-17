@@ -5,7 +5,6 @@ import BarChartUserTaskPriority from '../components/chart/BarChartUserTaskPriori
 import PieChartUserProjectTask from '../components/chart/PieChartUserProjectTask.vue'
 import TaskTable from '../components/TaskTable.vue'
 import ProjectTable from '../components/ProjectTable.vue'
-import PaginationView from '../components/PaginationView.vue'
 import { formatProjectData } from '@/utils/projectUtils'
 import { ref, onMounted, computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
@@ -16,31 +15,20 @@ export default {
         BarChartUserTaskPriority,
         PieChartUserProjectTask,
         TaskTable,
-        ProjectTable,
-        PaginationView
+        ProjectTable
     },
 
     setup() {
         const route = useRoute()
         const profileEno = ref(history.state.eno) // URL에서 프로필 사번을 가져옵니다.
         const profileName = ref(history.state.name)
-        // const profileDept = ref('') // 초기 부서 정보는 비어 있습니다.
+        const profileDept = ref(history.state.dept)
 
         // const { projects, fetchProjects } = useProjects()
-        const filteredProjects = ref([]) // 필터링된 프로젝트를 저장할 새로운 반응형 참조
+        const filteredProjects = ref([])
 
         const tasks = ref([])
         const projects = ref([])
-
-        const currentPage = ref(1) // 현재 페이지 번호를 설정합니다.
-        const pageSize = ref(10) // 페이지당 업무 수를 10으로 설정합니다.
-        const totalPages = computed(() => Math.ceil(todoTasks.value.length / pageSize.value)) // 전체 페이지 수를 계산합니다.
-
-        const paginatedTodoTasks = computed(() => {
-            const start = (currentPage.value - 1) * pageSize.value
-            const end = currentPage.value * pageSize.value
-            return todoTasks.value.slice(start, end)
-        })
 
         // "진행예정(TODO)" 상태의 업무만 필터링하여 저장하는 computed 속성
         const todoTasks = computed(() => {
@@ -59,7 +47,7 @@ export default {
 
         // 랜덤 이미지 경로 계산
         const randomProfileImagePath = computed(() => {
-            let randomNumber = getRandomInt(1, 20) // 1부터 20까지의 숫자 중 랜덤 선택
+            let randomNumber = getRandomInt(1, 20)
 
             if (randomNumber < 10) {
                 randomNumber = '0' + randomNumber
@@ -74,30 +62,16 @@ export default {
         }
 
         onMounted(async () => {
-            // await fetchProjects()
-            // filteredProjects.value = projects.value.filter((project) => project.participants.some((participant) => participant.eno === profileEno.value))
-            await fetchTasks() // 사용자에게 할당된 업무 데이터를 가져옵니다
+            await fetchTasks()
         })
-
-        // 현재 페이지가 변경될 때마다 호출됩니다.
-        const changePage = (newPage) => {
-            currentPage.value = newPage
-        }
-
-        // currentPage가 변경될 때마다 todoTasks의 데이터를 재계산합니다.
-        watch(currentPage, () => {})
 
         return {
             profileEno,
             profileName,
-            // profileDept, // 컴포넌트에 profileDept 추가
-            projects, // 수정된 부분: 필터링된 프로젝트 데이터를 전달
-            tasks, // TaskTable 컴포넌트로 전달되는 업무 데이터
+            profileDept,
+            projects,
+            tasks,
             todoTasks,
-            currentPage,
-            totalPages,
-            paginatedTodoTasks,
-            changePage,
             randomProfileImagePath
         }
     }
@@ -109,6 +83,9 @@ export default {
             <div class="container">
                 <div class="profile">
                     <img :src="randomProfileImagePath" alt="프로필 이미지" />
+                    <div class="info">
+                        <h3 class="info-name">{{ profileDept }} /</h3>
+                    </div>
                     <div class="info">
                         <h3 class="info-name">{{ profileName }}</h3>
                     </div>
@@ -144,8 +121,7 @@ export default {
                     </div>
                     <div class="col-xl-5">
                         <h3 class="h3 chart-title">나의 진행예정 업무 목록</h3>
-                        <TaskTable :tasks="paginatedTodoTasks" :isDashBoard="true" :showAssignee="false" :showStatus="false" :showProgress="false" :showWriteDate="false" />
-                        <PaginationView :currentPage="currentPage" :totalPages="totalPages" @update:currentPage="changePage" />
+                        <TaskTable :tasks="todoTasks" :isDashBoard="true" :showAssignee="false" :showStatus="false" :showProgress="false" :showWriteDate="false" />
                     </div>
                 </div>
 
