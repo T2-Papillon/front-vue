@@ -61,19 +61,19 @@ export default {
             <div class="card">
                 <div class="card-body">
                     <div class="title-area">
-                        <h2 class="h2">로그인🔑</h2>
+                        <h2 class="h2 text-center">로그인🔑</h2>
                         <!-- <p class="text-body-tertiary lh-sm mb-3">로그인 정보를 입력해주세요.</p> -->
                     </div>
                     <form @submit.prevent="login" class="mt-3">
                         <div class="mb-3">
-                            <input type="email" id="username" v-model="username" placeholder="example@boogle.com" class="form-control" autocomplete="off" />
+                            <input type="email" id="username" v-model="username" placeholder="이메일을 입력해주세요." class="form-control" autocomplete="off" />
                         </div>
                         <div class="mb-3">
                             <input type="password" id="password" v-model="password" placeholder="비밀번호를 입력해주세요" class="form-control" />
                         </div>
 
                         <div class="btn-area">
-                            <button type="submit" class="btn btn-success w-100">로그인</button>
+                            <button type="submit" class="btn btn-success w-100 fw-bold">로그인</button>
                         </div>
                     </form>
                     <p v-if="errorMessage" class="mt-3 text-danger">{{ errorMessage }}</p>
@@ -95,30 +95,39 @@ export default {
     min-height: 82.4vh;
     background-color: #dff0d8;
 }
+
+.title-area .h2 {
+    padding-top: 20px;
+}
 .card {
     width: 100%;
     max-width: 550px;
     margin: 0 auto;
     z-index: 1;
+    background: rgba(255, 255, 255, 0.428);
+    box-shadow: 0 8px 32px 0 rgba(31, 135, 107, 0.27);
+    backdrop-filter: blur(8px);
 }
 
 .box {
     position: absolute;
     top: 0;
     transform: rotate(80deg);
-    left: 0;
+    left: 50%;
+    margin-left: -40%;
 }
 
 .form-control {
-    height: 40px;
+    height: 45px;
 }
 
 .btn-area {
-    margin-top: 20px;
+    margin-top: 40px;
 }
 
 .btn-area .btn {
     padding: 10px;
+    font-size: 15px;
 }
 
 .wave {
