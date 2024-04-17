@@ -7,7 +7,7 @@ import PriorityBadge from '../components/PriorityBadge.vue'
 
 const props = defineProps({
     projects: Array,
-    showUpcomingDeadlines: Boolean // 새로운 prop 추가
+    showUpcomingDeadlines: Boolean
 })
 
 const formatParticipants = (participants) => {
@@ -28,7 +28,7 @@ const filteredProjects = computed(() => {
             return dayDifference >= 0 && dayDifference <= oneWeekInMilliseconds // 7일 내에 마감될 프로젝트만 보여준다
         })
     } else {
-        return props.projects // showUpcomingDeadlines가 false이면 모든 프로젝트 반환
+        return props.projects
     }
 })
 </script>
