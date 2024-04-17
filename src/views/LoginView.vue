@@ -96,7 +96,8 @@ export default {
     background-color: #dff0d8;
 }
 .card {
-    width: 550px;
+    width: 100%;
+    max-width: 550px;
     margin: 0 auto;
     z-index: 1;
 }

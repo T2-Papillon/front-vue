@@ -73,6 +73,7 @@ function clearAllTodos() {
     text-decoration: line-through;
 }
 .form-control {
+    height: 48px;
     padding: 10px 20px;
     border: 0;
     border-bottom: 2px solid var(--bs-border-color);
