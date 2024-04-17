@@ -6,7 +6,7 @@ import PieChartUserProjectTask from '../components/chart/PieChartUserProjectTask
 import TaskTable from '../components/TaskTable.vue'
 import ProjectTable from '../components/ProjectTable.vue'
 import PaginationView from '../components/PaginationView.vue'
-import { useProjects } from '@/composables/useProjects'
+import { formatProjectData } from '@/utils/projectUtils'
 import { ref, onMounted, computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
 
@@ -55,8 +55,7 @@ export default {
                 //const response = await axios.get(`${apiUrl}/task/emp/${profileEno.value}`)
                 const response = await axios.get(`${apiUrl}/mypage/emp/${profileEno.value}`)
                 tasks.value = response.data.tasks
-                projects.value = response.data.projects
-                console.log(projects.value)
+                projects.value = response.data.projects.map((project) => formatProjectData(project))
             } catch (error) {}
         }
 
@@ -143,7 +142,7 @@ export default {
                 <div class="row mb-5">
                     <div class="col-xl-5">
                         <h3 class="h3 chart-title">나의 참여 프로젝트 분포</h3>
-                        <!-- <PieChartUserProjectTask :assigneeName="profileName.value" :tasks="tasks" /> -->
+                        <PieChartUserProjectTask :assigneeName="profileName" :tasks="tasks" :projects="projects" />
                     </div>
                     <div class="col-xl-5">
                         <h3 class="h3 chart-title">나의 진행예정 업무 목록</h3>
@@ -155,7 +154,7 @@ export default {
                 <div class="row mb-5">
                     <div class="col">
                         <h3 class="h3 chart-title">일주일 내로 마감될 프로젝트 목록</h3>
-                        <ProjectTable :projects="projects" :show-upcoming-deadlines="false" />
+                        <ProjectTable :projects="projects" :show-upcoming-deadlines="true" />
                     </div>
                 </div>
 

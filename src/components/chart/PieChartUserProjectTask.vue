@@ -18,7 +18,8 @@ export default {
     components: { Pie },
     props: {
         assigneeName: String,
-        tasks: Array
+        tasks: Array,
+        projects: Array
     },
     setup(props) {
         const chartData = ref(null)
