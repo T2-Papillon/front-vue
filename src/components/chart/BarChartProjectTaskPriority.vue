@@ -15,7 +15,7 @@ export default {
     name: 'BarChartProjectTaskPriority',
     components: { Bar },
     props: {
-        tasks: Array // 부모 컴포넌트로부터 받은 tasks 데이터
+        tasks: Array
     },
     data() {
         return {
@@ -39,19 +39,19 @@ export default {
         }
     },
     mounted() {
-        this.processChartData(); // 차트 데이터 가공
+        this.processChartData()
     },
     watch: {
         tasks: {
             immediate: true,
             handler(newVal) {
-                this.processChartData(); // tasks 데이터가 변경될 때마다 차트 데이터를 다시 가공
+                this.processChartData();
             }
         }
     },
     methods: {
         processChartData() {
-            if (!this.tasks) return; // tasks 데이터가 없으면 처리 중단
+            if (!this.tasks) return;
 
             const priorityMapping = {
                 LV0: '긴급',
@@ -60,19 +60,26 @@ export default {
                 LV3: '낮음'
             };
 
-            const tasksPerPriority = this.tasks.reduce((acc, task) => {
+            // 모든 우선순위에 대한 초기화
+            const tasksPerPriority = {
+                '긴급': 0,
+                '높음': 0,
+                '보통': 0,
+                '낮음': 0
+            };
+
+            this.tasks.forEach(task => {
                 const priorityLabel = priorityMapping[task.task_priority] || '기타';
-                acc[priorityLabel] = (acc[priorityLabel] || 0) + 1;
-                return acc;
-            }, {});
+                tasksPerPriority[priorityLabel] = (tasksPerPriority[priorityLabel] || 0) + 1;
+            });
 
             this.chartData = {
                 labels: Object.keys(tasksPerPriority),
                 datasets: [{
                         label: '우선순위별 업무 분포',
                         data: Object.values(tasksPerPriority),
-                        backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)'],
-                        borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)'],
+                        backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(54, 162, 235, 0.2)'],
+                        borderColor: ['rgba(255, 99, 132, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(54, 162, 235, 1)'],
                         borderWidth: 1
                     }
                 ]

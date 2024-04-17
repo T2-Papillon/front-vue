@@ -3,7 +3,6 @@ import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import axios from 'axios'
 import ProjectInfo from '../components/ProjectInfo.vue'
-// import TaskTable from '../components/TaskTable.vue' // 추가 예정
 import BarChartProjectTaskStatus from '../components/chart/BarChartProjectTaskStatus.vue'
 import LineChartTaskAssignee from '../components/chart/LineChartTaskAssignee.vue'
 import BarChartProjectTaskPriority from '../components/chart/BarChartProjectTaskPriority.vue'

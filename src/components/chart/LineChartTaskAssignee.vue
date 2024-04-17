@@ -15,7 +15,7 @@ export default {
     name: 'LineChartTaskAssignee',
     components: { Line },
     props: {
-        tasks: Array // 부모 컴포넌트로부터 받은 tasks 데이터
+        tasks: Array
     },
     data() {
         return {
@@ -30,20 +30,23 @@ export default {
                 },
                 scales: {
                     y: {
-                        beginAtZero: true
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1
+                        }
                     }
                 }
             }
         }
     },
     mounted() {
-        this.processChartData() // 차트 데이터 가공
+        this.processChartData()
     },
     watch: {
         tasks: {
             immediate: true,
             handler(newVal) {
-                this.processChartData() // tasks 데이터가 변경될 때마다 차트 데이터를 다시 가공
+                this.processChartData()
             }
         }
     },
@@ -68,7 +71,7 @@ export default {
                         // label: '업무 개수',
                         data: Object.values(tasksPerAssignee),
                         fill: false,
-                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
                         tension: 0.1
                     }
                 ]
