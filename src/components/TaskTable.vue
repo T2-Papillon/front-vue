@@ -90,10 +90,6 @@ watch(
         tasks.value = props.tasks
     }
 )
-
-// const isCurrentUser = (assignee_eno) => {
-//     return currentUserEno.value === assignee_eno
-// }
 </script>
 
 <template>
