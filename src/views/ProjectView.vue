@@ -57,9 +57,9 @@ onMounted(async () => {
                     <button class="btn btn-outline-success" type="submit" aria-label="검색"><i class="bi bi-search"></i></button>
                 </form>
             </div>
-            <div class="btn-area mt-3 mb-5">
+            <!-- <div class="btn-area mt-3 mb-5">
                 <button type="button" class="btn btn-primary" @click="goToProjectCreatePage">프로젝트 생성</button>
-            </div>
+            </div> -->
         </div>
 
         <section class="row pt-5">
