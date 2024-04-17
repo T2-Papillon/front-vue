@@ -62,7 +62,7 @@ export default {
                 <div class="card-body">
                     <div class="title-area">
                         <h2 class="h2">로그인🔑</h2>
-                        <p class="text-body-tertiary lh-sm mb-3">로그인 정보를 입력해주세요.</p>
+                        <!-- <p class="text-body-tertiary lh-sm mb-3">로그인 정보를 입력해주세요.</p> -->
                     </div>
                     <form @submit.prevent="login" class="mt-3">
                         <div class="mb-3">
@@ -142,13 +142,13 @@ export default {
 .wave.-three {
     animation: drift 15000ms infinite linear;
     position: fixed;
-    background-color: #dff0d8;
+    background-color: #9dd6ff;
 }
 
 .wave.-two {
     animation: drift 5000ms infinite linear;
     opacity: 0.15;
-    background: #1bd689;
+    background: #f2ffa7;
     position: fixed;
 }
 
