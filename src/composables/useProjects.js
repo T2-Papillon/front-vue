@@ -74,10 +74,16 @@ export function useProjects() {
     async function fetchProjectsByStatus(statusList, searchTerm = '') {
         isLoading.value = true
         try {
-            if (statusList.includes('all')) {
-                await fetchProjects(searchTerm)
-            } else {
-                await fetchProjects(searchTerm)
+            // if (statusList.includes('all')) {
+            //     await fetchProjects(searchTerm)
+            // } else {
+            //     await fetchProjects(searchTerm)
+            //     const filteredProjectsByStatus = projects.value.filter((project) => statusList.includes(project.status))
+            //     projects.value = filteredProjectsByStatus
+            // }
+
+            await fetchProjects(searchTerm)
+            if (!statusList.includes('all')) {
                 const filteredProjectsByStatus = projects.value.filter((project) => statusList.includes(project.status))
                 projects.value = filteredProjectsByStatus
             }
@@ -131,7 +137,7 @@ export function useProjects() {
         sortByLatest,
         sortByPriority,
         updateProjectProgress,
-        isLoading: computed(() => store.state.isLoading),
+        isLoading,
         searchQuery,
         searchProjects
     }
