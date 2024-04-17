@@ -25,7 +25,6 @@ async function dashboardData() {
         const url = import.meta.env.VITE_API_URL + `/dashboard/emp/${eno}`
         const res = await axios.get(url)
         projects.value = res.data.projects.map((project) => formatProjectData(project))
-        console.log(projects)
 
         tasks.value = res.data.tasks
 
