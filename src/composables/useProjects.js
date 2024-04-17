@@ -3,13 +3,9 @@ import { ref, computed } from 'vue'
 import axios from 'axios'
 import { formatProjectData } from '@/utils/projectUtils'
 
-const PAGE_SIZE = 10
-
 export function useProjects() {
     const projects = ref([])
     const isLoading = ref(false)
-    const currentPage = ref(1)
-    const totalPages = ref(1)
     const searchQuery = ref('')
     const filteredProjects = ref([])
     const apiUrl = import.meta.env.VITE_API_URL
@@ -20,45 +16,21 @@ export function useProjects() {
         searchQuery.value = searchTerm
         try {
             const searchPath = searchTerm ? `/search/project?term=${searchTerm}` : '/project'
-            const pageSize = PAGE_SIZE
-
-            const response = await axios.get(`${apiUrl}${searchPath}`, {
-                params: {
-                    page: currentPage.value - 1,
-                    size: pageSize
-                }
-            })
+            const response = await axios.get(`${apiUrl}${searchPath}`)
 
             // 데이터가 없는 경우 메시지 출력
             if (response.data.length === 0) {
                 projects.value = []
-                totalPages.value = 0
                 return
             }
 
             projects.value = response.data.map((project) => formatProjectData(project))
             filteredProjects.value = projects.value
-            totalPages.value = Math.ceil(response.data.totalCount / pageSize)
         } catch (error) {
             console.error('Error fetching projects:', error)
         } finally {
             isLoading.value = false
         }
-    }
-
-    const changePage = async (page) => {
-        if (page < 1 || page > totalPages.value) {
-            return
-        }
-
-        currentPage.value = page
-
-        const isNextButtonEnabled = currentPage.value < totalPages.value
-        if (!isNextButtonEnabled) {
-            alert('마지막 페이지입니다.')
-        }
-
-        await fetchProjects()
     }
 
     async function fetchProjectsForUser() {
@@ -85,9 +57,7 @@ export function useProjects() {
         try {
             const response = await axios.get(`${import.meta.env.VITE_API_URL}/project/search`, {
                 params: {
-                    term: searchQuery.value,
-                    page: currentPage.value - 1,
-                    pageSize: PAGE_SIZE
+                    term: searchQuery.value
                 }
             })
             projects.value = response.data.map((project) => formatProjectData(project))
@@ -106,7 +76,6 @@ export function useProjects() {
                 await fetchProjects(searchTerm)
                 const filteredProjectsByStatus = projects.value.filter((project) => statusList.includes(project.status))
                 projects.value = filteredProjectsByStatus
-                totalPages.value = Math.ceil(filteredProjectsByStatus.length / PAGE_SIZE)
             }
         } catch (error) {
             console.error('Error fetching projects by status:', error)
@@ -157,10 +126,7 @@ export function useProjects() {
         sortByPriority,
         updateProjectProgress,
         isLoading: computed(() => store.state.isLoading),
-        currentPage,
-        totalPages,
         searchQuery,
-        changePage,
         searchProjects
     }
 }
