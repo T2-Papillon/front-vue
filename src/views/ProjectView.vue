@@ -1,14 +1,17 @@
 <script setup>
 import { ref, onMounted, watch } from 'vue'
+import axios from 'axios'
 import ProjectTable from '../components/ProjectTable.vue'
 import { useProjects } from '@/composables/useProjects'
+import SortFilter from '../components/SortFilter.vue'
+import globalInfo from '@/utils/globalInfoUtils.js'
 import PaginationView from '../components/PaginationView.vue'
-import { useRouter } from 'vue-router'
 
-const { projects, fetchProjectsForUser, currentPage, totalPages, searchQuery, searchProjects } = useProjects()
+const { projects, fetchProjectsForUser, currentPage, totalPages, searchQuery, changePage, searchProjects } = useProjects()
 
 const userName = ref(sessionStorage.getItem('NM') || '사용자')
 
+// 프로젝트 상태별로 필터링된 목록을 저장하기 위한 반응형 참조
 const todoProjects = ref([])
 const doingProjects = ref([])
 const doneProjects = ref([])
@@ -27,13 +30,8 @@ watch(projects, () => {
 
 onMounted(async () => {
     await fetchProjectsForUser()
+    // filterProjects()
 })
-
-const router = useRouter()
-
-const goToProjectCreatePage = () => {
-    router.push({ name: 'projectCreate' })
-}
 </script>
 
 <template>
@@ -51,9 +49,6 @@ const goToProjectCreatePage = () => {
                     <button class="btn btn-outline-success" type="submit" aria-label="검색"><i class="bi bi-search"></i></button>
                 </form>
             </div>
-            <div class="btn-area mt-3">
-                <button type="button" class="btn btn-primary" @click="goToProjectCreatePage">프로젝트 생성</button>
-            </div>
         </div>
 
         <section class="row pt-5">
@@ -64,6 +59,9 @@ const goToProjectCreatePage = () => {
                             📬 진행예정 <span class="h3 fw-bold">{{ todoProjects.length }}</span> 건
                         </h3>
                     </div>
+                    <!-- <div class="col-auto">
+                        <SortFilter :sortByLatest="() => sortByLatest(todoProjects)" :sortByPriority="() => sortByPriority(todoProjects)" />
+                    </div> -->
                 </div>
                 <ProjectTable v-if="todoProjects.length > 0" :projects="todoProjects" />
                 <PaginationView v-if="todoProjects.length > 10" :currentPage="currentPage" :totalPages="totalPages" />
@@ -79,6 +77,9 @@ const goToProjectCreatePage = () => {
                             🚗 진행중 <span class="h3 fw-bold">{{ doingProjects.length }}</span> 건
                         </h3>
                     </div>
+                    <!-- <div class="col-auto">
+                        <SortFilter :sortByLatest="() => sortByLatest(doingProjects)" :sortByPriority="() => sortByPriority(doingProjects)" />
+                    </div> -->
                 </div>
                 <ProjectTable v-if="doingProjects.length > 0" :projects="doingProjects" />
                 <PaginationView v-if="doingProjects.length > 10" :currentPage="currentPage" :totalPages="totalPages" />
@@ -94,6 +95,9 @@ const goToProjectCreatePage = () => {
                             🎉 완료 <span class="h3 fw-bold">{{ doneProjects.length }}</span> 건
                         </h3>
                     </div>
+                    <!-- <div class="col-auto">
+                        <SortFilter :sortByLatest="() => sortByLatest(doneProjects)" :sortByPriority="() => sortByPriority(doneProjects)" />
+                    </div> -->
                 </div>
                 <ProjectTable v-if="doneProjects.length > 0" :projects="doneProjects" />
                 <PaginationView v-if="doneProjects.length > 10" :currentPage="currentPage" :totalPages="totalPages" />
@@ -109,6 +113,9 @@ const goToProjectCreatePage = () => {
                             🧩 보류 <span class="h3 fw-bold">{{ holdProjects.length }}</span> 건
                         </h3>
                     </div>
+                    <!-- <div class="col-auto">
+                        <SortFilter :sortByLatest="() => sortByLatest(holdProjects)" :sortByPriority="() => sortByPriority(holdProjects)" />
+                    </div> -->
                 </div>
                 <ProjectTable v-if="holdProjects.length > 0" :projects="holdProjects" />
                 <PaginationView v-if="holdProjects.length > 10" :currentPage="currentPage" :totalPages="totalPages" />

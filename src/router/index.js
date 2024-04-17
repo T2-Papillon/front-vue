@@ -9,10 +9,10 @@ const router = createRouter({
             component: () => import('../views/LoginView.vue')
         },
         {
-            path: '/mypage/:profileName',
+            path: '/mypage',
             name: 'mypage',
-            component: () => import('../views/MypageView.vue'),
-            props: true // 컴포넌트에 URL 파라미터를 props로 전달
+            component: () => import('../views/MypageView2.vue'),
+            props: true
         },
         {
             path: '/search',
@@ -25,8 +25,8 @@ const router = createRouter({
             component: () => import('../views/ProjectView.vue')
         },
         {
-            path: '/project/create',
-            name: 'projectCreate',
+            path: '/project/save',
+            name: 'projectInput',
             component: () => import('../views/ProjectInputView.vue')
         },
         {
@@ -63,16 +63,10 @@ const router = createRouter({
             component: () => import('../views/404.vue')
         },
         {
-            path: '/analyze/:id', // `:id`는 프로젝트 번호가 될 동적 세그먼트입니다.
+            path: '/analyze/:id',
             name: 'analyze',
             component: () => import('../views/AnalyzeView.vue'),
-            props: true // 컴포넌트에 URL 파라미터를 props로 전달하도록 설정
-        },
-        {
-            path: '/project-detail/:id', // 프로젝트 상세 페이지 경로
-            name: 'projectDetail',
-            component: () => import('../views/ProjectDetailView.vue'),
-            props: true // URL의 :id 파라미터를 props로 컴포넌트에 전달
+            props: true
         }
     ]
 })
@@ -88,7 +82,6 @@ router.beforeEach((to, from, next) => {
         if (sessionStorage.getItem('NM') != null) {
             next()
         } else {
-            alert('로그인이 필요한 페이지입니다.')
             next('/login')
         }
     }
