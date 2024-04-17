@@ -6,7 +6,7 @@ import TaskTable from '../components/TaskTable.vue'
 import TodoList from '../components/TodoList.vue'
 import { formatProjectData } from '@/utils/projectUtils'
 import { formatDate } from '@/utils/dateUtils'
-import App from '../components/chart/DoughnutDept.vue'
+import DeptChart from '../components/chart/DoughnutDept.vue'
 
 const username = sessionStorage.getItem('NM')
 const projects = ref([])
@@ -19,6 +19,7 @@ const taskToday = ref(0)
 const taskYesterday = ref(0)
 const taskWeek = ref(0)
 const todayDate = ref(formatDate(new Date()))
+const totalContributors = ref(0)
 
 async function dashboardData() {
     try {
@@ -183,8 +184,8 @@ dashboardData()
                                 {{ username }}님과 프로젝트를 협업하는 직원 수 <br />
                                 및 부서별 현황
                             </p>
-                            <h3 class="card-text fw-bold">{{ taskYessterday }} 명</h3>
-                            <App />
+                            <h3 class="card-text fw-bold">{{ totalContributors }} 명</h3>
+                            <DeptChart />
                         </div>
                     </div>
                 </div>

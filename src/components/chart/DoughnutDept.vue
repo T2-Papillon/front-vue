@@ -5,7 +5,7 @@ import { Doughnut } from 'vue-chartjs'
 ChartJS.register(ArcElement, Tooltip, Legend)
 
 export default {
-    name: 'App',
+    name: 'DeptChart',
     components: {
         Doughnut
     },
