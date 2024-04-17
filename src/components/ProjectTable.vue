@@ -10,6 +10,20 @@ const props = defineProps({
     showUpcomingDeadlines: Boolean
 })
 
+const getEnoForPm = (project) => {
+    const pm = project.pm;
+    const contributor = project.contributors.find(participant => participant.name === pm);
+    console.log(`Searching for PM ${pm} in project ${project.title}`);
+    return contributor ? contributor.eno : null;
+}
+
+const enhancedProjects = computed(() => {
+    return props.projects.map(project => ({
+        ...project,
+        pmEno: getEnoForPm(project)
+    }));
+});
+
 const formatParticipants = (participants) => {
     const maxVisible = 3
     const visibleParticipants = participants.slice(0, maxVisible)
@@ -65,7 +79,7 @@ const filteredProjects = computed(() => {
                     <router-link :to="`/project/detail/${project.id}`" class="tb-project-title">{{ project.title }}</router-link>
                 </td>
                 <td>
-                    <UserProfile :name="project.pm" :dept="project.pmDept" />
+                    <UserProfile :name="project.pm" :dept="project.pmDept" :eno="project.pmEno" />
                 </td>
                 <td>{{ project.startDate }}</td>
                 <td>{{ project.endDate }}</td>
