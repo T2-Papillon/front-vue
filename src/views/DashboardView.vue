@@ -67,6 +67,21 @@ dashboardData()
             </div>
 
             <div class="row g-5 g-xl-10 mb-5 mb-xl-10">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-body">
+                            <h3 class="card-title h3 mb-4">이번주 마감예정 프로젝트</h3>
+                            <div class="card-text">
+                                <div class="overflow-auto">
+                                    <ProjectTable :projects="projects" :show-upcoming-deadlines="true" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-5 g-xl-10 mb-5 mb-xl-10">
                 <div class="col-xl-4">
                     <div class="card">
                         <div class="card-body">
