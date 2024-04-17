@@ -7,7 +7,6 @@ export default function useProjectTasks(apiUrl, projectId) {
     const error = ref(null)
 
     async function fetchProjectTasks(projectId) {
-        console.log('js통합')
         try {
             const response = await axios.get(`${apiUrl}/task/project/${projectId}/task`)
             tasks.value = response.data

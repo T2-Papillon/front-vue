@@ -21,7 +21,7 @@ export default {
         const projectNo = ref(null)
         const searchTerm = ref('')
         const selectedCheckboxes = ref(['all'])
-        const { tasks, error, fetchProjectTasks } = useProjectTasks(import.meta.env.VITE_API_URL, route.params.id)
+        const { tasks, fetchProjectTasks } = useProjectTasks(import.meta.env.VITE_API_URL, route.params.id)
 
         const checkboxItems = ref([
             { id: 'all', name: '전체' },
