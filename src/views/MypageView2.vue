@@ -20,7 +20,7 @@ export default {
 
     setup() {
         const route = useRoute()
-        const profileEno = ref(history.state.eno) // URL에서 프로필 사번을 가져옵니다.
+        const profileEno = ref(history.state.eno)
         const profileName = ref(history.state.name)
         const profileDept = ref(history.state.dept)
 
@@ -30,7 +30,6 @@ export default {
         const tasks = ref([])
         const projects = ref([])
 
-        // "진행예정(TODO)" 상태의 업무만 필터링하여 저장하는 computed 속성
         const todoTasks = computed(() => {
             return tasks.value.filter((task) => task.task_status === 'TODO')
         })
@@ -151,13 +150,12 @@ export default {
 </template>
 
 <style scoped>
-/* 기존 스타일 유지하면서 추가된 클래스를 정의 */
 .btm-area .row.pb-5 {
-    padding-bottom: 6rem; /* 여백을 3rem으로 늘림 */
+    padding-bottom: 6rem;
 }
 
 .col-xl-5 {
-    padding: 0 15px; /* 좌우 패딩 조정 */
+    padding: 0 15px;
 }
 
 .top-area {

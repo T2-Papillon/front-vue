@@ -24,7 +24,7 @@ const filteredProjects = computed(() => {
         const oneWeekInMilliseconds = 7 * 24 * 60 * 60 * 1000
         return props.projects.filter((project) => {
             const endDate = new Date(project.endDate)
-            const dayDifference = today - endDate
+            const dayDifference = endDate - today
             return dayDifference >= 0 && dayDifference <= oneWeekInMilliseconds
         })
     } else {
