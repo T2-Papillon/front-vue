@@ -228,6 +228,16 @@ export default {
 }
 
 .chart-title {
-    margin-bottom: 30px; /* 원하는 여백 크기로 조절하세요 */
+    margin-bottom: 30px;
+}
+@media (max-width: 768px) {
+    .profile {
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+    .info-name {
+        margin-top: 1.2rem;
+    }
 }
 </style>
