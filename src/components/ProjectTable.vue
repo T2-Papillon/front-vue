@@ -18,18 +18,14 @@ const formatParticipants = (participants) => {
     return { visibleParticipants, overflowCount }
 }
 
-const findPMDepartment = (pmName, participants) => {
-    const pm = participants.find((participant) => participant.name === pmName)
-    return pm ? pm.dept_no : null
-}
-
 const filteredProjects = computed(() => {
     if (props.showUpcomingDeadlines) {
         const today = new Date()
+        const oneWeekInMilliseconds = 7 * 24 * 60 * 60 * 1000
         return props.projects.filter((project) => {
             const endDate = new Date(project.endDate)
-            const dayDifference = differenceInCalendarDays(endDate, today)
-            return dayDifference >= 0 && dayDifference <= 7 // 7일 내에 마감될 프로젝트만 보여준다
+            const dayDifference = today - endDate
+            return dayDifference >= 0 && dayDifference <= oneWeekInMilliseconds // 7일 내에 마감될 프로젝트만 보여준다
         })
     } else {
         return props.projects // showUpcomingDeadlines가 false이면 모든 프로젝트 반환

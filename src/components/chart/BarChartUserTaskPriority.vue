@@ -77,8 +77,6 @@ export default {
         watch(
             () => props.tasks,
             (newVal, oldVal) => {
-                console.log('watch')
-                console.log(props.tasks)
                 processChartData(props.tasks, props.assigneeName)
             },
             { immediate: true }

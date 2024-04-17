@@ -16,9 +16,9 @@ export default {
     name: 'PieChartUserWeeklyProject',
     components: { Pie },
     props: {
+        assigneeName: String,
         tasks: Array,
-        projects: Array,
-        assigneeName: String
+        projects: Array
     },
     setup(props) {
         const chartData = ref(null)
