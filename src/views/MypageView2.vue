@@ -24,7 +24,6 @@ export default {
         const profileName = ref(history.state.name)
         const profileDept = ref(history.state.dept)
 
-        // const { projects, fetchProjects } = useProjects()
         const filteredProjects = ref([])
 
         const tasks = ref([])

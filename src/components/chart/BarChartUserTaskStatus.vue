@@ -9,7 +9,6 @@
 <script>
 import { Bar } from 'vue-chartjs'
 import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js'
-import axios from 'axios'
 import { ref, onMounted, watch } from 'vue'
 
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
@@ -23,7 +22,7 @@ export default {
     },
     setup(props) {
         const chartData = ref(null)
-        const isLoading = ref(false) // 로딩 상태 관리
+        const isLoading = ref(false)
         const chartOptions = {
             responsive: true,
             plugins: {
@@ -50,22 +49,25 @@ export default {
                 HOLD: '보류'
             }
 
-            const tasksPerStatus = tasks.reduce((acc, task) => {
-                const status = statusMapping[task.task_status] || task.task_status // 매핑된 상태 사용, 또는 기본 값
-                if (!acc[status]) {
-                    acc[status] = 0
-                }
-                acc[status]++
-                return acc
-            }, {})
+            const tasksPerStatus = {
+                '진행예정': 0,
+                '진행중': 0,
+                '완료': 0,
+                '보류': 0
+            };
+
+            props.tasks.forEach(task => {
+                const status = statusMapping[task.task_status] || '기타'
+                tasksPerStatus[status] = (tasksPerStatus[status] || 0) + 1
+            })
 
             chartData.value = {
                 labels: Object.keys(tasksPerStatus),
                 datasets: [
                     {
                         data: Object.values(tasksPerStatus),
-                        backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)'],
-                        borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)'],
+                        backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(54, 162, 235, 0.2)'],
+                        borderColor: ['rgba(255, 99, 132, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(54, 162, 235, 1)'],
                         borderWidth: 1
                     }
                 ]

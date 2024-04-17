@@ -1,6 +1,6 @@
 <template>
     <div v-if="chartData">
-        <Line id="project-task-timeline" :options="chartOptions" :data="chartData" />
+        <Line id="my-chart-id" :options="chartOptions" :data="chartData" />
     </div>
     <div v-else>데이터를 불러오는 중입니다...</div>
 </template>
@@ -16,7 +16,7 @@ export default {
     name: 'LineChartProjectTaskTime',
     components: { Line },
     props: {
-        tasks: Array // 부모 컴포넌트로부터 받은 tasks 데이터
+        tasks: Array
     },
     setup(props) {
         const chartData = ref(null)
@@ -30,12 +30,14 @@ export default {
             },
             scales: {
                 y: {
-                    beginAtZero: true
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: 1
+                    }
                 }
             }
         })
 
-        // 데이터 처리 메소드
         const processChartData = () => {
             if (!props.tasks || props.tasks.length === 0) return
 
@@ -61,7 +63,7 @@ export default {
                         label: 'Daily Task Counts',
                         data: sortedCounts,
                         fill: false,
-                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
                         tension: 0.1
                     }
                 ]

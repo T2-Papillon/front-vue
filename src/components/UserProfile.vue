@@ -5,7 +5,7 @@ import { nextTick } from 'vue'
 export default {
     props: ['name', 'dept', 'eno'],
     mounted() {
-        console.log(`UserProfile loaded for: ${this.name}, ENO: ${this.eno}`);
+        // console.log(`UserProfile loaded for: ${this.name}, ENO: ${this.eno}`);
     },
     computed: {
         displayName() {
