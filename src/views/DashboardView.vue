@@ -198,7 +198,6 @@ dashboardData()
     border: solid 1px #e6eef4;
     box-shadow: 0px 6px 20px 0 rgba(193, 207, 217, 0.14);
     background-color: rgba(255, 255, 255, 0.1);
-    /* background-image: url('https://images.unsplash.com/photo-1558258695-39d4595e049c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwyODI5NDF8MHwxfHJhbmRvbXx8fHx8fHx8fDE2NDEzMjYxNjM&ixlib=rb-1.2.1&q=80&w=1200'); */
     background-color: #fff;
 }
 .today-box {
@@ -208,7 +207,6 @@ dashboardData()
     flex-direction: column;
     position: relative;
     z-index: 1;
-    /* color: #fff; */
     text-align: center;
     border: 0;
     height: 100%;
@@ -222,7 +220,6 @@ dashboardData()
 }
 .today-box p {
     font-size: 24px;
-    /* color: #fff; */
 }
 .today-area .blur-box {
     position: absolute;
@@ -235,7 +232,6 @@ dashboardData()
     right: 0;
     bottom: 0;
     margin: 0 auto;
-    /* border: 1px solid var(--bs-border-color); */
 }
 /* wave */
 .wave {
@@ -285,6 +281,6 @@ dashboardData()
     }
 }
 ::v-deep .owner-row td {
-    background-color: #fff; /* 흰색 배경으로 설정 */
+    background-color: #fff;
 }
 </style>
