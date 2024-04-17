@@ -36,7 +36,6 @@ export default {
         const totalPages = computed(() => Math.ceil(todoTasks.value.length / pageSize.value)) // 전체 페이지 수를 계산합니다.
 
         const paginatedTodoTasks = computed(() => {
-            // paginatedTodoTasks 계산된 속성을 추가합니다.
             const start = (currentPage.value - 1) * pageSize.value
             const end = currentPage.value * pageSize.value
             return todoTasks.value.slice(start, end)
@@ -47,13 +46,10 @@ export default {
             return tasks.value.filter((task) => task.task_status === 'TODO')
         })
 
-        // 모든 업무 데이터를 가져와서 현재 사용자에게 할당된 업무로 필터링하는 함수
         async function fetchTasks() {
             try {
                 const apiUrl = import.meta.env.VITE_API_URL
                 const response = await axios.get(`${apiUrl}/task/emp/${profileEno.value}`)
-                // 현재 사용자에게 할당된 업무만 필터링
-                // const userTasks = response.data.filter((task) => task.assignee_eno === profileEno.value)
                 tasks.value = response.data
                 console.log(tasks.value)
             } catch (error) {}
@@ -145,7 +141,7 @@ export default {
                 <div class="row mb-5">
                     <div class="col-xl-5">
                         <h3 class="h3 chart-title">나의 참여 프로젝트 분포</h3>
-                        <!-- <PieChartUserProjectTask :assigneeName="profileName.value" :tasks="tasks" /> -->
+                        <PieChartUserProjectTask :assigneeName="profileName.value" :tasks="tasks" :projects="projects" />
                     </div>
                     <div class="col-xl-5">
                         <h3 class="h3 chart-title">나의 진행예정 업무 목록</h3>

@@ -1,0 +1,72 @@
+<template>
+    <div v-if="chartData">
+        <Pie id="my-chart-id" :options="chartOptions" :data="chartData" />
+    </div>
+    <div v-else>데이터를 불러오는 중입니다...</div>
+</template>
+
+<script>
+import { Pie } from 'vue-chartjs'
+import { Chart as ChartJS, Title, Tooltip, Legend, ArcElement } from 'chart.js'
+import axios from 'axios'
+import { ref, onMounted, watch } from 'vue'
+
+ChartJS.register(Title, Tooltip, Legend, ArcElement)
+
+export default {
+    name: 'PieChartUserProjectTask',
+    components: { Pie },
+    props: {
+        assigneeName: String,
+        tasks: Array,
+        projectMapping: Object
+    },
+    setup(props) {
+        const chartData = ref(null)
+        const chartOptions = { responsive: true }
+
+        const processChartData = (tasks, projectMapping) => {
+            if (!tasks || tasks.length === 0) return
+
+            const projectTaskCounts = tasks.reduce((acc, task) => {
+                console.log('task.proj_name : ', task.proj_name)
+                const projectName = projectMapping[task.proj_name]
+                if (projectName) {
+                    acc[projectName] = (acc[projectName] || 0) + 1
+                }
+                return acc
+            }, {})
+
+            chartData.value = {
+                labels: Object.keys(projectTaskCounts),
+                datasets: [
+                    {
+                        data: Object.values(projectTaskCounts),
+                        // label: `${assigneeName}님의 주간 프로젝트 참여 분포`,
+                        backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)'],
+                        borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)'],
+                        borderWidth: 1
+                    }
+                ]
+            }
+        }
+
+        onMounted(() => {
+            processChartData(props.tasks, props.projectMapping)
+        })
+
+        watch(
+            () => props.tasks,
+            (newVal, oldVal) => {
+                processChartData(newVal, props.projectMapping)
+            },
+            { immediate: true }
+        )
+
+        return {
+            chartData,
+            chartOptions
+        }
+    }
+}
+</script>
