@@ -23,8 +23,9 @@ export default {
                 router.push('/login')
             }
         },
-        goMyPage() {
-            this.$router.push({ name: 'mypage', state: { eno: this.eno, name: this.name, dept: this.dept } })
+        goProfile() {
+            console.log('Profile routing for:', this.eno)
+            this.$router.push({ name: 'profile', state: { eno: this.eno, name: this.name, dept: this.dept } })
         }
     }
 }
@@ -34,7 +35,7 @@ export default {
         <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="프로필">{{ displayName }}</button>
         <ul class="dropdown-menu">
             <li>
-                <button @click="goMyPage" class="dropdown-item">{{ dept }} / {{ name }}</button>
+                <button @click="goProfile" class="dropdown-item">{{ dept }} / {{ name }}</button>
             </li>
             <li class="dropdown-item" style="cursor: pointer" v-show="checkSession" v-on:click="logout">로그아웃</li>
         </ul>

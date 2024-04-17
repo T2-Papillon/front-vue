@@ -7,7 +7,7 @@ import TaskTable from '../components/TaskTable.vue'
 import ProjectTable from '../components/ProjectTable.vue'
 import { formatProjectData } from '@/utils/projectUtils'
 import { ref, onMounted, computed } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 export default {
     components: {
@@ -20,6 +20,9 @@ export default {
 
     setup() {
         const route = useRoute()
+        const router = useRouter()
+        const loading = ref(false)
+        const error = ref(null)
         const profileEno = ref(history.state.eno)
         const profileName = ref(history.state.name)
         const profileDept = ref(history.state.dept)
@@ -34,13 +37,18 @@ export default {
         })
 
         async function fetchTasks() {
+            loading.value = true
+            error.value = null
             try {
                 const apiUrl = import.meta.env.VITE_API_URL
-                //const response = await axios.get(`${apiUrl}/task/emp/${profileEno.value}`)
-                const response = await axios.get(`${apiUrl}/mypage/emp/${profileEno.value}`)
+                const response = await axios.get(`${apiUrl}/profile/emp/${profileEno.value}`)
                 tasks.value = response.data.tasks
                 projects.value = response.data.projects.map((project) => formatProjectData(project))
-            } catch (error) {}
+                loading.value = false
+            } catch (error) {
+                error.value = "Failed to load tasks"
+                loading.value = false
+            }
         }
 
         // 랜덤 이미지 경로 계산
@@ -61,9 +69,14 @@ export default {
 
         onMounted(async () => {
             await fetchTasks()
+            if (!error.value) {
+                router.push('/profile')  // 다음 뷰로 전환하는 예시 로직
+            }
         })
 
         return {
+            loading,
+            error,
             profileEno,
             profileName,
             profileDept,
