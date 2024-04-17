@@ -96,7 +96,7 @@ export default {
                 <div class="row align-items-center justify-content-between g-3 pb-5">
                     <div class="col-auto">
                         <div class="title-area">
-                            <h2 class="h2">[개인통계]마이페이지</h2>
+                            <h2 class="h2">[개인통계] {{ profileName }}님</h2>
                             <p class="text-body-tertiary lh-sm mb-3">{{ profileName }}님의 마이페이지 입니다.</p>
                         </div>
                     </div>
@@ -104,22 +104,22 @@ export default {
 
                 <div class="row mb-5">
                     <div class="col-xl-5">
-                        <h3 class="h3 chart-title">나의 업무 진행 상태 분포</h3>
+                        <h3 class="h3 chart-title">{{ profileName }}님의 업무 진행 상태 분포</h3>
                         <BarChartUserTaskStatus :assigneeName="profileName" :tasks="tasks" />
                     </div>
                     <div class="col-xl-5">
-                        <h3 class="h3 chart-title">나의 우선순위별 업무 분포</h3>
+                        <h3 class="h3 chart-title">{{ profileName }}님의 우선순위별 업무 분포</h3>
                         <BarChartUserTaskPriority :assigneeName="profileName" :tasks="tasks" />
                     </div>
                 </div>
 
                 <div class="row mb-5">
                     <div class="col-xl-5">
-                        <h3 class="h3 chart-title">나의 참여 프로젝트 분포</h3>
+                        <h3 class="h3 chart-title">{{ profileName }}님의 참여 프로젝트 분포</h3>
                         <PieChartUserProjectTask :assigneeName="profileName" :tasks="tasks" :projects="projects" />
                     </div>
                     <div class="col-xl-5">
-                        <h3 class="h3 chart-title">나의 진행예정 업무 목록</h3>
+                        <h3 class="h3 chart-title">{{ profileName }}님의 진행예정 업무 목록</h3>
                         <TaskTable :tasks="todoTasks" :isDashBoard="true" :showAssignee="false" :showStatus="false" :showProgress="false" :showWriteDate="false" />
                     </div>
                 </div>
@@ -133,14 +133,14 @@ export default {
 
                 <div class="row mb-5">
                     <div class="col">
-                        <h3 class="h3 chart-title">나의 전체 프로젝트 목록</h3>
+                        <h3 class="h3 chart-title">{{ profileName }}님의 전체 프로젝트 목록</h3>
                         <ProjectTable :projects="projects" :show-upcoming-deadlines="false" />
                     </div>
                 </div>
 
                 <div class="row mb-5">
                     <div class="col">
-                        <h3 class="h3 chart-title">나의 전체 업무 목록</h3>
+                        <h3 class="h3 chart-title">{{ profileName }}님의 전체 업무 목록</h3>
                         <TaskTable :tasks="tasks" :isDashBoard="true" :showAssignee="true" :showStatus="true" :showProgress="true" :showWriteDate="true" />
                     </div>
                 </div>
