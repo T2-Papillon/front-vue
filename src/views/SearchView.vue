@@ -17,8 +17,7 @@ const checkboxItems = ref([
 ])
 
 const selectedCheckboxes = ref(['all'])
-const isLoading = ref(false)
-const { projects, fetchProjects, fetchProjectsByStatus, sortByLatest, sortByPriority } = useProjects()
+const { projects, fetchProjects, isLoading, fetchProjectsByStatus, sortByLatest, sortByPriority } = useProjects()
 
 // 검색 제출 핸들러
 const submitSearch = () => {
@@ -88,15 +87,13 @@ const handleSelectedItems = (selectedItems) => {
             </div>
         </div>
 
-        <!-- 프로젝트 목록 -->
+        <!-- 로딩 스피너 및 프로젝트 목록 -->
         <div class="row pb-4">
-            <div class="col">
-                <div class="overflow-auto">
-                    <ProjectTable :projects="projects" />
-                </div>
+            <LoadingSpinner v-if="isLoading" />
+            <div v-else class="col overflow-auto">
+                <ProjectTable :projects="projects" />
             </div>
         </div>
-        <LoadingSpinner :isLoading="isLoading" />
     </div>
 </template>
 
