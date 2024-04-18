@@ -74,16 +74,10 @@ export function useProjects() {
     async function fetchProjectsByStatus(statusList, searchTerm = '') {
         isLoading.value = true
         try {
-            // if (statusList.includes('all')) {
-            //     await fetchProjects(searchTerm)
-            // } else {
-            //     await fetchProjects(searchTerm)
-            //     const filteredProjectsByStatus = projects.value.filter((project) => statusList.includes(project.status))
-            //     projects.value = filteredProjectsByStatus
-            // }
-
-            await fetchProjects(searchTerm)
-            if (!statusList.includes('all')) {
+            if (statusList.includes('all')) {
+                await fetchProjects(searchTerm)
+            } else {
+                await fetchProjects(searchTerm)
                 const filteredProjectsByStatus = projects.value.filter((project) => statusList.includes(project.status))
                 projects.value = filteredProjectsByStatus
             }
