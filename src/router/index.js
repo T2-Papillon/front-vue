@@ -9,9 +9,9 @@ const router = createRouter({
             component: () => import('../views/LoginView.vue')
         },
         {
-            path: '/mypage',
-            name: 'mypage',
-            component: () => import('../views/MypageView2.vue'),
+            path: '/profile',
+            name: 'profile',
+            component: () => import('../views/ProfileView.vue'),
             props: true
         },
         {
