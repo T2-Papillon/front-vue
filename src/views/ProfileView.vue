@@ -46,7 +46,7 @@ export default {
                 projects.value = response.data.projects.map((project) => formatProjectData(project))
                 loading.value = false
             } catch (error) {
-                error.value = "Failed to load tasks"
+                error.value = 'Failed to load tasks'
                 loading.value = false
             }
         }
@@ -70,7 +70,7 @@ export default {
         onMounted(async () => {
             await fetchTasks()
             if (!error.value) {
-                router.push('/profile')  // 다음 뷰로 전환하는 예시 로직
+                router.push('/profile') // 다음 뷰로 전환하는 예시 로직
             }
         })
 

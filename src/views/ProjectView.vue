@@ -1,12 +1,15 @@
 <script setup>
 import { ref, onMounted, watch } from 'vue'
 import axios from 'axios'
-import ProjectTable from '../components/ProjectTable.vue'
-import { useProjects } from '@/composables/useProjects'
-import globalInfo from '@/utils/globalInfoUtils.js'
 import { useRouter } from 'vue-router'
 
-const { projects, fetchProjectsForUser, searchQuery, searchProjects } = useProjects()
+import globalInfo from '@/utils/globalInfoUtils.js'
+import { useProjects } from '@/composables/useProjects'
+
+import ProjectTable from '../components/ProjectTable.vue'
+import LoadingSpinner from '../components/LoadingSpinner.vue'
+
+const { projects, fetchProjectsForUser, isLoading, searchQuery, searchProjects } = useProjects()
 
 const userName = ref(sessionStorage.getItem('NM') || '사용자')
 
@@ -69,7 +72,8 @@ onMounted(async () => {
                         </h3>
                     </div>
                 </div>
-                <div class="overflow-auto">
+                <LoadingSpinner v-if="isLoading" />
+                <div v-else class="overflow-auto">
                     <ProjectTable v-if="todoProjects.length > 0" :projects="todoProjects" />
                     <p v-else-if="todoProjects.length === 0" class="empty">아직 비어있어요 👻</p>
                 </div>
@@ -85,7 +89,8 @@ onMounted(async () => {
                         </h3>
                     </div>
                 </div>
-                <div class="overflow-auto">
+                <LoadingSpinner v-if="isLoading" />
+                <div v-else class="overflow-auto">
                     <ProjectTable v-if="doingProjects.length > 0" :projects="doingProjects" />
                     <p v-else-if="doingProjects.length === 0" class="empty">아직 비어있어요 👻</p>
                 </div>
@@ -101,7 +106,8 @@ onMounted(async () => {
                         </h3>
                     </div>
                 </div>
-                <div class="overflow-auto">
+                <LoadingSpinner v-if="isLoading" />
+                <div v-else class="overflow-auto">
                     <ProjectTable v-if="doneProjects.length > 0" :projects="doneProjects" />
                     <p v-else-if="doneProjects.length === 0" class="empty">아직 비어있어요 👻</p>
                 </div>
@@ -117,7 +123,8 @@ onMounted(async () => {
                         </h3>
                     </div>
                 </div>
-                <div class="overflow-auto">
+                <LoadingSpinner v-if="isLoading" />
+                <div v-else class="overflow-auto">
                     <ProjectTable v-if="holdProjects.length > 0" :projects="holdProjects" />
                     <p v-else-if="holdProjects.length === 0" class="empty">아직 비어있어요 👻</p>
                 </div>
