@@ -40,6 +40,37 @@ async function dashboardData() {
 }
 
 dashboardData()
+
+async function UserWithContributorData() {
+    try {
+        const eno = parseInt(sessionStorage.getItem('EN'))
+        const url = `${import.meta.env.VITE_API_URL}/dashboard/emp/${eno}/projects`
+        const response = await axios.get(url)
+
+        if (!response.data || response.data.length === 0) {
+            console.log('프로젝트 데이터가 없습니다.')
+            return
+        }
+
+        const contributorsSet = new Set()
+
+        response.data.forEach((project) => {
+            project.contributors.forEach((contributor) => {
+                const contributorEno = parseInt(contributor.eno)
+                if (contributorEno !== eno) {
+                    contributorsSet.add(contributorEno)
+                }
+            })
+        })
+
+        totalContributors.value = contributorsSet.size
+    } catch (e) {
+        console.error('Error fetching dashboard data: ', e)
+        alert('데이터를 불러오는 중 문제가 발생했습니다. 콘솔 로그를 확인해주세요.')
+    }
+}
+
+UserWithContributorData()
 </script>
 <template>
     <div class="dashboard-wrap">
@@ -169,31 +200,19 @@ dashboardData()
 
             <!-- 통계 -->
             <div class="row g-5 g-xl-10 mb-5 mb-xl-10" style="margin-top: 60px">
-                <div class="col-xl-4">
+                <div class="col-xl-5">
                     <div class="card">
                         <div class="card-body">
-                            <p class="card-title">일일 평균 프로젝트별 업무시간</p>
-                            <h3 class="card-text fw-bold">{{ taskToday }} 건</h3>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <p class="card-title">
-                                {{ username }}님과 프로젝트를 협업하는 직원 수 <br />
-                                및 부서별 현황
-                            </p>
+                            <p class="card-title">{{ username }}님과 프로젝트를 협업하는 직원 수 및 부서별 현황</p>
                             <h3 class="card-text fw-bold">{{ totalContributors }} 명</h3>
-                            <DeptChart />
+                            <DeptChart :projects="projects" />
                         </div>
                     </div>
                 </div>
-                <div class="col-xl-4">
+                <div class="col-xl-7">
                     <div class="card">
                         <div class="card-body">
-                            <p class="card-title">이주의 프로젝트 완료 건수</p>
-                            <h3 class="card-text fw-bold">{{ taskWeek }} 건</h3>
+                            <h3 class="card-text fw-bold"></h3>
                         </div>
                     </div>
                 </div>
