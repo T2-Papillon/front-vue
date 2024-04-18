@@ -3,6 +3,7 @@ import axios from 'axios'
 import BarChartUserTaskStatus from '../components/chart/BarChartUserTaskStatus.vue'
 import BarChartUserTaskPriority from '../components/chart/BarChartUserTaskPriority.vue'
 import PieChartUserProjectTask from '../components/chart/PieChartUserProjectTask.vue'
+import DeptChart from '../components/chart/DoughnutDept.vue'
 import TaskTable from '../components/TaskTable.vue'
 import ProjectTable from '../components/ProjectTable.vue'
 import { formatProjectData } from '@/utils/projectUtils'
@@ -15,7 +16,8 @@ export default {
         BarChartUserTaskPriority,
         PieChartUserProjectTask,
         TaskTable,
-        ProjectTable
+        ProjectTable,
+        DeptChart
     },
 
     setup() {
@@ -103,12 +105,16 @@ export default {
 
         <div class="btm-area">
             <div class="container">
-                <div class="row">
+                <div class="row mt-80">
                     <div class="col-4">
                         <h3 class="h3">참여 프로젝트 분포</h3>
                         <PieChartUserProjectTask :assigneeName="profileName" :tasks="tasks" :projects="projects" />
                     </div>
-                    <div class="col-8"></div>
+                    <div class="col-xl-6 px-5">
+                        <p class="card-title">{{ username }}님과 프로젝트를 협업하는 직원 수 및 부서별 현황</p>
+                        <h3 class="card-text fw-bold">{{ totalContributors }} 명</h3>
+                        <DeptChart :projects="projects" />
+                    </div>
                 </div>
 
                 <div class="row mt-80">

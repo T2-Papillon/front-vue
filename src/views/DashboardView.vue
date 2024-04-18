@@ -199,12 +199,10 @@ UserWithContributorData()
             </div>
 
             <!-- 통계 -->
-            <div class="row g-5 g-xl-10 mb-5 mb-xl-10" style="margin-top: 60px">
+            <!-- <div class="row g-5 g-xl-10 mb-5 mb-xl-10" style="margin-top: 60px">
                 <div class="col-xl-5">
                     <div class="card">
                         <div class="card-body">
-                            <p class="card-title">{{ username }}님과 프로젝트를 협업하는 직원 수 및 부서별 현황</p>
-                            <h3 class="card-text fw-bold">{{ totalContributors }} 명</h3>
                             <DeptChart :projects="projects" />
                         </div>
                     </div>
@@ -216,7 +214,7 @@ UserWithContributorData()
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
             <!-- deco -->
             <div class="wave-group">
