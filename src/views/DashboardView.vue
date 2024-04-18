@@ -307,24 +307,30 @@ UserWithContributorData()
     border-radius: 1000% 1000% 0 0;
     position: absolute;
     width: 500%;
-    height: 12em;
+    height: 120em;
     animation: wave 10s -3s linear infinite;
     transform: translate3d(0, 0, 0);
-    opacity: 0.8;
+    opacity: 0.9;
     top: 234px;
     left: 0;
     z-index: -1;
 }
 
 .wave:nth-of-type(2) {
+    border-radius: 1000% 500% 0 0;
+    top: 150px;
     bottom: -1.25em;
-    animation: wave 18s linear reverse infinite;
+    height: 40em;
+    animation: wave 20s linear reverse infinite;
     opacity: 0.8;
 }
 
 .wave:nth-of-type(3) {
+    border-radius: 700% 700% 0 0;
     bottom: -2.5em;
-    animation: wave 20s -1s reverse infinite;
+    height: 12em;
+    transform: translate3d(80px, 0, 0);
+    animation: wave 8s -1s reverse infinite;
     opacity: 0.9;
 }
 @keyframes wave {
