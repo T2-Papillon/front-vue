@@ -1,5 +1,5 @@
 <template>
-    <span :class="`status-badge ${statusClass}`">{{ statusName }}</span>
+    <span v-if="status !== 'unknown'" :class="`status-badge ${statusClass}`">{{ statusName }}</span>
 </template>
 
 <script>
@@ -16,7 +16,8 @@ export default {
                 todo: '진행예정',
                 doing: '진행중',
                 done: '완료',
-                hold: '보류'
+                hold: '보류',
+                unknown: '' // 'unknown' 상태의 텍스트도 정의
             }
             return statusMap[this.status.toLowerCase()] || '알 수 없음'
         },
@@ -25,7 +26,8 @@ export default {
                 todo: 'todo',
                 doing: 'doing',
                 done: 'done',
-                hold: 'hold'
+                hold: 'hold',
+                unknown: '' // 'unknown' 상태의 클래스도 정의
             }
             return classMap[this.status.toLowerCase()] || 'todo'
         }
@@ -61,5 +63,8 @@ export default {
 .todo {
     background-color: #fedddb;
     color: #e3342f;
+}
+.unknown {
+    display: none; /* 'unknown' 상태일 때 아무것도 보여주지 않음 */
 }
 </style>
