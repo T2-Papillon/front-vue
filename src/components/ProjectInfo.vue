@@ -32,12 +32,6 @@ export default {
         // 참여자 정보 가져오기
         const participants = ref(formattedProject.value.participants || [])
 
-        // PM 정보 가져오기
-        // const findPMDepartment = (pmName) => {
-        //     const pm = participants.value.find((participant) => participant.name === pmName)
-        //     return pm ? pm.dept_no : '부서 미정'
-        // }
-
         watch(
             () => props.project,
             () => {
@@ -50,7 +44,6 @@ export default {
             formatDate,
             formattedProject,
             participants
-            // findPMDepartment
         }
     }
 }
