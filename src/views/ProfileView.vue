@@ -41,7 +41,7 @@ export default {
             error.value = null
             try {
                 const apiUrl = import.meta.env.VITE_API_URL
-                const response = await axios.get(`${apiUrl}/mypage/emp/${profileEno.value}`)
+                const response = await axios.get(`${apiUrl}/profile/emp/${profileEno.value}`)
                 tasks.value = response.data.tasks
                 projects.value = response.data.projects.map((project) => formatProjectData(project))
                 loading.value = false
