@@ -4,9 +4,6 @@ import { nextTick } from 'vue'
 
 export default {
     props: ['name', 'dept', 'eno'],
-    mounted() {
-        // console.log(`UserProfile loaded for: ${this.name}, ENO: ${this.eno}`);
-    },
     computed: {
         displayName() {
             if (this.name && this.name.length === 3) {

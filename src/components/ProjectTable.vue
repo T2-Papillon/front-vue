@@ -10,20 +10,6 @@ const props = defineProps({
     showUpcomingDeadlines: Boolean
 })
 
-const getEnoForPm = (project) => {
-    const pm = project.pm
-    const contributor = project.contributors.find((participant) => participant.name === pm)
-    console.log(`Searching for PM ${pm} in project ${project.title}`)
-    return contributor ? contributor.eno : null
-}
-
-const enhancedProjects = computed(() => {
-    return props.projects.map((project) => ({
-        ...project,
-        pmEno: getEnoForPm(project)
-    }))
-})
-
 const formatParticipants = (participants) => {
     const maxVisible = 3
     const visibleParticipants = participants.slice(0, maxVisible)
