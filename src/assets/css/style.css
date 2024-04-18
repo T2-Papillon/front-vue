@@ -1,6 +1,6 @@
 html,
 body {
-    height: 100%;
+    height: auto;
 }
 header {
     border-bottom: 1px solid #eaeaea;
