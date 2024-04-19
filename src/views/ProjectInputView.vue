@@ -207,9 +207,7 @@ const goBack = () => {
                             <th>참여자</th>
                             <td>
                                 <employee-search-modal ref="employeeModalRef" @add-participant="addParticipant"></employee-search-modal>
-                                <button type="button" @click="openEmployeeSearchModal">직원 검색</button>
-                                <!-- <input type="text" class="form-control" v-model="newParticipantName" placeholder="참여자 이름을 기입해주세요." /> -->
-                                <!-- <button type="button" class="btn btn-secondary mt-2" @click="addParticipant">추가</button> -->
+                                <button type="button" class="btn btn-secondary me-2" @click="openEmployeeSearchModal">직원 검색</button>
                                 <ul v-if="participants.length > 0" class="list-unstyled mt-2">
                                     <li v-for="(participant, index) in participants" :key="index">{{ participant.name }}</li>
                                 </ul>
