@@ -42,12 +42,12 @@ const submitForm = async () => {
         projTitle: project_title.value,
         projStartDate: convertLocaleTime(start_date.value),
         projEndDate: convertLocaleTime(end_date.value),
-        projPercent: project_percent.value,
         projDesc: proj_desc.value,
         projectStatus: project_status.value,
         projectPriority: project_priority.value,
-        projPm: username,
-        contributors: participants.value.map((participant) => ({ eno: participant.eno }))
+        projPmEno: usereno,
+        projCreateDate: convertLocaleTime(new Date()),
+        contributors: participants.value.map((participant) => participant.eno)
     }
     console.log('Sending data:', projectData)
     try {
