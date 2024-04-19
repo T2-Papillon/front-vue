@@ -15,28 +15,27 @@ const project_status = ref('TODO')
 const project_priority = ref('LV2')
 const project_percent = ref(0)
 const proj_desc = ref('')
-const participants = ref([])
+const participants = ref([{ name: username, eno: usereno }])
 
 const pmInfo = {
     name: username,
     eno: usereno
 }
-participants.value.push(pmInfo)
-
 const employeeModalRef = ref(null)
 
 onMounted(() => {
     if (employeeModalRef.value) {
         console.log('Modal is ready.')
-        // employeeModalRef.value.openModal(); // 주석 처리된 부분은 실제 사용 시 주의해서 사용
     }
 })
 
 const addParticipant = (employee) => {
-    participants.value.push({
-        name: employee.name,
-        eno: employee.eno
-    })
+    if (!participants.value.some((part) => part.eno === employee.eno)) {
+        participants.value.push({
+            name: employee.name,
+            eno: employee.eno
+        })
+    }
 }
 
 function openEmployeeSearchModal() {
@@ -75,6 +74,9 @@ const submitForm = async () => {
         console.error('저장에 실패했습니다.', error.response?.data || error.message)
         alert(`저장 실패: ${error.response?.data || error.message}`)
     }
+}
+function removeParticipant(index) {
+    participants.value.splice(index, 1)
 }
 function determineProjectStatus() {
     return project_percent.value > 0 && project_percent.value < 100 ? 'DOING' : project_percent.value === 100 ? 'DONE' : 'TODO'
@@ -130,9 +132,7 @@ function clearFields() {
     project_percent.value = 0
     proj_desc.value = ''
     participants.value = []
-    // newParticipantName.value = ''
 }
-// 이전 페이지로 돌아가는 함수
 const goBack = () => {
     router.back()
 }
@@ -209,7 +209,10 @@ const goBack = () => {
                                 <employee-search-modal ref="employeeModalRef" @add-participant="addParticipant"></employee-search-modal>
                                 <button type="button" class="btn btn-secondary me-2" @click="openEmployeeSearchModal">직원 검색</button>
                                 <ul v-if="participants.length > 0" class="list-unstyled mt-2">
-                                    <li v-for="(participant, index) in participants" :key="index">{{ participant.name }}</li>
+                                    <li v-for="(participant, index) in participants" :key="index">
+                                        {{ participant.name }}
+                                        <span v-if="participant.eno !== pmInfo.eno" class="remove-participant" @click="removeParticipant(index)">X</span>
+                                    </li>
                                 </ul>
                             </td>
                         </tr>
@@ -242,7 +245,6 @@ const goBack = () => {
                     </tbody>
                 </table>
 
-                <!-- 버튼영역 -->
                 <div class="btn-area text-center d-flex align-items-center justify-content-center">
                     <button type="button" class="btn btn-secondary me-2" @click="goBack">취소</button>
                     <button type="submit" class="btn btn-primary">저장</button>
@@ -292,5 +294,13 @@ const goBack = () => {
 .btn {
     display: flex;
     align-items: center;
+}
+.remove-participant {
+    margin-left: 10px;
+    color: red;
+    cursor: pointer;
+}
+.remove-participant:hover {
+    font-weight: bold;
 }
 </style>
