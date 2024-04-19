@@ -25,7 +25,6 @@ const employeeModalRef = ref(null)
 
 onMounted(() => {
     if (employeeModalRef.value) {
-        console.log('Modal is ready.')
     }
 })
 
@@ -64,10 +63,8 @@ const submitForm = async () => {
         projCreateDate: convertLocaleTime(new Date()),
         contributors: participants.value.map((participant) => participant.eno)
     }
-    console.log('Sending data:', projectData)
     try {
         const response = await axios.post(`${apiUrl}/project/create`, projectData)
-        console.log('API Response:', response.data)
         alert('프로젝트가 성공적으로 생성되었습니다.')
         router.push(`/project`)
     } catch (error) {
@@ -119,7 +116,6 @@ function handleApiResponse(response) {
     if (!response || !response.data) {
         throw new Error('응답 객체 또는 응답 데이터가 유효하지 않습니다.')
     }
-    console.log('응답 데이터:', response.data)
     alert('저장되었습니다.')
     clearFields()
 }
