@@ -25,6 +25,13 @@ participants.value.push(pmInfo)
 
 const employeeModalRef = ref(null)
 
+onMounted(() => {
+    if (employeeModalRef.value) {
+        console.log('Modal is ready.')
+        // employeeModalRef.value.openModal(); // 주석 처리된 부분은 실제 사용 시 주의해서 사용
+    }
+})
+
 const addParticipant = (employee) => {
     participants.value.push({
         name: employee.name,
@@ -199,8 +206,8 @@ const goBack = () => {
                         <tr>
                             <th>참여자</th>
                             <td>
-                                <button type="button" @click="openEmployeeSearchModal">Open Employee Search</button>
-                                <employee-search-modal v-bind:ref="employeeModalRef" />
+                                <employee-search-modal ref="employeeModalRef" @add-participant="addParticipant"></employee-search-modal>
+                                <button type="button" @click="openEmployeeSearchModal">직원 검색</button>
                                 <!-- <input type="text" class="form-control" v-model="newParticipantName" placeholder="참여자 이름을 기입해주세요." /> -->
                                 <!-- <button type="button" class="btn btn-secondary mt-2" @click="addParticipant">추가</button> -->
                                 <ul v-if="participants.length > 0" class="list-unstyled mt-2">

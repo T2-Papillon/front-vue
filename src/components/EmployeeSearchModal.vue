@@ -4,7 +4,7 @@
             <span @click="closeModal" class="close">&times;</span>
             <h2>직원 검색</h2>
             <input type="text" v-model="searchQuery" placeholder="직원 이름 검색" />
-            <button @click="searchEmployees">검색</button>
+            <button type="button" @click="searchEmployees">검색</button>
             <ul>
                 <li v-for="employee in employees" :key="employee.id" @click="selectEmployee(employee)">
                     {{ employee.name }}
@@ -28,12 +28,13 @@ const apiUrl = import.meta.env.VITE_API_URL
 
 function searchEmployees() {
     axios
-        .get(`${apiUrl}/employees/search?query=${searchQuery.value}`)
+        .get(`${apiUrl}/search/emp?name=${searchQuery.value}`)
         .then((response) => {
             employees.value = response.data
         })
         .catch((error) => {
             console.error('Search failed:', error)
+            alert(`검색 실패: ${error.response?.data || error.message}`)
         })
 }
 
@@ -50,7 +51,7 @@ function openModal() {
     isVisible.value = true
 }
 
-// export { openModal, closeModal }
+defineExpose({ openModal, closeModal })
 </script>
 
 <style scoped>
