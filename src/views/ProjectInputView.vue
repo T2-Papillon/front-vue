@@ -136,7 +136,7 @@ const goBack = () => {
             <div class="col-auto">
                 <div class="title-area">
                     <p class="text-body-tertiary lh-sm mb-3"></p>
-                    <h2 class="h2">📌 <input type="text" v-model="project_title" class="form-control h2" id="title" placeholder="제목을 입력해주세요." required /></h2>
+                    <h2 class="h2 d-flex">📌 <input type="text" v-model="project_title" class="form-control h2" id="title" placeholder="제목을 입력해주세요." required /></h2>
                 </div>
             </div>
             <div class="col-auto">
@@ -148,10 +148,8 @@ const goBack = () => {
             <form @submit.prevent="submitForm">
                 <table class="table table-borderless fs-9 mb-5 border-top border-translucent">
                     <colgroup>
-                        <col style="width: 154px" />
-                        <col />
-                        <col style="width: 154px" />
-                        <col />
+                        <col style="width: 12%" />
+                        <col style="width: *" />
                     </colgroup>
                     <tbody>
                         <tr>
@@ -159,15 +157,17 @@ const goBack = () => {
                             <td>
                                 <input type="text" class="form-control" id="pm" :value="username" readonly />
                             </td>
-                            <th></th>
-                            <td></td>
                         </tr>
                         <tr>
                             <th>프로젝트 기간</th>
                             <td>
-                                <input type="date" v-model="start_date" class="form-control" id="startDate" required /> ~ <input type="date" v-model="end_date" class="form-control" id="endDate" required />
+                                <div class="d-flex align-items-center">
+                                    <input type="date" v-model="start_date" class="form-control" id="startDate" required />&nbsp;~&nbsp;<input type="date" v-model="end_date" class="form-control" id="endDate" required />
+                                </div>
                                 <div v-if="end_date && start_date && new Date(end_date) < new Date(start_date)" class="text-danger">종료 날짜를 다시 선택해주세요.</div>
                             </td>
+                        </tr>
+                        <tr>
                             <th class="form-label">우선순위</th>
                             <td colspan="3">
                                 <div class="d-flex align-items-start">
@@ -187,7 +187,6 @@ const goBack = () => {
                                 </div>
                             </td>
                         </tr>
-
                         <tr>
                             <th>참여자</th>
                             <td>
@@ -197,6 +196,8 @@ const goBack = () => {
                                     <li v-for="(participant, index) in participants" :key="index">{{ participant.name }}</li>
                                 </ul>
                             </td>
+                        </tr>
+                        <tr>
                             <th class="form-label">진행 상태</th>
                             <td>
                                 <div class="d-flex align-items-start">
@@ -226,7 +227,7 @@ const goBack = () => {
                 </table>
 
                 <!-- 버튼영역 -->
-                <div class="btn-area text-center">
+                <div class="btn-area text-center d-flex align-items-center justify-content-center">
                     <button type="button" class="btn btn-secondary me-2" @click="goBack">취소</button>
                     <button type="submit" class="btn btn-primary">저장</button>
                 </div>
