@@ -1,6 +1,6 @@
 <template>
     <div class="modal" v-if="isVisible">
-        <div class="modal-content">
+        <form @submit.prevent="searchEmployees" class="modal-content">
             <span @click="closeModal" class="close">&times;</span>
             <h2>직원 검색</h2>
             <input type="text" v-model="searchQuery" @keyup.enter="searchEmployees" placeholder="직원 이름 검색" />
@@ -8,8 +8,7 @@
             <ul>
                 <li v-for="employee in employees" :key="employee.id" @click="selectEmployee(employee)">{{ employee.dept_no }} / {{ employee.name }}</li>
             </ul>
-        </div>
-        <button @click="closeModal">Close</button>
+        </form>
     </div>
 </template>
 
@@ -26,7 +25,7 @@ const apiUrl = import.meta.env.VITE_API_URL
 
 function searchEmployees() {
     axios
-        .get(`${apiUrl}/search/emp?name=${searchQuery.value}`)
+        .get(`${apiUrl}/search/emp?name=${searchQuery.value.trim()}`)
         .then((response) => {
             employees.value = response.data
             if (employees.value.length === 0) {
