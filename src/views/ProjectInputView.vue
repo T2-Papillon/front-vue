@@ -148,9 +148,7 @@ const goBack = () => {
             <form @submit.prevent="submitForm">
                 <table class="table table-borderless fs-9 mb-5 border-top border-translucent">
                     <colgroup>
-                        <col style="width: 154px" />
-                        <col />
-                        <col style="width: 154px" />
+                        <col style="width: 12%" />
                         <col />
                     </colgroup>
                     <tbody>
@@ -159,15 +157,17 @@ const goBack = () => {
                             <td>
                                 <input type="text" class="form-control" id="pm" :value="username" readonly />
                             </td>
-                            <th></th>
-                            <td></td>
                         </tr>
                         <tr>
                             <th>프로젝트 기간</th>
                             <td>
-                                <input type="date" v-model="start_date" class="form-control" id="startDate" required /> ~ <input type="date" v-model="end_date" class="form-control" id="endDate" required />
+                                <div class="d-flex align-items-center">
+                                    <input type="date" v-model="start_date" class="form-control" id="startDate" required />&nbsp;~&nbsp;<input type="date" v-model="end_date" class="form-control" id="endDate" required />
+                                </div>
                                 <div v-if="end_date && start_date && new Date(end_date) < new Date(start_date)" class="text-danger">종료 날짜를 다시 선택해주세요.</div>
                             </td>
+                        </tr>
+                        <tr>
                             <th class="form-label">우선순위</th>
                             <td colspan="3">
                                 <div class="d-flex align-items-start">
@@ -187,7 +187,6 @@ const goBack = () => {
                                 </div>
                             </td>
                         </tr>
-
                         <tr>
                             <th>참여자</th>
                             <td>
@@ -197,7 +196,7 @@ const goBack = () => {
                                     <li v-for="(participant, index) in participants" :key="index">{{ participant.name }}</li>
                                 </ul>
                             </td>
-                            <th class="form-label">진행 상태</th>
+                            <!-- <th class="form-label">진행 상태</th>
                             <td>
                                 <div class="d-flex align-items-start">
                                     <div
@@ -214,7 +213,7 @@ const goBack = () => {
                                         <label class="form-check-label" :for="value.value.toLowerCase()">{{ value.text }}</label>
                                     </div>
                                 </div>
-                            </td>
+                            </td> -->
                         </tr>
                         <tr>
                             <th>내용</th>
