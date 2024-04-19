@@ -33,9 +33,7 @@ export default {
         const participants = ref(formattedProject.value.participants || [])
 
         const projectStatus = computed(() => {
-            if (formattedProject.value.projPercent >= 100) {
-                return 'done'
-            } else if (formattedProject.value.projPercent > 0) {
+            if (formattedProject.value.projPercent > 0) {
                 return 'doing'
             }
             return 'todo'
