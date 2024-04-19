@@ -18,18 +18,18 @@ export default {
                     return
                 }
 
-                const apiUrl = import.meta.env.VITE_API_URL
-                const response = await axios.get(`${apiUrl}/task/project/${this.projectId}/task/${this.taskId}`)
-                const taskData = response.data
+                // const apiUrl = import.meta.env.VITE_API_URL
+                // const response = await axios.get(`${apiUrl}/task/project/${this.projectId}/task/${this.taskId}`)
+                // const taskData = response.data
                 this.$router.push({
                     name: 'taskedit',
                     params: {
                         projectId: this.projectId,
                         taskId: this.taskId
-                    },
-                    query: {
-                        taskData: JSON.stringify(this.taskData)
                     }
+                    // query: {
+                    //     taskData: JSON.stringify(this.taskData)
+                    // }
                 })
             } catch (error) {
                 console.error('태스크 데이터를 가져오는 중 에러가 발생했습니다.', error)

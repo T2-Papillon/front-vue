@@ -41,36 +41,35 @@ async function dashboardData() {
 
 dashboardData()
 
-async function UserWithContributorData() {
-    try {
-        const eno = parseInt(sessionStorage.getItem('EN'))
-        const url = `${import.meta.env.VITE_API_URL}/dashboard/emp/${eno}/projects`
-        const response = await axios.get(url)
+// async function UserWithContributorData() {
+//     try {
+//         const eno = parseInt(sessionStorage.getItem('EN'))
+//         const url = `${import.meta.env.VITE_API_URL}/dashboard/emp/${eno}/projects`
+//         const response = await axios.get(url)
 
-        if (!response.data || response.data.length === 0) {
-            console.log('프로젝트 데이터가 없습니다.')
-            return
-        }
+//         if (!response.data || response.data.length === 0) {
+//             console.log('프로젝트 데이터가 없습니다.')
+//             return
+//         }
 
-        const contributorsSet = new Set()
+//         const contributorsSet = new Set()
 
-        response.data.forEach((project) => {
-            project.contributors.forEach((contributor) => {
-                const contributorEno = parseInt(contributor.eno)
-                if (contributorEno !== eno) {
-                    contributorsSet.add(contributorEno)
-                }
-            })
-        })
+//         response.data.forEach((project) => {
+//             project.contributors.forEach((contributor) => {
+//                 const contributorEno = parseInt(contributor.eno)
+//                 if (contributorEno !== eno) {
+//                     contributorsSet.add(contributorEno)
+//                 }
+//             })
+//         })
 
-        totalContributors.value = contributorsSet.size
-    } catch (e) {
-        console.error('Error fetching dashboard data: ', e)
-        alert('데이터를 불러오는 중 문제가 발생했습니다. 콘솔 로그를 확인해주세요.')
-    }
-}
-
-UserWithContributorData()
+//         totalContributors.value = contributorsSet.size
+//     } catch (e) {
+//         console.error('Error fetching dashboard data: ', e)
+//         alert('데이터를 불러오는 중 문제가 발생했습니다. 콘솔 로그를 확인해주세요.')
+//     }
+// }
+// UserWithContributorData()
 </script>
 <template>
     <div class="dashboard-wrap">
@@ -199,12 +198,10 @@ UserWithContributorData()
             </div>
 
             <!-- 통계 -->
-            <div class="row g-5 g-xl-10 mb-5 mb-xl-10" style="margin-top: 60px">
+            <!-- <div class="row g-5 g-xl-10 mb-5 mb-xl-10" style="margin-top: 60px">
                 <div class="col-xl-5">
                     <div class="card">
                         <div class="card-body">
-                            <p class="card-title">{{ username }}님과 프로젝트를 협업하는 직원 수 및 부서별 현황</p>
-                            <h3 class="card-text fw-bold">{{ totalContributors }} 명</h3>
                             <DeptChart :projects="projects" />
                         </div>
                     </div>
@@ -216,7 +213,7 @@ UserWithContributorData()
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
             <!-- deco -->
             <div class="wave-group">
