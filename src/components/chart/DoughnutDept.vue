@@ -14,14 +14,17 @@ export default {
     props: {
         projects: Array
     },
-    setup() {
+    setup(props) {
         const chartData = ref(null)
+        const eno = parseInt(sessionStorage.getItem('EN'))
+        const username = sessionStorage.getItem('NM')
+        const totalContributors = ref(0)
         const chartOptions = {
             responsive: true,
-            maintainAspectRatio: false,
+            maintainAspectRatio: true,
             plugins: {
                 legend: {
-                    display: false
+                    display: true
                 }
             }
         }
@@ -71,22 +74,12 @@ export default {
             }
         }
 
-        const fetchData = async () => {
+        const fetchData = () => {
             try {
-                const eno = parseInt(sessionStorage.getItem('EN'))
-                const url = `${import.meta.env.VITE_API_URL}/dashboard/emp/${eno}/projects`
-                const response = await axios.get(url)
-
-                if (!response.data || response.data.length === 0) {
-                    console.log('프로젝트 데이터가 없습니다.')
-                    return
-                }
-
                 const contributorsSet = new Set()
                 const departmentCounts = {}
-
-                response.data.forEach((project) => {
-                    project.contributors.forEach((contributor) => {
+                props.projects.forEach((project) => {
+                    project.participants.forEach((contributor) => {
                         const contributorEno = parseInt(contributor.eno)
                         const department = contributor.dept_no
                         if (contributorEno !== eno) {
@@ -95,26 +88,44 @@ export default {
                         }
                     })
                 })
+                totalContributors.value = contributorsSet.size
 
                 processChartData(departmentCounts)
             } catch (e) {
                 console.error('Error fetching dashboard data: ', e)
-                alert('데이터를 불러오는 중 문제가 발생했습니다. 콘솔 로그를 확인해주세요.')
+                // alert('데이터를 불러오는 중 문제가 발생했습니다. 콘솔 로그를 확인해주세요.')
             }
         }
 
         onMounted(() => {
-            fetchData()
+            //fetchData(props.projects)
         })
 
-        return { chartData, chartOptions }
+        watch(
+            () => props.projects,
+            (newVal) => {
+                fetchData()
+            },
+            { immediate: true }
+        )
+
+        return {
+            chartData,
+            chartOptions,
+            username,
+            totalContributors
+        }
     }
 }
 </script>
 
 <template>
+    <h4 class="card-title">{{ username }}님과 프로젝트를 협업하는 직원 수 및 부서별 현황</h4>
+    <h3 class="card-text fw-bold">{{ totalContributors }}명</h3>
     <div class="d-flex align-items-center justify-content-center" v-if="chartData">
-        <Doughnut :data="chartData" :options="chartOptions" />
+        <div>
+            <Doughnut :data="chartData" :options="chartOptions" />
+        </div>
     </div>
     <div v-else>데이터를 불러오는 중입니다...</div>
 </template>
