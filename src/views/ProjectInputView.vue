@@ -1,7 +1,8 @@
 <script setup>
-import { ref } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import axios from 'axios'
+import EmployeeSearchModal from '../components/EmployeeSearchModal.vue'
 
 const router = useRouter()
 const username = sessionStorage.getItem('NM')
@@ -14,21 +15,35 @@ const project_status = ref('TODO')
 const project_priority = ref('LV2')
 const project_percent = ref(0)
 const proj_desc = ref('')
-const participants = ref([])
-// const newParticipantName = ref('')
+const participants = ref([{ name: username, eno: usereno }])
+
 const pmInfo = {
     name: username,
     eno: usereno
 }
-participants.value.push(pmInfo)
-// const addParticipant = () => {
-//     const newParticipant = {
-//         name: newParticipantName.value,
-//         eno: usereno
-//     }
-//     participants.value.push(newParticipant)
-//     newParticipantName.value = ''
-// }
+const employeeModalRef = ref(null)
+
+onMounted(() => {
+    if (employeeModalRef.value) {
+        console.log('Modal is ready.')
+    }
+})
+
+const addParticipant = (employee) => {
+    if (!participants.value.some((part) => part.eno === employee.eno)) {
+        participants.value.push({
+            name: employee.name,
+            eno: employee.eno
+        })
+    }
+}
+
+function openEmployeeSearchModal() {
+    if (employeeModalRef.value) {
+        employeeModalRef.value.openModal()
+    }
+}
+
 const validateInput = () => {
     if (!project_title.value || !start_date.value || !end_date.value) {
         alert('모든 필드를 채워주세요.')
@@ -42,12 +57,12 @@ const submitForm = async () => {
         projTitle: project_title.value,
         projStartDate: convertLocaleTime(start_date.value),
         projEndDate: convertLocaleTime(end_date.value),
-        projPercent: project_percent.value,
         projDesc: proj_desc.value,
         projectStatus: project_status.value,
         projectPriority: project_priority.value,
-        projPm: username,
-        contributors: participants.value.map((participant) => ({ eno: participant.eno }))
+        projPmEno: usereno,
+        projCreateDate: convertLocaleTime(new Date()),
+        contributors: participants.value.map((participant) => participant.eno)
     }
     console.log('Sending data:', projectData)
     try {
@@ -59,6 +74,9 @@ const submitForm = async () => {
         console.error('저장에 실패했습니다.', error.response?.data || error.message)
         alert(`저장 실패: ${error.response?.data || error.message}`)
     }
+}
+function removeParticipant(index) {
+    participants.value.splice(index, 1)
 }
 function determineProjectStatus() {
     return project_percent.value > 0 && project_percent.value < 100 ? 'DOING' : project_percent.value === 100 ? 'DONE' : 'TODO'
@@ -114,9 +132,7 @@ function clearFields() {
     project_percent.value = 0
     proj_desc.value = ''
     participants.value = []
-    // newParticipantName.value = ''
 }
-// 이전 페이지로 돌아가는 함수
 const goBack = () => {
     router.back()
 }
@@ -190,10 +206,13 @@ const goBack = () => {
                         <tr>
                             <th>참여자</th>
                             <td>
-                                <!-- <input type="text" class="form-control" v-model="newParticipantName" placeholder="참여자 이름을 기입해주세요." /> -->
-                                <!-- <button type="button" class="btn btn-secondary mt-2" @click="addParticipant">추가</button> -->
+                                <employee-search-modal ref="employeeModalRef" @add-participant="addParticipant"></employee-search-modal>
+                                <button type="button" class="btn btn-secondary me-2" @click="openEmployeeSearchModal">직원 검색</button>
                                 <ul v-if="participants.length > 0" class="list-unstyled mt-2">
-                                    <li v-for="(participant, index) in participants" :key="index">{{ participant.name }}</li>
+                                    <li v-for="(participant, index) in participants" :key="index">
+                                        {{ participant.name }}
+                                        <span v-if="participant.eno !== pmInfo.eno" class="remove-participant" @click="removeParticipant(index)">X</span>
+                                    </li>
                                 </ul>
                             </td>
                         </tr>
@@ -226,7 +245,6 @@ const goBack = () => {
                     </tbody>
                 </table>
 
-                <!-- 버튼영역 -->
                 <div class="btn-area text-center d-flex align-items-center justify-content-center">
                     <button type="button" class="btn btn-secondary me-2" @click="goBack">취소</button>
                     <button type="submit" class="btn btn-primary">저장</button>
@@ -276,5 +294,13 @@ const goBack = () => {
 .btn {
     display: flex;
     align-items: center;
+}
+.remove-participant {
+    margin-left: 10px;
+    color: red;
+    cursor: pointer;
+}
+.remove-participant:hover {
+    font-weight: bold;
 }
 </style>
