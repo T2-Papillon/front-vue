@@ -3,12 +3,10 @@
         <div class="modal-content">
             <span @click="closeModal" class="close">&times;</span>
             <h2>직원 검색</h2>
-            <input type="text" v-model="searchQuery" placeholder="직원 이름 검색" />
+            <input type="text" v-model="searchQuery" @keyup.enter="searchEmployees" placeholder="직원 이름 검색" />
             <button type="button" @click="searchEmployees">검색</button>
             <ul>
-                <li v-for="employee in employees" :key="employee.id" @click="selectEmployee(employee)">
-                    {{ employee.name }}
-                </li>
+                <li v-for="employee in employees" :key="employee.id" @click="selectEmployee(employee)">{{ employee.dept_no }} / {{ employee.name }}</li>
             </ul>
         </div>
         <button @click="closeModal">Close</button>
@@ -31,6 +29,9 @@ function searchEmployees() {
         .get(`${apiUrl}/search/emp?name=${searchQuery.value}`)
         .then((response) => {
             employees.value = response.data
+            if (employees.value.length === 0) {
+                alert('검색 결과가 없습니다.')
+            }
         })
         .catch((error) => {
             console.error('Search failed:', error)
