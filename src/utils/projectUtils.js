@@ -14,6 +14,7 @@ export function formatProjectData(project) {
         status: project.projectStatus ? project.projectStatus.toLowerCase() : 'unknown',
         progress: project.projPercent,
         priority: project.projectPriority,
-        writeDate: formatDate(project.projCreateDate)
+        writeDate: formatDate(project.projCreateDate),
+        projPercent: project.projPercent || 0
     }
 }
