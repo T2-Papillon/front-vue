@@ -1,7 +1,8 @@
 <script setup>
-import { ref } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import axios from 'axios'
+import EmployeeSearchModal from '../components/EmployeeSearchModal.vue'
 
 const router = useRouter()
 const username = sessionStorage.getItem('NM')
@@ -15,20 +16,28 @@ const project_priority = ref('LV2')
 const project_percent = ref(0)
 const proj_desc = ref('')
 const participants = ref([])
-// const newParticipantName = ref('')
+
 const pmInfo = {
     name: username,
     eno: usereno
 }
 participants.value.push(pmInfo)
-// const addParticipant = () => {
-//     const newParticipant = {
-//         name: newParticipantName.value,
-//         eno: usereno
-//     }
-//     participants.value.push(newParticipant)
-//     newParticipantName.value = ''
-// }
+
+const employeeModalRef = ref(null)
+
+const addParticipant = (employee) => {
+    participants.value.push({
+        name: employee.name,
+        eno: employee.eno
+    })
+}
+
+function openEmployeeSearchModal() {
+    if (employeeModalRef.value) {
+        employeeModalRef.value.openModal()
+    }
+}
+
 const validateInput = () => {
     if (!project_title.value || !start_date.value || !end_date.value) {
         alert('모든 필드를 채워주세요.')
@@ -190,6 +199,8 @@ const goBack = () => {
                         <tr>
                             <th>참여자</th>
                             <td>
+                                <button type="button" @click="openEmployeeSearchModal">Open Employee Search</button>
+                                <employee-search-modal v-bind:ref="employeeModalRef" />
                                 <!-- <input type="text" class="form-control" v-model="newParticipantName" placeholder="참여자 이름을 기입해주세요." /> -->
                                 <!-- <button type="button" class="btn btn-secondary mt-2" @click="addParticipant">추가</button> -->
                                 <ul v-if="participants.length > 0" class="list-unstyled mt-2">
