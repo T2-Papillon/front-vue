@@ -136,7 +136,7 @@ const goBack = () => {
             <div class="col-auto">
                 <div class="title-area">
                     <p class="text-body-tertiary lh-sm mb-3"></p>
-                    <h2 class="h2">📌 <input type="text" v-model="project_title" class="form-control h2" id="title" placeholder="제목을 입력해주세요." required /></h2>
+                    <h2 class="h2 d-flex">📌 <input type="text" v-model="project_title" class="form-control h2" id="title" placeholder="제목을 입력해주세요." required /></h2>
                 </div>
             </div>
             <div class="col-auto">
@@ -149,7 +149,7 @@ const goBack = () => {
                 <table class="table table-borderless fs-9 mb-5 border-top border-translucent">
                     <colgroup>
                         <col style="width: 12%" />
-                        <col />
+                        <col style="width: *" />
                     </colgroup>
                     <tbody>
                         <tr>
@@ -196,7 +196,9 @@ const goBack = () => {
                                     <li v-for="(participant, index) in participants" :key="index">{{ participant.name }}</li>
                                 </ul>
                             </td>
-                            <!-- <th class="form-label">진행 상태</th>
+                        </tr>
+                        <tr>
+                            <th class="form-label">진행 상태</th>
                             <td>
                                 <div class="d-flex align-items-start">
                                     <div
@@ -213,7 +215,7 @@ const goBack = () => {
                                         <label class="form-check-label" :for="value.value.toLowerCase()">{{ value.text }}</label>
                                     </div>
                                 </div>
-                            </td> -->
+                            </td>
                         </tr>
                         <tr>
                             <th>내용</th>
@@ -225,7 +227,7 @@ const goBack = () => {
                 </table>
 
                 <!-- 버튼영역 -->
-                <div class="btn-area text-center">
+                <div class="btn-area text-center d-flex align-items-center justify-content-center">
                     <button type="button" class="btn btn-secondary me-2" @click="goBack">취소</button>
                     <button type="submit" class="btn btn-primary">저장</button>
                 </div>
