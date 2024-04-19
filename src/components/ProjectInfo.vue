@@ -1,11 +1,12 @@
 <script>
-import { watch, ref, computed } from 'vue'
+import { watch, ref } from 'vue'
 import UserProfile from '../components/UserProfile.vue'
 import ProgressBar from '../components/ProgressBar.vue'
 import StatusBadge from '../components/StatusBadge.vue'
 import PriorityBadge from '../components/PriorityBadge.vue'
 import { formatDate } from '@/utils/dateUtils.js'
 import { formatProjectData } from '@/utils/projectUtils.js'
+import { isPast } from 'date-fns'
 
 export default {
     components: {
@@ -32,36 +33,18 @@ export default {
         // 참여자 정보 가져오기
         const participants = ref(formattedProject.value.participants || [])
 
-        const projectStatus = computed(() => {
-            if (formattedProject.value.projPercent > 0) {
-                return 'doing'
-            }
-            return 'todo'
-        })
-
         watch(
             () => props.project,
             () => {
                 formattedProject.value = formatProjectData(props.project)
                 participants.value = formattedProject.value.participants || []
-            },
-            { immediate: true }
-        )
-
-        // 프로젝트 진행률 변화 업데이트
-        watch(
-            () => formattedProject.value.projPercent,
-            (newPercent) => {
-                formattedProject.value.projectStatus = projectStatus.value
-            },
-            { immediate: true }
+            }
         )
 
         return {
             formatDate,
             formattedProject,
-            participants,
-            projectStatus
+            participants
         }
     }
 }
@@ -112,7 +95,7 @@ export default {
                     </div>
                 </td>
                 <th>프로젝트 상태</th>
-                <td><StatusBadge :status="projectStatus" /></td>
+                <td><StatusBadge :status="project.projectStatus" /></td>
             </tr>
             <tr>
                 <th>진행률</th>
