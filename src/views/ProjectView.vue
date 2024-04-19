@@ -2,7 +2,6 @@
 import { ref, onMounted, watch } from 'vue'
 import axios from 'axios'
 import { useRouter } from 'vue-router'
-
 import globalInfo from '@/utils/globalInfoUtils.js'
 import { useProjects } from '@/composables/useProjects'
 
@@ -13,7 +12,6 @@ const { projects, fetchProjectsForUser, isLoading, searchQuery, searchProjects }
 
 const userName = ref(sessionStorage.getItem('NM') || '사용자')
 
-// 프로젝트 상태별로 필터링된 목록을 저장하기 위한 반응형 참조
 const todoProjects = ref([])
 const doingProjects = ref([])
 const doneProjects = ref([])

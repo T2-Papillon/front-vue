@@ -19,7 +19,6 @@ const checkboxItems = ref([
 const selectedCheckboxes = ref(['all'])
 const { projects, fetchProjects, isLoading, fetchProjectsByStatus, sortByLatest, sortByPriority } = useProjects()
 
-// 검색 제출 핸들러
 const submitSearch = () => {
     if (!searchTerm.value.trim()) {
         alert('검색어를 입력하세요')
@@ -33,7 +32,6 @@ onMounted(() => {
     fetchProjects(searchTerm.value, selectedCheckboxes.value)
 })
 
-// 올바른 검색어 입력까지 프로젝트 데이터가 없다는 문구 출력됨
 watch(searchTerm, (newVal, oldVal) => {
     if (newVal !== oldVal) {
         fetchProjects(newVal, selectedCheckboxes.value)
@@ -87,7 +85,6 @@ const handleSelectedItems = (selectedItems) => {
             </div>
         </div>
 
-        <!-- 로딩 스피너 및 프로젝트 목록 -->
         <div class="row pb-4">
             <LoadingSpinner v-if="isLoading" />
             <div v-else class="col overflow-auto">
