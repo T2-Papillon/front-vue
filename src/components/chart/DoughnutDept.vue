@@ -120,12 +120,21 @@ export default {
 </script>
 
 <template>
-    <h4 class="card-title">{{ username }}님과 프로젝트를 협업하는 직원 수 및 부서별 현황</h4>
-    <h3 class="card-text fw-bold">{{ totalContributors }}명</h3>
-    <div class="d-flex align-items-center justify-content-center" v-if="chartData">
-        <div>
-            <Doughnut :data="chartData" :options="chartOptions" />
-        </div>
+    <h3 class="card-title">
+        프로젝트 협업 직원 수 및 부서별 현황 <span class="fw-bold">{{ totalContributors }}</span
+        >명
+    </h3>
+    <div class="d-flex align-items-center justify-content-center my-chart-id" v-if="chartData">
+        <Doughnut :data="chartData" :options="chartOptions" />
     </div>
     <div v-else>데이터를 불러오는 중입니다...</div>
 </template>
+<style scoped>
+h3 {
+    margin-bottom: 30px;
+}
+.my-chart-id {
+    width: 80% !important;
+    height: auto !important;
+}
+</style>

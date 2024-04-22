@@ -74,8 +74,8 @@ export default {
 }
 </script>
 <style scoped>
-/* #my-chart-id {
-    width: 90% !important;
+#my-chart-id {
+    width: 80% !important;
     height: auto !important;
-} */
+}
 </style>

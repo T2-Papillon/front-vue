@@ -205,9 +205,6 @@ export default {
     font-size: 36px;
     font-weight: bold;
 }
-.btm-area {
-    padding-top: 120px;
-}
 
 .mt-80 {
     margin-top: 80px;
