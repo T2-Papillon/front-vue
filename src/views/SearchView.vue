@@ -32,20 +32,6 @@ onMounted(() => {
     fetchProjects(searchTerm.value, selectedCheckboxes.value)
 })
 
-watch(searchTerm, (newVal, oldVal) => {
-    if (newVal !== oldVal) {
-        fetchProjects(newVal, selectedCheckboxes.value)
-    }
-})
-watch(selectedCheckboxes, (newVal, oldVal) => {
-    if (newVal !== oldVal) {
-        if (newVal.includes('all')) {
-            fetchProjects(searchTerm.value, newVal)
-        } else {
-            fetchProjectsByStatus(newVal)
-        }
-    }
-})
 const handleSelectedItems = (selectedItems) => {
     if (selectedItems.includes('all')) {
         fetchProjects(searchTerm.value, selectedItems)
