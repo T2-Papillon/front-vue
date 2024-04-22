@@ -121,7 +121,7 @@ export default {
 
 <template>
     <h3 class="card-title">
-        프로젝트 협업 직원 수 및 부서별 현황 <span class="fw-bold">{{ totalContributors }}</span
+        프로젝트 협업 직원 수 및 부서별 현황 : <span class="fw-bold">{{ totalContributors }}</span
         >명
     </h3>
     <div class="d-flex align-items-center justify-content-center my-chart-id" v-if="chartData">
