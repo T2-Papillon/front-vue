@@ -38,7 +38,7 @@ export default {
         <div class="container">
             <div class="d-flex align-items-center justify-content-between">
                 <h1 class="logo">
-                    <a href="/"><img src="/public/images/logo.png" alt="boogle logo" /></a>
+                    <a href="/"><img src="/public/images/logo.png" width="120" height="35" alt="boogle logo" /></a>
                 </h1>
                 <nav class="navbar navbar-expand-lg">
                     <div class="navbar-collapse" id="navbarSupportedContent">
