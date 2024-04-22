@@ -8,4 +8,6 @@ services:
             - ./nginx/conf/:/etc/nginx/conf.d
         ports:
             - '5174:80'
+        environment:
+            TZ: 'Asia/Seoul'
         restart: always
