@@ -134,13 +134,6 @@ export default {
                 </div>
 
                 <div class="row mt-80">
-                    <div class="col-xl-7 px-3">
-                        <h3 class="h3">진행예정 업무 목록</h3>
-                        <TaskTable :tasks="todoTasks" :isDashBoard="true" :showAssignee="false" :showStatus="false" :showProgress="false" :showWriteDate="false" />
-                    </div>
-                </div>
-
-                <div class="row mt-80">
                     <div class="col">
                         <h3 class="h3">이번주 마감예정 프로젝트</h3>
                         <div class="overflow-auto">
