@@ -56,7 +56,6 @@ export default {
     width: 30px;
     height: 30px;
     border-radius: 100%;
-    font-size: 14px;
 }
 
 .profile .btn::after {
