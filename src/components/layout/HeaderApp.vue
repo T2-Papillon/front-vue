@@ -73,9 +73,15 @@ export default {
 <style>
 .logo {
     width: 120px;
+    height: 35px;
+}
+.logo a {
+    display: inline-block;
+    width: 100%;
 }
 .logo img {
     width: 100%;
+    vertical-align: baseline;
 }
 .vertical-line {
     border-left: 1px solid #eaeaea;

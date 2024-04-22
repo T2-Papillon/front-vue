@@ -1,8 +1,7 @@
 <template>
     <footer>
-        <div class="container">
-            <p class="mb-0 text-secondary">Copyright 2024. papplan. All rights reserved.</p>
-        </div>
+        <h2 class="hidden">footer</h2>
+        <div class="container">Copyright 2024. papplan. All rights reserved.</div>
     </footer>
 </template>
 
@@ -12,10 +11,10 @@ export default {}
 
 <style scoped>
 footer {
-    background-color: #fff;
     padding: 20px;
+    margin-bottom: 0;
+    background-color: #fff;
     text-align: center;
-}
-footer p {
+    color: #ddd;
 }
 </style>

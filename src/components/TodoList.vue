@@ -52,9 +52,9 @@ function clearAllTodos() {
         <div class="overflow-auto">
             <ul class="mt-2">
                 <li v-for="(todo, index) in todos" :key="index">
-                    <input type="checkbox" class="form-check-input me-2" v-model="todo.completed" />
-                    <span :class="{ completed: todo.completed }">{{ todo.text }}</span>
-                    <button class="btn" @click="removeTodo(index)"><i class="bi bi-x-lg"></i></button>
+                    <input type="checkbox" class="form-check-input me-2" v-model="todo.completed" :id="'todo-' + index" />
+                    <label :for="'todo-' + index" :class="{ completed: todo.completed }">{{ todo.text }}</label>
+                    <button class="btn" @click="removeTodo(index)" aria-label="삭제"><i class="bi bi-x-lg"></i></button>
                 </li>
             </ul>
         </div>
