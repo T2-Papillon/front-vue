@@ -55,7 +55,7 @@ export default {
         <div class="col-auto">
             <div class="title-area">
                 <p class="text-body-tertiary lh-sm mb-3">ProjectNo.000{{ project.projNo }}</p>
-                <h2 class="h2">📌 {{ project.projTitle }}</h2>
+                <h2 class="h2">📌 <br class="only-mobile" />{{ project.projTitle }}</h2>
             </div>
         </div>
         <div class="col-auto">
@@ -66,51 +66,53 @@ export default {
         </div>
     </div>
 
-    <table class="table table-borderless fs-9 mb-5 border-top border-translucent">
-        <colgroup>
-            <col style="width: 154px" />
-            <col />
-            <col style="width: 154px" />
-            <col />
-        </colgroup>
-        <tbody>
-            <tr>
-                <th>작성자</th>
-                <td><UserProfile :name="project.projPm" :dept="project.projPmDept" :eno="project.projPmEno" /></td>
-                <th>작성일</th>
-                <td>{{ formatDate(project.projCreateDate) }}</td>
-            </tr>
-            <tr>
-                <th>프로젝트 기간</th>
-                <td>{{ formatDate(project.projStartDate) }} ~ {{ formatDate(project.projEndDate) }}</td>
-                <th>우선순위</th>
-                <td><PriorityBadge :priority="project.projectPriority" /></td>
-            </tr>
+    <div class="overflow-auto">
+        <table class="table table-borderless fs-9 mb-5 border-top border-translucent">
+            <colgroup>
+                <col style="width: 154px" />
+                <col style="min-width: 200px" />
+                <col style="width: 154px" />
+                <col style="*" />
+            </colgroup>
+            <tbody>
+                <tr>
+                    <th>작성자</th>
+                    <td><UserProfile :name="project.projPm" :dept="project.projPmDept" :eno="project.projPmEno" /></td>
+                    <th>작성일</th>
+                    <td>{{ formatDate(project.projCreateDate) }}</td>
+                </tr>
+                <tr>
+                    <th>프로젝트 기간</th>
+                    <td>{{ formatDate(project.projStartDate) }} ~ {{ formatDate(project.projEndDate) }}</td>
+                    <th>우선순위</th>
+                    <td><PriorityBadge :priority="project.projectPriority" /></td>
+                </tr>
 
-            <tr>
-                <th>참여자</th>
-                <td>
-                    <div>
-                        <UserProfile v-for="participant in participants" :key="participant.eno" :eno="participant.eno" :name="participant.name" :dept="participant.dept_no" />
-                    </div>
-                </td>
-                <th>프로젝트 상태</th>
-                <td><StatusBadge :status="project.projectStatus" /></td>
-            </tr>
-            <tr>
-                <th>진행률</th>
-                <td><ProgressBar :progress="project.projPercent" /></td>
-                <th></th>
-                <td></td>
-            </tr>
-            <tr>
-                <th>내용</th>
-                <td colspan="3">
-                    <div class="text-area" style="white-space: pre-wrap">{{ project.projDesc }}</div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+                <tr>
+                    <th>참여자</th>
+                    <td>
+                        <div>
+                            <UserProfile v-for="participant in participants" :key="participant.eno" :eno="participant.eno" :name="participant.name" :dept="participant.dept_no" />
+                        </div>
+                    </td>
+                    <th>프로젝트 상태</th>
+                    <td><StatusBadge :status="project.projectStatus" /></td>
+                </tr>
+                <tr>
+                    <th>진행률</th>
+                    <td><ProgressBar :progress="project.projPercent" /></td>
+                    <th></th>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th>내용</th>
+                    <td colspan="3">
+                        <div class="text-area" style="white-space: pre-wrap">{{ project.projDesc }}</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </template>
 <style scoped>
 .table-borderless {
