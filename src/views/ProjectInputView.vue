@@ -65,7 +65,7 @@ const submitForm = async () => {
     }
     try {
         const response = await axios.post(`${apiUrl}/project/create`, projectData)
-        alert('프로젝트가 성공적으로 생성되었습니다.')
+        alert('저장되었습니다.')
         router.push(`/project`)
     } catch (error) {
         console.error('저장에 실패했습니다.', error.response?.data || error.message)
@@ -158,88 +158,72 @@ const goBack = () => {
 
         <div class="row">
             <form @submit.prevent="submitForm">
-                <table class="table table-borderless fs-9 mb-5 border-top border-translucent">
-                    <colgroup>
-                        <col style="width: 12%" />
-                        <col style="width: *" />
-                    </colgroup>
-                    <tbody>
-                        <tr>
-                            <th>작성자</th>
-                            <td>
-                                <input type="text" class="form-control" id="pm" :value="username" readonly />
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>프로젝트 기간</th>
-                            <td>
-                                <div class="d-flex align-items-center">
-                                    <input type="date" v-model="start_date" class="form-control" id="startDate" required />&nbsp;~&nbsp;<input type="date" v-model="end_date" class="form-control" id="endDate" required />
-                                </div>
-                                <div v-if="end_date && start_date && new Date(end_date) < new Date(start_date)" class="text-danger">종료 날짜를 다시 선택해주세요.</div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th class="form-label">우선순위</th>
-                            <td colspan="3">
-                                <div class="d-flex align-items-start">
-                                    <div
-                                        v-for="(priority, index) in [
-                                            { text: '긴급', value: 'LV0' },
-                                            { text: '높음', value: 'LV1' },
-                                            { text: '보통', value: 'LV2' },
-                                            { text: '낮음', value: 'LV3' }
-                                        ]"
-                                        :key="index"
-                                        class="form-check me-4"
-                                    >
-                                        <input class="form-check-input" type="radio" v-model="project_priority" :id="`lv${index}`" :value="priority.value" :checked="index === 2" />
-                                        <label class="form-check-label" :for="`lv${index}`">{{ priority.text }}</label>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>참여자</th>
-                            <td>
-                                <employee-search-modal ref="employeeModalRef" @add-participant="addParticipant"></employee-search-modal>
-                                <button type="button" class="btn btn-secondary me-2" @click="openEmployeeSearchModal">직원 검색</button>
-                                <ul v-if="participants.length > 0" class="list-unstyled mt-2">
-                                    <li v-for="(participant, index) in participants" :key="index">
-                                        {{ participant.name }}
-                                        <span v-if="participant.eno !== pmInfo.eno" class="remove-participant" @click="removeParticipant(index)">X</span>
-                                    </li>
-                                </ul>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th class="form-label">진행 상태</th>
-                            <td>
-                                <div class="d-flex align-items-start">
-                                    <div
-                                        class="form-check me-4"
-                                        v-for="(value, key) in [
-                                            { text: '진행예정', value: 'TODO' },
-                                            { text: '진행중', value: 'DOING' },
-                                            { text: '완료', value: 'DONE' },
-                                            { text: '보류', value: 'HOLD' }
-                                        ]"
-                                        :key="key"
-                                    >
-                                        <input class="form-check-input" type="radio" v-model="project_status" :id="value.value.toLowerCase()" :value="value.value" />
-                                        <label class="form-check-label" :for="value.value.toLowerCase()">{{ value.text }}</label>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>내용</th>
-                            <td colspan="3">
-                                <textarea v-model="proj_desc" class="form-control textarea" id="description" rows="3" placeholder="내용을 입력해주세요"></textarea>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="col-xl">
+                    <div class="mb-3">
+                        <label for="title" class="form-label">작성자</label>
+                        <input type="text" class="form-control" id="pm" :value="username" readonly />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">프로젝트 기간</label>
+                        <div class="d-flex align-items-center">
+                            <input type="date" v-model="start_date" class="form-control" id="startDate" required />&nbsp;~&nbsp;<input type="date" v-model="end_date" class="form-control" id="endDate" required />
+                        </div>
+                        <div v-if="end_date && start_date && new Date(end_date) < new Date(start_date)" class="text-danger">종료 날짜를 다시 선택해주세요.</div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">우선순위</label>
+                        <div class="d-flex align-items-start">
+                            <div
+                                v-for="(priority, index) in [
+                                    { text: '긴급', value: 'LV0' },
+                                    { text: '높음', value: 'LV1' },
+                                    { text: '보통', value: 'LV2' },
+                                    { text: '낮음', value: 'LV3' }
+                                ]"
+                                :key="index"
+                                class="form-check me-4"
+                            >
+                                <input class="form-check-input" type="radio" v-model="project_priority" :id="`lv${index}`" :value="priority.value" :checked="index === 2" />
+                                <label class="form-check-label" :for="`lv${index}`">{{ priority.text }}</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">참여자</label>
+                        <div>
+                            <employee-search-modal ref="employeeModalRef" @add-participant="addParticipant"></employee-search-modal>
+                            <button type="button" class="btn btn-secondary me-2" @click="openEmployeeSearchModal">직원 검색</button>
+                            <ul v-if="participants.length > 0" class="list-unstyled mt-2">
+                                <li v-for="(participant, index) in participants" :key="index">
+                                    {{ participant.name }}
+                                    <span v-if="participant.eno !== pmInfo.eno" class="remove-participant" @click="removeParticipant(index)">X</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">참여자</label>
+                        <div class="d-flex align-items-start">
+                            <div
+                                class="form-check me-4"
+                                v-for="(value, key) in [
+                                    { text: '진행예정', value: 'TODO' },
+                                    { text: '진행중', value: 'DOING' },
+                                    { text: '완료', value: 'DONE' },
+                                    { text: '보류', value: 'HOLD' }
+                                ]"
+                                :key="key"
+                            >
+                                <input class="form-check-input" type="radio" v-model="project_status" :id="value.value.toLowerCase()" :value="value.value" />
+                                <label class="form-check-label" :for="value.value.toLowerCase()">{{ value.text }}</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">내용</label>
+                        <textarea v-model="proj_desc" class="form-control textarea" id="description" rows="3" placeholder="내용을 입력해주세요"></textarea>
+                    </div>
+                </div>
 
                 <div class="btn-area text-center d-flex align-items-center justify-content-center">
                     <button type="button" class="btn btn-secondary me-2" @click="goBack">취소</button>
