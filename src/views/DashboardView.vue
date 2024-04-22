@@ -104,7 +104,7 @@ dashboardData()
                     <div class="card">
                         <div class="card-body">
                             <p class="card-title">전주 완료 프로젝트 건수</p>
-                            <h3 class="card-text fw-bold">{{ prjYesterday }} 건</h3>
+                            <h3 class="card-text fw-bold">{{ prjWeek }} 건</h3>
                         </div>
                     </div>
                 </div>
