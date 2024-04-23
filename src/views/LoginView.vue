@@ -92,7 +92,7 @@ export default {
 .login-page {
     overflow: hidden;
     position: relative;
-    min-height: 82.4vh;
+    min-height: 84vh;
     background-color: #dff0d8;
 }
 

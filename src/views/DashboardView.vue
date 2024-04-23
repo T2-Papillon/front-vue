@@ -47,10 +47,10 @@ dashboardData()
             <div class="row align-items-start justify-content-between g-3">
                 <div class="col-auto">
                     <div class="title-area">
-                        <h3 class="h2">
+                        <p class="h2">
                             환영합니다!<br class="only-mobile" />
                             {{ username }}님💡
-                        </h3>
+                        </p>
                         <p class="text-body-tertiary lh-sm mb-3"></p>
                     </div>
                 </div>

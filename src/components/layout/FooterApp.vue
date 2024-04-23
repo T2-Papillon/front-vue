@@ -11,6 +11,7 @@ export default {}
 
 <style scoped>
 footer {
+    contain: layout;
     height: 60px;
     padding: 20px;
     margin-bottom: 0;

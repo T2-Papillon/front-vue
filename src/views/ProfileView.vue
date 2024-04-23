@@ -95,7 +95,7 @@ export default {
         <div class="top-area">
             <div class="container">
                 <div class="profile">
-                    <img :src="randomProfileImagePath" alt="프로필 이미지" />
+                    <!-- <img :src="randomProfileImagePath" alt="프로필 이미지" /> -->
                     <div class="info">
                         <h3 class="info-name">{{ profileDept }} / {{ profileName }}</h3>
                     </div>
@@ -163,7 +163,7 @@ export default {
     position: relative;
     height: 280px;
     background-color: #dbf6eb;
-    background-image: url('../../public/images/img-mypage.png');
+    /* background-image: url('../../public/images/img-mypage.png'); */
     background-position: 100% 185%;
     background-repeat: no-repeat;
     background-size: 800px;
