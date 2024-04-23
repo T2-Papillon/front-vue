@@ -61,7 +61,7 @@ export default {
                     </div>
                     <ul class="me-auto mb-2 mb-lg-0" v-if="userInfo">
                         <li class="dropdown">
-                            <UserProfile :name="userInfo.name" :dept="userInfo.dept" :eno="userInfo.eno" />
+                            <UserProfile :name="userInfo.name" :dept="userInf`o.dept" :eno="userInfo.eno" />
                         </li>
                     </ul>
                 </nav>
@@ -71,6 +71,13 @@ export default {
 </template>
 
 <style>
+header {
+    height: 55px;
+}
+header .container,
+header .container > div {
+    height: 100%;
+}
 .logo {
     width: 120px;
     height: 35px;
