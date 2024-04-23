@@ -6,6 +6,8 @@ import PieChartUserProjectTask from '../components/chart/PieChartUserProjectTask
 import DeptChart from '../components/chart/DoughnutDept.vue'
 import TaskTable from '../components/TaskTable.vue'
 import ProjectTable from '../components/ProjectTable.vue'
+import ScrollToTop from '../components/ScrollToTop.vue'
+
 import { formatProjectData } from '@/utils/projectUtils'
 import { ref, onMounted, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -17,7 +19,8 @@ export default {
         PieChartUserProjectTask,
         TaskTable,
         ProjectTable,
-        DeptChart
+        DeptChart,
+        ScrollToTop
     },
 
     setup() {
@@ -95,7 +98,7 @@ export default {
         <div class="top-area">
             <div class="container">
                 <div class="profile">
-                    <!-- <img :src="randomProfileImagePath" alt="프로필 이미지" /> -->
+                    <img :src="randomProfileImagePath" alt="프로필 이미지" />
                     <div class="info">
                         <h3 class="info-name">{{ profileDept }} / {{ profileName }}</h3>
                     </div>
@@ -152,6 +155,8 @@ export default {
                 </div>
             </div>
         </div>
+
+        <ScrollToTop />
     </div>
 </template>
 
@@ -163,7 +168,7 @@ export default {
     position: relative;
     height: 280px;
     background-color: #dbf6eb;
-    /* background-image: url('../../public/images/img-mypage.png'); */
+    background-image: url('../../public/images/img-mypage.png');
     background-position: 100% 185%;
     background-repeat: no-repeat;
     background-size: 800px;

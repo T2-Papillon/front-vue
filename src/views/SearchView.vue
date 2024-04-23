@@ -6,6 +6,7 @@ import CheckboxSelector from '../components/CheckboxSelector.vue'
 import ProjectTable from '../components/ProjectTable.vue'
 import SortFilter from '../components/SortFilter.vue'
 import LoadingSpinner from '../components/LoadingSpinner.vue'
+import ScrollToTop from '../components/ScrollToTop.vue'
 
 const searchTerm = ref('')
 const checkboxItems = ref([
@@ -77,6 +78,8 @@ const handleSelectedItems = (selectedItems) => {
                 <ProjectTable :projects="projects" />
             </div>
         </div>
+
+        <ScrollToTop />
     </div>
 </template>
 

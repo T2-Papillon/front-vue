@@ -1,12 +1,12 @@
 <script setup>
 import axios from 'axios'
 import { ref } from 'vue'
+import { formatProjectData } from '@/utils/projectUtils'
+import { formatDate } from '@/utils/dateUtils'
 import ProjectTable from '../components/ProjectTable.vue'
 import TaskTable from '../components/TaskTable.vue'
 import TodoList from '../components/TodoList.vue'
-import { formatProjectData } from '@/utils/projectUtils'
-import { formatDate } from '@/utils/dateUtils'
-import DeptChart from '../components/chart/DoughnutDept.vue'
+import ScrollToTop from '../components/ScrollToTop.vue'
 
 const username = sessionStorage.getItem('NM')
 const projects = ref([])
@@ -44,7 +44,7 @@ dashboardData()
 <template>
     <div class="dashboard-wrap">
         <div class="container">
-            <div class="row align-items-start justify-content-between g-3">
+            <section class="row align-items-start justify-content-between g-3">
                 <div class="col-auto">
                     <div class="title-area">
                         <p class="h2">
@@ -54,8 +54,9 @@ dashboardData()
                         <p class="text-body-tertiary lh-sm mb-3"></p>
                     </div>
                 </div>
-            </div>
-            <div class="row today-area g-5 g-xl-10 mb-5 mb-xl-10">
+            </section>
+
+            <section class="row today-area g-5 g-xl-10 mb-5 mb-xl-10">
                 <div class="col-xl-6">
                     <div class="today-box">
                         <h3 class="text">Today</h3>
@@ -65,10 +66,9 @@ dashboardData()
                 <div class="col-xl-6 mt-0">
                     <div class="today-box"><TodoList /></div>
                 </div>
-                <div class="blur-box"></div>
-            </div>
+            </section>
 
-            <div class="row g-5 g-xl-10 mb-5 mb-xl-10">
+            <section class="row g-5 g-xl-10 mb-5 mb-xl-10">
                 <div class="col">
                     <div class="card">
                         <div class="card-body">
@@ -81,9 +81,9 @@ dashboardData()
                         </div>
                     </div>
                 </div>
-            </div>
+            </section>
 
-            <div class="row g-5 g-xl-10 mb-5 mb-xl-10">
+            <section class="row g-5 g-xl-10 mb-5 mb-xl-10">
                 <div class="col-xl-4">
                     <div class="card">
                         <div class="card-body">
@@ -108,9 +108,9 @@ dashboardData()
                         </div>
                     </div>
                 </div>
-            </div>
+            </section>
 
-            <div class="row g-5 g-xl-10 mb-5 mb-xl-10">
+            <section class="row g-5 g-xl-10 mb-5 mb-xl-10">
                 <div class="col">
                     <div class="card">
                         <div class="card-body">
@@ -123,10 +123,10 @@ dashboardData()
                         </div>
                     </div>
                 </div>
-            </div>
+            </section>
 
             <!-- 업무 -->
-            <div class="row g-5 g-xl-10 mb-5 mb-xl-10" style="margin-top: 60px">
+            <section class="row g-5 g-xl-10 mb-5 mb-xl-10" style="margin-top: 60px">
                 <div class="col-xl-4">
                     <div class="card">
                         <div class="card-body">
@@ -151,8 +151,8 @@ dashboardData()
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="row g-5 g-xl-10 mb-5 mb-xl-10">
+            </section>
+            <section class="row g-5 g-xl-10 mb-5 mb-xl-10">
                 <div class="col">
                     <div class="card">
                         <div class="card-body">
@@ -165,7 +165,10 @@ dashboardData()
                         </div>
                     </div>
                 </div>
-            </div>
+            </section>
+
+            <ScrollToTop />
+
             <!-- deco -->
             <div class="wave-group">
                 <div class="wave"></div>
