@@ -74,6 +74,8 @@ export default {
 
         onMounted(async () => {
             await fetchTasks()
+            // console.log(projects.value)
+
             if (!error.value) {
                 router.push('/profile') // 다음 뷰로 전환하는 예시 로직
             }
@@ -140,7 +142,8 @@ export default {
                     <div class="col">
                         <h3 class="h3">이번주 마감예정 프로젝트</h3>
                         <div class="overflow-auto">
-                            <ProjectTable :projects="projects" :show-upcoming-deadlines="true" />
+                            <ProjectTable v-if="projects.length > 0" :projects="projects" :show-upcoming-deadlines="true" />
+                            <p v-else class="empty">아직 비어있어요 👻</p>
                         </div>
                     </div>
                 </div>
