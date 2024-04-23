@@ -24,7 +24,7 @@ export default {
             }
         },
         goProfile() {
-            console.log('Profile routing for:', this.eno)
+            // console.log('Profile routing for:', this.eno)
             this.$router.push({ name: 'profile', state: { eno: this.eno, name: this.name, dept: this.dept } })
         }
     }
