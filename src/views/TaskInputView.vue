@@ -1,5 +1,5 @@
 <script>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import axios from 'axios'
 import { useRoute, useRouter } from 'vue-router'
 
@@ -21,6 +21,7 @@ export default {
         const task_test = ref('')
         const url = ref('')
         const task_desc = ref('')
+        const first_percent = ref(0)
 
         // 현재 경로가 'save'인지 확인하는 계산된 속성
         const isSaveRoute = computed(() => {
@@ -30,6 +31,17 @@ export default {
         // 'save' 경로일 때 username을 사용하고, 그렇지 않으면 assignee를 사용
         const inputFieldValue = computed(() => {
             return isSaveRoute.value ? usereno : assignee_eno.value
+        })
+
+        // watch 함수
+        watch(task_status, (newVal, oldVal) => {
+            if (newVal === 'DONE') {
+                task_percent.value = 100
+            } else if (newVal === 'DOING') {
+                task_percent.value = first_percent.value
+            } else {
+                task_percent.value = 0
+            }
         })
 
         // 데이터를 불러오는 함수 수정
@@ -51,6 +63,7 @@ export default {
                     task_status.value = taskData.task_status
                     task_priority.value = taskData.task_priority
                     task_percent.value = taskData.task_percent
+                    first_percent.value = taskData.task_percent
                     task_test.value = taskData.task_test ? 'true' : 'false'
                     url.value = taskData.url || ''
                     task_desc.value = taskData.task_desc
