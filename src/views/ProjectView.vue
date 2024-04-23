@@ -7,6 +7,7 @@ import { useProjects } from '@/composables/useProjects'
 
 import ProjectTable from '../components/ProjectTable.vue'
 import LoadingSpinner from '../components/LoadingSpinner.vue'
+import ScrollToTop from '../components/ScrollToTop.vue'
 
 const { projects, fetchProjectsForUser, isLoading, searchQuery, searchProjects } = useProjects()
 
@@ -128,6 +129,8 @@ onMounted(async () => {
                 </div>
             </div>
         </section>
+
+        <ScrollToTop />
     </div>
 </template>
 
