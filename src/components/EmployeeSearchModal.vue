@@ -139,4 +139,9 @@ defineExpose({ openModal, closeModal })
 .employee-item:hover {
     background-color: #e9e9e9;
 }
+@media (max-width: 768px) {
+    .modal-content {
+        width: 92%;
+    }
+}
 </style>
