@@ -36,7 +36,7 @@ const filteredProjects = computed(() => {
 <template>
     <table v-if="projects.length > 0" class="table fs-9 mb-5 border-top border-translucent">
         <colgroup>
-            <col style="min-width: 280px" />
+            <col style="width: 280px" />
             <col style="width: 65px" />
             <col style="width: 126px" />
             <col style="width: 126px" />

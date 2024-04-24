@@ -114,7 +114,7 @@ export default {
     <div v-if="error">{{ error }}</div>
     <table class="table fs-9 mb-5 border-top border-translucent">
         <colgroup>
-            <col style="min-width: 280px" />
+            <col style="width: 280px" />
             <col style="width: 80px" v-if="showAssignee" />
             <col style="width: 100px" />
             <col style="width: 100px" />
