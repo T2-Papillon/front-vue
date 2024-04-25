@@ -70,9 +70,9 @@ export default {
         <table class="table table-borderless fs-9 mb-5 border-top border-translucent">
             <colgroup>
                 <col style="width: 154px" />
-                <col style="min-width: 200px" />
+                <col style="width: 430px" />
                 <col style="width: 154px" />
-                <col style="*" />
+                <col style="width: 430px" />
             </colgroup>
             <tbody>
                 <tr>
